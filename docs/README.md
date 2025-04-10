@@ -6,8 +6,8 @@ This guide outlines the recommended steps to evaluate, validate, and document ne
 
 The change management process involves a sequential approach where each step is evaluated against predefined conditions. If the change characteristics align with the conditions, the step should be executed. Otherwise, moving directly to the next step is permissible, making the adherence to steps flexible and at the discretion of the collaborator.
 
-![Change Management Process](../images/change_management.png)
-![PlantUML](//www.plantuml.com/plantuml/png/SoWkIImgAStDuG8pkBYiNCiISqeJIr8L77DAKelo4aioorABhRcimeioWO91RivmjgDB4502g36_WCiXDIy5Q0e0)
+![Change Management Process](https://github.com/ninja-marduk/ml_precipitation_prediction/blob/main/docs/change_management.png)
+![PlantUML](https://www.plantuml.com/plantuml/png/SoWkIImgAStDuG8pkBYiNCiISqeJIr8L77DAKelo4aioorABhRcimeioWO91RivmjgDB4502g36_WCiXDIy5Q0e0)
 
 ## Steps
 
