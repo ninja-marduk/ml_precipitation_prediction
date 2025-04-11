@@ -1,5 +1,9 @@
+# Ensure scikit-learn is installed before running this script
+# You can install it using: pip install scikit-learn
+
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import numpy as np
 
 def calculate_metrics(y_test, y_pred_rf, y_pred_svm, y_pred_dt):
     """
@@ -12,12 +16,21 @@ def calculate_metrics(y_test, y_pred_rf, y_pred_svm, y_pred_dt):
     y_pred_svm = pd.Series(y_pred_svm).astype(str)
     y_pred_dt = pd.Series(y_pred_dt).astype(str)
 
+    def mean_absolute_percentage_error(y_true, y_pred):
+        y_true, y_pred = np.array(y_true), np.array(y_pred)
+        return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
     metrics = {
         'RandomForest': {
             'accuracy': accuracy_score(y_test, y_pred_rf),
             'precision': precision_score(y_test, y_pred_rf, average='macro', zero_division=1),
             'recall': recall_score(y_test, y_pred_rf, average='macro', zero_division=1),
-            'f1_score': f1_score(y_test, y_pred_rf, average='macro', zero_division=1)
+            'f1_score': f1_score(y_test, y_pred_rf, average='macro', zero_division=1),
+            'MSE': metrics.mean_squared_error(y_test, y_pred_rf),
+            'MAE': metrics.mean_absolute_error(y_test, y_pred_rf),
+            'RMSE': np.sqrt(metrics.mean_squared_error(y_test, y_pred_rf)),
+            'MAPE': mean_absolute_percentage_error(y_test, y_pred_rf),
+            'R2': metrics.r2_score(y_test, y_pred_rf)
         },
         'SVM': {
             'accuracy': accuracy_score(y_test, y_pred_svm),
