@@ -11,7 +11,7 @@ def load_and_preprocess_data(filepath):
     df = pd.read_csv(filepath)
 
     # Melt the DataFrame to have a 'Month' column
-    df_melted = df.melt(id_vars=['SUBDIVISION', 'YEAR', 'Latitude', 'Longitude'], 
+    df_melted = df.melt(id_vars=['SUBDIVISION', 'YEAR', 'Latitude', 'Longitude'],
                         value_vars=['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
                         var_name='Month', value_name='Precipitation')
 
@@ -19,7 +19,7 @@ def load_and_preprocess_data(filepath):
     df_melted['Date'] = pd.to_datetime(df_melted['YEAR'].astype(str) + df_melted['Month'], format='%Y%b')
 
     # Convert Month to numeric representation
-    month_mapping = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6, 
+    month_mapping = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
                      'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12}
     df_melted['Month'] = df_melted['Month'].map(month_mapping)
 
