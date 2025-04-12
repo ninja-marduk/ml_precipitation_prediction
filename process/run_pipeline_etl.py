@@ -3,6 +3,17 @@ import time
 import psutil
 import os
 import sys
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level
+    format="%(asctime)s - %(levelname)s - %(message)s",  # Log message format
+    handlers=[
+        logging.StreamHandler(),  # Output logs to the terminal
+        logging.FileHandler("pipeline.log", mode="w")  # Save logs to a file
+    ]
+)
 
 def run_script(script_path):
     """
@@ -12,10 +23,10 @@ def run_script(script_path):
         script_path (str): Path to the Python script to execute.
     """
     if not os.path.isfile(script_path):
-        print(f"Error: The script {script_path} does not exist.")
+        logging.error(f"The script {script_path} does not exist.")
         sys.exit(1)
 
-    print(f"Running script: {script_path}")
+    logging.info(f"Running script: {script_path}")
 
     try:
         # Start monitoring
@@ -37,22 +48,22 @@ def run_script(script_path):
         cpu_percent = process.cpu_percent(interval=None)
         threads_used = process.num_threads()
 
-        # Print performance metrics
-        print(f"Script {script_path} executed in {elapsed_time:.2f} seconds.")
-        print(f"Memory used: {memory_used:.2f} MB")
-        print(f"CPU cores available: {cpu_cores}")
-        print(f"CPU usage: {cpu_percent:.2f}%")
-        print(f"Threads used: {threads_used}")
+        # Log performance metrics
+        logging.info(f"Script {script_path} executed in {elapsed_time:.2f} seconds.")
+        logging.info(f"Memory used: {memory_used:.2f} MB")
+        logging.info(f"CPU cores available: {cpu_cores}")
+        logging.info(f"CPU usage: {cpu_percent:.2f}%")
+        logging.info(f"Threads used: {threads_used}")
 
         # Handle errors
         if result.returncode != 0:
-            print(f"Error executing {script_path}:\n{result.stderr}")
+            logging.error(f"Error executing {script_path}:\n{result.stderr}")
             sys.exit(1)
         else:
-            print(f"Script {script_path} executed successfully!")
+            logging.info(f"Script {script_path} executed successfully!")
 
     except Exception as e:
-        print(f"An unexpected error occurred while executing {script_path}: {e}")
+        logging.error(f"An unexpected error occurred while executing {script_path}: {e}")
         sys.exit(1)
 
 def main():
