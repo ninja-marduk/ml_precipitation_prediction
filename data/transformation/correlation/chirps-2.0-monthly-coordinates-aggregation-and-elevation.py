@@ -205,6 +205,93 @@ def plot_correlation_by_levels(correlations, output_path):
         logger.error(f"Error generating correlation plot by elevation levels: {e}")
         raise
 
+def plot_all_correlations(correlations, output_dir):
+    """
+    Generate 3 plots with subplots for each month, showing low, medium, and high elevation correlations.
+
+    Parameters:
+        correlations (pd.DataFrame): DataFrame containing the correlation coefficients for each elevation level.
+        output_dir (str): Directory to save the plots.
+    """
+    try:
+        logger.info("Generating plots for all correlations by elevation levels...")
+
+        # Ensure the output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+
+        # Define correlation types
+        correlation_types = ["low", "medium", "high"]
+
+        # Loop through each correlation type and generate a plot
+        for corr_type in correlation_types:
+            logger.info(f"Generating plot for {corr_type} correlations...")
+
+            # Create a figure with 12 subplots (3 rows x 4 columns)
+            fig, axes = plt.subplots(3, 4, figsize=(20, 15), constrained_layout=True)
+            axes = axes.flatten()  # Flatten the 2D array of axes for easier iteration
+
+            # Loop through each month and plot in a subplot
+            for month in range(1, 13):
+                ax = axes[month - 1]
+                data = correlations[corr_type].loc[month]
+                title = f"{corr_type.capitalize()} Correlation - Month {month}"
+
+                # Plot the data
+                ax.bar([1], [data], color="skyblue", edgecolor="black")
+                ax.set_title(title, fontsize=10)
+                ax.set_ylim(-1, 1)  # Correlation coefficients range from -1 to 1
+                ax.set_xticks([])
+                ax.set_ylabel("Correlation")
+
+            # Save the plot
+            plot_path = os.path.join(output_dir, f"{corr_type}_correlations.png")
+            plt.suptitle(f"{corr_type.capitalize()} Correlations by Month", fontsize=16)
+            plt.savefig(plot_path)
+            plt.close()
+            logger.info(f"Plot for {corr_type} correlations saved to: {plot_path}")
+
+        logger.info("All correlation plots generated successfully!")
+    except Exception as e:
+        logger.error(f"Error generating plots for correlations: {e}")
+        raise
+
+def calculate_correlations_by_month(ds):
+    """
+    Calculate the correlation between precipitation and elevation for each month.
+
+    Parameters:
+        ds (xarray.Dataset): The dataset containing precipitation and elevation data.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the correlation coefficients for each month.
+    """
+    try:
+        logger.info("Calculating correlations between precipitation and elevation by month...")
+
+        # Extract variables
+        elevation = ds["DEM"].values.flatten()
+        correlations = {}
+
+        # Loop through each month and calculate correlation
+        for month in range(1, 13):
+            precipitation = ds["mean_precipitation_downscaled"].sel(month_index=month).values.flatten()
+
+            # Remove NaN values for correlation calculation
+            valid_mask = ~np.isnan(precipitation) & ~np.isnan(elevation)
+            if valid_mask.sum() > 0:
+                corr = np.corrcoef(precipitation[valid_mask], elevation[valid_mask])[0, 1]
+            else:
+                corr = np.nan
+
+            correlations[month] = corr
+
+        logger.info("Correlation calculation by month completed successfully!")
+        return pd.DataFrame.from_dict(correlations, orient="index", columns=["Correlation"]).rename_axis("Month")
+    except Exception as e:
+        logger.error(f"Error calculating correlations by month: {e}")
+        raise
+
+
 def main():
     """
     Main function to calculate and visualize correlations between precipitation and elevation.
@@ -222,15 +309,26 @@ def main():
         # Calculate correlations by elevation levels
         correlations_by_levels = calculate_correlation_by_elevation_levels(ds, low_threshold, high_threshold)
 
-        # Save correlations to CSV
+        # Save correlations by elevation levels to CSV
         correlation_levels_csv_path = os.path.join(OUTPUT_DIR, "correlations_by_elevation_levels.csv")
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         correlations_by_levels.to_csv(correlation_levels_csv_path)
         logger.info(f"Correlations by elevation levels saved to: {correlation_levels_csv_path}")
 
-        # Plot correlations by elevation levels
-        correlation_levels_plot_path = os.path.join(OUTPUT_DIR, "correlations_by_elevation_levels.png")
-        plot_correlation_by_levels(correlations_by_levels, correlation_levels_plot_path)
+        # Generate plots for correlations by elevation levels
+        plot_all_correlations(correlations_by_levels, OUTPUT_DIR)
+
+        # Calculate correlations by month
+        correlations_by_month = calculate_correlations_by_month(ds)
+
+        # Save correlations by month to CSV
+        correlation_month_csv_path = os.path.join(OUTPUT_DIR, "correlations_by_month.csv")
+        correlations_by_month.to_csv(correlation_month_csv_path)
+        logger.info(f"Correlations by month saved to: {correlation_month_csv_path}")
+
+        # Generate plot for correlations by month
+        correlation_month_plot_path = os.path.join(OUTPUT_DIR, "correlations_by_month.png")
+        plot_correlations(correlations_by_month, correlation_month_plot_path)
 
         logger.info("Correlation analysis process completed successfully!")
     except Exception as e:
