@@ -4,14 +4,25 @@ import psutil
 import os
 import sys
 import logging
+from datetime import datetime
 
 # Configure logging
+LOG_DIR = os.path.join(os.path.dirname(__file__), "../logs")
+os.makedirs(LOG_DIR, exist_ok=True)  # Ensure the logs directory exists
+
+# Generate log file name with the required format
+log_filename = datetime.now().strftime("log-%Y-%m-%d.log")
+LOG_FILE = os.path.join(LOG_DIR, log_filename)
+
+# Custom log format
+log_format = "%(asctime)s - %(levelname)s - [%(pathname)s-%(funcName)s-%(lineno)d] - %(message)s"
+
 logging.basicConfig(
     level=logging.INFO,  # Set the logging level
-    format="%(asctime)s - %(levelname)s - %(message)s",  # Log message format
+    format=log_format,  # Log message format
     handlers=[
         logging.StreamHandler(),  # Output logs to the terminal
-        logging.FileHandler("pipeline.log", mode="w")  # Save logs to a file
+        logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8")  # Save logs to a daily file
     ]
 )
 
@@ -32,8 +43,7 @@ def run_script(script_path):
         # Start monitoring
         start_time = time.time()
         process = psutil.Process(os.getpid())
-        # Memory in MB
-        memory_before = process.memory_info().rss / (1024 * 1024)
+        memory_before = process.memory_info().rss / (1024 * 1024)  # Memory in MB
         cpu_cores = psutil.cpu_count(logical=True)
 
         # Run the script
@@ -42,8 +52,7 @@ def run_script(script_path):
         # End monitoring
         end_time = time.time()
         elapsed_time = end_time - start_time
-        # Memory in MB
-        memory_after = process.memory_info().rss / (1024 * 1024)
+        memory_after = process.memory_info().rss / (1024 * 1024)  # Memory in MB
         memory_used = memory_after - memory_before
         cpu_percent = process.cpu_percent(interval=None)
         threads_used = process.num_threads()
@@ -62,6 +71,9 @@ def run_script(script_path):
         else:
             logging.info(f"Script {script_path} executed successfully!")
 
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Subprocess error while executing {script_path}: {e}")
+        sys.exit(1)
     except Exception as e:
         logging.error(f"An unexpected error occurred while executing {script_path}: {e}")
         sys.exit(1)
@@ -70,20 +82,28 @@ def main():
     """
     Main function to execute the pipeline.
     """
-    # Define the scripts to run in order
-    scripts = [
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/chirps-2.0-daily.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/dem-90m.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-90m.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/moving-avg/chirps-2.0-monthly-90m-moving-avg.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/clustering/chirps-2.0.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/test/load-datasets-chirps-2.0-distinct-elevations.py",
-        "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/correlation/chirps-2.0-elevation-categories-correlation-precipitation.py"
-    ]
+    try:
+        logging.info("Starting ETL pipeline...")
 
-    # Execute each script in order
-    for script in scripts:
-        run_script(script)
+        # Define the scripts to run in order
+        scripts = [
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/chirps-2.0-daily.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/dem-90m.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-90m.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/moving-avg/chirps-2.0-monthly-90m-moving-avg.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/clustering/chirps-2.0.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/test/load-datasets-chirps-2.0-distinct-elevations.py",
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/correlation/chirps-2.0-elevation-categories-correlation-precipitation.py"
+        ]
+
+        # Execute each script in order
+        for script in scripts:
+            run_script(script)
+
+        logging.info("ETL pipeline completed successfully!")
+    except Exception as e:
+        logging.error(f"An unexpected error occurred in the ETL pipeline: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
