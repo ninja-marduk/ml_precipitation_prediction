@@ -116,7 +116,7 @@ def generate_monthly_maps(ds, output_dir):
                 ds["longitude"], ds["latitude"], data,
                 cmap="Blues", shading="auto"
             )
-            plt.colorbar(label=f"{first_var} (units: {ds[first_var].attrs.get('units', 'N/A')})")
+            plt.colorbar(label=f"{first_var} (units: {ds[first_var].attrs.get('units', 'AVG [mm/month]')})")
             plt.title(f"Precipitation - Month {month}")
             plt.xlabel("Longitude")
             plt.ylabel("Latitude")

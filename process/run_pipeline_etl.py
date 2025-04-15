@@ -88,12 +88,12 @@ def main():
         # Define the scripts to run in order
         scripts = [
             "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/chirps-2.0-daily.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/dem-90m.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-90m.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/moving-avg/chirps-2.0-monthly-90m-moving-avg.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/clustering/chirps-2.0.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/test/load-datasets-chirps-2.0-distinct-elevations.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/correlation/chirps-2.0-elevation-categories-correlation-precipitation.py"
+            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/dem-90m.py"
+            # "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-90m.py",
+            # "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/moving-avg/chirps-2.0-monthly-90m-moving-avg.py",
+            # "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/clustering/chirps-2.0.py",
+            # "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/test/load-datasets-chirps-2.0-distinct-elevations.py",
+            # "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/correlation/chirps-2.0-elevation-categories-correlation-precipitation.py"
         ]
 
         # Execute each script in order
