@@ -26,137 +26,81 @@ This section provides tools for visualizing the elevation map of Boyacá with bo
 
 ---
 
-### How to Run
+## How to Run
 
-1. Ensure the file paths (`DEM_PATH_90` and `SHAPEFILE_BOYACA`) are correct.
-2. Execute the script from the terminal:
-        ```bash
-        python dem-90m.py
-        ```
-3. The elevation map will be displayed on the screen. To save the plot, modify the call to `plot_dem_with_boundary` in the `main` function to include an `output_path`. For example:
-        ```python
-        plot_dem_with_boundary(
-                dem_data,
-                dem_meta,
-                SHAPEFILE_BOYACA,
-                title="Elevation Map of Boyacá (90m Resolution)",
-                output_path="boyaca_elevation_map.png"
-        )
-        ```
+The project is designed to be executed through pipelines that coordinate multiple scripts to achieve specific goals. Below are the available pipelines and their descriptions.
 
 ---
 
-### Example Output
+### Pipeline 1: ETL for CHIRPS-2.0 and Correlation Analysis
 
-The script generates a high-resolution elevation map of Boyacá with boundaries overlaid. If an output path is specified, the map is saved as an image file.
+This pipeline processes CHIRPS-2.0 precipitation data, performs downscaling, aggregation, and correlation analysis with elevation data.
 
----
+#### Steps
 
-## Downscaling CHIRPS Data to DEM Resolution
+1. Load CHIRPS-2.0 daily data and crop it to the Boyacá region.
+2. Downscale CHIRPS-2.0 monthly data to match the DEM resolution (90m).
+3. Aggregate the data by monthly coordinates.
+4. Perform downscaling on the aggregated data to match the DEM resolution.
+5. Analyze correlations between precipitation and elevation.
 
-This section describes the process of downscaling CHIRPS precipitation data to match the resolution of the DEM (90m). The script processes mean, max, and min precipitation values and combines them with elevation data.
+#### How to Run
 
----
+Execute the pipeline script from the terminal:
 
-### Features
+```bash
+python process/run_pipeline_etl_chirps-2.0_and_correlation_monthly_and_coordiante.py
+```
 
-- **Downscaling**:
-    - The script uses `rasterio` to reproject CHIRPS data to match the DEM resolution.
+#### Diagram
 
-- **Combined Dataset**:
-    - The output dataset includes:
-        - `downscaled_mean_precipitation`: Mean precipitation downscaled to DEM resolution.
-        - `downscaled_max_precipitation`: Max precipitation downscaled to DEM resolution.
-        - `downscaled_min_precipitation`: Min precipitation downscaled to DEM resolution.
-        - `elevation`: Elevation data from the DEM.
-
-- **Metadata**:
-    - Each variable in the dataset includes descriptive metadata (e.g., units, description).
-
----
-
-### How to Run
-
-1. Ensure the input files (`boyaca_region_monthly.nc` and `dem_boyaca_90.nc`) are available in the specified paths.
-2. Execute the script from the terminal:
-        ```bash
-        python chirps-2.0-monthly-90m.py
-        ```
-3. The output dataset will be saved as `ds_combined_downscaled.nc`.
-
----
-
-### Example Output
-
-The output dataset includes the following variables:
-- `downscaled_mean_precipitation`: Mean precipitation downscaled to DEM resolution.
-- `downscaled_max_precipitation`: Max precipitation downscaled to DEM resolution.
-- `downscaled_min_precipitation`: Min precipitation downscaled to DEM resolution.
-- `elevation`: Elevation data from the DEM.
-
----
-
-## Monthly Moving Average of Precipitation
-
-This section describes the process of calculating a monthly moving average for the downscaled mean precipitation.
-
----
-
-### Features
-
-- **Moving Average**:
-    - The script calculates a moving average along the `time` dimension using a configurable window size (default: 3 months).
-
-- **Updated Dataset**:
-    - The output dataset includes a new variable:
-        - `mean_precipitation_monthly_moving_avg`: Monthly moving average of mean precipitation.
-
-- **Visualization**:
-    - The script generates a plot of the moving average for a specific location.
-
----
-
-### How to Run
-
-1. Ensure the input dataset (`ds_combined_downscaled.nc`) is available.
-2. Execute the script from the terminal:
-        ```bash
-        python chirps-2.0-monthly-90m-moving-avg.py
-        ```
-3. The updated dataset will be saved as `ds_combined_downscaled_with_monthly_moving_avg.nc`.
-
----
-
-### Example Output
-
-The updated dataset includes the following variables:
-- `downscaled_mean_precipitation`: Mean precipitation downscaled to DEM resolution.
-- `downscaled_max_precipitation`: Max precipitation downscaled to DEM resolution.
-- `downscaled_min_precipitation`: Min precipitation downscaled to DEM resolution.
-- `elevation`: Elevation data from the DEM.
-- `mean_precipitation_monthly_moving_avg`: Monthly moving average of mean precipitation.
-
----
-
-### Algorithm Diagram
-
-The following diagram represents the algorithm used to calculate the monthly moving average:
-
-
+![images/downscaling-chirps.png](https://github.com/ninja-marduk/ml_precipitation_prediction/blob/main/images/pipeline_etl_chirps-2.0_and_correlation_monthly_and_coordiante.png)
 
 ```plantuml
 @startuml
 start
-:Load dataset from OUTPUT_PATH;
-if (Variable 'downscaled_mean_precipitation' exists?) then (yes)
-  :Apply rolling (moving average);
-  :Save as 'mean_precipitation_monthly_moving_avg';
-  :Add metadata to the new variable;
-  :Save updated dataset to UPDATED_OUTPUT_PATH;
-  :Plot the moving average;
-else (no)
-  :Raise KeyError: Variable not found;
-endif
+:Load CHIRPS-2.0 daily data;
+:Crop to Boyacá region;
+:Downscale monthly data to DEM resolution;
+:Aggregate by monthly coordinates;
+:Downscale aggregated data to DEM resolution;
+:Analyze correlations between precipitation and elevation;
+stop
+@enduml
+```
+
+---
+
+### Pipeline 2: ETL for DEM and CHIRPS-2.0 Integration
+
+This pipeline processes DEM and CHIRPS-2.0 data, visualizes the elevation map, and integrates precipitation data with elevation.
+
+#### Steps
+
+1. Load and visualize the DEM data for Boyacá.
+2. Downscale CHIRPS-2.0 monthly data to match the DEM resolution.
+3. Calculate a monthly moving average for the downscaled precipitation data.
+4. Cluster the data by elevation levels (low, medium, high).
+
+#### How to Run
+
+Execute the pipeline script from the terminal:
+
+```bash
+python process/run_pipeline_etl.py
+```
+
+#### Diagram
+
+![images/downscaling-chirps.png](https://github.com/ninja-marduk/ml_precipitation_prediction/blob/main/images/pipeline_etl.png)
+
+```plantuml
+@startuml
+start
+:Load and visualize DEM data;
+:Downscale CHIRPS-2.0 monthly data to DEM resolution;
+:Calculate monthly moving average;
+:Cluster data by elevation levels;
 stop
 @enduml
 ```
@@ -165,6 +109,6 @@ stop
 
 ### Notes
 
-- Ensure all file paths are valid and accessible.
+- Ensure all file paths are valid and accessible before running the pipelines.
 - Follow best practices for geospatial data processing and visualization.
 - For additional details, refer to the inline comments in the scripts.

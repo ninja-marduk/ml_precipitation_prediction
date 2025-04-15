@@ -26,7 +26,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Ruta del dataset
-DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc"
+DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_aggregated_merged_dem.nc"
 OUTPUT_DIR = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/correlation/"
 
 def load_dataset(file_path):
@@ -67,7 +67,7 @@ def calculate_correlations(ds):
 
         # Loop through each month and calculate correlation
         for month in range(1, 13):
-            precipitation = ds["mean_precipitation_downscaled"].sel(month_index=month).values.flatten()
+            precipitation = ds["mean_precipitation"].sel(month_index=month).values.flatten()
 
             # Remove NaN values for correlation calculation
             valid_mask = ~np.isnan(precipitation) & ~np.isnan(elevation)
@@ -133,12 +133,17 @@ def calculate_correlation_by_elevation_levels(ds, low_threshold, high_threshold)
         logger.info("Calculating correlation between precipitation and elevation by elevation levels...")
 
         # Extract elevation and precipitation variables
-        elevation = ds["DEM"].values.flatten()
         correlations = {"low": [], "medium": [], "high": []}
 
         # Loop through each month and calculate correlation for each elevation level
         for month in range(1, 13):
-            precipitation = ds["mean_precipitation_downscaled"].sel(month_index=month).values.flatten()
+            # Select the current month for both precipitation and elevation
+            precipitation = ds["mean_precipitation"].sel(month_index=month).values  # Precipitation as 2D array
+            elevation = ds["DEM"].sel(month_index=month).values  # Elevation as 2D array
+
+            # Ensure elevation and precipitation have the same shape
+            if elevation.shape != precipitation.shape:
+                raise ValueError(f"Shape mismatch: elevation {elevation.shape}, precipitation {precipitation.shape}")
 
             # Low elevation
             low_mask = elevation <= low_threshold
@@ -269,12 +274,13 @@ def calculate_correlations_by_month(ds):
         logger.info("Calculating correlations between precipitation and elevation by month...")
 
         # Extract variables
-        elevation = ds["DEM"].values.flatten()
         correlations = {}
 
         # Loop through each month and calculate correlation
         for month in range(1, 13):
-            precipitation = ds["mean_precipitation_downscaled"].sel(month_index=month).values.flatten()
+            # Select the current month for both precipitation and elevation
+            precipitation = ds["mean_precipitation"].sel(month_index=month).values.flatten()
+            elevation = ds["DEM"].sel(month_index=month).values.flatten()
 
             # Remove NaN values for correlation calculation
             valid_mask = ~np.isnan(precipitation) & ~np.isnan(elevation)
@@ -291,6 +297,113 @@ def calculate_correlations_by_month(ds):
         logger.error(f"Error calculating correlations by month: {e}")
         raise
 
+def calculate_correlation_map(ds):
+    """
+    Calculate the correlation between precipitation and elevation for each grid point.
+
+    Parameters:
+        ds (xarray.Dataset): The dataset containing precipitation and elevation data.
+
+    Returns:
+        xarray.DataArray: A DataArray containing the correlation coefficients for each grid point.
+    """
+    try:
+        logger.info("Calculating correlation map between precipitation and elevation...")
+
+        # Extract variables
+        elevation = ds["DEM"].values
+        precipitation = ds["mean_precipitation"].values
+
+        # Depuración: Verificar estadísticas básicas de las variables
+        logger.info(f"Elevation stats: mean={np.nanmean(elevation)}, min={np.nanmin(elevation)}, max={np.nanmax(elevation)}")
+        logger.info(f"Precipitation stats: mean={np.nanmean(precipitation)}, min={np.nanmin(precipitation)}, max={np.nanmax(precipitation)}")
+
+        # Inicializar el mapa de correlación con NaN
+        correlation_map = np.full(elevation.shape[1:], np.nan)  # Excluir la dimensión de tiempo
+
+        # Loop through each grid point and calculate correlation
+        for i in range(elevation.shape[1]):  # Latitude
+            for j in range(elevation.shape[2]):  # Longitude
+                # Extraer los datos de precipitación para el punto de la cuadrícula
+                precip_values = precipitation[:, i, j]
+
+                # Crear una máscara de valores válidos
+                elevation_broadcasted = np.full(precip_values.shape, elevation[0, i, j])  # Broadcast elevation
+                valid_mask = ~np.isnan(precip_values) & ~np.isnan(elevation_broadcasted)
+
+                # Depuración: Verificar si hay datos válidos
+                if valid_mask.sum() > 0:
+                    logger.debug(f"Valid data found at grid point ({i}, {j})")
+                    corr = np.corrcoef(precip_values[valid_mask], elevation_broadcasted[valid_mask])[0, 1]
+                    correlation_map[i, j] = corr
+                else:
+                    logger.debug(f"No valid data at grid point ({i}, {j})")
+
+        logger.info("Correlation map calculation completed successfully!")
+        return xr.DataArray(
+            correlation_map,
+            dims=["latitude", "longitude"],
+            coords={"latitude": ds["latitude"], "longitude": ds["longitude"]},
+            name="correlation"
+        )
+    except Exception as e:
+        logger.error(f"Error calculating correlation map: {e}")
+        raise
+
+def plot_correlation_map(correlation_map, output_path):
+    """
+    Plot the correlation map between precipitation and elevation.
+
+    Parameters:
+        correlation_map (xarray.DataArray): The correlation map.
+        output_path (str): Path to save the plot.
+    """
+    try:
+        logger.info("Generating correlation map plot...")
+
+        plt.figure(figsize=(12, 8))
+        correlation_map.plot(
+            cmap="coolwarm",
+            vmin=-1,
+            vmax=1,
+            cbar_kwargs={"label": "Correlation Coefficient"}
+        )
+        plt.title("Correlation Between Precipitation and Elevation")
+        plt.xlabel("Longitude")
+        plt.ylabel("Latitude")
+        plt.tight_layout()
+
+        # Save the plot
+        plt.savefig(output_path)
+        plt.close()
+        logger.info(f"Correlation map plot saved successfully to: {output_path}")
+    except Exception as e:
+        logger.error(f"Error generating correlation map plot: {e}")
+        raise
+
+def calculate_statistics(data_array, variable_name):
+    """
+    Calculate basic statistics for a DataArray.
+
+    Parameters:
+        data_array (xarray.DataArray): The DataArray to analyze.
+        variable_name (str): Name of the variable being analyzed.
+
+    Returns:
+        None: Logs the statistics.
+    """
+    try:
+        stats = {
+            "mean": float(data_array.mean().values),
+            "std_dev": float(data_array.std().values),
+            "min": float(data_array.min().values),
+            "max": float(data_array.max().values),
+            "count": int(data_array.count().values)
+        }
+        logger.info(f"Statistics for {variable_name}: {stats}")
+    except Exception as e:
+        logger.error(f"Error calculating statistics for {variable_name}: {e}")
+        raise
 
 def main():
     """
@@ -301,6 +414,17 @@ def main():
 
         # Load dataset
         ds = load_dataset(DATASET_PATH)
+
+        # Generate statistics for input variables
+        if "mean_precipitation" in ds:
+            calculate_statistics(ds["mean_precipitation"], "mean_precipitation")
+        else:
+            logger.warning("Variable 'mean_precipitation' not found in the dataset.")
+
+        if "DEM" in ds:
+            calculate_statistics(ds["DEM"], "DEM")
+        else:
+            logger.warning("Variable 'DEM' not found in the dataset.")
 
         # Define elevation thresholds
         low_threshold = 1500  # Elevation <= 1500m is considered low
@@ -329,6 +453,19 @@ def main():
         # Generate plot for correlations by month
         correlation_month_plot_path = os.path.join(OUTPUT_DIR, "correlations_by_month.png")
         plot_correlations(correlations_by_month, correlation_month_plot_path)
+
+        # Calculate correlation map
+        correlation_map = calculate_correlation_map(ds)
+
+        # Save correlation map to NetCDF
+        correlation_map_path = os.path.join(OUTPUT_DIR, "correlation_map.nc")
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+        correlation_map.to_netcdf(correlation_map_path)
+        logger.info(f"Correlation map saved to: {correlation_map_path}")
+
+        # Generate plot for correlation map
+        correlation_map_plot_path = os.path.join(OUTPUT_DIR, "correlation_map.png")
+        plot_correlation_map(correlation_map, correlation_map_plot_path)
 
         logger.info("Correlation analysis process completed successfully!")
     except Exception as e:
