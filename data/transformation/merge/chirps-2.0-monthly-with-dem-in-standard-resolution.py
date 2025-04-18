@@ -4,7 +4,7 @@ import os
 import logging
 from datetime import datetime
 
-# Configure logging
+# Logging configuration
 LOG_DIR = os.path.join(os.path.dirname(__file__), "../../../logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -19,6 +19,11 @@ logging.basicConfig(
         logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8")
     ]
 )
+
+# Constants for file paths
+CHIRPS_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_months_aggregate_avg.nc"
+DEM_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/dem_boyaca_90.nc"
+OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_months_aggregated_avg_merged_dem.nc"
 
 def find_nearest(array, value):
     """
@@ -87,10 +92,5 @@ def merge_datasets(chirps_path, dem_path, output_path):
         raise
 
 if __name__ == "__main__":
-    # Define file paths
-    chirps_path = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_aggregated.nc"
-    dem_path = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/dem_boyaca_90.nc"
-    output_path = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_aggregated_merged_dem.nc"
-
     # Run the merge process
-    merge_datasets(chirps_path, dem_path, output_path)
+    merge_datasets(CHIRPS_PATH, DEM_PATH, OUTPUT_PATH)
