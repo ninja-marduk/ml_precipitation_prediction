@@ -65,7 +65,7 @@ def perform_downscaling(aggregated_ds, dem_ds):
         # Extract the first variable from the aggregated dataset
         first_var = list(aggregated_ds.data_vars.keys())[0]
 
-        # Reproject the aggregated dataset to match the DEM resolution
+        # Reproject the aggregated dataset to match the DEM resolution #IDW - GWR - Kriging
         downscaled_data = aggregated_ds[first_var].interp(
             longitude=dem_ds["longitude"],
             latitude=dem_ds["latitude"],
