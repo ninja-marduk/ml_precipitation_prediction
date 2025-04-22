@@ -1,0 +1,26 @@
+@startuml ST-HyMOUNTAIN-Net
+skinparam style strictuml
+skinparam shadowing false
+skinparam rectangle {
+    StereotypeFontSize 12
+    FontSize 12
+    BorderColor Black
+    BackgroundColor White
+}
+skinparam defaultTextAlignment center
+
+title ST-HyMOUNTAIN-Net Architecture
+
+rectangle "Monthly Precipitation + DEM" as Inputs
+rectangle "Preprocessing\n- Normalización\n- Interpolación\n- EMD/STL\n- Variables topográficas\n- Precipitation clustering" as Preprocessing
+rectangle "Topographic Embedding + Clustering\n- Elevación\n- Slope & Aspect\n- K-means / SOM\n- Geo Embeddings" as Embedding
+rectangle "Base Model Multilayer\n- CNN (espacial)\n- LSTM o TCN (temporal)\n- Attention geográfico" as BaseModel
+rectangle "Postprocessing\n- Quantile Mapping\n- Corrección de sesgo\n- Suavizado temporal" as Postprocessing
+rectangle "Final Optimizer\n- Bayesian Optimization\n- Grid Search\n- Validación estratificada" as Optimizer
+
+Inputs --> Preprocessing
+Preprocessing --> Embedding
+Embedding --> BaseModel
+BaseModel --> Postprocessing
+Postprocessing --> Optimizer
+@enduml
