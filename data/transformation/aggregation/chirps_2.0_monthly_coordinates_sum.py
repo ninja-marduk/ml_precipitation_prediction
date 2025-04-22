@@ -3,6 +3,7 @@ import xarray as xr
 import pandas as pd
 import logging
 from datetime import datetime
+import calendar
 
 # Logging configuration
 LOG_DIR = os.path.join(os.path.dirname(__file__), "../../logs")
@@ -40,17 +41,34 @@ def load_dataset(file_path):
         logging.error(f"Error loading the dataset: {e}")
         raise
 
-def aggregate_monthly_coordinates_precipitation(ds):
+def aggregate_monthly_precipitation(ds):
     """
-    Aggregate precipitation data by month and coordinates, calculating total (sum), max, and min.
+    Aggregate precipitation data by month, calculating total (sum), max, and min values.
+    Latitude and longitude are included as variables in the output dataset.
+
+    Parameters:
+    ds (xarray.Dataset): Input dataset containing precipitation data with 'time', 'latitude',
+                         'longitude', and 'precip' variables.
+
+    Returns:
+    pandas.DataFrame: A DataFrame containing aggregated precipitation statistics by month,
+                      including total precipitation, maximum daily precipitation,
+                      minimum daily precipitation, latitude, longitude, and additional
+                      date-related columns ('YYYY-MM', 'YYYY', 'MM').
+
+    Raises:
+    Exception: If an error occurs during the aggregation process.
+    """
+    """
+    Aggregate precipitation data by month, calculating total (sum), max, and min.
     """
     try:
-        logging.info("Starting precipitation data aggregation by month and coordinates...")
+        logging.info("Starting precipitation data aggregation by month...")
         df = ds.to_dataframe().reset_index()
         df['time'] = pd.to_datetime(df['time'])
 
         # Monthly aggregation by coordinates
-        monthly_coords_stats = df.groupby(
+        monthly_stats = df.groupby(
             [df['time'].dt.to_period('M'), 'latitude', 'longitude']
         ).agg(
             total_precipitation=('precip', 'sum'),
@@ -59,9 +77,17 @@ def aggregate_monthly_coordinates_precipitation(ds):
         ).reset_index()
 
         # Convert the time period to timestamp
-        monthly_coords_stats['time'] = monthly_coords_stats['time'].dt.to_timestamp()
-        logging.info("Aggregation successfully completed.")
-        return monthly_coords_stats
+        monthly_stats['time'] = monthly_stats['time'].dt.to_timestamp()
+
+        # Add additional date columns
+        monthly_stats['YYYY-MM'] = monthly_stats['time'].dt.strftime('%Y-%m')
+        monthly_stats['YYYY'] = monthly_stats['time'].dt.year.astype(str)
+        monthly_stats['MM'] = monthly_stats['time'].dt.month.apply(
+            lambda x: calendar.month_name[x]
+        ).str.capitalize()
+
+        logging.info("Aggregation successfully completed with additional date columns.")
+        return monthly_stats
     except Exception as e:
         logging.error(f"Error aggregating precipitation data: {e}")
         raise
@@ -91,8 +117,8 @@ def main():
         # Load the dataset
         ds = load_dataset(INPUT_PATH)
 
-        # Aggregate data by month and coordinates
-        monthly_boyaca = aggregate_monthly_coordinates_precipitation(ds)
+        # Aggregate data by month
+        monthly_boyaca = aggregate_monthly_precipitation(ds)
 
         # Save the aggregated data to a NetCDF file
         save_to_netcdf(monthly_boyaca, OUTPUT_PATH, OUTPUT_FILENAME)
