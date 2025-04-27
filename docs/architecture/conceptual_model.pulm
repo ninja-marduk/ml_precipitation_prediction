@@ -1,61 +1,61 @@
 @startmindmap
 * Hybrid Modeling Approaches
 ** Data preprocessing-based hybrid models
-* Preprocessing techniques
-** PCA
-** AFC
-** ACF
-** SSA
-** K-means
-** Sequential preprocessing combinations
-*** PCA → LSTM
-*** SMOTE → K-means
-* Preprocessing data
-** Normalization
-** Interpolation
-** SMOTE
+*** Preprocessing techniques
+**** PCA
+**** AFC
+**** ACF
+**** SSA
+**** K-means
+**** Sequential preprocessing combinations
+***** PCA → LSTM
+***** SMOTE → K-means
+*** Preprocessing data
+**** Normalization
+**** Interpolation
+**** SMOTE
 
 ** Parameter optimization-based hybrid models
-* Optimization algorithms
-** PSO
-** GA
-** HBA
-** BAT
-** BBO
+*** Optimization algorithms
+**** PSO
+**** GA
+**** HBA
+**** BAT
+**** BBO
 
 ** Component combination-based hybrid models
-* Decomposition-based hybrids
-* Clustering-based hybrids
-* Fuzzy logic-based hybrids
-* Optimization-enhanced hybrids
-** Optimization enhanced hybrid
-** Decomposition-based hybrid with optimization
-* Sequential hybrids
-** NMF → GALMA → empirical model
-** SMOTE → K-means
-** Sequential Hybrid
-** Sequential multiscale hybrid
-* Hybrid decomposition-based ensemble
-* Ensemble-based methods
-** Bagging
-** Boosting
-** Dagging
-** Snapshot Ensembles
-* Meta-model-based hybrids
-** Stacking
-*** Base models → Meta-LR
-*** Base models → Meta-XGB
-** Dynamic Ensembles
+*** Decomposition-based hybrids
+*** Clustering-based hybrids
+*** Fuzzy logic-based hybrids
+*** Optimization-enhanced hybrids
+**** Optimization enhanced hybrid
+*** Decomposition-based hybrid with optimization
+*** Sequential hybrids
+**** NMF → GALMA → empirical model
+**** SMOTE → K-means
+**** Sequential Hybrid
+**** Sequential multiscale hybrid
+*** Hybrid decomposition-based ensemble
+*** Ensemble-based methods
+**** Bagging
+**** Boosting
+**** Dagging
+**** Snapshot Ensembles
+*** Meta-model-based hybrids
+**** Stacking
+***** Base models → Meta-LR
+***** Base models → Meta-XGB
+**** Dynamic Ensembles
 
 ** Postprocessing-based hybrid models
-* Statistical correction
-** Bias correction
-** Bayesian Joint Probability (BJP)
-* Probabilistic model fusion
-** Bayesian Model Averaging (BMA)
-** Probabilistic Model Averaging
-* Averaging-based (as postprocessing)
-** Prediction Averaging (FR)
-** Feature Averaging (DRSN-TCN-RF)
-** Model Averaging
+*** Statistical correction
+**** Bias correction
+**** Bayesian Joint Probability (BJP)
+*** Probabilistic model fusion
+**** Bayesian Model Averaging (BMA)
+**** Probabilistic Model Averaging
+*** Averaging-based (as postprocessing)
+**** Prediction Averaging (FR)
+**** Feature Averaging (DRSN-TCN-RF)
+**** Model Averaging
 @endmindmap
