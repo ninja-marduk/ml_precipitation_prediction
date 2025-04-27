@@ -132,18 +132,21 @@ def calculate_correlation_by_elevation_levels(ds, low_threshold, high_threshold)
     try:
         logger.info("Calculating correlation between precipitation and elevation by elevation levels...")
 
+        # Verificar que las variables necesarias existan en el dataset
+        required_vars = ["mean_precipitation", "DEM"]
+        missing_vars = [var for var in required_vars if var not in ds.variables]
+        if missing_vars:
+            logger.error(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
+            raise ValueError(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
+
         # Extract elevation and precipitation variables
+        elevation = ds["DEM"].isel(month_index=0).values.flatten()  # DEM values are the same for all months
         correlations = {"low": [], "medium": [], "high": []}
 
         # Loop through each month and calculate correlation for each elevation level
         for month in range(1, 13):
-            # Select the current month for both precipitation and elevation
-            precipitation = ds["mean_precipitation"].sel(month_index=month).values  # Precipitation as 2D array
-            elevation = ds["DEM"].sel(month_index=month).values  # Elevation as 2D array
-
-            # Ensure elevation and precipitation have the same shape
-            if elevation.shape != precipitation.shape:
-                raise ValueError(f"Shape mismatch: elevation {elevation.shape}, precipitation {precipitation.shape}")
+            logger.debug(f"Processing month {month}...")
+            precipitation = ds["mean_precipitation"].sel(month_index=month).values.flatten()
 
             # Low elevation
             low_mask = elevation <= low_threshold
@@ -412,8 +415,25 @@ def main():
     try:
         logger.info("Starting correlation analysis process...")
 
+        # Verificar existencia del archivo de entrada
+        if not os.path.exists(DATASET_PATH):
+            logger.error(f"El archivo de entrada no existe: {DATASET_PATH}")
+            raise FileNotFoundError(f"El archivo de entrada no existe: {DATASET_PATH}")
+
+        # Verificar existencia del directorio de salida
+        if not os.path.exists(OUTPUT_DIR):
+            logger.info(f"Creando directorio de salida: {OUTPUT_DIR}")
+            os.makedirs(OUTPUT_DIR, exist_ok=True)
+
         # Load dataset
         ds = load_dataset(DATASET_PATH)
+
+        # Verificar variables necesarias en el dataset
+        required_vars = ["mean_precipitation", "DEM"]
+        missing_vars = [var for var in required_vars if var not in ds.variables]
+        if missing_vars:
+            logger.error(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
+            raise ValueError(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
 
         # Generate statistics for input variables
         if "mean_precipitation" in ds:
@@ -459,7 +479,6 @@ def main():
 
         # Save correlation map to NetCDF
         correlation_map_path = os.path.join(OUTPUT_DIR, "correlation_map.nc")
-        os.makedirs(OUTPUT_DIR, exist_ok=True)
         correlation_map.to_netcdf(correlation_map_path)
         logger.info(f"Correlation map saved to: {correlation_map_path}")
 

@@ -28,10 +28,10 @@ logging.basicConfig(
 PATH_CHIRPS = '/Users/riperez/Conda/anaconda3/doc/precipitation/CHIRPS-2.0/daily/'
 OUTPUT_PATH = '/Users/riperez/Conda/anaconda3/doc/precipitation/output/'
 TEMP_PATH = os.path.join(OUTPUT_PATH, "temp/")
-LON_BOYACA_MIN = -74.8
-LON_BOYACA_MAX = -71.9
-LAT_BOYACA_MIN = 4.5
-LAT_BOYACA_MAX = 7.3
+LON_BOYACA_MIN = -75 #-74.8
+LON_BOYACA_MAX = -71.7 # -71.9
+LAT_BOYACA_MIN = 4.3 # 4.5
+LAT_BOYACA_MAX = 7.4 # 7.3
 
 def list_nc_files(path):
     """List all NetCDF files in the given directory."""
