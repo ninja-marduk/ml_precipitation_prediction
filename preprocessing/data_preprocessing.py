@@ -6,6 +6,12 @@ import numpy as np
 def load_and_preprocess_data(filepath):
     """
     Load and preprocess the precipitation dataset for time series modeling.
+
+    Parameters:
+        filepath (str): Path to the CSV file containing precipitation data.
+
+    Returns:
+        pandas.DataFrame: Processed dataframe with datetime index and additional features.
     """
     # Load data
     df = pd.read_csv(filepath)
@@ -19,30 +25,22 @@ def load_and_preprocess_data(filepath):
     df_melted['Date'] = pd.to_datetime(df_melted['YEAR'].astype(str) + df_melted['Month'], format='%Y%b')
 
     # Convert Month to numeric representation
-    month_mapping = {'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
-                     'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12}
-    df_melted['Month'] = df_melted['Month'].map(month_mapping)
+    month_dict = {
+        'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
+        'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12
+    }
+    df_melted['month_num'] = df_melted['Month'].map(month_dict)
 
-    # Sort the data by Date for each location
-    df_melted = df_melted.sort_values(by=['Latitude', 'Longitude', 'Date'])
+    # Add cyclical features for month
+    df_melted['month_sin'] = np.sin(2 * np.pi * df_melted['month_num'] / 12)
+    df_melted['month_cos'] = np.cos(2 * np.pi * df_melted['month_num'] / 12)
 
-    # Feature engineering: Create lag features for the precipitation
-    df_melted['Precipitation_lag_1'] = df_melted.groupby(['Latitude', 'Longitude'])['Precipitation'].shift(1)
-    df_melted['Precipitation_lag_2'] = df_melted.groupby(['Latitude', 'Longitude'])['Precipitation'].shift(2)
+    # Add day of year features (assuming middle of month)
+    df_melted['doy'] = df_melted['Date'].dt.dayofyear
+    df_melted['doy_sin'] = np.sin(2 * np.pi * df_melted['doy'] / 365)
+    df_melted['doy_cos'] = np.cos(2 * np.pi * df_melted['doy'] / 365)
 
-    # Drop missing values created by lags
-    df_melted = df_melted.dropna()
+    # Set Date as index for time-series analysis
+    df_melted = df_melted.set_index('Date')
 
-    # Define features and target
-    X = df_melted[['Latitude', 'Longitude', 'Precipitation_lag_1', 'Precipitation_lag_2', 'YEAR', 'Month']]
-    y = df_melted['Precipitation']
-
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-    # Scale the data
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    return X_train_scaled, X_test_scaled, y_train, y_test
+    return df_melted

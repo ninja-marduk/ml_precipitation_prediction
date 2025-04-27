@@ -62,7 +62,7 @@ def calculate_correlations(ds):
         logger.info("Calculating correlations between precipitation and elevation...")
 
         # Extract variables
-        elevation = ds["DEM"].values.flatten()  # Cambiado de 'elevation' a 'DEM'
+        elevation = ds["elevation"].values.flatten()  # Cambiado de 'DEM' a 'elevation'
         correlations = {}
 
         # Loop through each month and calculate correlation
@@ -133,7 +133,7 @@ def calculate_correlation_by_elevation_levels(ds, low_threshold, high_threshold)
         logger.info("Calculating correlation between precipitation and elevation by elevation levels...")
 
         # Extract elevation and precipitation variables
-        elevation = ds["DEM"].values.flatten()
+        elevation = ds["elevation"].values.flatten()  # Cambiado de 'DEM' a 'elevation'
         correlations = {"low": [], "medium": [], "high": []}
 
         # Loop through each month and calculate correlation for each elevation level
@@ -269,7 +269,7 @@ def calculate_correlations_by_month(ds):
         logger.info("Calculating correlations between precipitation and elevation by month...")
 
         # Extract variables
-        elevation = ds["DEM"].values.flatten()
+        elevation = ds["elevation"].values.flatten()  # Cambiado de 'DEM' a 'elevation'
         correlations = {}
 
         # Loop through each month and calculate correlation
@@ -299,8 +299,25 @@ def main():
     try:
         logger.info("Starting correlation analysis process...")
 
+        # Verificar existencia del archivo de entrada
+        if not os.path.exists(DATASET_PATH):
+            logger.error(f"El archivo de entrada no existe: {DATASET_PATH}")
+            raise FileNotFoundError(f"El archivo de entrada no existe: {DATASET_PATH}")
+
+        # Verificar existencia del directorio de salida
+        if not os.path.exists(OUTPUT_DIR):
+            logger.info(f"Creando directorio de salida: {OUTPUT_DIR}")
+            os.makedirs(OUTPUT_DIR, exist_ok=True)
+
         # Load dataset
         ds = load_dataset(DATASET_PATH)
+
+        # Verificar variables necesarias en el dataset
+        required_vars = ["mean_precipitation_downscaled", "elevation"]
+        missing_vars = [var for var in required_vars if var not in ds.variables]
+        if missing_vars:
+            logger.error(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
+            raise ValueError(f"Variables requeridas no encontradas en el dataset: {', '.join(missing_vars)}")
 
         # Define elevation thresholds
         low_threshold = 1500  # Elevation <= 1500m is considered low

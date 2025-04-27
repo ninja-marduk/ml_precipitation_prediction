@@ -28,7 +28,7 @@ logging.basicConfig(
 )
 
 # Constants
-DEM_PATH_90 = "/Users/riperez/Conda/anaconda3/doc/precipitation/qgis_output/dem_boyaca_90.tif"
+DEM_PATH_90 = "/Users/riperez/Conda/anaconda3/doc/precipitation/qgis_output/dem_boyaca_90m.tif"
 SHAPEFILE_BOYACA = "/Users/riperez/Conda/anaconda3/doc/precipitation/shapes/MGN_Departamento.shp"
 OUTPUT_NETCDF_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/dem_boyaca_90.nc"
 

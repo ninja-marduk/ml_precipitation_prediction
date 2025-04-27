@@ -29,13 +29,13 @@ logging.basicConfig(
     ]
 )
 
-# Rutas de los datasets clusterizados
+# Paths to clustered datasets
 DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/"
 HIGH_ELEVATION_PATH = os.path.join(DATASET_PATH, "ds_high_elevation.nc")
 MEDIUM_ELEVATION_PATH = os.path.join(DATASET_PATH, "ds_medium_elevation.nc")
 LOW_ELEVATION_PATH = os.path.join(DATASET_PATH, "ds_low_elevation.nc")
 
-# Rutas de los datasets de agregaciones
+# Paths to aggregated datasets
 AGGREGATED_DATASETS = {
     "monthly": os.path.join(DATASET_PATH, "aggregated_monthly.nc"),
     "annual": os.path.join(DATASET_PATH, "aggregated_annual.nc"),
