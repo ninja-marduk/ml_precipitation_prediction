@@ -131,40 +131,38 @@ This section describes the NetCDF (.nc) files generated at different stages of p
 
 | File Name | Path | Resolution | Variables | Purpose |
 |-----------|------|------------|-----------|---------|
-| CHIRPS-2.0-daily.nc | `/data/CHIRPS-2.0-daily.nc` | 0.05° × 0.05° (~5km) | precipitation, lat, lon, time | Provide daily precipitation data for the entire study region |
-| dem_boyaca_90.nc | `/output/dem_boyaca_90.nc` | 90m | elevation, lat, lon | Provide high-resolution elevation data for the Boyacá region |
+| CHIRPS-2.0-daily.nc | `/data/load/CHIRPS-2.0-daily.nc` | 0.05° × 0.05° (~5km) | precipitation, lat, lon, time | Provide daily precipitation data for the entire study region |
+| dem_boyaca_90.nc | `/data/output/dem_boyaca_90.nc` | 90m | elevation, lat, lon | Provide high-resolution elevation data for the Boyacá region |
 
 ### Intermediate Processed Files
 
 | File Name | Path | Resolution | Variables | Purpose |
 |-----------|------|------------|-----------|---------|
-| boyaca_region.nc | `/output/boyaca_region.nc` | 0.05° × 0.05° (~5km) | precipitation, lat, lon, time | CHIRPS data clipped to the Boyacá region |
-| boyaca_region_monthly_sum.nc | `/output/boyaca_region_monthly_sum.nc` | 0.05° × 0.05° (~5km) | monthly_precipitation, lat, lon, time | Monthly sum of precipitation for the Boyacá region |
-| boyaca_region_monthly_aggregated.nc | `/output/boyaca_region_monthly_aggregated.nc` | 0.05° × 0.05° (~5km) | total_precipitation, max_daily_precipitation, min_daily_precipitation, lat, lon, time | Monthly data aggregated by geographic coordinates |
+| boyaca_region.nc | `/data/output/boyaca_region.nc` | 0.05° × 0.05° (~5km) | precipitation, lat, lon, time | CHIRPS data clipped to the Boyacá region |
+| boyaca_region_monthly_sum.nc | `/data/output/boyaca_region_monthly_sum.nc` | 0.05° × 0.05° (~5km) | monthly_precipitation, lat, lon, time | Monthly sum of precipitation for the Boyacá region |
+| boyaca_region_monthly_aggregated.nc | `/data/output/boyaca_region_monthly_aggregated.nc` | 0.05° × 0.05° (~5km) | total_precipitation, max_daily_precipitation, min_daily_precipitation, lat, lon, time | Monthly data aggregated by geographic coordinates |
 
 ### Final Processed Files
 
 | File Name | Path | Resolution | Variables | Purpose |
 |-----------|------|------------|-----------|---------|
-| boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc | `/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc` | 90m | total_precipitation_downscaled, max_daily_precipitation_downscaled, min_daily_precipitation_downscaled, elevation | Monthly precipitation data with improved resolution to 90m |
-| boyaca_region_months_aggregated_avg_merged_dem.nc | `/output/boyaca_region_months_aggregated_avg_merged_dem.nc` | Variable (multiple resolutions) | monthly_precipitation, elevation, lat, lon, time | Integration of precipitation data with elevation for joint analysis |
-| boyaca_region_months_aggregated_avg_cluster_low.nc, boyaca_region_months_aggregated_avg_cluster_medium.nc, boyaca_region_months_aggregated_avg_cluster_high.nc | Low: `/output/boyaca_region_months_aggregated_avg_cluster_low.nc`<br>Medium: `/output/boyaca_region_months_aggregated_avg_cluster_medium.nc`<br>High: `/output/boyaca_region_months_aggregated_avg_cluster_high.nc` | Variable (multiple resolutions) | monthly_precipitation, elevation, cluster_id, lat, lon, time | Precipitation data segmented by elevation ranges |
-
----
+| boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc | `/data/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc` | 90m | total_precipitation_downscaled, max_daily_precipitation_downscaled, min_daily_precipitation_downscaled, elevation | Monthly precipitation data with improved resolution to 90m |
+| boyaca_region_months_aggregated_avg_merged_dem.nc | `/data/output/boyaca_region_months_aggregated_avg_merged_dem.nc` | Variable (multiple resolutions) | monthly_precipitation, elevation, lat, lon, time | Integration of precipitation data with elevation for joint analysis |
+| boyaca_region_months_aggregated_avg_cluster_low.nc, boyaca_region_months_aggregated_avg_cluster_medium.nc, boyaca_region_months_aggregated_avg_cluster_high.nc | Low: `/data/output/boyaca_region_months_aggregated_avg_cluster_low.nc`<br>Medium: `/data/output/boyaca_region_months_aggregated_avg_cluster_medium.nc`<br>High: `/data/output/boyaca_region_months_aggregated_avg_cluster_high.nc` | Variable (multiple resolutions) | monthly_precipitation, elevation, cluster_id, lat, lon, time | Precipitation data segmented by elevation ranges |
 
 ### Model Files
 
 | File Name | Path | Type | Resolution | Variables | Purpose |
 |-----------|------|------|------------|-----------|---------|
-| boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc | `/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc` | Input | 90m | total_precipitation_downscaled, max_daily_precipitation_downscaled, min_daily_precipitation_downscaled, elevation, lat, lon, time | Input dataset for ConvLSTM model training with high-resolution precipitation and elevation data |
-| boyaca_region_months_aggregated_avg_merged_dem.nc | `/output/boyaca_region_months_aggregated_avg_merged_dem.nc` | Input | Variable | monthly_precipitation, elevation, lat, lon, time | Input dataset for model training with integrated precipitation and elevation data |
-| boyaca_region_months_aggregated_avg_cluster_low.nc | `/output/boyaca_region_months_aggregated_avg_cluster_low.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for low elevation areas model training |
-| boyaca_region_months_aggregated_avg_cluster_medium.nc | `/output/boyaca_region_months_aggregated_avg_cluster_medium.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for medium elevation areas model training |
-| boyaca_region_months_aggregated_avg_cluster_high.nc | `/output/boyaca_region_months_aggregated_avg_cluster_high.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for high elevation areas model training |
+| boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc | `/data/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc` | Input | 90m | total_precipitation_downscaled, max_daily_precipitation_downscaled, min_daily_precipitation_downscaled, elevation, lat, lon, time | Input dataset for ConvLSTM model training with high-resolution precipitation and elevation data |
+| boyaca_region_months_aggregated_avg_merged_dem.nc | `/data/output/boyaca_region_months_aggregated_avg_merged_dem.nc` | Input | Variable | monthly_precipitation, elevation, lat, lon, time | Input dataset for model training with integrated precipitation and elevation data |
+| boyaca_region_months_aggregated_avg_cluster_low.nc | `/data/output/boyaca_region_months_aggregated_avg_cluster_low.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for low elevation areas model training |
+| boyaca_region_months_aggregated_avg_cluster_medium.nc | `/data/output/boyaca_region_months_aggregated_avg_cluster_medium.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for medium elevation areas model training |
+| boyaca_region_months_aggregated_avg_cluster_high.nc | `/data/output/boyaca_region_months_aggregated_avg_cluster_high.nc` | Input | Variable | monthly_precipitation, elevation, cluster_id, lat, lon, time | Input dataset for high elevation areas model training |
 | conv_lstm_model_baseline.h5 | `/notebooks/conv_lstm_model_baseline.h5` | Model | N/A | N/A | Baseline ConvLSTM model weights for precipitation prediction |
 | conv_lstm_model_final.h5 | `/notebooks/conv_lstm_model_final.h5` | Model | N/A | N/A | Optimized ConvLSTM model weights for final precipitation prediction |
-| predicted_precip_monthly.nc | `/notebooks/predicted_precip_monthly.nc` | Output | 0.05° × 0.05° (~5km) | predicted_precipitation, lat, lon, time | Monthly precipitation predictions generated by the ConvLSTM model |
-| predicted_precip_12months.nc | `/notebooks/predicted_precip_12months.nc` | Output | 0.05° × 0.05° (~5km) | predicted_precipitation, forecast_month, lat, lon, time | 12-month precipitation forecast predictions generated by the ConvLSTM model |
+| predicted_precip_monthly.nc | `/data/output/predicted_precip_monthly.nc` | Output | 0.05° × 0.05° (~5km) | predicted_precipitation, lat, lon, time | Monthly precipitation predictions generated by the ConvLSTM model |
+| predicted_precip_12months.nc | `/data/output/predicted_precip_12months.nc` | Output | 0.05° × 0.05° (~5km) | predicted_precipitation, forecast_month, lat, lon, time | 12-month precipitation forecast predictions generated by the ConvLSTM model |
 
 ---
 
@@ -174,7 +172,7 @@ This section describes the NetCDF (.nc) files generated at different stages of p
 - Intermediate files are preserved to allow analysis at different stages of processing.
 - Most final files include both precipitation and elevation data to facilitate integrated analyses.
 - Model output files are generated from the notebooks using ConvLSTM deep learning models trained on the processed data.
-- **Note**: The base path for all files is `/Users/riperez/Conda/anaconda3/doc/precipitation/`
+- **Note**: The base path for all files is `/data/output/`
 
 ---
 
