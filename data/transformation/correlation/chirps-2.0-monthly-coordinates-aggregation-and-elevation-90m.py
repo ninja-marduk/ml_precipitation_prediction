@@ -26,8 +26,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Ruta del dataset
-DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc"
-OUTPUT_DIR = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/correlation/"
+DATASET_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "../../../data/output/correlation/")
 
 def load_dataset(file_path):
     """

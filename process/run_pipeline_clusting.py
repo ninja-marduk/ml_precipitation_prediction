@@ -5,6 +5,7 @@ import os
 import sys
 import logging
 from datetime import datetime
+from pathlib import Path
 
 # Configure logging
 LOG_DIR = os.path.join(os.path.dirname(__file__), "../logs")
@@ -25,6 +26,23 @@ logging.basicConfig(
         logging.FileHandler(LOG_FILE, mode="a", encoding="utf-8")  # Save logs to a daily file
     ]
 )
+
+# Add the project's root directory to PYTHONPATH
+project_root = Path(__file__).resolve().parent.parent
+sys.path.append(str(project_root))
+
+# Relative paths based on the project's structure
+DATA_OUTPUT_DIR = os.path.join(project_root, "data", "output")
+
+# Dataset paths
+INPUT_DATASET = os.path.join(DATA_OUTPUT_DIR, "ds_combined_downscaled_with_monthly_moving_avg.nc")
+OUTPUT_LOW = os.path.join(DATA_OUTPUT_DIR, "ds_low_elevation.nc")
+OUTPUT_MEDIUM = os.path.join(DATA_OUTPUT_DIR, "ds_medium_elevation.nc")
+OUTPUT_HIGH = os.path.join(DATA_OUTPUT_DIR, "ds_high_elevation.nc")
+
+# Elevation thresholds
+LOW_ELEVATION_THRESHOLD = 1500
+HIGH_ELEVATION_THRESHOLD = 2500
 
 def run_script(script_path):
     """
@@ -80,24 +98,44 @@ def run_script(script_path):
 
 def main():
     """
-    Main function to execute the pipeline.
+    Main function to execute the clustering pipeline.
     """
+    # Verify that the input file exists
+    if not os.path.exists(INPUT_DATASET):
+        logging.error(f"The input file does not exist: {INPUT_DATASET}")
+        sys.exit(1)
+
+    logging.info("Starting elevation-based clustering pipeline...")
+    logging.info(f"Input file: {INPUT_DATASET}")
+
+    # Import the clustering transformation module
+    sys.path.append(os.path.join(project_root, "data", "transformation", "clustering"))
+    from data.transformation.clustering.chirps_2_0 import cluster_by_elevation, save_clustered_datasets
+
     try:
-        logging.info("Starting ETL pipeline...")
+        # Import xarray
+        import xarray as xr
 
-        # Define the scripts to run in order
-        scripts = [
+        # Load the dataset
+        logging.info("Loading dataset...")
+        ds = xr.open_dataset(INPUT_DATASET)
 
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/clustering/chirps-2.0.py"
-        ]
+        # Perform clustering
+        logging.info(f"Performing clustering with thresholds: low <= {LOW_ELEVATION_THRESHOLD}, high > {HIGH_ELEVATION_THRESHOLD}...")
+        ds_low, ds_medium, ds_high = cluster_by_elevation(ds, LOW_ELEVATION_THRESHOLD, HIGH_ELEVATION_THRESHOLD)
 
-        # Execute each script in order
-        for script in scripts:
-            run_script(script)
+        # Save results
+        logging.info("Saving clustered datasets...")
+        save_clustered_datasets(ds_low, ds_medium, ds_high, OUTPUT_LOW, OUTPUT_MEDIUM, OUTPUT_HIGH)
 
-        logging.info("ETL pipeline completed successfully!")
+        logging.info("Clustering pipeline completed successfully!")
+        logging.info(f"Generated files:")
+        logging.info(f"- Low elevation: {OUTPUT_LOW}")
+        logging.info(f"- Medium elevation: {OUTPUT_MEDIUM}")
+        logging.info(f"- High elevation: {OUTPUT_HIGH}")
+
     except Exception as e:
-        logging.error(f"An unexpected error occurred in the ETL pipeline: {e}")
+        logging.error(f"An unexpected error occurred in the clustering pipeline: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
