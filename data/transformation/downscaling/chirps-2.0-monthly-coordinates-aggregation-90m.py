@@ -45,9 +45,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Rutas de los datasets
-AGGREGATED_DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_aggregated.nc"
-DEM_90M_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/dem_boyaca_90.nc"
-OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc"
+AGGREGATED_DATASET_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_monthly_aggregated.nc")
+DEM_90M_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/dem_boyaca_90.nc")
+OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_monthly_coordinates_aggregation_downscaled_90m.nc")
 TEMP_DIR = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/temp"
 
 # Crear directorio temporal si no existe

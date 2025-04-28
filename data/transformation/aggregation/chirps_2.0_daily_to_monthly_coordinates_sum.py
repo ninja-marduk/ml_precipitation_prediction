@@ -24,8 +24,9 @@ logging.basicConfig(
 )
 
 # Constants
-INPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_daily.nc"
-OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/"
+# Usando rutas relativas al proyecto
+INPUT_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_daily.nc")
+OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/")
 OUTPUT_FILENAME = "boyaca_region_monthly_coordinates_sum.nc"
 
 def load_dataset(file_path):
