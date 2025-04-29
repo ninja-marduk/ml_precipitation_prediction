@@ -21,9 +21,9 @@ logging.basicConfig(
 )
 
 # Constants for file paths
-CHIRPS_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_months_aggregate_avg.nc"
-DEM_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/dem_boyaca_90.nc"
-OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_months_aggregated_avg_merged_dem.nc"
+CHIRPS_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_months_aggregate_avg.nc")
+DEM_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/dem_boyaca_90.nc")
+OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/boyaca_region_months_aggregated_avg_merged_dem.nc")
 
 def find_nearest(array, value):
     """

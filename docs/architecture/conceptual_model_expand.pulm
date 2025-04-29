@@ -22,6 +22,10 @@
 **** HBA
 **** BAT
 **** BBO
+**** FFOA
+**** FFA
+**** CPO
+**** SCE
 
 ** Component combination-based hybrid models
 *** Decomposition-based hybrids
@@ -53,6 +57,10 @@
 **** Stacking
 ***** Base models → Meta-LR
 ***** Base models → Meta-XGB
+***** Base models → Meta-Lasso
+***** Mean Combiner
+***** Median Combiner
+***** Best Learners
 **** Dynamic Ensembles
 
 ** Postprocessing-based hybrid models
