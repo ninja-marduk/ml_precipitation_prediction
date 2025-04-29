@@ -166,6 +166,8 @@ logs/
 *.log
 
 # Output files
+models/modelos_optim/
+models/output/optuna_storage/
 *.out
 *.o
 *.a
