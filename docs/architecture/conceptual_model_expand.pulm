@@ -76,7 +76,7 @@
 **** Prediction Averaging
 ***** Mean Combiner
 ***** Median Combiner
-**** Feature Averaging (DRSN-TCN-RF)
+**** Feature Averaging 
 **** Model Averaging
 **** Prediction Selection
 ***** Best Learners
