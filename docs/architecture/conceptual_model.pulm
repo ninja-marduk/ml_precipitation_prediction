@@ -47,12 +47,7 @@
 **** Snapshot Ensembles
 *** Meta-model-based hybrids
 **** Stacking
-***** Base models → Meta-LR
-***** Base models → Meta-Lasso
-***** Base models → Meta-XGB 
-***** Mean Combiner
-***** Median Combiner
-***** Best Learners
+***** Base models → Meta-Model
 ***** Dynamic Ensembles
 
 ** Postprocessing-based hybrid models
@@ -63,7 +58,11 @@
 **** Bayesian Model Averaging (BMA)
 **** Probabilistic Model Averaging
 *** Averaging-based (as postprocessing)
-**** Prediction Averaging (FR)
-**** Feature Averaging (DRSN-TCN-RF)
+**** Prediction Averaging 
+***** Mean Combiner
+***** Median Combiner
+**** Feature Averaging 
 **** Model Averaging
+**** Prediction Selection
+***** Best Learners
 @endmindmap
