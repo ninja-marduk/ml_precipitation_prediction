@@ -57,10 +57,12 @@
 **** Stacking
 ***** Base models → Meta-LR
 ***** Base models → Meta-XGB
+***** Base models → Meta-MARS
+***** Base models → Meta-polyMARS
+***** Base models → Meta-RF
+***** Base models → Meta-BRNN
+***** Base models → Meta-GBM
 ***** Base models → Meta-Lasso
-***** Mean Combiner
-***** Median Combiner
-***** Best Learners
 **** Dynamic Ensembles
 
 ** Postprocessing-based hybrid models
@@ -71,7 +73,11 @@
 **** Bayesian Model Averaging (BMA)
 **** Probabilistic Model Averaging
 *** Averaging-based (as postprocessing)
-**** Prediction Averaging (FR)
+**** Prediction Averaging
+***** Mean Combiner
+***** Median Combiner
 **** Feature Averaging (DRSN-TCN-RF)
 **** Model Averaging
+**** Prediction Selection
+***** Best Learners
 @endmindmap
