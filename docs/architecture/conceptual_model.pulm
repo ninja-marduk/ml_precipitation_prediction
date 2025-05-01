@@ -22,6 +22,10 @@
 **** HBA
 **** BAT
 **** BBO
+**** FFOA
+**** FFA
+**** CPO
+**** SCE
 
 ** Component combination-based hybrid models
 *** Decomposition-based hybrids
@@ -43,9 +47,8 @@
 **** Snapshot Ensembles
 *** Meta-model-based hybrids
 **** Stacking
-***** Base models → Meta-LR
-***** Base models → Meta-XGB
-**** Dynamic Ensembles
+***** Base models → Meta-Model
+***** Dynamic Ensembles
 
 ** Postprocessing-based hybrid models
 *** Statistical correction
@@ -55,7 +58,11 @@
 **** Bayesian Model Averaging (BMA)
 **** Probabilistic Model Averaging
 *** Averaging-based (as postprocessing)
-**** Prediction Averaging (FR)
-**** Feature Averaging (DRSN-TCN-RF)
+**** Prediction Averaging 
+***** Mean Combiner
+***** Median Combiner
+**** Feature Averaging 
 **** Model Averaging
+**** Prediction Selection
+***** Best Learners
 @endmindmap
