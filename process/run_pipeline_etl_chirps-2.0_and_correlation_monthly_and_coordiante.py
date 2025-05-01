@@ -5,9 +5,17 @@ import os
 import sys
 import logging
 from datetime import datetime
+from pathlib import Path
+
+# Configurar el directorio raíz del proyecto
+project_root = Path(__file__).resolve().parent.parent
+sys.path.append(str(project_root))
+
+# Ruta base para datos de salida
+DATA_OUTPUT_DIR = os.path.join(project_root, "data", "output")
 
 # Configure logging
-LOG_DIR = os.path.join(os.path.dirname(__file__), "../logs")
+LOG_DIR = os.path.join(project_root, "logs")
 os.makedirs(LOG_DIR, exist_ok=True)  # Ensure the logs directory exists
 
 # Generate log file name with the required format
@@ -87,11 +95,11 @@ def main():
 
         # Define the scripts to run in order
         scripts = [
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/chirps-2.0-daily.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-90m.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/aggregation/chirps-2.0-monthly-coordinates-aggregation-avg.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/transformation/downscaling/chirps-2.0-monthly-coordinates-aggregation-90m.py",
-            "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/load/transformation/correlation/python chirps-2.0-monthly-coordinates-aggregation-and-elevation-90m.py"
+            os.path.join(project_root, "data", "load", "chirps-2.0-daily.py"),
+            os.path.join(project_root, "data", "transformation", "downscaling", "chirps-2.0-monthly-90m.py"),
+            os.path.join(project_root, "data", "transformation", "aggregation", "chirps-2.0-monthly-coordinates-aggregation-avg.py"),
+            os.path.join(project_root, "data", "transformation", "downscaling", "chirps-2.0-monthly-coordinates-aggregation-90m.py"),
+            os.path.join(project_root, "data", "load", "transformation", "correlation", "chirps-2.0-monthly-coordinates-aggregation-and-elevation-90m.py")
         ]
 
         # Execute each script in order

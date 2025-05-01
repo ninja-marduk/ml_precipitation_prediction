@@ -23,13 +23,13 @@ logging.basicConfig(
     ]
 )
 
-# Ruta del dataset original
-INPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/ds_combined_downscaled_with_monthly_moving_avg.nc"
+# Ruta de entrada del dataset combinado
+INPUT_PATH = os.path.join(os.path.dirname(__file__), "../../../data/output/ds_combined_downscaled_with_monthly_moving_avg.nc")
 
 # Rutas de salida para los archivos clusterizados
-OUTPUT_LOW = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/ds_low_elevation.nc"
-OUTPUT_MEDIUM = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/ds_medium_elevation.nc"
-OUTPUT_HIGH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/ds_high_elevation.nc"
+OUTPUT_LOW = os.path.join(os.path.dirname(__file__), "../../../data/output/ds_low_elevation.nc")
+OUTPUT_MEDIUM = os.path.join(os.path.dirname(__file__), "../../../data/output/ds_medium_elevation.nc")
+OUTPUT_HIGH = os.path.join(os.path.dirname(__file__), "../../../data/output/ds_high_elevation.nc")
 
 def cluster_by_elevation(ds, low_threshold, high_threshold):
     """
