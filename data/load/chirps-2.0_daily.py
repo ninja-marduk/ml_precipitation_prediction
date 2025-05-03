@@ -2,7 +2,27 @@ import os
 import xarray as xr
 import pandas as pd
 import logging
+import sys
+from pathlib import Path
 from datetime import datetime
+
+IN_COLAB = 'google.colab' in sys.modules
+
+if IN_COLAB:
+    from google.colab import drive
+    drive.mount('/content/drive')
+    # Si estamos en Colab, configurar rutas correspondientes
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "xarray", "netCDF4", "pandas"])
+    BASE_PATH = '/content/drive/MyDrive/ml_precipitation_prediction'
+else:
+    # Si estamos en local, usar la ruta del proyecto
+    if '/load' in os.getcwd():
+        BASE_PATH = Path('../..')
+    else:
+        BASE_PATH = Path('../..')
+
+print(f"Entorno configurado. Ruta base del proyecto: {BASE_PATH}")
 
 # Configure logging
 LOG_DIR = os.path.join(os.path.dirname(__file__), "../../logs")
@@ -24,14 +44,20 @@ logging.basicConfig(
     ]
 )
 
-# Constants
+# Definir rutas de datos
 PATH_CHIRPS = '/Users/riperez/Conda/anaconda3/doc/precipitation/CHIRPS-2.0/daily/'
-OUTPUT_PATH = '/Users/riperez/Conda/anaconda3/doc/precipitation/output/'
+OUTPUT_PATH = BASE_PATH / 'data' / 'output'
+# Crear directorio de salida si no existe
+os.makedirs(OUTPUT_PATH, exist_ok=True)
 TEMP_PATH = os.path.join(OUTPUT_PATH, "temp/")
-LON_BOYACA_MIN = -75 #-74.8
-LON_BOYACA_MAX = -71.7 # -71.9
-LAT_BOYACA_MIN = 4.3 # 4.5
-LAT_BOYACA_MAX = 7.4 # 7.3
+# Crear directorio de salida si no existe
+os.makedirs(TEMP_PATH, exist_ok=True)
+
+# Actualizar los límites de Boyacá teniendo en cuenta el centroide del shapefile
+LON_BOYACA_MIN = -74.975
+LON_BOYACA_MAX = -71.725
+LAT_BOYACA_MIN = 4.325
+LAT_BOYACA_MAX = 7.375
 
 def list_nc_files(path):
     """List all NetCDF files in the given directory."""
