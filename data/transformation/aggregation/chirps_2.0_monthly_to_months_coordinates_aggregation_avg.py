@@ -4,6 +4,26 @@ import matplotlib.pyplot as plt
 import os
 import sys
 from datetime import datetime
+from pathlib import Path
+
+IN_COLAB = 'google.colab' in sys.modules
+
+if IN_COLAB:
+    from google.colab import drive
+    drive.mount('/content/drive')
+    # Si estamos en Colab, configurar rutas correspondientes
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "xarray", "netCDF4", "pandas"])
+    BASE_PATH = '/content/drive/MyDrive/ml_precipitation_prediction'
+else:
+    # Si estamos en local, usar la ruta del proyecto
+    if '/aggregation' in os.getcwd():
+        BASE_PATH = Path('../../..')
+    else:
+        BASE_PATH = Path('../../..')
+
+print(f"Entorno configurado. Ruta base del proyecto: {BASE_PATH}")
+
 
 # Add the root directory to the path to import custom modules
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../../"))
@@ -12,10 +32,18 @@ from utils.custom_logger import get_logger
 # Logger configuration
 logger = get_logger(__name__)
 
+
+
+
 # Dataset path
-DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_coordinates_sum.nc"
-OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_months_aggregate_avg.nc"
-MAPS_OUTPUT_DIR = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/maps/"
+OUTPUT_PATH = BASE_PATH / 'data' / 'output'
+# Crear directorio de salida si no existe
+os.makedirs(OUTPUT_PATH, exist_ok=True)
+
+DATASET_PATH = BASE_PATH / 'data' / 'output' / 'boyaca_region_monthly_coordinates_sum.nc'
+OUTPUT_PATH = BASE_PATH / 'data' / 'output' / 'boyaca_region_months_aggregate_avg.nc'
+MAPS_OUTPUT_DIR = BASE_PATH / 'data' / 'output' / 'maps/'
+os.makedirs(MAPS_OUTPUT_DIR, exist_ok=True)  # Ensure the output directory exists
 
 def load_dataset(file_path):
     """
