@@ -1,8 +1,16 @@
 import xarray as xr
 import pandas as pd
+import os
 
-# Ruta del dataset mensual
-DATASET_PATH = "/Users/riperez/Conda/anaconda3/doc/precipitation/output/boyaca_region_monthly_sum.nc"
+# Ruta del dataset mensual dinámico (última fecha _yyyymm.nc)
+output_dir = os.path.join(os.path.dirname(__file__), "../../output")
+files = [f for f in os.listdir(output_dir) if f.endswith(".nc") and "complete_dataset_with_features_with_clusters_elevation_" in f]
+latest_file = max(files, key=lambda x: x.split("_")[-1].split(".")[0]) if files else None
+
+if latest_file:
+    DATASET_PATH = os.path.join(output_dir, latest_file)
+else:
+    raise FileNotFoundError("No se encontró ningún archivo con el formato 'complete_dataset_with_features_with_clusters_elevation_yyyymm.nc' en el directorio de salida.")
 
 def load_dataset_as_dataframe(file_path):
     """
