@@ -11,6 +11,20 @@ from dask.diagnostics import ProgressBar
 from dask.array.core import PerformanceWarning
 import matplotlib.pyplot as plt
 
+## How it works
+### By default (python dataset_update.py):
+### You download (if missing) the local history with download_missing_data().
+### 
+### You don't call update_chirps_daily() and build directly the final dataset with all lags.
+### 
+### With the flag (python dataset_update.py --enable-chirps-update):
+### 
+### After the history, you run update_chirps_daily() which checks the date and, if the offset is >2 months, re-downloads the daily part.
+### 
+### Then you build the final with process_new_data().
+### 
+### Translated with DeepL.com (free version)
+
 # Paths
 INPUT_PATH = "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/input/CHIRPS-2.0/daily/"
 OUTPUT_PATH = "/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/data/output/"
@@ -184,7 +198,7 @@ def process_new_data():
 
     # 2) Definir lags y ventana
     lags   = [1, 2, 3, 4, 12, 24, 36]
-    WINDOW = 48
+    WINDOW = 80
     MAX_LAG = max(lags)
     HISTORY = WINDOW + MAX_LAG
 
@@ -208,7 +222,7 @@ def process_new_data():
     ds["doy_sin"]   = np.sin(2*np.pi*ds.time.dt.dayofyear/365)
     ds["doy_cos"]   = np.cos(2*np.pi*ds.time.dt.dayofyear/365)
 
-    # 7) Recortar a los últimos 48 meses, ya con lags completos
+    # 7) Recortar a los últimos 80 meses, ya con lags completos
     ds = ds.isel(time=slice(-WINDOW, None))
 
     # 8) Guardar con chunking
@@ -221,7 +235,7 @@ def process_new_data():
 
     print(f"✅ Dataset final listo: {os.path.basename(outp)}")
 
-def validate_output_dataset(output_path=None, expected_time_length=48, required_columns=None):
+def validate_output_dataset(output_path=None, expected_time_length=80, required_columns=None):
     """
     Validates the output dataset and compares original values against their lags
     with both tabular output for the final month and time-series overlay plots.
