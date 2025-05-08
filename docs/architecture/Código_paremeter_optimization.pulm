@@ -1,0 +1,13 @@
+@startmindmap
+* Parameter optimization-based hybrid models
+** Optimization algorithms
+*** PSO
+*** GA
+*** HBA
+*** BAT
+*** BBO
+*** FFOA
+*** FFA
+*** CPO
+*** SCE
+@endmindmap
