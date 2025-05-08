@@ -6,7 +6,11 @@ netCDF4
 xarray
 rioxarray
 rasterio
-matplotlib
 geopandas
 dask
 seaborn
+tqdm
+xgboost
+lightgbm
+tensorflow
+statsmodels
