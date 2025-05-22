@@ -179,6 +179,7 @@ models/output/optuna_storage/
 *.h5
 *.keras
 *.pt
+*.npy
 
 # Exclude specific project directories
 data/output/
