@@ -1,4 +1,4 @@
-# Script: análisis de promedios de RMSE y MAE por modelo híbrido
+# Script: análisis de promedios de RMSE y MAE por modelo híbrido.
 
 import pandas as pd
 import matplotlib.pyplot as plt
