@@ -1,0 +1,60 @@
+@startuml ingenieria_caracteristicas
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 16
+skinparam titleFontSize 24
+skinparam roundcorner 20
+skinparam minClassWidth 250
+skinparam minClassHeight 140
+skinparam padding 12
+
+title **Ingeniería de características**
+
+rectangle "**01.**" as num1 #9966FF {
+    rectangle "KCE: bandas de elevación por k-means (k=3, one-hot)" as kce #E6E6FA
+}
+
+rectangle "**02.**" as num2 #9966FF {
+    rectangle "PAFC: lags {1, 2, 4, 12} a partir de ACF/PACF" as pafc #E6E6FA
+}
+
+rectangle "**03.**" as num3 #9966FF {
+    rectangle "Sets: BASE; BASE+KCE; BASE+KCE+PAFC" as sets #E6E6FA
+}
+
+' Layout vertical
+num1 -[hidden]-> num2
+num2 -[hidden]-> num3
+
+' Detalles adicionales
+note right of kce #F0F8FF
+**K-means Clustering Elevation (KCE):**
+• Clustering de elevación con k=3 grupos
+• Codificación one-hot de bandas altitudinales
+• Características categóricas espaciales
+• Captura patrones orográficos
+• Variables: [elevación_baja, elevación_media, elevación_alta]
+end note
+
+note right of pafc #F0FFF0
+**Partial AutoCorrelation Function (PAFC):**
+• Lags temporales: 1, 2, 4, 12 meses
+• Basado en análisis ACF/PACF
+• Captura patrones estacionales y tendencias
+• Variables autorregresivas
+• Memoria temporal del sistema climático
+end note
+
+note right of sets #FFFAF0
+**Conjuntos de características:**
+• **BASE**: Precipitación + coordenadas + DEM
+• **BASE+KCE**: BASE + bandas de elevación
+• **BASE+KCE+PAFC**: Conjunto completo
+• Evaluación incremental de features
+• Análisis de contribución por componente
+end note
+
+@enduml

@@ -1,0 +1,72 @@
+@startuml ventanas_temporales_detallado
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 15
+skinparam titleFontSize 20
+skinparam sequenceArrowThickness 4
+skinparam minClassWidth 200
+skinparam minClassHeight 120
+skinparam padding 10
+
+title Arquitectura de Ventanas Temporales para Predicción de Precipitación
+
+participant "Datos Históricos\n(Serie Temporal)" as datos #lightblue
+participant "Ventana Deslizante\n(60 meses)" as ventana #aliceblue
+participant "Modelo de\nPredicción" as modelo #lightcoral
+participant "Horizontes de\nPredicción" as horizontes #lightgreen
+
+box "01. Entrada" #lightblue
+    participant datos
+    participant ventana
+end box
+
+box "02. Procesamiento" #lightcoral
+    participant modelo
+end box
+
+box "03. Salida" #lightgreen
+    participant horizontes
+end box
+
+activate datos
+datos -> ventana : Extrae secuencias\nde 60 meses consecutivos
+note right : Ventanas deslizantes\ncon solapamiento
+
+activate ventana
+ventana -> modelo : Secuencia temporal\n[t-59, t-58, ..., t-1, t]
+note right : Características:\n- Precipitación\n- Elevación\n- Variables climáticas
+
+activate modelo
+modelo -> horizontes : Predicción t+1
+modelo -> horizontes : Predicción t+2
+modelo -> horizontes : Predicción t+3
+note right : Multi-horizonte\ncon incertidumbre
+
+activate horizontes
+
+note over datos, horizontes #lightyellow
+**Partición de Datos**
+• **Entrenamiento (70%)**: 1981-2010
+• **Validación (15%)**: 2011-2015  
+• **Prueba (15%)**: 2016-2020
+end note
+
+note over ventana, modelo #wheat
+**Características de la Ventana**
+• Longitud: 60 meses (5 años)
+• Paso: 1 mes
+• Variables: Precipitación, DEM, coordenadas
+• Resolución espacial: 0.05° x 0.05°
+end note
+
+note over modelo, horizontes #palegreen
+**Arquitectura del Modelo**
+• Entrada: (batch_size, 60, height, width, features)
+• Salida: (batch_size, 3, height, width, 1)
+• Horizontes: 1, 2, 3 meses adelante
+end note
+
+@enduml

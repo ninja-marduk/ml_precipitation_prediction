@@ -1,0 +1,97 @@
+@startuml modelos_evaluados_detallado
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 14
+skinparam titleFontSize 20
+skinparam packageStyle rectangle
+skinparam minClassWidth 200
+skinparam minClassHeight 120
+skinparam padding 10
+
+title Arquitectura Detallada de Modelos Evaluados
+
+package "01. ConvLSTM Encoder-Decoder + Attention" as model1 #lightblue {
+    rectangle "Input\n(B, T, H, W, C)" as input1 #aliceblue
+    rectangle "ConvLSTM2D(64)\nreturn_sequences=True" as enc1 #lightcyan
+    rectangle "BatchNorm + Dropout" as bn1 #lightcyan
+    rectangle "ConvLSTM2D(32)\nreturn_sequences=True" as enc2 #lightcyan
+    rectangle "CBAM Attention\n(Channel + Spatial)" as attn1 #lightgreen
+    rectangle "ConvLSTM2D(16)\nreturn_sequences=False" as dec1 #lightcyan
+    rectangle "Spatial Head\nMulti-scale" as out1 #lightyellow
+    
+    input1 -> enc1
+    enc1 -> bn1
+    bn1 -> enc2
+    enc2 -> attn1
+    attn1 -> dec1
+    dec1 -> out1
+}
+
+package "02. ConvGRU Residual + BatchNorm" as model2 #lightcoral {
+    rectangle "Input\n(B, T, H, W, C)" as input2 #mistyrose
+    rectangle "Conv2D(32, 1×1)\nProjection" as proj2 #mistyrose
+    rectangle "ConvGRU2D(64)\nreturn_sequences=True" as gru1 #lightpink
+    rectangle "BatchNorm + Dropout" as bn2 #lightpink
+    rectangle "ConvGRU2D(32)\nreturn_sequences=False" as gru2 #lightpink
+    rectangle "Skip Connection\nConv2D(32, 1×1)" as skip2 #lightgreen
+    rectangle "Add + ReLU" as add2 #lightyellow
+    rectangle "Spatial Head" as out2 #lightyellow
+    
+    input2 -> proj2
+    proj2 -> gru1
+    gru1 -> bn2
+    bn2 -> gru2
+    input2 -> skip2
+    gru2 -> add2
+    skip2 -> add2
+    add2 -> out2
+}
+
+package "03. Transformer Híbrido CNN+LSTM" as model3 #lightgreen {
+    rectangle "Input\n(B, T, H, W, C)" as input3 #honeydew
+    rectangle "TimeDistributed\nConv2D(64, 3×3)" as cnn1 #lightgreen
+    rectangle "TimeDistributed\nConv2D(32, 3×3)" as cnn2 #lightgreen
+    rectangle "MaxPooling2D(2×2)\n+ Flatten" as pool3 #lightgreen
+    rectangle "MultiHeadAttention\n(4 heads, key_dim=32)" as mha3 #lightblue
+    rectangle "LayerNormalization" as ln3 #lightblue
+    rectangle "LSTM(128)\nreturn_sequences=False" as lstm3 #lightblue
+    rectangle "Dense + Reshape\nSpatial Decoder" as dec3 #lightyellow
+    
+    input3 -> cnn1
+    cnn1 -> cnn2
+    cnn2 -> pool3
+    pool3 -> mha3
+    mha3 -> ln3
+    ln3 -> lstm3
+    lstm3 -> dec3
+}
+
+' Notas técnicas
+note bottom of model1
+**Dimensiones ConvLSTM:**
+• Input: (B, 60, H, W, 11)
+• Encoder: 64→32→16 filtros
+• Output: (B, 3, H, W, 1)
+• Regularización: L1/L2 + Dropout
+end note
+
+note bottom of model2
+**Dimensiones ConvGRU:**
+• Input: (B, 60, H, W, 11)
+• GRU: 64→32 filtros
+• Skip: Residual connection
+• Normalización reforzada
+end note
+
+note bottom of model3
+**Dimensiones Transformer:**
+• CNN: 64→32 filtros
+• Attention: 4 heads × 32 dim
+• LSTM: 128 hidden units
+• Decoder: Dense → Spatial
+end note
+
+@enduml

@@ -1,0 +1,96 @@
+@startuml ingenieria_caracteristicas_estructura
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 14
+skinparam titleFontSize 20
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam minClassWidth 220
+skinparam minClassHeight 140
+skinparam padding 10
+
+title Estructura de Datos - Ingeniería de Características
+
+class "Dataset BASE" as base {
+    +precipitacion: float[H,W,T]
+    +latitud: float[H,W]
+    +longitud: float[H,W]  
+    +elevacion: float[H,W]
+    --
+    Dimensiones: (H×W×4)
+}
+
+class "KCE Features" as kce {
+    +elevacion_baja: bool[H,W]
+    +elevacion_media: bool[H,W]
+    +elevacion_alta: bool[H,W]
+    --
+    One-hot encoding (k=3)
+    Dimensiones: (H×W×3)
+}
+
+class "PAFC Features" as pafc {
+    +precip_lag1: float[H,W,T]
+    +precip_lag2: float[H,W,T]
+    +precip_lag4: float[H,W,T]
+    +precip_lag12: float[H,W,T]
+    --
+    Lags autorregresivos
+    Dimensiones: (H×W×4)
+}
+
+class "Dataset BASE+KCE" as base_kce {
+    BASE features
+    + KCE features
+    --
+    Dimensiones: (H×W×7)
+}
+
+class "Dataset BASE+KCE+PAFC" as full {
+    BASE + KCE features
+    + PAFC features
+    --
+    Dimensiones: (H×W×11)
+}
+
+' Relaciones
+base --> base_kce : +KCE
+kce --> base_kce : Concatenación
+
+base_kce --> full : +PAFC
+pafc --> full : Concatenación
+
+' Notas explicativas
+note top of base
+**Características base:**
+H = altura espacial
+W = ancho espacial  
+T = dimensión temporal
+end note
+
+note right of kce
+**Clustering de elevación:**
+• Baja: [1,0,0]
+• Media: [0,1,0]
+• Alta: [0,0,1]
+end note
+
+note right of pafc
+**Memoria temporal:**
+• Patrones estacionales
+• Autocorrelación
+• Tendencias históricas
+end note
+
+note bottom of full
+**Dataset final completo:**
+• 4 variables base
+• 3 variables KCE  
+• 4 variables PAFC
+• Total: 11 características
+end note
+
+@enduml
