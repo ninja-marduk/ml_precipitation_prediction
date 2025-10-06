@@ -1,0 +1,63 @@
+@startuml modelos_evaluados
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 16
+skinparam titleFontSize 24
+skinparam roundcorner 20
+skinparam minClassWidth 250
+skinparam minClassHeight 140
+skinparam padding 12
+
+title **Modelos evaluados**
+
+rectangle "**01.**" as num1 #9966FF {
+    rectangle "ConvLSTM encoder-decoder (baseline) y\nvariante con atención" as convlstm #E6E6FA
+}
+
+rectangle "**02.**" as num2 #9966FF {
+    rectangle "ConvGRU residual ligera con normalización\nreforzada" as convgru #E6E6FA
+}
+
+rectangle "**03.**" as num3 #9966FF {
+    rectangle "Transformer híbrido espaciotemporal con CNN\ny LSTM" as transformer #E6E6FA
+}
+
+' Layout vertical
+num1 -[hidden]-> num2
+num2 -[hidden]-> num3
+
+' Detalles adicionales
+note right of convlstm #F0F8FF
+**Arquitectura ConvLSTM Encoder-Decoder:**
+• **Encoder**: ConvLSTM2D(64, 3×3) → BatchNorm → Dropout
+• **Capa Media**: ConvLSTM2D(32, 3×3) → BatchNorm
+• **Atención**: TimeDistributed(CBAM) - Canal y Espacial
+• **Decoder**: ConvLSTM2D(16, 3×3) → BatchNorm
+• **Salida**: Cabeza multi-escala espacial
+• **Regularización**: L1/L2, Dropout 0.2
+end note
+
+note right of convgru #F0FFF0
+**Arquitectura ConvGRU Residual:**
+• **Proyección**: TimeDistributed(Conv2D(32, 1×1))
+• **Bloque 1**: ConvGRU2D(64, 3×3) → BatchNorm → Dropout
+• **Bloque 2**: ConvGRU2D(32, 3×3) → BatchNorm
+• **Skip Connection**: Conexión residual desde input
+• **Combinación**: Add + ReLU activation
+• **Normalización**: BatchNorm reforzada
+end note
+
+note right of transformer #FFFAF0
+**Arquitectura Transformer Híbrido:**
+• **CNN Encoder**: Conv2D(64, 3×3) → Conv2D(32, 3×3)
+• **Pooling**: MaxPooling2D(2×2) → Flatten
+• **Self-Attention**: MultiHeadAttention(4 heads, key_dim=32)
+• **Agregación**: LSTM(128) + LayerNormalization
+• **Decoder**: Dense → Reshape → Cabeza espacial
+• **Dropout**: 0.1 en attention y LSTM
+end note
+
+@enduml

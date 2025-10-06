@@ -1,0 +1,58 @@
+@startuml ventanas_temporales_visual
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 16
+skinparam titleFontSize 24
+skinparam roundcorner 20
+skinparam minClassWidth 250
+skinparam minClassHeight 140
+skinparam padding 12
+
+title **Ventanas temporales**
+
+rectangle "**01.**" as num1 #9966FF {
+    rectangle "Entrada: ventanas deslizantes de 60 meses" as entrada #E6E6FA
+}
+
+rectangle "**02.**" as num2 #9966FF {
+    rectangle "Salida: horizontes t+1, t+2 y t+3" as salida #E6E6FA
+}
+
+rectangle "**03.**" as num3 #9966FF {
+    rectangle "Partición: entrenamiento, validación y prueba" as particion #E6E6FA
+}
+
+' Layout vertical
+num1 -[hidden]-> num2
+num2 -[hidden]-> num3
+
+' Detalles adicionales
+note right of entrada #F0F8FF
+**Características de entrada:**
+• Secuencias de 60 meses consecutivos
+• Datos de precipitación CHIRPS-2.0
+• Variables topográficas (DEM)
+• Coordenadas espaciales
+• Resolución: 0.05° × 0.05°
+end note
+
+note right of salida #F0FFF0
+**Horizontes de predicción:**
+• **t+1**: 1 mes adelante
+• **t+2**: 2 meses adelante  
+• **t+3**: 3 meses adelante
+• Predicciones espacialmente explícitas
+end note
+
+note right of particion #FFFAF0
+**División temporal:**
+• **Entrenamiento**: 70% de los datos
+• **Validación**: 15% de los datos
+• **Prueba**: 15% de los datos
+• División cronológica para evitar data leakage
+end note
+
+@enduml
