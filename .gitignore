@@ -212,3 +212,44 @@ data/temp/
 *.orig
 *.rej
 *.bak2
+
+# TensorFlow event files
+ events.out.tfevents.*
+
+# Other temporary and generated files
+*.log
+*.tmp
+*.cache
+*.bak
+*.swp
+*.swo
+
+# Machine learning model checkpoints and outputs
+model_checkpoints/
+checkpoints/
+tensorboard_logs/
+logs/
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+env*/
+venv*/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# V2 files
+*.v2
