@@ -40,24 +40,22 @@
 \TitleCitation{Hybrid Data-Driven Framework for Precipitation Forecasting}
 
 \newcommand{\orcidauthorA}{0009-0003-2963-1631}
-\newcommand{\orcidauthorB}{0000-0002-3506-3787}
-\newcommand{\orcidauthorC}{0000-0003-1656-4452}
-\newcommand{\orcidauthorD}{0000-0002-7396-8915}
+\newcommand{\orcidauthorB}{0000-0003-1656-4452}
+\newcommand{\orcidauthorC}{0000-0002-7396-8915}
 
-\Author{Manuel Ricardo P\'erez Reyes $^{1,3}$\orcidA{}, Jos\'e Antonio Reyes Su\'arez $^{2}$\orcidB{}, Marco Javier Su\'arez Bar\'on $^{3}$\orcidC{} and \'Oscar Javier Garc\'ia Cabrejo $^{4}$\orcidD{}}
-\AuthorNames{Manuel Ricardo P\'erez Reyes, Jos\'e Antonio Reyes Su\'arez, Marco Javier Su\'arez Bar\'on and \'Oscar Javier Garc\'ia Cabrejo}
-\AuthorCitation{P\'erez Reyes, M.R.; Reyes Su\'arez, J.A.; Su\'arez Bar\'on, M.J.; Garc\'ia Cabrejo, \'O.J.}
+\Author{Manuel Ricardo P\'erez Reyes $^{1,2}$\orcidA{}, Marco Javier Su\'arez Bar\'on $^{2}$\orcidB{} and \'Oscar Javier Garc\'ia Cabrejo $^{3}$\orcidC{}}
+\AuthorNames{Manuel Ricardo P\'erez Reyes, Marco Javier Su\'arez Bar\'on and \'Oscar Javier Garc\'ia Cabrejo}
+\AuthorCitation{P\'erez Reyes, M.R.; Su\'arez Bar\'on, M.J.; Garc\'ia Cabrejo, \'O.J.}
 \address{%
-$^{1}$ \quad Pedagogical and Technological University of Colombia (UPTC), School of Systems Engineering, Sogamoso 152210, Colombia\\
-$^{2}$ \quad Department of Bioinformatics, Faculty of Engineering, University of Talca, Talca 34600000, Chile\\
-$^{3}$ \quad Pedagogical and Technological University of Colombia (UPTC), School of Systems Engineering, Sogamoso 152210, Colombia\\
-$^{4}$ \quad Pedagogical and Technological University of Colombia (UPTC), School of Geology, Sogamoso 152210, Colombia}
+$^{1}$ \quad Doctoral Program in Engineering, Pedagogical and Technological University of Colombia (UPTC), Sogamoso 152210, Colombia\\
+$^{2}$ \quad Pedagogical and Technological University of Colombia (UPTC), School of Systems Engineering, Sogamoso 152210, Colombia\\
+$^{3}$ \quad Pedagogical and Technological University of Colombia (UPTC), School of Geology, Sogamoso 152210, Colombia}
 \corres{Correspondence: manuelricardo.perez@uptc.edu.co}
 
 %------------------------------------------------------------------
 % Header and footer customization (Hydrology style)
 \setlength{\headheight}{20pt}
-\fancyhead[L]{\includegraphics[height=12pt]{figures/hydrology-logo-print.png}}
+\fancyhead[L]{}
 \fancyhead[C]{}
 \fancyhead[R]{\thepage/\pageref{LastPage}\hspace{0.5em}\includegraphics[height=12pt]{Definitions/logo-mdpi-eps-converted-to.pdf}}
 \fancyfoot[L]{\footnotesize\textit{Hydrology} 2025, 12, 19}
@@ -65,7 +63,7 @@ $^{4}$ \quad Pedagogical and Technological University of Colombia (UPTC), School
 \fancyfoot[R]{\footnotesize\href{https://doi.org/10.3390/hydrology1010000}{https://doi.org/10.3390/hydrology1010000}}
 \fancypagestyle{plain}{%
   \fancyhf{}
-  \fancyhead[L]{\includegraphics[height=12pt]{figures/hydrology-logo-print.png}}
+  \fancyhead[L]{}
   \fancyhead[C]{}
   \fancyhead[R]{\thepage/\pageref{LastPage}\hspace{0.5em}\includegraphics[height=12pt]{Definitions/logo-mdpi-eps-converted-to.pdf}}
   \fancyfoot[L]{\footnotesize\textit{Hydrology} 2025, 12, 19}
@@ -130,6 +128,21 @@ Reverse-engineering the analysis notebooks shows that KCE clusters derive from e
     \item \textbf{KCE}: ConvLSTM variants with meteorological attention aimed at reducing spatially coherent bias. Attention heads attend to elevation clusters to redistribute weights across valleys and ridges, exemplifying hybrid spatial reweighting of convolutional features.
     \item \textbf{PAFC}: ConvLSTM architectures with parameter-efficient attention, emphasizing compactness; static DEM/relief channels stabilize training. Depthwise separable kernels and squeeze-excite style attention reduce memory footprint, yielding a lightweight hybrid between conv encoders and efficient attention.
 \end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Representative layer stacks from the Colab training notebook (cell with Keras summaries, input shape $(\mathrm{None}, \mathrm{None}, 5, 5, 12)$ and $H=6$ output). Full per-model summaries remain available in the notebook; the table highlights the main blocks used in the paper.}
+\label{tab:model-summaries}
+\begin{tabular}{p{0.24\textwidth} p{0.68\textwidth}}
+\toprule
+Model & Key layers (output) \\
+\midrule
+ConvLSTM\_Enhanced & Input $\rightarrow$ ConvLSTM2D(32, return\_seq) $\rightarrow$ BatchNorm $\rightarrow$ Dropout $\rightarrow$ ConvLSTM2D(16) $\rightarrow$ BatchNorm $\rightarrow$ Dropout $\rightarrow$ $1{\times}1$ head to $H$ channels $\rightarrow$ transpose/expand. Keras summary: $(\mathrm{None},6,5,5,1)$; main blocks: 50{,}816 and 27{,}712 trainable params, BN offsets 128/64. \\
+ConvGRU\_Enhanced & Input $\rightarrow$ ConvGRU2D(32, return\_seq, helper-backed) $\rightarrow$ Dropout $\rightarrow$ ConvGRU2D(16) $\rightarrow$ $1{\times}1$ head $\rightarrow$ transpose/expand. Uses the external helper layer to enable ConvGRU2D in Colab; summary shape $(\mathrm{None},H,5,5,1)$. \\
+Transformer\_Baseline & Input $\rightarrow$ TimeDistributed flatten $\rightarrow$ 4-head self-attention $\rightarrow$ LayerNorm $\rightarrow$ GlobalAveragePooling $\rightarrow$ Dense to $H{\cdot}5{\cdot}5$ $\rightarrow$ reshape to $(\mathrm{None},H,5,5,1)$. Attention + dense stack yields a sub-million parameter footprint suitable for light-mode runs. \\
+\bottomrule
+\end{tabular}
+\end{table}
 ConvGRU2D was unavailable; ConvGRU models were excluded after unit tests validated custom losses and layers.
 
 \subsection{Training protocol and metrics}
@@ -139,7 +152,7 @@ All models train with Adam ($10^{-3}$), batch size 2, 150 epochs, patience 50 on
 \section{Results}
 
 \subsection{Global performance}
-Table~\ref{tab:h6-global} and Table~\ref{tab:h12-global} summarize averages by family. BASIC is the most balanced (bias near zero at $H=12$). KCE reduces bias compared to PAFC via attention, while PAFC lowers RMSE yet sacrifices $R^{2}$. Best-per-family models are shown in Tables~\ref{tab:h6-best} and \ref{tab:h12-best}. Figures~\ref{fig:exp-h6} and \ref{fig:exp-h12} gather evolution and per-model comparisons, and Figure~\ref{fig:deltas} covers bias and horizon deltas.
+Table~\ref{tab:h6-global} and Table~\ref{tab:h12-global} summarize averages by family. BASIC is the most balanced (bias near zero at $H=12$). KCE reduces bias compared to PAFC via attention, while PAFC lowers RMSE yet sacrifices $R^{2}$. Best-per-family models are shown in Tables~\ref{tab:h6-best} and \ref{tab:h12-best}. Figures~\ref{fig:exp-h6} and \ref{fig:exp-h12} gather evolution, per-model comparisons, biases, and horizon deltas in disaggregated panels.
 
 \begin{table}[H]
 \centering
@@ -243,43 +256,61 @@ Figure~\ref{fig:arch} depicts the end-to-end flow: CHIRPS and DEM feed preproces
 \subsection{Figures from experiments}
 \begin{figure}[H]
 \centering
-\subfloat[Evolution $H=6$.]{\includegraphics[width=0.48\textwidth]{figures/metrics_evolution_by_horizon_h6.png}}\hfill
-\subfloat[Normalized $H=6$.]{\includegraphics[width=0.48\textwidth]{figures/normalized_metrics_comparison_h6.png}}\\[10pt]
-\subfloat[RMSE $H=6$.]{\includegraphics[width=0.48\textwidth]{figures/h6/rmse_by_model_experiment.png}}\hfill
-\subfloat[$R^{2}$ $H=6$.]{\includegraphics[width=0.48\textwidth]{figures/h6/r2_by_model_experiment.png}}
-\caption{Training and per-model comparisons for $H{=}6$. BASIC converges fastest; KCE trims bias; PAFC improves RMSE but loses explanatory power.}
+\subfloat[RMSE evolution ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/metrics_evolution_h6_rmse.png}}\hfill
+\subfloat[MAE evolution ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/metrics_evolution_h6_mae.png}}\\[10pt]
+\subfloat[$R^{2}$ evolution ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/metrics_evolution_h6_r2.png}}\hfill
+\subfloat[Total precipitation ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/metrics_evolution_h6_totprecip.png}}\\[10pt]
+\subfloat[Normalized metrics ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/normalized_metrics_comparison_h6.png}}\hfill
+\subfloat[RMSE by model ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/rmse_by_model_experiment.png}}\\[10pt]
+\subfloat[$R^{2}$ by model ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/r2_by_model_experiment.png}}\hfill
+\subfloat[Bias by model ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/bias_by_model_experiment.png}}
+\caption{Training evolution and per-model comparisons for $H{=}6$. Splitting the evolution plot shows BASIC converges fastest across RMSE/MAE, KCE trims bias, and PAFC improves RMSE yet loses some explanatory power.}
 \label{fig:exp-h6}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\subfloat[Evolution $H=12$.]{\includegraphics[width=0.48\textwidth]{figures/metrics_evolution_by_horizon_h12.png}}\hfill
-\subfloat[Normalized $H=12$.]{\includegraphics[width=0.48\textwidth]{figures/normalized_metrics_comparison_h12.png}}\\[10pt]
-\subfloat[RMSE $H=12$.]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_experiment.png}}\hfill
-\subfloat[$R^{2}$ $H=12$.]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_by_model_experiment.png}}
-\caption{Training and per-model comparisons for $H{=}12$. BASIC remains balanced; KCE trims bias; PAFC gains RMSE at the cost of explanatory power.}
+\subfloat[RMSE evolution ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/metrics_evolution_h12_rmse.png}}\hfill
+\subfloat[MAE evolution ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/metrics_evolution_h12_mae.png}}\\[10pt]
+\subfloat[$R^{2}$ evolution ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/metrics_evolution_h12_r2.png}}\hfill
+\subfloat[Total precipitation ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/metrics_evolution_h12_totprecip.png}}\\[10pt]
+\subfloat[Normalized metrics ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/normalized_metrics_comparison_h12.png}}\hfill
+\subfloat[RMSE by model, BASIC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_basic.png}}\hfill
+\subfloat[RMSE by model, KCE ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_kce.png}}\\[10pt]
+\subfloat[RMSE by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_pafc.png}}\hfill
+\caption{Training evolution and per-model comparisons for $H{=}12$. Skill drops versus $H{=}6$, yet PAFC remains best on RMSE, KCE keeps bias lowest, and BASIC preserves balanced MAE/$R^{2}$. Legends are rendered within each panel.}
 \label{fig:exp-h12}
 \end{figure}
 
-\noindent The evolution panels show BASIC stabilizing early, KCE needing more epochs, and PAFC oscillating at $H=12$. Normalized plots highlight that PAFC variance grows late in training, suggesting stronger regularization. The color palette (blue BASIC, orange KCE, green PAFC) makes these differences evident even for non-specialists. The barplots underline that bidirectional and residual ConvLSTMs dominate at $H=6$, while compact ConvRNN variants remain competitive at $H=12$. The $R^{2}$ drop for PAFC at $H=12$ signals overfitting to recent lags; attention without tighter regularization hurts generalization.
-
 \begin{figure}[H]
 \centering
-\subfloat[Bias by model ($H=6$).]{\includegraphics[width=0.49\textwidth]{figures/h6/bias_by_model_experiment.png}}\hfill
-\subfloat[Bias by model ($H=12$).]{\includegraphics[width=0.49\textwidth]{figures/h12/bias_by_model_experiment.png}}\\[6pt]
-\subfloat[$\Delta$RMSE (12--6).]{\includegraphics[width=0.49\textwidth]{figures/h12/rmse_delta_h12_vs_h6.png}}\hfill
-\subfloat[$\Delta R^{2}$ (12--6).]{\includegraphics[width=0.49\textwidth]{figures/h12/r2_delta_h12_vs_h6.png}}
-\caption{Bias and horizon impacts. Top: systematic biases per architecture (negative bars underestimation, positive overestimation); KCE narrows spread, BASIC centers near zero at $H{=}12$, PAFC underestimates more for long horizons. Bottom: extending the horizon to 12 months: green/yellow bars denote improvements; red denotes degradation. BASIC degrades least in RMSE and retains positive $R^{2}$; KCE gains some $R^{2}$ at mid-horizons; PAFC shows mixed changes with larger variance.}
-\label{fig:deltas}
+\subfloat[$R^{2}$ by model, BASIC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_by_model_h12_basic.png}}\hfill
+\subfloat[$R^{2}$ by model, KCE ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_by_model_h12_kce.png}}\\[10pt]
+\subfloat[$R^{2}$ by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_by_model_h12_pafc.png}}\hfill
+\subfloat[Bias by model, BASIC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_basic.png}}\\[10pt]
+\subfloat[Bias by model, KCE ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_kce.png}}\hfill
+\subfloat[Bias by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_pafc.png}}\\[10pt]
+\subfloat[$\Delta$RMSE (H12--H6), per model \& experiment.]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6.png}}\hfill
+\subfloat[$\Delta R^{2}$ (H12--H6), per model \& experiment.]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_delta_h12_vs_h6.png}}\\[10pt]
+\subfloat[$\Delta$RMSE BASIC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_basic.png}}\hfill
+\subfloat[$\Delta$RMSE KCE (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_kce.png}}\\[10pt]
+\subfloat[$\Delta$RMSE PAFC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_pafc.png}}\hfill
+\subfloat[$\Delta R^{2}$ BASIC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_delta_h12_vs_h6_basic.png}}\\[10pt]
+\subfloat[$\Delta R^{2}$ KCE (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_delta_h12_vs_h6_kce.png}}\hfill
+\subfloat[$\Delta R^{2}$ PAFC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_delta_h12_vs_h6_pafc.png}}
+\caption{Model skill at $H{=}12$ (R$^{2}$ and bias) and horizon deltas. KCE keeps bias lowest; BASIC preserves balanced R$^{2}$ and bias; PAFC shows larger dispersion. Horizon deltas show BASIC degrades least when moving from $H{=}6$ to $H{=}12$. Legends are rendered within each panel.}
+\label{fig:exp-h12-bias}
 \end{figure}
+
+\noindent The evolution panels show BASIC stabilizing early, KCE needing more epochs, and PAFC oscillating at $H=12$. Normalized plots highlight that PAFC variance grows late in training, suggesting stronger regularization. The color palette (blue BASIC, orange KCE, green PAFC) makes these differences evident even for non-specialists. The barplots underline that bidirectional and residual ConvLSTMs dominate at $H=6$, while compact ConvRNN variants remain competitive at $H=12$. The $R^{2}$ drop for PAFC at $H=12$ signals overfitting to recent lags; attention without tighter regularization hurts generalization.
 
 \noindent The bias panels show KCE's advantage: elevation-aware attention reins in systematic underestimation, especially at $H=12$. BASIC remains close to zero bias after 12-month forecasting, aligning with its balanced RMSE and $R^{2}$. Horizon deltas highlight robustness: BASIC loses the least skill when moving to 12 months, while PAFC and KCE become more sensitive to horizon length. Positive $\Delta R^{2}$ bars for some KCE variants suggest attention helps mid-forecast steps but needs regularization.
 
 \begin{figure}[H]
 \centering
-\subfloat[Best validation loss ($H=6$).]{\includegraphics[width=0.49\textwidth]{figures/h6/best_val_loss_matrix.png}}\hfill
-\subfloat[Best validation loss ($H=12$).]{\includegraphics[width=0.49\textwidth]{figures/h12/best_val_loss_matrix.png}}
-\caption{Convergence behaviour by architecture and experiment. Cooler colors indicate lower loss. BASIC and KCE achieve the lowest validation loss at $H{=}6$; at $H{=}12$ only a subset of KCE/PAFC models remain competitive, underscoring the need for stronger regularization when adding lags and attention.}
+\subfloat[Best validation loss ($H=6$).]{\includegraphics[width=0.8\textwidth]{figures/h6/best_val_loss_matrix.png}}\\[12pt]
+\subfloat[Best validation loss ($H=12$).]{\includegraphics[width=0.8\textwidth]{figures/h12/best_val_loss_matrix.png}}
+\caption{Convergence behaviour by architecture and experiment. Cooler colors indicate lower loss. BASIC and KCE achieve the lowest validation loss at $H{=}6$; at $H{=}12$ only a subset of KCE/PAFC models remain competitive, underscoring the need for stronger regularization when adding lags and attention. Legends are embedded within each heatmap.}
 \label{fig:valloss}
 \end{figure}
 
