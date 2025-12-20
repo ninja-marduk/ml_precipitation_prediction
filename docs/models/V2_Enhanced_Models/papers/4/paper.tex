@@ -74,7 +74,7 @@ $^{3}$ \quad Pedagogical and Technological University of Colombia (UPTC), School
 }
 \fancypagestyle{titlepage}{%
   \fancyhf{}
-  \fancyhead[L]{\includegraphics[height=12pt]{figures/hydrology-logo-print.png}}
+  \fancyhead[L]{\includegraphics[height=36pt]{figures/hydrology-logo-print.png}}
   \fancyhead[C]{}
   \fancyhead[R]{\includegraphics[height=12pt]{Definitions/logo-mdpi-eps-converted-to.pdf}}
   \renewcommand{\headrulewidth}{0.4pt}
@@ -277,7 +277,7 @@ Figure~\ref{fig:arch} depicts the end-to-end flow: CHIRPS and DEM feed preproces
 \subfloat[Normalized metrics ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/normalized_metrics_comparison_h12.png}}\hfill
 \subfloat[RMSE by model, BASIC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_basic.png}}\hfill
 \subfloat[RMSE by model, KCE ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_kce.png}}\\[10pt]
-\subfloat[RMSE by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_pafc.png}}\hfill
+\subfloat[RMSE by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_by_model_h12_pafc.png}}
 \caption{Training evolution and per-model comparisons for $H{=}12$. Skill drops versus $H{=}6$, yet PAFC remains best on RMSE, KCE keeps bias lowest, and BASIC preserves balanced MAE/$R^{2}$. Legends are rendered within each panel.}
 \label{fig:exp-h12}
 \end{figure}
@@ -290,8 +290,6 @@ Figure~\ref{fig:arch} depicts the end-to-end flow: CHIRPS and DEM feed preproces
 \subfloat[Bias by model, BASIC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_basic.png}}\\[10pt]
 \subfloat[Bias by model, KCE ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_kce.png}}\hfill
 \subfloat[Bias by model, PAFC ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/bias_by_model_h12_pafc.png}}\\[10pt]
-\subfloat[$\Delta$RMSE (H12--H6), per model \& experiment.]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6.png}}\hfill
-\subfloat[$\Delta R^{2}$ (H12--H6), per model \& experiment.]{\includegraphics[width=0.48\textwidth]{figures/h12/r2_delta_h12_vs_h6.png}}\\[10pt]
 \subfloat[$\Delta$RMSE BASIC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_basic.png}}\hfill
 \subfloat[$\Delta$RMSE KCE (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_kce.png}}\\[10pt]
 \subfloat[$\Delta$RMSE PAFC (H12--H6).]{\includegraphics[width=0.48\textwidth]{figures/h12/rmse_delta_h12_vs_h6_pafc.png}}\hfill
@@ -308,8 +306,8 @@ Figure~\ref{fig:arch} depicts the end-to-end flow: CHIRPS and DEM feed preproces
 
 \begin{figure}[H]
 \centering
-\subfloat[Best validation loss ($H=6$).]{\includegraphics[width=0.8\textwidth]{figures/h6/best_val_loss_matrix.png}}\\[12pt]
-\subfloat[Best validation loss ($H=12$).]{\includegraphics[width=0.8\textwidth]{figures/h12/best_val_loss_matrix.png}}
+\subfloat[Best validation loss ($H=6$).]{\includegraphics[width=0.48\textwidth]{figures/h6/best_val_loss_matrix.png}}\hfill
+\subfloat[Best validation loss ($H=12$).]{\includegraphics[width=0.48\textwidth]{figures/h12/best_val_loss_matrix.png}}
 \caption{Convergence behaviour by architecture and experiment. Cooler colors indicate lower loss. BASIC and KCE achieve the lowest validation loss at $H{=}6$; at $H{=}12$ only a subset of KCE/PAFC models remain competitive, underscoring the need for stronger regularization when adding lags and attention. Legends are embedded within each heatmap.}
 \label{fig:valloss}
 \end{figure}
