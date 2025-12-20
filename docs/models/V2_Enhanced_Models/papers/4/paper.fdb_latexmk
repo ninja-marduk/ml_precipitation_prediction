@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1765417312.0338 "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/models/V2_Enhanced_Models/papers/4/paper.tex" "paper.pdf" "paper" 1765417331.99487 0
+["pdflatex"] 1765736179.04266 "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/models/V2_Enhanced_Models/papers/4/paper.tex" "paper.pdf" "paper" 1765736196.48293 0
   "../MDPI_template_ACS/Definitions/mdpi.cls" 1758930362 64601 fda76bfe2ce6b8ce4b3fd03194f3cd8c ""
   "C:/Users/manue/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1765069159 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/manue/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi375/ecss0800.pk" 1765069170 10028 349a0ce00d6b8218230c53f83d79ad23 ""
@@ -255,7 +255,7 @@
   "Definitions/journalnames.tex" 1758881551 113144 51bb0add7e0b584095abfc2c449f42f6 ""
   "Definitions/logo-mdpi.eps" 1710933224 563678 5cdc8f4064e4e6cc8ec19e9f9b0d5b7c ""
   "Definitions/logo-orcid.pdf" 1639997176 12671 39a20ba789123aa897c7efc569fb5270 ""
-  "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/models/V2_Enhanced_Models/papers/4/paper.tex" 1765417164 32593 bf9dbf5b8e14e13ca5844ac5087a397a ""
+  "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/models/V2_Enhanced_Models/papers/4/paper.tex" 1765732860 32134 8c76631b7877ff0e51d6ada6ab23153b ""
   "figures/chirps_boyaca_grid.png" 1765414433 656435 aff75056eba07c6a6fb7d29aab8617ea ""
   "figures/colombia_map.png" 1765414433 376328 218214c0d6201fa18ee12f37dc5d767b ""
   "figures/h12/best_val_loss_matrix.png" 1765414435 126363 d6745669bd838d9f0c63ffe2c192066a ""
@@ -269,14 +269,12 @@
   "figures/h12/r2_by_model_h12_basic.png" 1765414436 176961 365c9079b69133b77025b376b0aba2a0 ""
   "figures/h12/r2_by_model_h12_kce.png" 1765414436 169458 455ae19b508cb5c5be0480c49cf75a7b ""
   "figures/h12/r2_by_model_h12_pafc.png" 1765414436 171759 80cd575a035b9bb504d922e42b3dc4ae ""
-  "figures/h12/r2_delta_h12_vs_h6.png" 1765414437 119214 0e00914028116c2472467657678c027f ""
   "figures/h12/r2_delta_h12_vs_h6_basic.png" 1765414437 193036 350b4275be2c7c21f3bc22b0f4c909ca ""
   "figures/h12/r2_delta_h12_vs_h6_kce.png" 1765414437 171205 5e0efb86d6b0013177f4ad235c940886 ""
   "figures/h12/r2_delta_h12_vs_h6_pafc.png" 1765414437 178530 b5acefa404bf10f9f0d4940ae4322283 ""
   "figures/h12/rmse_by_model_h12_basic.png" 1765414437 184549 9e179c8195bb6436e98cd22dbd49c1b0 ""
   "figures/h12/rmse_by_model_h12_kce.png" 1765414437 197091 bc66920a43cd32915e5c88fe5b7d09b7 ""
   "figures/h12/rmse_by_model_h12_pafc.png" 1765414437 193995 9d635a6df0bf313b2fdfa1b23e477aa3 ""
-  "figures/h12/rmse_delta_h12_vs_h6.png" 1765414437 130126 f37a7c6a9ea0d6c3ea2887b0aeb3ed13 ""
   "figures/h12/rmse_delta_h12_vs_h6_basic.png" 1765414438 194588 cb3a2a48643c5a2a83705769c8ec0af8 ""
   "figures/h12/rmse_delta_h12_vs_h6_kce.png" 1765414438 194859 22b547e856a3d5c410523b6946a98bc4 ""
   "figures/h12/rmse_delta_h12_vs_h6_pafc.png" 1765414438 193185 b24ef159affc3252c7e1cb89570aa18f ""
@@ -291,9 +289,9 @@
   "figures/hydrology-logo-print.png" 1765414433 223385 dc8f2f62dd942d515607bb001ee4a0b0 ""
   "figures/normalized_metrics_comparison_h12.png" 1765414434 1197521 0a4e50f4820fbff3fb287dd5f62d5c3f ""
   "figures/normalized_metrics_comparison_h6.png" 1765414435 1072262 f9308e8006c0077c7fd3e5ac5b374f03 ""
-  "paper.aux" 1765417331 15450 29d2cc32803639f7e0f882cc4e2161e7 "pdflatex"
-  "paper.out" 1765417331 2346 91989e25c55b4791d13583dc432d4167 "pdflatex"
-  "paper.tex" 1765417164 32593 bf9dbf5b8e14e13ca5844ac5087a397a ""
+  "paper.aux" 1765736195 15057 bce0854a41c64f7670552f09982fbfbe "pdflatex"
+  "paper.out" 1765736195 2346 91989e25c55b4791d13583dc432d4167 "pdflatex"
+  "paper.tex" 1765732860 32134 8c76631b7877ff0e51d6ada6ab23153b ""
   (generated)
   "paper.aux"
   "paper.log"
