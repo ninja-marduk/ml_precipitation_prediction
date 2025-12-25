@@ -253,3 +253,7 @@ Thumbs.db
 
 # V2 files
 *.v2
+
+# Tesis and papers
+*.pdf
+*.tex

@@ -1,0 +1,25 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Objectives}{2}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Data Acquisition and Preprocessing}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Dataset: CHIRPS-2.0}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Preprocessing Pipeline}{3}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Feature Engineering and Exploratory Analysis}{4}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Feature Sets}{4}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Exploratory Analysis}{4}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Data-Driven Methodology}{5}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Pipeline Overview}{5}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Model Zoo}{5}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Training Setup}{5}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Evaluation Protocol}{7}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Metrics and Diagnostics}{7}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Figures (700 dpi)}{7}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Results}{10}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Quantitative Highlights (H=12)}{10}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Effect of Feature Engineering}{10}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Statistical Significance}{10}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Hypothesis Assessment and Gaps}{10}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Innovation Roadmap}{11}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Implementation Plan}{11}{section.6.6}%
+\contentsline {chapter}{\numberline {7}Discussion and Future Work}{12}{chapter.7}%
+\contentsline {chapter}{\numberline {8}Conclusion}{13}{chapter.8}%
