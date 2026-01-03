@@ -257,3 +257,26 @@ Thumbs.db
 # Tesis and papers
 *.pdf
 *.tex
+docs/tesis/
+
+# =============================================================================
+# Large files - Model outputs (GIFs, images, maps)
+# =============================================================================
+# GIF animations (very large)
+*.gif
+
+# Large image exports
+models/output/*/map_exports/
+models/output/**/map_exports/
+
+# PNG maps (can be large)
+models/output/**/*.png
+
+# Model weights and checkpoints (already covered but explicit)
+models/output/**/*.pt
+models/output/**/*.pth
+models/output/**/*.h5
+models/output/**/*.keras
+
+# Prediction arrays
+models/output/**/*.npy
