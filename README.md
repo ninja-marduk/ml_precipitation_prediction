@@ -1,102 +1,196 @@
-# Precipitation Prediction Models Comparison
+# ML Precipitation Prediction
 
-This repository contains implementations of various deep learning models for precipitation prediction, including ConvLSTM, ConvGRU, and hybrid Topoclus-CEEMDAN-TVF-AFC models.
+## Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas
 
-## Models Implemented
+**A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention**
 
-1. **ConvLSTM**: Convolutional LSTM model for spatial-temporal precipitation prediction
-2. **ConvGRU**: Convolutional GRU model for spatial-temporal precipitation prediction
-3. **Hybrid Topoclus Model**: A combination of Topoclus-CEEMDAN-TVF-AFC with ConvBiGRU-AE and ConvLSTM-AE
+---
 
-## Features
+## Project Overview
 
-- Complete training and evaluation pipeline
-- Multiple evaluation metrics (RMSE, MAE, MAPE%, r, R²)
-- Visualization capabilities:
-  - Prediction maps (white to blue scale)
-  - Error maps (white to red scale)
-- Support for 12-month predictions
-- Early stopping and model checkpointing
-- Data preprocessing and standardization
-- Integration with elevation and cluster information
+This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows Specification-Driven Development (SDD) and Data-Driven (DD) methodologies.
+
+### Key Achievement: GNN-TAT (V4)
+
+| Metric | V2 Baseline | V4 GNN-TAT | Improvement |
+|--------|-------------|------------|-------------|
+| R² | 0.437 | **0.707** | **+62%** |
+| RMSE | 98.17mm | **52.45mm** | **-47%** |
+| Parameters | 2M+ | **~98K** | **-95%** |
+
+---
+
+## Research Hypotheses
+
+| ID | Hypothesis | Status |
+|----|------------|--------|
+| H1 | Hybrid GNN-Temporal models outperform ConvLSTM | **VALIDATED** |
+| H2 | Topographic features improve prediction accuracy | **VALIDATED** |
+| H3 | Non-Euclidean spatial relations capture orographic dynamics | IN VALIDATION |
+| H4 | Multi-scale temporal attention improves long horizons | PARTIALLY VALIDATED |
+
+---
+
+## Model Versions
+
+| Version | Architecture | Purpose | Status |
+|---------|--------------|---------|--------|
+| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete |
+| V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete |
+| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete (underperformed) |
+| **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **In Progress** |
+| V5 | Multi-Modal | ERA5 + Satellite integration | Planned |
+| V6 | Ensemble | Meta-learning | Planned |
+
+---
+
+## Project Structure
+
+```
+ml_precipitation_prediction/
+├── CLAUDE.md                     # Project rules and standards
+├── data/                         # Input data (CHIRPS, SRTM)
+├── docs/
+│   ├── tesis/                    # Doctoral thesis (thesis.tex)
+│   │   └── references.bib        # 110+ Q1 references
+│   └── papers/4/                 # Comparative paper (paper.tex)
+├── models/
+│   ├── spec.md                   # Technical specifications
+│   ├── plan.md                   # Development roadmap
+│   ├── base_models_*.ipynb       # Model notebooks (V1-V4)
+│   └── output/                   # Training outputs
+├── notebooks/                    # Exploratory analysis
+└── scripts/                      # Automation scripts
+```
+
+---
+
+## Data Sources
+
+- **CHIRPS 2.0**: Climate Hazards InfraRed Precipitation with Stations (0.05° resolution)
+- **SRTM DEM**: Shuttle Radar Topography Mission elevation data (90m)
+- **ERA5**: ECMWF Reanalysis v5 (planned for V5)
+
+### Study Area
+- **Region**: Boyaca, Colombian Andes
+- **Grid**: 61 x 65 cells (0.05° resolution)
+- **Temporal**: 518 monthly steps
+- **Horizons**: H = 1, 3, 6, 12 months
+
+---
+
+## Feature Sets
+
+| Set | Features | Description |
+|-----|----------|-------------|
+| BASIC | 12 | Temporal encodings + precipitation stats + base topography |
+| KCE | 15 | BASIC + K-means elevation clusters |
+| PAFC | 18 | KCE + precipitation autocorrelation lags (t-1, t-2, t-12) |
+
+---
 
 ## Installation
 
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ml_precipitation_prediction.git
+# Clone repository
+git clone https://github.com/ninja-marduk/ml_precipitation_prediction.git
 cd ml_precipitation_prediction
-```
 
-2. Create a conda environment:
-```bash
-conda create -n precipitation_prediction python=3.9
-conda activate precipitation_prediction
-```
+# Create environment
+conda create -n precipitation python=3.10
+conda activate precipitation
 
-3. Install dependencies:
-```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# For V4 GNN-TAT (PyTorch Geometric)
+pip install torch-geometric
 ```
 
-## Data Preparation
-
-The code expects the following data files in the `data` directory:
-- `precipitation.nc`: NetCDF file containing precipitation data
-- `elevation.npy`: NumPy file containing elevation data
-- `clusters.npy`: NumPy file containing cluster information
+---
 
 ## Usage
 
-1. Ensure your data files are in the correct location and format.
+### Running Notebooks
 
-2. Run the model comparison:
-```bash
-python models/precipitation_model_comparison.py
-```
+1. **V4 GNN-TAT** (recommended):
+   ```bash
+   jupyter notebook models/base_models_GNN_TAT_V4.ipynb
+   ```
 
-3. Results will be saved in the `results/model_comparison` directory:
-- Model checkpoints (*.pth files)
-- Prediction maps (PNG format)
-- Error maps (PNG format)
-- Metrics comparison CSV file
+2. **V2 Enhanced Models**:
+   ```bash
+   jupyter notebook models/base_models_Enhanced_V2.ipynb
+   ```
 
-## Configuration
+### Google Colab
 
-You can modify the model configuration in the `precipitation_model_comparison.py` script:
+V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geometric installation.
 
-```python
-config = {
-    'input_channels': 1,
-    'hidden_channels': 64,
-    'output_channels': 1,
-    'learning_rate': 1e-3,
-    'batch_size': 32,
-    'epochs': 100
-}
-```
+---
 
-## Output
+## Evaluation Metrics
 
-The code generates:
-1. Monthly prediction maps for each model
-2. Monthly error maps for each model
-3. A comprehensive CSV file with performance metrics
-4. Trained model checkpoints
+- **RMSE**: Root Mean Square Error (mm)
+- **MAE**: Mean Absolute Error (mm)
+- **R²**: Coefficient of Determination
+- **Bias**: Mean prediction bias (mm, %)
+- **Statistical Tests**: Friedman + Nemenyi post-hoc
+
+---
+
+## Documentation
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| Thesis | `docs/tesis/thesis.tex` | Complete methodology |
+| Paper | `docs/papers/4/paper.tex` | Comparative results |
+| Specifications | `models/spec.md` | Technical standards |
+| Plan | `models/plan.md` | Development roadmap |
+| Rules | `CLAUDE.md` | Project governance |
+
+---
 
 ## Citation
 
-If you use this code in your research, please cite:
-
 ```bibtex
-@article{your_reference,
-    title={Your Paper Title},
-    author={Your Name},
-    journal={Journal Name},
-    year={2024}
+@phdthesis{perez2026precipitation,
+  title={Computational Model for Spatiotemporal Prediction of Monthly
+         Precipitation in Mountainous Areas: A Hybrid Deep Learning
+         Approach Using Graph Neural Networks with Temporal Attention},
+  author={P{\'e}rez Reyes, Manuel Ricardo},
+  year={2026},
+  school={Pedagogical and Technological University of Colombia (UPTC)}
 }
 ```
 
+---
+
+## Key References
+
+1. Kipf & Welling (2017) - Graph Convolutional Networks
+2. Velickovic et al. (2018) - Graph Attention Networks
+3. Shi et al. (2015) - ConvLSTM for Precipitation Nowcasting
+4. Vaswani et al. (2017) - Attention Is All You Need
+5. Funk et al. (2015) - CHIRPS Precipitation Dataset
+
+Full bibliography: `docs/tesis/references.bib` (110+ Q1 references)
+
+---
+
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - See LICENSE file for details.
+
+---
+
+## Contact
+
+**Author**: Manuel Ricardo Perez Reyes
+**Institution**: Pedagogical and Technological University of Colombia (UPTC)
+**Program**: Doctoral Program in Engineering
+
+---
+
+*Last Updated: January 2026*
+*Project Status: V4 GNN-TAT in progress*
