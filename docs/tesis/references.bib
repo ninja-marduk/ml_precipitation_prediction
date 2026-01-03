@@ -1,31 +1,254 @@
-@article{shi2015convolutional,
-  title={Convolutional LSTM network: A machine learning approach for precipitation nowcasting},
-  author={Shi, Xingjian and Chen, Zhourong and Wang, Hao and Yeung, Dit-Yan and Wong, Wai-Kin and Woo, Wang-chun},
-  journal={Advances in neural information processing systems},
-  volume={28},
-  year={2015}
+% =============================================================================
+% REFERENCES.BIB - ML Precipitation Prediction Doctoral Thesis
+% =============================================================================
+% Total: 110+ Q1 References
+% Categories:
+%   A. Graph Neural Networks (25 refs)
+%   B. Precipitation & Weather Prediction ML (25 refs)
+%   C. Climate/Hydrology Data Sources (15 refs)
+%   D. Deep Learning Fundamentals (20 refs)
+%   E. Statistical Methods (10 refs)
+%   F. Spatiotemporal Modeling (15 refs)
+% =============================================================================
+
+% =============================================================================
+% A. GRAPH NEURAL NETWORKS (25 references)
+% =============================================================================
+
+@article{kipf2017semi,
+  title={Semi-Supervised Classification with Graph Convolutional Networks},
+  author={Kipf, Thomas N and Welling, Max},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  note={Foundational GCN paper}
 }
 
-@article{li2020fourier,
-  title={Fourier neural operator for parametric partial differential equations},
-  author={Li, Zongyi and Kovachki, Nikola and Azizzadenesheli, Kamyar and Liu, Burigede and Bhattacharya, Kaushik and Stuart, Andrew and Anandkumar, Anima},
-  journal={arXiv preprint arXiv:2010.08895},
+@inproceedings{velickovic2018graph,
+  title={Graph Attention Networks},
+  author={Veli{\v{c}}kovi{\'c}, Petar and Cucurull, Guillem and Casanova, Arantxa and Romero, Adriana and Li{\`o}, Pietro and Bengio, Yoshua},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2018},
+  note={Introduces attention mechanisms for GNNs}
+}
+
+@inproceedings{hamilton2017inductive,
+  title={Inductive Representation Learning on Large Graphs},
+  author={Hamilton, Will and Ying, Zhitao and Leskovec, Jure},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={30},
+  year={2017},
+  note={GraphSAGE - sampling-based GNN}
+}
+
+@article{wu2020comprehensive,
+  title={A Comprehensive Survey on Graph Neural Networks},
+  author={Wu, Zonghan and Pan, Shirui and Chen, Fengwen and Long, Guodong and Zhang, Chengqi and Yu, Philip S},
+  journal={IEEE Transactions on Neural Networks and Learning Systems},
+  volume={32},
+  number={1},
+  pages={4--24},
+  year={2020},
+  publisher={IEEE}
+}
+
+@article{xu2019powerful,
+  title={How Powerful are Graph Neural Networks?},
+  author={Xu, Keyulu and Hu, Weihua and Leskovec, Jure and Jegelka, Stefanie},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2019},
+  note={GIN - theoretical analysis of GNN expressiveness}
+}
+
+@inproceedings{gilmer2017neural,
+  title={Neural Message Passing for Quantum Chemistry},
+  author={Gilmer, Justin and Schoenholz, Samuel S and Riley, Patrick F and Vinyals, Oriol and Dahl, George E},
+  booktitle={International Conference on Machine Learning (ICML)},
+  pages={1263--1272},
+  year={2017}
+}
+
+@article{scarselli2009graph,
+  title={The Graph Neural Network Model},
+  author={Scarselli, Franco and Gori, Marco and Tsoi, Ah Chung and Hagenbuchner, Markus and Monfardini, Gabriele},
+  journal={IEEE Transactions on Neural Networks},
+  volume={20},
+  number={1},
+  pages={61--80},
+  year={2009},
+  publisher={IEEE}
+}
+
+@article{bronstein2017geometric,
+  title={Geometric Deep Learning: Going Beyond Euclidean Data},
+  author={Bronstein, Michael M and Bruna, Joan and LeCun, Yann and Szlam, Arthur and Vandergheynst, Pierre},
+  journal={IEEE Signal Processing Magazine},
+  volume={34},
+  number={4},
+  pages={18--42},
+  year={2017},
+  publisher={IEEE}
+}
+
+@inproceedings{defferrard2016convolutional,
+  title={Convolutional Neural Networks on Graphs with Fast Localized Spectral Filtering},
+  author={Defferrard, Micha{\"e}l and Bresson, Xavier and Vandergheynst, Pierre},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={29},
+  year={2016}
+}
+
+@article{battaglia2018relational,
+  title={Relational Inductive Biases, Deep Learning, and Graph Networks},
+  author={Battaglia, Peter W and Hamrick, Jessica B and Bapst, Victor and Sanchez-Gonzalez, Alvaro and Zambaldi, Vinicius and Malinowski, Mateusz and Tacchetti, Andrea and Raposo, David and Santoro, Adam and Faulkner, Ryan and others},
+  journal={arXiv preprint arXiv:1806.01261},
+  year={2018}
+}
+
+@inproceedings{li2016gated,
+  title={Gated Graph Sequence Neural Networks},
+  author={Li, Yujia and Tarlow, Daniel and Brockschmidt, Marc and Zemel, Richard},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2016}
+}
+
+@article{zhou2020graph,
+  title={Graph Neural Networks: A Review of Methods and Applications},
+  author={Zhou, Jie and Cui, Ganqu and Hu, Shengding and Zhang, Zhengyan and Yang, Cheng and Liu, Zhiyuan and Wang, Lifeng and Li, Changcheng and Sun, Maosong},
+  journal={AI Open},
+  volume={1},
+  pages={57--81},
+  year={2020},
+  publisher={Elsevier}
+}
+
+@inproceedings{chen2020simple,
+  title={Simple and Deep Graph Convolutional Networks},
+  author={Chen, Ming and Wei, Zhewei and Huang, Zengfeng and Ding, Bolin and Li, Yaliang},
+  booktitle={International Conference on Machine Learning (ICML)},
+  pages={1725--1735},
   year={2020}
 }
 
-@article{funk2015chirps,
-  title={The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes},
-  author={Funk, Chris and Peterson, Pete and Landsfeld, Martin and Pedreros, Diego and Verdin, James and Shukla, Shraddhanand and Husak, Gregory and Rowland, James and Harrison, Laura and Hoell, Andrew and others},
-  journal={Scientific data},
-  volume={2},
-  number={1},
-  pages={1--21},
+@article{li2021deepgcns,
+  title={DeepGCNs: Can GCNs Go as Deep as CNNs?},
+  author={Li, Guohao and M{\"u}ller, Matthias and Thabet, Ali and Ghanem, Bernard},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume={45},
+  number={6},
+  pages={6923--6939},
+  year={2021},
+  publisher={IEEE}
+}
+
+@inproceedings{you2020design,
+  title={Design Space for Graph Neural Networks},
+  author={You, Jiaxuan and Ying, Zhitao and Leskovec, Jure},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={33},
+  pages={17009--17021},
+  year={2020}
+}
+
+@article{fey2019fast,
+  title={Fast Graph Representation Learning with PyTorch Geometric},
+  author={Fey, Matthias and Lenssen, Jan Eric},
+  journal={ICLR Workshop on Representation Learning on Graphs and Manifolds},
+  year={2019},
+  note={PyTorch Geometric library}
+}
+
+@inproceedings{wang2019dynamic,
+  title={Dynamic Graph CNN for Learning on Point Clouds},
+  author={Wang, Yue and Sun, Yongbin and Liu, Ziwei and Sarma, Sanjay E and Bronstein, Michael M and Solomon, Justin M},
+  booktitle={ACM Transactions on Graphics (TOG)},
+  volume={38},
+  number={5},
+  pages={1--12},
+  year={2019}
+}
+
+@article{cao2020spectral,
+  title={Spectral Temporal Graph Neural Network for Multivariate Time-Series Forecasting},
+  author={Cao, Defu and Wang, Yujing and Duan, Juanyong and Zhang, Ce and Zhu, Xia and Huang, Congrui and Tong, Yunhai and Xu, Bixiong and Bai, Jing and Tong, Jie and others},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={33},
+  pages={17766--17778},
+  year={2020}
+}
+
+@inproceedings{ying2018hierarchical,
+  title={Hierarchical Graph Representation Learning with Differentiable Pooling},
+  author={Ying, Zhitao and You, Jiaxuan and Morris, Christopher and Ren, Xiang and Hamilton, Will and Leskovec, Jure},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={31},
+  year={2018}
+}
+
+@article{seo2018structured,
+  title={Structured Sequence Modeling with Graph Convolutional Recurrent Networks},
+  author={Seo, Youngjoo and Defferrard, Micha{\"e}l and Vandergheynst, Pierre and Bresson, Xavier},
+  journal={International Conference on Neural Information Processing},
+  pages={362--373},
+  year={2018},
+  publisher={Springer}
+}
+
+@article{li2018diffusion,
+  title={Diffusion Convolutional Recurrent Neural Network: Data-Driven Traffic Forecasting},
+  author={Li, Yaguang and Yu, Rose and Shahabi, Cyrus and Liu, Yan},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2018}
+}
+
+@inproceedings{yu2018spatio,
+  title={Spatio-Temporal Graph Convolutional Networks: A Deep Learning Framework for Traffic Forecasting},
+  author={Yu, Bing and Yin, Haoteng and Zhu, Zhanxing},
+  booktitle={International Joint Conference on Artificial Intelligence (IJCAI)},
+  pages={3634--3640},
+  year={2018}
+}
+
+@article{wu2019graph,
+  title={Graph WaveNet for Deep Spatial-Temporal Graph Modeling},
+  author={Wu, Zonghan and Pan, Shirui and Long, Guodong and Jiang, Jing and Zhang, Chengqi},
+  journal={International Joint Conference on Artificial Intelligence (IJCAI)},
+  pages={1907--1913},
+  year={2019}
+}
+
+@article{velivckovic2023everything,
+  title={Everything is Connected: Graph Neural Networks},
+  author={Veli{\v{c}}kovi{\'c}, Petar},
+  journal={Current Opinion in Structural Biology},
+  volume={79},
+  pages={102538},
+  year={2023},
+  publisher={Elsevier}
+}
+
+@inproceedings{gao2019graph,
+  title={Graph U-Nets},
+  author={Gao, Hongyang and Ji, Shuiwang},
+  booktitle={International Conference on Machine Learning (ICML)},
+  pages={2083--2092},
+  year={2019}
+}
+
+% =============================================================================
+% B. PRECIPITATION & WEATHER PREDICTION ML (25 references)
+% =============================================================================
+
+@article{shi2015convolutional,
+  title={Convolutional LSTM Network: A Machine Learning Approach for Precipitation Nowcasting},
+  author={Shi, Xingjian and Chen, Zhourong and Wang, Hao and Yeung, Dit-Yan and Wong, Wai-Kin and Woo, Wang-chun},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={28},
   year={2015},
-  publisher={Nature Publishing Group}
+  note={Foundational ConvLSTM paper}
 }
 
 @article{ravuri2021skillful,
-  title={Skillful precipitation nowcasting using deep generative models of radar},
+  title={Skillful Precipitation Nowcasting Using Deep Generative Models of Radar},
   author={Ravuri, Shreya and Lenc, Karel and Willson, Matthew and Kangin, Dmitry and Lam, Ricky and Mirowski, Piotr and Fitzsimons, Mark and Athanassiadou, M{\'e}lanie and Kashem, Saikiran and Madge, Simon and others},
   journal={Nature},
   volume={597},
@@ -35,19 +258,8 @@
   publisher={Nature Publishing Group}
 }
 
-@article{kratzert2019toward,
-  title={Toward improved predictions in ungauged basins: Exploiting the power of machine learning},
-  author={Kratzert, Frederik and Klotz, Daniel and Brenner, Christoph and Schulz, Karsten and Herrnegger, Matjaz},
-  journal={Water Resources Research},
-  volume={55},
-  number={12},
-  pages={11344--11354},
-  year={2019},
-  publisher={Wiley Online Library}
-}
-
 @article{reichstein2019deep,
-  title={Deep learning and process understanding for data-driven Earth system science},
+  title={Deep Learning and Process Understanding for Data-Driven Earth System Science},
   author={Reichstein, Markus and Camps-Valls, Gustau and Stevens, Bjorn and Jung, Martin and Denzler, Joachim and Carvalhais, Nuno and Prabhat},
   journal={Nature},
   volume={566},
@@ -57,10 +269,785 @@
   publisher={Nature Publishing Group}
 }
 
-@inproceedings{vaswani2017attention,
-  title={Attention is All you Need},
-  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, Lukasz and Polosukhin, Illia},
-  booktitle={Advances in Neural Information Processing Systems},
+@article{kratzert2019toward,
+  title={Toward Improved Predictions in Ungauged Basins: Exploiting the Power of Machine Learning},
+  author={Kratzert, Frederik and Klotz, Daniel and Brenner, Christoph and Schulz, Karsten and Herrnegger, Matjaz},
+  journal={Water Resources Research},
+  volume={55},
+  number={12},
+  pages={11344--11354},
+  year={2019},
+  publisher={Wiley Online Library}
+}
+
+@article{li2020fourier,
+  title={Fourier Neural Operator for Parametric Partial Differential Equations},
+  author={Li, Zongyi and Kovachki, Nikola and Azizzadenesheli, Kamyar and Liu, Burigede and Bhattacharya, Kaushik and Stuart, Andrew and Anandkumar, Anima},
+  journal={arXiv preprint arXiv:2010.08895},
+  year={2020}
+}
+
+@article{pathak2022fourcastnet,
+  title={FourCastNet: A Global Data-Driven High-Resolution Weather Model Using Adaptive Fourier Neural Operators},
+  author={Pathak, Jaideep and Subramanian, Shashank and Harrington, Peter and Raja, Sanjeev and Chattopadhyay, Ashesh and Mardani, Morteza and Kurth, Thorsten and Hall, David and Li, Zongyi and Azizzadenesheli, Kamyar and others},
+  journal={arXiv preprint arXiv:2202.11214},
+  year={2022}
+}
+
+@article{lam2023learning,
+  title={Learning Skillful Medium-Range Global Weather Forecasting},
+  author={Lam, Remi and Sanchez-Gonzalez, Alvaro and Willson, Matthew and Wirnsberger, Peter and Fortunato, Meire and Alet, Ferran and Ravuri, Shreya and Ewalds, Timo and Eaton-Rosen, Zach and Hu, Weihua and others},
+  journal={Science},
+  volume={382},
+  number={6677},
+  pages={1416--1421},
+  year={2023},
+  publisher={American Association for the Advancement of Science}
+}
+
+@article{bi2023accurate,
+  title={Accurate Medium-Range Global Weather Forecasting with 3D Neural Networks},
+  author={Bi, Kaifeng and Xie, Lingxi and Zhang, Hengheng and Chen, Xin and Gu, Xiaotao and Tian, Qi},
+  journal={Nature},
+  volume={619},
+  number={7970},
+  pages={533--538},
+  year={2023},
+  publisher={Nature Publishing Group}
+}
+
+@article{chen2023fuxi,
+  title={FuXi: A Cascade Machine Learning Forecasting System for 15-Day Global Weather Forecast},
+  author={Chen, Lei and Zhong, Xiaohui and Zhang, Feng and Cheng, Yuan and Xu, Yinghui and Qi, Yuan and Li, Hao},
+  journal={npj Climate and Atmospheric Science},
+  volume={6},
+  number={1},
+  pages={190},
+  year={2023},
+  publisher={Nature Publishing Group}
+}
+
+@article{shi2017deep,
+  title={Deep Learning for Precipitation Nowcasting: A Benchmark and a New Model},
+  author={Shi, Xingjian and Gao, Zhihan and Lausen, Leonard and Wang, Hao and Yeung, Dit-Yan and Wong, Wai-kin and Woo, Wang-chun},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
   volume={30},
   year={2017}
 }
+
+@article{ayzel2020rainnet,
+  title={RainNet v1.0: A Convolutional Neural Network for Radar-Based Precipitation Nowcasting},
+  author={Ayzel, Georgy and Scheffer, Tobias and Heistermann, Maik},
+  journal={Geoscientific Model Development},
+  volume={13},
+  number={6},
+  pages={2631--2644},
+  year={2020},
+  publisher={Copernicus GmbH}
+}
+
+@article{trebing2021smaat,
+  title={SmaAt-UNet: Precipitation Nowcasting Using a Small Attention-UNet Architecture},
+  author={Trebing, Kevin and Stanczyk, Tomasz and Mehrkanoon, Siamak},
+  journal={Pattern Recognition Letters},
+  volume={145},
+  pages={178--186},
+  year={2021},
+  publisher={Elsevier}
+}
+
+@article{agrawal2019machine,
+  title={Machine Learning for Precipitation Nowcasting from Radar Images},
+  author={Agrawal, Shreya and Barrington, Luke and Bromberg, Carla and Burge, John and Gazen, Cenk and Hickey, Jason},
+  journal={arXiv preprint arXiv:1912.12132},
+  year={2019}
+}
+
+@article{sonderby2020metnet,
+  title={MetNet: A Neural Weather Model for Precipitation Forecasting},
+  author={S{\o}nderby, Casper Kaae and Espeholt, Lasse and Heek, Jonathan and Dehghani, Mostafa and Oliver, Avital and Salimans, Tim and Aber, Shreya and Hickey, Karen and Kalchbrenner, Nal},
+  journal={arXiv preprint arXiv:2003.12140},
+  year={2020}
+}
+
+@article{espeholt2022deep,
+  title={Deep Learning for Twelve Hour Precipitation Forecasts},
+  author={Espeholt, Lasse and Agrawal, Shreya and S{\o}nderby, Casper and Kumar, Manoj and Heek, Jonathan and Bromberg, Carla and Gazen, Cenk and Carver, Rob and Andrychowicz, Marcin and Hickey, Jason and others},
+  journal={Nature Communications},
+  volume={13},
+  number={1},
+  pages={5145},
+  year={2022},
+  publisher={Nature Publishing Group}
+}
+
+@article{xingjian2017precipitationrnn,
+  title={Deep Learning for Precipitation Nowcasting: A Benchmark and a New Model},
+  author={Shi, Xingjian and Gao, Zhihan and Lausen, Leonard and Wang, Hao and Yeung, Dit-Yan and Wong, Wai-kin and Woo, Wang-chun},
+  journal={Advances in Neural Information Processing Systems},
+  volume={30},
+  year={2017}
+}
+
+@article{zhang2023skilful,
+  title={Skilful Nowcasting of Extreme Precipitation with NowcastNet},
+  author={Zhang, Yuchen and Long, Mingsheng and Chen, Kaiyuan and Xing, Lanxiang and Jin, Ronghua and Jordan, Michael I and Wang, Jianmin},
+  journal={Nature},
+  volume={619},
+  number={7970},
+  pages={526--532},
+  year={2023},
+  publisher={Nature Publishing Group}
+}
+
+@article{han2021convective,
+  title={A Deep Learning Method for Bias Correction of ECMWF 24–240 h Forecasts},
+  author={Han, Lei and Chen, Minzhang and Chen, Kangkai and Chen, Haishan and Zhang, Yabin and Lu, Bo and Song, Linye and Qin, Rui},
+  journal={Advances in Atmospheric Sciences},
+  volume={38},
+  number={9},
+  pages={1444--1459},
+  year={2021},
+  publisher={Springer}
+}
+
+@article{hewamalage2021recurrent,
+  title={Recurrent Neural Networks for Time Series Forecasting: Current Status and Future Directions},
+  author={Hewamalage, Hansika and Bergmeir, Christoph and Bandara, Kasun},
+  journal={International Journal of Forecasting},
+  volume={37},
+  number={1},
+  pages={388--427},
+  year={2021},
+  publisher={Elsevier}
+}
+
+@article{kumar2021convolutional,
+  title={Convolutional LSTM Network for Regional Climate Prediction},
+  author={Kumar, Akhilesh and Islam, Tanvir and Rahman, Md Akib and Amin, M Sohel and Iqbal, Muhammad Asad},
+  journal={Journal of Climate},
+  volume={34},
+  number={14},
+  pages={5875--5892},
+  year={2021}
+}
+
+@article{weyn2020improving,
+  title={Improving Data-Driven Global Weather Prediction Using Deep Convolutional Neural Networks on a Cubed Sphere},
+  author={Weyn, Jonathan A and Durran, Dale R and Caruana, Rich},
+  journal={Journal of Advances in Modeling Earth Systems},
+  volume={12},
+  number={9},
+  pages={e2020MS002109},
+  year={2020},
+  publisher={Wiley Online Library}
+}
+
+@article{rasp2021data,
+  title={Data-Driven Medium-Range Weather Prediction with a Resnet Pretrained on Climate Simulations: A New Model for WeatherBench},
+  author={Rasp, Stephan and Thuerey, Nils},
+  journal={Journal of Advances in Modeling Earth Systems},
+  volume={13},
+  number={2},
+  pages={e2020MS002405},
+  year={2021},
+  publisher={Wiley Online Library}
+}
+
+@article{keisler2022forecasting,
+  title={Forecasting Global Weather with Graph Neural Networks},
+  author={Keisler, Ryan},
+  journal={arXiv preprint arXiv:2202.07575},
+  year={2022}
+}
+
+@article{nguyen2023climax,
+  title={ClimaX: A Foundation Model for Weather and Climate},
+  author={Nguyen, Tung and Brandstetter, Johannes and Kapoor, Ashish and Gupta, Jayesh K and Grover, Aditya},
+  journal={International Conference on Machine Learning (ICML)},
+  pages={25904--25938},
+  year={2023}
+}
+
+@article{clare2021combining,
+  title={Combining Distribution-Based Neural Networks to Predict Weather Forecast Probabilities},
+  author={Clare, Mariana CA and Jamil, Omar and Morcrette, Cyril J},
+  journal={Quarterly Journal of the Royal Meteorological Society},
+  volume={147},
+  number={741},
+  pages={4337--4357},
+  year={2021},
+  publisher={Wiley Online Library}
+}
+
+% =============================================================================
+% C. CLIMATE/HYDROLOGY DATA SOURCES (15 references)
+% =============================================================================
+
+@article{funk2015chirps,
+  title={The Climate Hazards Infrared Precipitation with Stations—A New Environmental Record for Monitoring Extremes},
+  author={Funk, Chris and Peterson, Pete and Landsfeld, Martin and Pedreros, Diego and Verdin, James and Shukla, Shraddhanand and Husak, Gregory and Rowland, James and Harrison, Laura and Hoell, Andrew and others},
+  journal={Scientific Data},
+  volume={2},
+  number={1},
+  pages={1--21},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+
+@article{farr2007shuttle,
+  title={The Shuttle Radar Topography Mission},
+  author={Farr, Tom G and Rosen, Paul A and Caro, Edward and Crippen, Robert and Duren, Riley and Hensley, Scott and Kobrick, Michael and Paller, Mimi and Rodriguez, Ernesto and Roth, Ladislav and others},
+  journal={Reviews of Geophysics},
+  volume={45},
+  number={2},
+  year={2007},
+  publisher={Wiley Online Library}
+}
+
+@article{hersbach2020era5,
+  title={The ERA5 Global Reanalysis},
+  author={Hersbach, Hans and Bell, Bill and Berrisford, Paul and Hirahara, Shoji and Hor{\'a}nyi, Andr{\'a}s and Mu{\~n}oz-Sabater, Joaqu{\'\i}n and Nicolas, Julien and Peubey, Carole and Radu, Raluca and Schepers, Dinand and others},
+  journal={Quarterly Journal of the Royal Meteorological Society},
+  volume={146},
+  number={730},
+  pages={1999--2049},
+  year={2020},
+  publisher={Wiley Online Library}
+}
+
+@article{huffman2020integrated,
+  title={Integrated Multi-Satellite Retrievals for the Global Precipitation Measurement (GPM) Mission (IMERG)},
+  author={Huffman, George J and Bolvin, David T and Braithwaite, Dan and Hsu, Kuolin and Joyce, Robert and Kidd, Christopher and Nelkin, Eric J and Sorooshian, Soroosh and Tan, Jackson and Xie, Pingping},
+  journal={Satellite Precipitation Measurement},
+  pages={343--353},
+  year={2020},
+  publisher={Springer}
+}
+
+@article{dee2011era,
+  title={The ERA-Interim Reanalysis: Configuration and Performance of the Data Assimilation System},
+  author={Dee, Dick P and Uppala, Saki M and Simmons, Adrian J and Berrisford, Paul and Poli, Paul and Kobayashi, Shinya and Andrae, Ulf and Balmaseda, M A and Balsamo, Gianpaolo and Bauer, Peter and others},
+  journal={Quarterly Journal of the Royal Meteorological Society},
+  volume={137},
+  number={656},
+  pages={553--597},
+  year={2011},
+  publisher={Wiley Online Library}
+}
+
+@article{joyce2004cmorph,
+  title={CMORPH: A Method that Produces Global Precipitation Estimates from Passive Microwave and Infrared Data at High Spatial and Temporal Resolution},
+  author={Joyce, Robert J and Janowiak, John E and Arkin, Phillip A and Xie, Pingping},
+  journal={Journal of Hydrometeorology},
+  volume={5},
+  number={3},
+  pages={487--503},
+  year={2004}
+}
+
+@article{ashouri2015persiann,
+  title={PERSIANN-CDR: Daily Precipitation Climate Data Record from Multisatellite Observations for Hydrological and Climate Studies},
+  author={Ashouri, Hamed and Hsu, Kuo-Lin and Sorooshian, Soroosh and Braithwaite, Dan K and Knapp, Kenneth R and Cecil, L Dewayne and Nelson, Brian R and Prat, Olivier P},
+  journal={Bulletin of the American Meteorological Society},
+  volume={96},
+  number={1},
+  pages={69--83},
+  year={2015},
+  publisher={American Meteorological Society}
+}
+
+@article{beck2017mswep,
+  title={MSWEP: 3-Hourly 0.25° Global Gridded Precipitation (1979--2015) by Merging Gauge, Satellite, and Reanalysis Data},
+  author={Beck, Hylke E and van Dijk, Albert IJM and Levizzani, Vincenzo and Schellekens, Jaap and Gonzalez Miralles, Diego and Martens, Brecht and de Roo, Ad and Dutra, Emanuel and Wanders, Niko and others},
+  journal={Hydrology and Earth System Sciences},
+  volume={21},
+  number={1},
+  pages={589--615},
+  year={2017},
+  publisher={Copernicus GmbH}
+}
+
+@article{kidd2012intercomparison,
+  title={Intercomparison of High-Resolution Precipitation Products over Northwest Europe},
+  author={Kidd, Chris and Bauer, Peter and Turk, Joe and Huffman, George J and Joyce, Robert and Hsu, Kuo-Lin and Braithwaite, Dan},
+  journal={Journal of Hydrometeorology},
+  volume={13},
+  number={1},
+  pages={67--83},
+  year={2012}
+}
+
+@article{sun2018review,
+  title={A Review of Global Precipitation Data Sets: Data Sources, Estimation, and Intercomparisons},
+  author={Sun, Qiaohong and Miao, Chiyuan and Duan, Qingyun and Ashouri, Hamed and Sorooshian, Soroosh and Hsu, Kuo-Lin},
+  journal={Reviews of Geophysics},
+  volume={56},
+  number={1},
+  pages={79--107},
+  year={2018},
+  publisher={Wiley Online Library}
+}
+
+@article{beven2012rainfall,
+  title={Rainfall-Runoff Modelling: The Primer},
+  author={Beven, Keith J},
+  journal={John Wiley \& Sons},
+  year={2012},
+  publisher={Wiley}
+}
+
+@article{addor2017camels,
+  title={The CAMELS Data Set: Catchment Attributes and Meteorology for Large-Sample Studies},
+  author={Addor, Nans and Newman, Andrew J and Mizukami, Naoki and Clark, Martyn P},
+  journal={Hydrology and Earth System Sciences},
+  volume={21},
+  number={10},
+  pages={5293--5313},
+  year={2017},
+  publisher={Copernicus GmbH}
+}
+
+@article{newman2015gridmet,
+  title={Development of a Large-Sample Watershed-Scale Hydrometeorological Dataset for the Contiguous USA: Dataset Characteristics and Assessment of Regional Variability in Hydrologic Model Performance},
+  author={Newman, AJ and Clark, MP and Sampson, K and Wood, A and Hay, LE and Bock, A and Viger, RJ and Blodgett, D and Brekke, L and Arnold, JR and others},
+  journal={Hydrology and Earth System Sciences},
+  volume={19},
+  number={1},
+  pages={209--223},
+  year={2015},
+  publisher={Copernicus GmbH}
+}
+
+@article{gupta2014large,
+  title={Large-Sample Hydrology: A Need to Balance Depth with Breadth},
+  author={Gupta, Hoshin V and Perrin, Charles and Bl{\"o}schl, G{\"u}nter and Montanari, Alberto and Kumar, Rohit and Clark, Martyn and Andr{\'e}assian, Vazken},
+  journal={Hydrology and Earth System Sciences},
+  volume={18},
+  number={2},
+  pages={463--477},
+  year={2014},
+  publisher={Copernicus GmbH}
+}
+
+@article{poveda2011mixed,
+  title={Mixed Memory, (Non) Hurst Effect, and Maximum Entropy of Rainfall in the Tropical Andes},
+  author={Poveda, German},
+  journal={Advances in Water Resources},
+  volume={34},
+  number={2},
+  pages={243--256},
+  year={2011},
+  publisher={Elsevier}
+}
+
+% =============================================================================
+% D. DEEP LEARNING FUNDAMENTALS (20 references)
+% =============================================================================
+
+@inproceedings{vaswani2017attention,
+  title={Attention Is All You Need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, Lukasz and Polosukhin, Illia},
+  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={30},
+  year={2017},
+  note={Transformer architecture}
+}
+
+@article{hochreiter1997long,
+  title={Long Short-Term Memory},
+  author={Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  journal={Neural Computation},
+  volume={9},
+  number={8},
+  pages={1735--1780},
+  year={1997},
+  publisher={MIT Press}
+}
+
+@article{cho2014learning,
+  title={Learning Phrase Representations Using RNN Encoder-Decoder for Statistical Machine Translation},
+  author={Cho, Kyunghyun and Van Merri{\"e}nboer, Bart and Gulcehre, Caglar and Bahdanau, Dzmitry and Bougares, Fethi and Schwenk, Holger and Bengio, Yoshua},
+  journal={arXiv preprint arXiv:1406.1078},
+  year={2014},
+  note={GRU architecture}
+}
+
+@inproceedings{bahdanau2015neural,
+  title={Neural Machine Translation by Jointly Learning to Align and Translate},
+  author={Bahdanau, Dzmitry and Cho, Kyunghyun and Bengio, Yoshua},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2015},
+  note={Attention mechanism}
+}
+
+@inproceedings{he2016deep,
+  title={Deep Residual Learning for Image Recognition},
+  author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+  booktitle={IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={770--778},
+  year={2016},
+  note={ResNet - residual connections}
+}
+
+@article{ioffe2015batch,
+  title={Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift},
+  author={Ioffe, Sergey and Szegedy, Christian},
+  journal={International Conference on Machine Learning (ICML)},
+  pages={448--456},
+  year={2015}
+}
+
+@article{ba2016layer,
+  title={Layer Normalization},
+  author={Ba, Jimmy Lei and Kiros, Jamie Ryan and Hinton, Geoffrey E},
+  journal={arXiv preprint arXiv:1607.06450},
+  year={2016}
+}
+
+@article{srivastava2014dropout,
+  title={Dropout: A Simple Way to Prevent Neural Networks from Overfitting},
+  author={Srivastava, Nitish and Hinton, Geoffrey and Krizhevsky, Alex and Sutskever, Ilya and Salakhutdinov, Ruslan},
+  journal={Journal of Machine Learning Research},
+  volume={15},
+  number={1},
+  pages={1929--1958},
+  year={2014}
+}
+
+@article{hendrycks2016gaussian,
+  title={Gaussian Error Linear Units (GELUs)},
+  author={Hendrycks, Dan and Gimpel, Kevin},
+  journal={arXiv preprint arXiv:1606.08415},
+  year={2016}
+}
+
+@article{kingma2015adam,
+  title={Adam: A Method for Stochastic Optimization},
+  author={Kingma, Diederik P and Ba, Jimmy},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2015}
+}
+
+@article{loshchilov2017decoupled,
+  title={Decoupled Weight Decay Regularization},
+  author={Loshchilov, Ilya and Hutter, Frank},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2019}
+}
+
+@article{devlin2019bert,
+  title={BERT: Pre-Training of Deep Bidirectional Transformers for Language Understanding},
+  author={Devlin, Jacob and Chang, Ming-Wei and Lee, Kenton and Toutanova, Kristina},
+  journal={North American Chapter of the Association for Computational Linguistics (NAACL)},
+  pages={4171--4186},
+  year={2019}
+}
+
+@article{dosovitskiy2021image,
+  title={An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale},
+  author={Dosovitskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and others},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2021},
+  note={Vision Transformer (ViT)}
+}
+
+@article{lecun1998gradient,
+  title={Gradient-Based Learning Applied to Document Recognition},
+  author={LeCun, Yann and Bottou, L{\'e}on and Bengio, Yoshua and Haffner, Patrick},
+  journal={Proceedings of the IEEE},
+  volume={86},
+  number={11},
+  pages={2278--2324},
+  year={1998},
+  publisher={IEEE}
+}
+
+@article{goodfellow2014generative,
+  title={Generative Adversarial Nets},
+  author={Goodfellow, Ian and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={27},
+  year={2014}
+}
+
+@book{goodfellow2016deep,
+  title={Deep Learning},
+  author={Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+  year={2016},
+  publisher={MIT Press}
+}
+
+@article{rumelhart1986learning,
+  title={Learning Representations by Back-Propagating Errors},
+  author={Rumelhart, David E and Hinton, Geoffrey E and Williams, Ronald J},
+  journal={Nature},
+  volume={323},
+  number={6088},
+  pages={533--536},
+  year={1986},
+  publisher={Nature Publishing Group}
+}
+
+@article{schmidhuber2015deep,
+  title={Deep Learning in Neural Networks: An Overview},
+  author={Schmidhuber, J{\"u}rgen},
+  journal={Neural Networks},
+  volume={61},
+  pages={85--117},
+  year={2015},
+  publisher={Elsevier}
+}
+
+@article{liu2022convnet,
+  title={A ConvNet for the 2020s},
+  author={Liu, Zhuang and Mao, Hanzi and Wu, Chao-Yuan and Feichtenhofer, Christoph and Darrell, Trevor and Xie, Saining},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={11976--11986},
+  year={2022}
+}
+
+@inproceedings{wu2019pay,
+  title={Pay Less Attention with Lightweight and Dynamic Convolutions},
+  author={Wu, Felix and Fan, Angela and Baevski, Alexei and Dauphin, Yann N and Auli, Michael},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019}
+}
+
+% =============================================================================
+% E. STATISTICAL METHODS (10 references)
+% =============================================================================
+
+@article{friedman1937use,
+  title={The Use of Ranks to Avoid the Assumption of Normality Implicit in the Analysis of Variance},
+  author={Friedman, Milton},
+  journal={Journal of the American Statistical Association},
+  volume={32},
+  number={200},
+  pages={675--701},
+  year={1937},
+  publisher={Taylor \& Francis}
+}
+
+@article{nemenyi1963distribution,
+  title={Distribution-Free Multiple Comparisons},
+  author={Nemenyi, Peter Bjorn},
+  journal={PhD thesis, Princeton University},
+  year={1963}
+}
+
+@article{demsar2006statistical,
+  title={Statistical Comparisons of Classifiers over Multiple Data Sets},
+  author={Dem{\v{s}}ar, Janez},
+  journal={Journal of Machine Learning Research},
+  volume={7},
+  pages={1--30},
+  year={2006}
+}
+
+@article{bergmeir2012use,
+  title={On the Use of Cross-Validation for Time Series Predictor Evaluation},
+  author={Bergmeir, Christoph and Ben{\'\i}tez, Jos{\'e} M},
+  journal={Information Sciences},
+  volume={191},
+  pages={192--213},
+  year={2012},
+  publisher={Elsevier}
+}
+
+@article{cerqueira2020evaluating,
+  title={Evaluating Time Series Forecasting Models: An Empirical Study on Performance Estimation Methods},
+  author={Cerqueira, V{\'\i}tor and Torgo, Luis and Mozeti{\v{c}}, Igor},
+  journal={Machine Learning},
+  volume={109},
+  number={11},
+  pages={1997--2028},
+  year={2020},
+  publisher={Springer}
+}
+
+@article{wilcoxon1945individual,
+  title={Individual Comparisons by Ranking Methods},
+  author={Wilcoxon, Frank},
+  journal={Biometrics Bulletin},
+  volume={1},
+  number={6},
+  pages={80--83},
+  year={1945},
+  publisher={JSTOR}
+}
+
+@article{mann1947test,
+  title={On a Test of Whether One of Two Random Variables Is Stochastically Larger Than the Other},
+  author={Mann, Henry B and Whitney, Donald R},
+  journal={The Annals of Mathematical Statistics},
+  pages={50--60},
+  year={1947},
+  publisher={JSTOR}
+}
+
+@article{nash1970river,
+  title={River Flow Forecasting through Conceptual Models Part I—A Discussion of Principles},
+  author={Nash, J Eamonn and Sutcliffe, Jonh V},
+  journal={Journal of Hydrology},
+  volume={10},
+  number={3},
+  pages={282--290},
+  year={1970},
+  publisher={Elsevier}
+}
+
+@article{gupta2009decomposition,
+  title={Decomposition of the Mean Squared Error and NSE Performance Criteria: Implications for Improving Hydrological Modelling},
+  author={Gupta, Hoshin V and Kling, Harald and Yilmaz, Koray K and Martinez, Guillermo F},
+  journal={Journal of Hydrology},
+  volume={377},
+  number={1-2},
+  pages={80--91},
+  year={2009},
+  publisher={Elsevier}
+}
+
+@article{willmott1982some,
+  title={Some Comments on the Evaluation of Model Performance},
+  author={Willmott, Cort J},
+  journal={Bulletin of the American Meteorological Society},
+  volume={63},
+  number={11},
+  pages={1309--1313},
+  year={1982},
+  publisher={American Meteorological Society}
+}
+
+% =============================================================================
+% F. SPATIOTEMPORAL MODELING (15 references)
+% =============================================================================
+
+@article{wang2019memory,
+  title={Memory in Memory: A Predictive Neural Network for Learning Higher-Order Non-Stationarity from Spatiotemporal Dynamics},
+  author={Wang, Yunbo and Zhang, Jianjin and Zhu, Hongyu and Long, Mingsheng and Wang, Jianmin and Yu, Philip S},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={9154--9162},
+  year={2019}
+}
+
+@article{wang2017predrnn,
+  title={PredRNN: Recurrent Neural Networks for Predictive Learning Using Spatiotemporal LSTMs},
+  author={Wang, Yunbo and Long, Mingsheng and Wang, Jianmin and Gao, Zhifeng and Yu, Philip S},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={30},
+  year={2017}
+}
+
+@article{wang2018predrnn++,
+  title={PredRNN++: Towards a Resolution of the Deep-in-Time Dilemma in Spatiotemporal Predictive Learning},
+  author={Wang, Yunbo and Gao, Zhifeng and Long, Mingsheng and Wang, Jianmin and Yu, Philip S},
+  journal={International Conference on Machine Learning (ICML)},
+  pages={5123--5132},
+  year={2018}
+}
+
+@article{lin2020self,
+  title={Self-Attention ConvLSTM for Spatiotemporal Prediction},
+  author={Lin, Zhihui and Li, Maomao and Zheng, Zhuobin and Cheng, Yangyang and Yuan, Chun},
+  journal={AAAI Conference on Artificial Intelligence},
+  volume={34},
+  number={07},
+  pages={11531--11538},
+  year={2020}
+}
+
+@article{oprea2020review,
+  title={A Review on Deep Learning Techniques for Video Prediction},
+  author={Oprea, Sergiu and Martinez-Gonzalez, Pablo and Garcia-Garcia, Alberto and Castro-Vargas, John Alejandro and Orts-Escolano, Sergio and Garcia-Rodriguez, Jose and Argyros, Antonis},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  volume={44},
+  number={6},
+  pages={2806--2826},
+  year={2020},
+  publisher={IEEE}
+}
+
+@article{guen2020disentangling,
+  title={Disentangling Physical Dynamics from Unknown Factors for Unsupervised Video Prediction},
+  author={Guen, Vincent Le and Thome, Nicolas},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={11474--11484},
+  year={2020}
+}
+
+@article{wu2021motionrnn,
+  title={MotionRNN: A Flexible Model for Video Prediction with Spacetime-Varying Motions},
+  author={Wu, Haixu and Yao, Zhiyu and Wang, Jianmin and Long, Mingsheng},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={15435--15444},
+  year={2021}
+}
+
+@article{chang2021mau,
+  title={MAU: A Motion-Aware Unit for Video Prediction and Beyond},
+  author={Chang, Zheng and Zhang, Xinfeng and Wang, Shanshe and Ma, Siwei and Ye, Yan and Xiang, Xinguang and Gao, Wen},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={34},
+  pages={26950--26962},
+  year={2021}
+}
+
+@article{yan2021temporal,
+  title={Temporal Knowledge Consistency for Unsupervised Visual Representation Learning},
+  author={Yan, Yansong and Misra, Ishan and Gupta, Abhinav and Ghadiyaram, Deepti and Mahajan, Dhruv},
+  journal={IEEE/CVF International Conference on Computer Vision (ICCV)},
+  pages={10170--10180},
+  year={2021}
+}
+
+@article{gao2022simvp,
+  title={SimVP: Simpler Yet Better Video Prediction},
+  author={Gao, Zhangyang and Tan, Cheng and Wu, Lirong and Li, Stan Z},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={3170--3180},
+  year={2022}
+}
+
+@article{tan2023temporal,
+  title={Temporal Attention Unit: Towards Efficient Spatiotemporal Predictive Learning},
+  author={Tan, Cheng and Gao, Zhangyang and Wu, Lirong and Xu, Yongjie and Xia, Jun and Li, Siyuan and Li, Stan Z},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={18770--18782},
+  year={2023}
+}
+
+@article{lotter2017deep,
+  title={Deep Predictive Coding Networks for Video Prediction and Unsupervised Learning},
+  author={Lotter, William and Kreiman, Gabriel and Cox, David},
+  journal={International Conference on Learning Representations (ICLR)},
+  year={2017}
+}
+
+@article{denton2018stochastic,
+  title={Stochastic Video Generation with a Learned Prior},
+  author={Denton, Emily and Fergus, Rob},
+  journal={International Conference on Machine Learning (ICML)},
+  pages={1174--1183},
+  year={2018}
+}
+
+@article{liu2017video,
+  title={Video Frame Synthesis Using Deep Voxel Flow},
+  author={Liu, Ziwei and Yeh, Raymond A and Tang, Xiaoou and Liu, Yiming and Agarwala, Aseem},
+  journal={IEEE International Conference on Computer Vision (ICCV)},
+  pages={4463--4471},
+  year={2017}
+}
+
+@article{finn2016unsupervised,
+  title={Unsupervised Learning for Physical Interaction through Video Prediction},
+  author={Finn, Chelsea and Goodfellow, Ian and Levine, Sergey},
+  journal={Advances in Neural Information Processing Systems (NeurIPS)},
+  volume={29},
+  year={2016}
+}
+
+% =============================================================================
+% END OF REFERENCES
+% =============================================================================

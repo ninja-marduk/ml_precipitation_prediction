@@ -1,0 +1,108 @@
+# ML Precipitation Prediction - Dependencies
+# Computational Model for Spatiotemporal Prediction of Monthly Precipitation
+# in Mountainous Areas Using Hybrid Deep Learning
+
+# ==============================================================================
+# CORE SCIENTIFIC COMPUTING
+# ==============================================================================
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+
+# ==============================================================================
+# DATA HANDLING & GEOSPATIAL
+# ==============================================================================
+xarray>=0.19.0
+netCDF4>=1.5.7
+rioxarray>=0.7.0
+rasterio>=1.2.0
+geopandas>=0.10.0
+cartopy>=0.20.0
+pyproj>=3.2.0
+shapely>=1.8.0
+fiona>=1.8.0
+dask>=2021.10.0
+
+# ==============================================================================
+# MACHINE LEARNING - SKLEARN
+# ==============================================================================
+scikit-learn>=0.24.0
+
+# ==============================================================================
+# DEEP LEARNING - TENSORFLOW (V1-V3 Models)
+# ==============================================================================
+tensorflow>=2.6.0
+
+# ==============================================================================
+# DEEP LEARNING - PYTORCH (V4 GNN-TAT)
+# ==============================================================================
+torch>=1.9.0
+# PyTorch Geometric - install separately:
+# pip install torch-geometric
+# pip install pyg-lib torch-scatter torch-sparse torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-{TORCH_VERSION}+{CUDA_VERSION}.html
+
+# ==============================================================================
+# VISUALIZATION
+# ==============================================================================
+matplotlib>=3.4.0
+seaborn>=0.11.0
+plotly>=5.3.0
+
+# ==============================================================================
+# GRADIENT BOOSTING MODELS
+# ==============================================================================
+xgboost>=1.4.0
+lightgbm>=3.2.0
+
+# ==============================================================================
+# STATISTICAL ANALYSIS
+# ==============================================================================
+statsmodels>=0.12.0
+
+# ==============================================================================
+# UTILITIES
+# ==============================================================================
+tqdm>=4.62.0
+python-dateutil>=2.8.0
+pyyaml>=5.4.0
+h5py>=3.4.0
+psutil>=5.8.0
+
+# ==============================================================================
+# JUPYTER NOTEBOOKS
+# ==============================================================================
+jupyter>=1.0.0
+jupyterlab>=3.0.0
+ipywidgets>=7.6.0
+ipykernel>=6.0.0
+
+# ==============================================================================
+# DEVELOPMENT & TESTING
+# ==============================================================================
+pytest>=6.2.0
+black>=21.7b0
+flake8>=3.9.0
+
+# ==============================================================================
+# INSTALLATION NOTES
+# ==============================================================================
+#
+# Standard installation:
+#   pip install -r requirements.txt
+#
+# For V4 GNN-TAT (PyTorch Geometric):
+#   1. Install PyTorch first: https://pytorch.org/get-started/locally/
+#   2. Install PyTorch Geometric:
+#      pip install torch-geometric
+#      pip install pyg-lib torch-scatter torch-sparse torch-cluster torch-spline-conv \
+#          -f https://data.pyg.org/whl/torch-{TORCH}+{CUDA}.html
+#
+# For Google Colab (V4 notebook handles this automatically):
+#   The notebook installs torch-geometric dependencies at runtime.
+#
+# Conda alternative:
+#   conda create -n precipitation python=3.10
+#   conda activate precipitation
+#   conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
+#   conda install pyg -c pyg
+#   pip install -r requirements.txt
