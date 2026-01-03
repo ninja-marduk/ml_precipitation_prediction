@@ -1,223 +1,303 @@
-# Especificaciones del Framework Data-Driven para Prediccion de Precipitaciones
-## ML Precipitation Prediction - Documento de Especificaciones Tecnicas
+# Technical Specifications - Data-Driven Framework for Precipitation Prediction
+## ML Precipitation Prediction - Technical Specification Document
 
-**Version:** 1.0
-**Fecha:** Enero 2026
-**Contexto:** Tesis Doctoral - Prediccion de Precipitaciones Mensuales en Zonas Montanosas
-
----
-
-## 1. VISION Y OBJETIVOS DEL FRAMEWORK
-
-### 1.1 Proposito
-
-Este framework implementa un sistema **Data-Driven** para la prediccion de precipitaciones mensuales en zonas montanosas de los Andes colombianos, utilizando tecnicas avanzadas de Deep Learning espaciotemporal.
-
-### 1.2 Hipotesis de Investigacion
-
-Las hipotesis que el framework debe validar son:
-
-| ID | Hipotesis | Metrica de Validacion | Estado |
-|----|-----------|----------------------|--------|
-| H1 | Los modelos hibridos GNN-Temporal superan a ConvLSTM en prediccion espacial | R² > 0.60, RMSE < 70mm | **Validada (V4)** |
-| H2 | La incorporacion de features topograficas mejora la prediccion | Comparar BASIC vs PAFC | **Validada** |
-| H3 | Las relaciones espaciales no-euclidianas capturan mejor la dinamica orografica | GNN vs CNN metrics | **En validacion** |
-| H4 | La atencion temporal multi-escala mejora horizontes largos (H6-H12) | R² degradacion < 20% | **Parcialmente validada** |
-
-### 1.3 Dominio del Problema
-
-```
-CONTEXTO GEOGRAFICO:
-+------------------------------------------+
-|  ZONA DE ESTUDIO: Andes Colombianos      |
-|  - Altitud: 500m - 4000m                 |
-|  - Variabilidad: Alta (orografia)        |
-|  - Regimen: Bimodal (2 temporadas)       |
-|  - Resolucion: 0.05° (~5km)              |
-+------------------------------------------+
-
-DESAFIOS ESPECIFICOS:
-1. Gradientes altitudinales pronunciados
-2. Efecto orografico complejo
-3. Variabilidad interanual (ENSO)
-4. Escasez de datos in-situ
-5. Patrones no-lineales precipitacion-elevacion
-```
+**Version:** 2.0
+**Date:** January 2026
+**Context:** Doctoral Thesis - Monthly Precipitation Prediction in Mountainous Areas
 
 ---
 
-## 2. ARQUITECTURA DEL FRAMEWORK
+## 1. VISION AND OBJECTIVES
 
-### 2.1 Estructura de Directorios
+### 1.1 Purpose
+
+This framework implements a **Data-Driven (DD)** system for monthly precipitation prediction in the Colombian Andes mountainous regions, using advanced spatiotemporal Deep Learning techniques within a **Specification-Driven Development (SDD)** methodology.
+
+### 1.2 Research Hypotheses
+
+The framework must validate these hypotheses from the doctoral thesis proposal:
+
+| ID | Hypothesis | Validation Metric | Current Status |
+|----|------------|-------------------|----------------|
+| H1 | Hybrid GNN-Temporal models outperform ConvLSTM in spatial prediction | R² > 0.60, RMSE < 70mm | **VALIDATED (V4)** |
+| H2 | Topographic features improve prediction accuracy | Compare BASIC vs PAFC | **VALIDATED** |
+| H3 | Non-Euclidean spatial relations capture orographic dynamics better | GNN vs CNN metrics | **IN VALIDATION** |
+| H4 | Multi-scale temporal attention improves long horizons (H6-H12) | R² degradation < 20% | **PARTIALLY VALIDATED** |
+
+### 1.3 Problem Domain
+
+```
+GEOGRAPHIC CONTEXT:
++------------------------------------------+
+|  STUDY AREA: Colombian Andes (Boyaca)    |
+|  - Altitude: 500m - 4000m                |
+|  - Variability: High (orography)         |
+|  - Regime: Bimodal (2 wet seasons)       |
+|  - Resolution: 0.05 deg (~5km)           |
++------------------------------------------+
+
+SPECIFIC CHALLENGES:
+1. Pronounced altitudinal gradients
+2. Complex orographic effects
+3. Interannual variability (ENSO)
+4. Sparse in-situ data
+5. Non-linear precipitation-elevation patterns
+```
+
+---
+
+## 2. DEVELOPMENT FRAMEWORKS
+
+### 2.1 SDD (Specification-Driven Development)
+
+The SDD methodology ensures specifications are defined BEFORE implementation:
+
+```
+┌─────────────┐
+│   DEFINE    │ ← spec.md: standards, requirements
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│   DESIGN    │ ← plan.md: implementation approach
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  DEVELOP    │ ← notebooks: implementation
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  DOCUMENT   │ ← thesis.tex: methodology
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  DELIVER    │ ← paper.tex: results
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  ITERATE    │ → back to DEFINE
+└─────────────┘
+```
+
+**SDD Rules:**
+1. No implementation without specification
+2. Changes require spec.md update first
+3. All notebooks follow spec.md structure
+4. Documentation reflects implementation
+
+### 2.2 DD (Data-Driven) Framework
+
+The DD methodology validates hypotheses through empirical evidence:
+
+```
+┌─────────────┐
+│ HYPOTHESIS  │ ← Define H1-H4 from thesis proposal
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│ EXPERIMENT  │ ← Design V1-V6 controlled experiments
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  MEASURE    │ ← Collect RMSE, MAE, R², Bias
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  ANALYZE    │ ← Statistical tests (Friedman, Nemenyi)
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  CONCLUDE   │ ← Accept/reject hypotheses
+└─────┬───────┘
+      ↓
+┌─────────────┐
+│  DOCUMENT   │ ← thesis.tex + paper.tex
+└─────────────┘
+```
+
+**DD Rules:**
+1. Empirical evidence over theoretical assumptions
+2. Standardized metrics across all experiments
+3. Statistical significance required for claims
+4. Reproducible experiments with version control
+
+---
+
+## 3. FRAMEWORK ARCHITECTURE
+
+### 3.1 Directory Structure
 
 ```
 ml_precipitation_prediction/
-|
-+-- data/                          # Datos de entrada
-|   +-- raw/                       # Datos originales (NetCDF, GeoTIFF)
-|   +-- processed/                 # Datos preprocesados
-|   +-- dataset_monthly_*.nc       # Datasets consolidados
-|
-+-- models/                        # Implementaciones de modelos
-|   +-- base_models_*.ipynb        # Notebooks principales (V1-V4)
-|   +-- custom_layers/             # Capas personalizadas
-|   +-- output/                    # Salidas de entrenamiento
-|   |   +-- V2_Enhanced_Models/    # Resultados V2
-|   |   +-- V4_GNN_TAT_Models/     # Resultados V4 (actual)
-|   +-- metrics.py                 # Funciones de metricas
-|   +-- feature_selection.py       # Seleccion de features
-|
-+-- notebooks/                     # Analisis exploratorio
-+-- scripts/                       # Scripts de automatizacion
-|   +-- benchmark/                 # Analisis comparativo
-|
-+-- docs/                          # Documentacion
-|   +-- framework/                 # Especificaciones tecnicas
-|   +-- models/                    # Documentacion de modelos
-|   +-- tesis/                     # Documentos de tesis
-|
-+-- preprocessing/                 # Preprocesamiento de datos
-+-- utils/                         # Utilidades comunes
+│
+├── CLAUDE.md                      # Project rules (THIS FILE)
+│
+├── data/                          # Input data
+│   ├── raw/                       # Original data (NetCDF, GeoTIFF)
+│   ├── processed/                 # Preprocessed data
+│   └── dataset_monthly_*.nc       # Consolidated datasets
+│
+├── models/                        # Model implementations
+│   ├── spec.md                    # Technical specifications
+│   ├── plan.md                    # Development roadmap
+│   ├── base_models_*.ipynb        # Main notebooks (V1-V6)
+│   ├── custom_layers/             # Custom layers
+│   └── output/                    # Training outputs
+│       ├── V2_Enhanced_Models/    # V2 results
+│       ├── V4_GNN_TAT_Models/     # V4 results (current)
+│       └── ...
+│
+├── notebooks/                     # Exploratory analysis
+├── scripts/                       # Automation scripts
+│   └── benchmark/                 # Comparative analysis
+│
+├── docs/                          # Documentation
+│   ├── framework/                 # Technical specs
+│   ├── models/                    # Model documentation
+│   ├── tesis/                     # Thesis documents
+│   │   └── thesis.tex             # Doctoral thesis
+│   └── papers/                    # Papers
+│       └── 4/paper.tex            # Comparative paper
+│
+├── preprocessing/                 # Data preprocessing
+└── utils/                         # Common utilities
 ```
 
-### 2.2 Nomenclatura de Versiones
+### 3.2 Model Versioning
 
-| Version | Nombre | Arquitectura Base | Estado |
-|---------|--------|-------------------|--------|
-| V1 | Baseline | ConvLSTM, ConvGRU, ConvRNN | Completado |
-| V2 | Enhanced | V1 + Attention + Bidirectional + Residual | Completado |
-| V3 | FNO | Fourier Neural Operators | Completado (Underperformed) |
-| **V4** | **GNN-TAT** | **Graph Neural Networks + Temporal Attention** | **Actual** |
-| V5 | Multi-Modal | V4 + ERA5 + Satellite | Planificado |
-| V6 | Ensemble | Best of V2-V5 + Meta-learning | Planificado |
+| Version | Name | Base Architecture | Status |
+|---------|------|-------------------|--------|
+| V1 | Baseline | ConvLSTM, ConvGRU, ConvRNN | Complete |
+| V2 | Enhanced | V1 + Attention + Bidirectional + Residual | Complete |
+| V3 | FNO | Fourier Neural Operators | Complete (underperformed) |
+| **V4** | **GNN-TAT** | **Graph Neural Networks + Temporal Attention** | **Current** |
+| V5 | Multi-Modal | V4 + ERA5 + Satellite | Planned |
+| V6 | Ensemble | Best of V2-V5 + Meta-learning | Planned |
 
 ---
 
-## 3. ESTANDARES DE NOTEBOOKS
+## 4. NOTEBOOK STANDARDS
 
-### 3.1 Estructura Obligatoria de Celdas
+### 4.1 Mandatory Cell Structure
 
-Todo notebook de modelo debe seguir esta estructura:
+Every model notebook must follow this structure:
 
 ```
 CELL 1: HEADER & METADATA
 --------------------------
-- Titulo del notebook
-- Version y fecha
-- Autor
-- Descripcion del experimento
+- Notebook title
+- Version and date
+- Author
+- Experiment description
 
 CELL 2: ENVIRONMENT SETUP
 --------------------------
-- Deteccion Colab/Local
-- Instalacion de dependencias
-- Configuracion de paths
+- Colab/Local detection
+- Dependency installation
+- Path configuration
 - Version matching (netCDF4, h5py, PyTorch)
 
 CELL 3-4: IMPORTS
 --------------------------
-- Librerias standard (numpy, pandas, xarray)
+- Standard libraries (numpy, pandas, xarray)
 - Deep Learning (torch, torch_geometric)
-- Visualizacion (matplotlib, seaborn)
+- Visualization (matplotlib, seaborn)
 
 CELL 5: CONFIGURATION (CONFIG dict)
 --------------------------
 CONFIG = {
-    'input_window': 60,      # Meses de entrada
-    'horizon': 12,           # Meses a predecir
+    'input_window': 60,      # Input months
+    'horizon': 12,           # Prediction months
     'epochs': 150,
     'batch_size': 4,
     'learning_rate': 0.001,
     'patience': 50,
     'train_val_split': 0.8,
-    'light_mode': False,     # True para pruebas rapidas
+    'light_mode': False,     # True for quick tests
     'enabled_horizons': [1, 3, 6, 12],
-    'gnn_config': {...},     # Config especifica del modelo
+    'gnn_config': {...},     # Model-specific config
 }
 
 CELL 6-8: DATA LOADING & VALIDATION
 --------------------------
-- Carga de NetCDF
-- Validacion de features
-- Verificacion de dimensiones
+- NetCDF loading
+- Feature validation
+- Dimension verification
 
 CELL 9-11: PREPROCESSING
 --------------------------
-- Construccion de grafo (para GNN)
+- Graph construction (for GNN)
 - Feature engineering
-- Windowing temporal
+- Temporal windowing
 - Train/Val split
 
 CELL 12-15: MODEL DEFINITION
 --------------------------
-- Clases de capas custom
-- Arquitectura del modelo
+- Custom layer classes
+- Model architecture
 - Forward pass
 
 CELL 16-18: TRAINING LOOP
 --------------------------
-- Funcion de entrenamiento
+- Training function
 - Early stopping
 - Checkpointing
 
 CELL 19: MAIN EXPERIMENT LOOP
 --------------------------
-- Iteracion por feature sets (BASIC, KCE, PAFC)
-- Iteracion por horizontes
-- Guardado de metricas
+- Iterate over feature sets (BASIC, KCE, PAFC)
+- Iterate over horizons
+- Save metrics
 
 CELL 20: RESULTS AGGREGATION
 --------------------------
-- Consolidacion de metricas
-- Guardado de CSV final
-- Limpieza de memoria
+- Consolidate metrics
+- Save final CSV
+- Memory cleanup
 ```
 
-### 3.2 Convencion de Nombres de Archivos
+### 4.2 File Naming Conventions
 
 ```
 Notebooks:
-  base_models_{ARQUITECTURA}_{VERSION}.ipynb
-  Ejemplo: base_models_GNN_TAT_V4.ipynb
+  base_models_{architecture}_{version}.ipynb
+  Example: base_models_gnn_tat_v4.ipynb
 
-Modelos guardados:
-  {MODEL_NAME}_best_h{HORIZON}.pt
-  Ejemplo: GNN_TAT_GAT_best_h12.pt
+Saved Models:
+  {model_name}_best_h{horizon}.pt
+  Example: gnn_tat_gat_best_h12.pt
 
-Metricas:
+Metrics:
   metrics_spatial_{version}_{model}_h{horizon}.csv
-  Ejemplo: metrics_spatial_v4_gnn_tat_h12.csv
+  Example: metrics_spatial_v4_gnn_tat_h12.csv
 
-Training logs:
-  {MODEL_NAME}_training_log_h{HORIZON}.csv
-  {MODEL_NAME}_history.json
+Training Logs:
+  {model_name}_training_log_h{horizon}.csv
+  {model_name}_history.json
 ```
 
 ---
 
-## 4. ESTANDARES DE SALIDAS
+## 5. OUTPUT STANDARDS
 
-### 4.1 Estructura de Directorio de Salidas
+### 5.1 Output Directory Structure
 
 ```
-models/output/{VERSION}_{MODEL_NAME}/
-|
-+-- experiment_state_{version}.json    # Estado completo del experimento
-|
-+-- h{HORIZON}/                        # Por cada horizonte
-|   +-- {EXPERIMENT}/                  # BASIC, KCE, PAFC
-|   |   +-- training_metrics/
-|   |   |   +-- {MODEL}_best_h{H}.pt        # Mejor modelo
-|   |   |   +-- {MODEL}_history.json        # Historial de entrenamiento
-|   |   |   +-- {MODEL}_training_log_h{H}.csv
-|   |   +-- predictions/               # (opcional)
-|   |   +-- visualizations/            # (opcional)
-|
-+-- metrics_spatial_{version}_h{H}.csv  # Metricas consolidadas
-+-- graph_visualization.png             # Visualizacion del grafo
+models/output/{VERSION}_{MODEL}/
+│
+├── experiment_state_{version}.json    # Complete experiment state
+│
+├── h{HORIZON}/                        # Per horizon
+│   └── {EXPERIMENT}/                  # BASIC, KCE, PAFC
+│       └── training_metrics/
+│           ├── {model}_best_h{H}.pt        # Best model
+│           ├── {model}_history.json        # Training history
+│           └── {model}_training_log_h{H}.csv
+│
+├── metrics_spatial_{version}_h{H}.csv  # Consolidated metrics
+└── graph_visualization.png             # Graph visualization
 ```
 
-### 4.2 Formato de Metricas Espaciales (CSV)
+### 5.2 Spatial Metrics CSV Format
 
 ```csv
 TotalHorizon,Experiment,Model,H,RMSE,MAE,R^2,Mean_True_mm,Mean_Pred_mm,TotalPrecipitation,TotalPrecipitation_Pred,mean_bias_mm,mean_bias_pct
@@ -225,22 +305,22 @@ TotalHorizon,Experiment,Model,H,RMSE,MAE,R^2,Mean_True_mm,Mean_Pred_mm,TotalPrec
 ...
 ```
 
-**Columnas obligatorias:**
-| Columna | Tipo | Descripcion |
-|---------|------|-------------|
-| TotalHorizon | int | Horizonte total del experimento |
-| Experiment | str | Conjunto de features (BASIC/KCE/PAFC) |
-| Model | str | Nombre del modelo |
-| H | int | Horizonte especifico (1-12) |
+**Required Columns:**
+| Column | Type | Description |
+|--------|------|-------------|
+| TotalHorizon | int | Total experiment horizon |
+| Experiment | str | Feature set (BASIC/KCE/PAFC) |
+| Model | str | Model name |
+| H | int | Specific horizon (1-12) |
 | RMSE | float | Root Mean Squared Error (mm) |
 | MAE | float | Mean Absolute Error (mm) |
-| R^2 | float | Coeficiente de determinacion |
-| Mean_True_mm | float | Precipitacion real promedio |
-| Mean_Pred_mm | float | Precipitacion predicha promedio |
-| mean_bias_mm | float | Sesgo medio (mm) |
-| mean_bias_pct | float | Sesgo porcentual |
+| R^2 | float | Coefficient of determination |
+| Mean_True_mm | float | Average actual precipitation |
+| Mean_Pred_mm | float | Average predicted precipitation |
+| mean_bias_mm | float | Mean bias (mm) |
+| mean_bias_pct | float | Percentage bias |
 
-### 4.3 Formato de History JSON
+### 5.3 History JSON Format
 
 ```json
 {
@@ -256,138 +336,110 @@ TotalHorizon,Experiment,Model,H,RMSE,MAE,R^2,Mean_True_mm,Mean_Pred_mm,TotalPrec
 }
 ```
 
-### 4.4 Formato de Experiment State JSON
-
-```json
-{
-  "config": {
-    "input_window": 60,
-    "horizon": 12,
-    "epochs": 150,
-    "gnn_config": {...}
-  },
-  "feature_sets": {
-    "BASIC": ["year", "month", ...],
-    "KCE": [...],
-    "PAFC": [...]
-  },
-  "grid_info": {
-    "lat": 5,
-    "lon": 5,
-    "n_nodes": 25,
-    "n_edges": 600
-  },
-  "training_summaries": {
-    "{EXP}_{MODEL}_H{H}": {...}
-  },
-  "timestamp": "2026-01-03T13:22:06"
-}
-```
-
 ---
 
-## 5. CONJUNTOS DE FEATURES
+## 6. FEATURE SETS
 
-### 5.1 Definicion de Feature Sets
+### 6.1 Feature Set Definitions
 
-| Set | Features | Proposito |
-|-----|----------|-----------|
-| **BASIC** | Temporales + Precipitacion + Topografia basica | Baseline minimo |
-| **KCE** | BASIC + Clusters de elevacion (K-means) | Capturar bandas altitudinales |
-| **PAFC** | KCE + Lags temporales | Autocorrelacion temporal |
+| Set | Features | Purpose |
+|-----|----------|---------|
+| **BASIC** | Temporal + Precipitation + Base topography | Minimal baseline |
+| **KCE** | BASIC + K-means elevation clusters | Orographic regimes |
+| **PAFC** | KCE + Temporal lags | Autocorrelation |
 
-### 5.2 Features Detallados
+### 6.2 Detailed Features
 
 ```python
 FEATURE_SETS = {
     'BASIC': [
-        # Temporales
+        # Temporal
         'year', 'month', 'month_sin', 'month_cos', 'doy_sin', 'doy_cos',
-        # Precipitacion
+        # Precipitation
         'max_daily_precipitation', 'min_daily_precipitation',
         'daily_precipitation_std',
-        # Topografia
+        # Topography
         'elevation', 'slope', 'aspect'
     ],
 
     'KCE': [
         *BASIC,
-        # Clusters de elevacion (one-hot)
+        # Elevation clusters (one-hot)
         'elev_high', 'elev_med', 'elev_low'
     ],
 
     'PAFC': [
         *KCE,
-        # Lags temporales
-        'total_precipitation_lag1',   # Mes anterior
-        'total_precipitation_lag2',   # 2 meses antes
-        'total_precipitation_lag12'   # Mismo mes ano anterior
+        # Temporal lags
+        'total_precipitation_lag1',   # Previous month
+        'total_precipitation_lag2',   # 2 months before
+        'total_precipitation_lag12'   # Same month last year
     ]
 }
 ```
 
 ---
 
-## 6. ARQUITECTURA DE MODELOS
+## 7. MODEL ARCHITECTURE (V4 GNN-TAT)
 
-### 6.1 Arquitectura GNN-TAT (V4)
+### 7.1 Architecture Diagram
 
 ```
 INPUT: (batch, seq_len, n_nodes, n_features)
-        |
-        v
-+------------------+
-| SPATIAL ENCODER  |  GCN/GAT/SAGE layers
-| (GNN per timestep)|  - Message passing
-+------------------+  - Edge weights: distance + elevation + correlation
-        |
-        v
-+------------------+
-| TEMPORAL ENCODER |  Multi-head Self-Attention
-| (Attention)      |  - 4 heads
-+------------------+  - Residual connection + LayerNorm
-        |
-        v
-+------------------+
-| SEQUENCE MODEL   |  Bidirectional LSTM
-| (LSTM)           |  - 2 layers
-+------------------+  - Dropout 0.1
-        |
-        v
-+------------------+
-| OUTPUT PROJECTION|  Linear layers
-+------------------+  - Per-node, per-horizon output
-        |
-        v
+        │
+        ▼
+┌──────────────────┐
+│ SPATIAL ENCODER  │  GCN/GAT/SAGE layers
+│ (GNN per timestep)│  - Message passing
+└──────────────────┘  - Edge weights: distance + elevation + correlation
+        │
+        ▼
+┌──────────────────┐
+│ TEMPORAL ENCODER │  Multi-head Self-Attention
+│ (Attention)      │  - 4 heads
+└──────────────────┘  - Residual connection + LayerNorm
+        │
+        ▼
+┌──────────────────┐
+│ SEQUENCE MODEL   │  Bidirectional LSTM
+│ (LSTM)           │  - 2 layers
+└──────────────────┘  - Dropout 0.1
+        │
+        ▼
+┌──────────────────┐
+│ OUTPUT PROJECTION│  Linear layers
+└──────────────────┘  - Per-node, per-horizon output
+        │
+        ▼
 OUTPUT: (batch, n_nodes, horizon)
 ```
 
-### 6.2 Configuracion de Hiperparametros
+### 7.2 Hyperparameter Configuration
 
 ```python
 GNN_CONFIG = {
-    # Dimensiones
+    # Dimensions
     'hidden_dim': 64,
     'temporal_hidden_dim': 64,
     'lstm_hidden_dim': 64,
 
-    # Capas
+    # Layers
     'num_gnn_layers': 2,
     'num_temporal_heads': 4,
     'num_lstm_layers': 2,
 
-    # Regularizacion
+    # Regularization
     'dropout': 0.1,
     'temporal_dropout': 0.1,
 
-    # Construccion del grafo
+    # Graph construction
     'edge_threshold': 0.3,
     'max_neighbors': 8,
     'use_distance_edges': True,
     'use_elevation_edges': True,
     'use_correlation_edges': True,
 
-    # Pesos de similaridad
+    # Similarity weights
     'distance_scale_km': 10.0,
     'elevation_scale': 0.2,
     'elevation_weight': 0.3,
@@ -396,58 +448,58 @@ GNN_CONFIG = {
 }
 ```
 
-### 6.3 Variantes de GNN Soportadas
+### 7.3 GNN Variants
 
-| Variante | Descripcion | Pros | Contras |
-|----------|-------------|------|---------|
-| **GCN** | Graph Convolutional Network | Estable, usa edge_weight | Receptivo global limitado |
-| **GAT** | Graph Attention Network | Atencion adaptativa | Sin edge_weight nativo |
-| **SAGE** | GraphSAGE | Eficiente, sampling | Sin edge_weight nativo |
+| Variant | Description | Pros | Cons |
+|---------|-------------|------|------|
+| **GCN** | Graph Convolutional Network | Stable, uses edge_weight | Limited receptive field |
+| **GAT** | Graph Attention Network | Adaptive attention | No native edge_weight |
+| **SAGE** | GraphSAGE | Efficient, sampling | No native edge_weight |
 
 ---
 
-## 7. PIPELINE DE ENTRENAMIENTO
+## 8. TRAINING PIPELINE
 
-### 7.1 Flujo de Entrenamiento
+### 8.1 Training Flow
 
 ```
-1. PREPARACION
-   +-- Cargar datos NetCDF
-   +-- Validar features disponibles
-   +-- Construir grafo espacial
-   +-- Crear ventanas temporales (input_window -> horizon)
-   +-- Split train/val (80/20 temporal)
+1. PREPARATION
+   ├── Load NetCDF data
+   ├── Validate available features
+   ├── Build spatial graph
+   ├── Create temporal windows (input_window -> horizon)
+   └── Train/Val split (80/20 temporal)
 
-2. LOOP DE EXPERIMENTOS
+2. EXPERIMENT LOOP
    FOR each feature_set in [BASIC, KCE, PAFC]:
        FOR each model_type in [GAT, SAGE, GCN]:
            FOR each horizon in enabled_horizons:
-               +-- Instanciar modelo
-               +-- Entrenar con early stopping
-               +-- Guardar mejor checkpoint
-               +-- Evaluar en validacion
-               +-- Guardar metricas
+               ├── Instantiate model
+               ├── Train with early stopping
+               ├── Save best checkpoint
+               ├── Evaluate on validation
+               └── Save metrics
 
-3. EVALUACION
-   +-- Calcular metricas espaciales por celda
-   +-- Agregar en CSV consolidado
-   +-- Generar visualizaciones
-   +-- Guardar experiment_state.json
+3. EVALUATION
+   ├── Calculate per-cell spatial metrics
+   ├── Aggregate to consolidated CSV
+   ├── Generate visualizations
+   └── Save experiment_state.json
 ```
 
-### 7.2 Metricas de Evaluacion
+### 8.2 Evaluation Metrics
 
 ```python
 def evaluate_model(y_true, y_pred):
     """
-    Metricas estandar del framework.
+    Standard framework metrics.
 
     Args:
-        y_true: (N, horizon, lat, lon) - Valores reales
-        y_pred: (N, horizon, lat, lon) - Predicciones
+        y_true: (N, horizon, lat, lon) - Actual values
+        y_pred: (N, horizon, lat, lon) - Predictions
 
     Returns:
-        dict con metricas por horizonte
+        dict with per-horizon metrics
     """
     metrics = {}
     for h in range(horizon):
@@ -461,7 +513,7 @@ def evaluate_model(y_true, y_pred):
     return metrics
 ```
 
-### 7.3 Criterios de Early Stopping
+### 8.3 Early Stopping Configuration
 
 ```python
 EARLY_STOPPING_CONFIG = {
@@ -482,63 +534,66 @@ LEARNING_RATE_SCHEDULER = {
 
 ---
 
-## 8. COMPATIBILIDAD COLAB/LOCAL
+## 9. DOCUMENTATION SYNCHRONIZATION
 
-### 8.1 Deteccion de Entorno
+### 9.1 thesis.tex Mapping
 
-```python
-import sys
-IN_COLAB = 'google.colab' in sys.modules
+| Notebook Section | Thesis Chapter |
+|------------------|----------------|
+| Data loading | Ch. 2: Data Acquisition |
+| Preprocessing | Ch. 2: Preprocessing Pipeline |
+| Feature engineering | Ch. 3: Feature Engineering |
+| Model definition | Ch. 4/5: Model Architecture |
+| Training | Ch. 4/5: Training Protocol |
+| Evaluation | Ch. 4/5: Evaluation |
+| Results | Ch. 4/5: Results |
 
-if IN_COLAB:
-    # Montar Google Drive
-    from google.colab import drive
-    drive.mount('/content/drive')
-    BASE_PATH = '/content/drive/MyDrive/ml_precipitation_prediction'
+### 9.2 paper.tex Mapping
 
-    # Instalar dependencias
-    !pip install torch-geometric netCDF4==1.7.2 h5py==3.14.0
-else:
-    BASE_PATH = r'd:\github.com\ninja-marduk\ml_precipitation_prediction'
+| Model Version | Paper Section |
+|---------------|---------------|
+| V2 Enhanced | Results: Baselines |
+| V3 FNO | Results: Physics-Informed |
+| V4 GNN-TAT | Results: Hybrid Models |
+| Statistical Tests | Discussion |
+
+---
+
+## 10. SUCCESS CRITERIA
+
+### 10.1 Acceptance Criteria
+
+| Metric | Baseline (V2) | Target (V4+) | Excellent |
+|--------|---------------|--------------|-----------|
+| R² (H1-H6) | 0.44 | > 0.60 | > 0.70 |
+| R² (H7-H12) | 0.30 | > 0.50 | > 0.60 |
+| RMSE (mm) | 98.17 | < 70 | < 55 |
+| MAE (mm) | 44.19 | < 50 | < 40 |
+| Parameters | 2M+ | < 150K | < 100K |
+| Train ratio (val/train loss) | - | < 10x | < 5x |
+
+### 10.2 Current V4 GNN-TAT Results
+
 ```
+BEST CONFIGURATION: GNN_TAT_SAGE + KCE @ H=3
+- R²: 0.707 (vs baseline 0.437) -> +62% improvement
+- RMSE: 52.45mm (vs baseline 98.17mm) -> -47% improvement
+- Parameters: ~98K (vs 2M+) -> -95% reduction
 
-### 8.2 Version Matching
-
-```python
-LOCAL_VERSIONS = {
-    'netCDF4': '1.7.2',
-    'h5py': '3.14.0',
-    'HDF5_lib': '1.14.4',
-    'netCDF_lib': '4.9.2'
-}
-
-# En Colab, instalar versiones matching para evitar errores HDF5
-if IN_COLAB:
-    !pip install netCDF4=={LOCAL_VERSIONS['netCDF4']}
-    !pip install h5py=={LOCAL_VERSIONS['h5py']}
-```
-
-### 8.3 Light Mode para Pruebas Rapidas
-
-```python
-if CONFIG['light_mode']:
-    # Reducir grid para pruebas
-    LIGHT_SIZE = CONFIG.get('light_grid_size', 5)
-    lat_slice = slice(center_lat - LIGHT_SIZE//2, center_lat + LIGHT_SIZE//2 + 1)
-    lon_slice = slice(center_lon - LIGHT_SIZE//2, center_lon + LIGHT_SIZE//2 + 1)
-
-    # Aplicar a datos
-    ds = ds.isel(lat=lat_slice, lon=lon_slice)
+RANKING BY MODEL (all horizons average):
+1. GNN_TAT_GAT + PAFC:  R²=0.628, RMSE=58.4mm
+2. GNN_TAT_GCN + PAFC:  R²=0.625, RMSE=58.7mm
+3. GNN_TAT_SAGE + KCE:  R²=0.618, RMSE=59.1mm
 ```
 
 ---
 
-## 9. BUENAS PRACTICAS
+## 11. BEST PRACTICES
 
-### 9.1 Reproducibilidad
+### 11.1 Reproducibility
 
 ```python
-# Siempre fijar seeds
+# Always set seeds
 import torch
 import numpy as np
 import random
@@ -552,10 +607,10 @@ if torch.cuda.is_available():
     torch.backends.cudnn.deterministic = True
 ```
 
-### 9.2 Gestion de Memoria
+### 11.2 Memory Management
 
 ```python
-# Limpiar memoria entre experimentos
+# Clean memory between experiments
 import gc
 
 def cleanup():
@@ -564,14 +619,14 @@ def cleanup():
         torch.cuda.empty_cache()
         torch.cuda.synchronize()
 
-# Llamar despues de cada modelo
+# Call after each model
 cleanup()
 ```
 
-### 9.3 Logging y Checkpointing
+### 11.3 Logging and Checkpointing
 
 ```python
-# Guardar checkpoint solo si mejora
+# Save checkpoint only if improved
 if val_loss < best_val_loss:
     best_val_loss = val_loss
     torch.save({
@@ -582,79 +637,140 @@ if val_loss < best_val_loss:
         'config': CONFIG
     }, checkpoint_path)
 
-# Cargar con weights_only=False (PyTorch 2.6+)
+# Load with weights_only=False (PyTorch 2.6+)
 checkpoint = torch.load(path, weights_only=False)
 ```
 
-### 9.4 Manejo de Errores
-
-```python
-# Validar features antes de entrenar
-def validate_features(ds, required_features):
-    available = set(ds.data_vars)
-    missing = set(required_features) - available
-
-    if missing:
-        raise ValueError(f"Missing features: {missing}")
-
-    return True
-```
-
 ---
 
-## 10. METRICAS DE EXITO
+## 12. GLOSSARY
 
-### 10.1 Criterios de Aceptacion
-
-| Metrica | Baseline (V2) | Target (V4+) | Excelente |
-|---------|---------------|--------------|-----------|
-| R² (H1-H6) | 0.44 | > 0.60 | > 0.70 |
-| R² (H7-H12) | 0.30 | > 0.50 | > 0.60 |
-| RMSE (mm) | 98.17 | < 70 | < 55 |
-| MAE (mm) | 44.19 | < 50 | < 40 |
-| Parametros | 2M+ | < 150K | < 100K |
-| Train ratio (val/train loss) | - | < 10x | < 5x |
-
-### 10.2 Resultados V4 GNN-TAT (Actuales)
-
-```
-BEST CONFIGURATION: GNN_TAT_SAGE + KCE @ H=3
-- R²: 0.707 (vs baseline 0.437) -> +62% mejora
-- RMSE: 52.45mm (vs baseline 98.17mm) -> -47% mejora
-- Parametros: ~98K (vs 2M+) -> -95% reduccion
-
-RANKING POR MODELO (promedio todos horizontes):
-1. GNN_TAT_GAT + PAFC:  R²=0.628, RMSE=58.4mm
-2. GNN_TAT_GCN + PAFC:  R²=0.625, RMSE=58.7mm
-3. GNN_TAT_SAGE + KCE:  R²=0.618, RMSE=59.1mm
-```
-
----
-
-## 11. GLOSARIO
-
-| Termino | Definicion |
-|---------|------------|
-| **GNN** | Graph Neural Network - Red que opera sobre grafos |
-| **TAT** | Temporal Attention - Mecanismo de atencion temporal |
-| **ConvLSTM** | Convolutional LSTM - LSTM con convoluciones espaciales |
-| **GAT** | Graph Attention Network - GNN con atencion |
-| **SAGE** | GraphSAGE - GNN con sampling de vecinos |
-| **GCN** | Graph Convolutional Network - GNN basico |
-| **H** | Horizonte de prediccion (meses adelante) |
-| **BASIC** | Feature set minimo |
+| Term | Definition |
+|------|------------|
+| **GNN** | Graph Neural Network - Network operating on graphs |
+| **TAT** | Temporal Attention - Temporal attention mechanism |
+| **ConvLSTM** | Convolutional LSTM - LSTM with spatial convolutions |
+| **GAT** | Graph Attention Network - GNN with attention |
+| **SAGE** | GraphSAGE - GNN with neighbor sampling |
+| **GCN** | Graph Convolutional Network - Basic GNN |
+| **H** | Prediction horizon (months ahead) |
+| **BASIC** | Minimal feature set |
 | **KCE** | K-means Cluster Elevation features |
 | **PAFC** | Precipitation Auto-correlation Features Complete |
-| **R²** | Coeficiente de determinacion |
+| **R²** | Coefficient of determination |
 | **RMSE** | Root Mean Square Error |
 | **MAE** | Mean Absolute Error |
-| **Orografico** | Relacionado con efectos de elevacion en precipitacion |
+| **Orographic** | Related to elevation effects on precipitation |
 
 ---
 
-## 12. REFERENCIAS
+## 13. DOCUMENTATION FORMATTING STANDARDS
 
-### 12.1 Papers Fundamentales
+### 13.1 Official Thesis Title
+
+**Extended Title (Aligned with Doctoral Proposal):**
+> "Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas: A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention"
+
+### 13.2 Doctoral Thesis Chapter Structure
+
+Following ML/Hydrology doctoral thesis standards:
+
+| Chapter | Title | Pages | Key Content |
+|---------|-------|-------|-------------|
+| 1 | Introduction | 20 | Problem Statement, Hypotheses H1-H4, Objectives |
+| 2 | Literature Review | 40 | State of the Art, Deep Learning, GNNs, Research Gaps |
+| 3 | Theoretical Framework | 30 | Graph Theory, Attention Mechanisms, Statistics |
+| 4 | Materials and Methods | 40 | Study Area, Data Sources, Preprocessing, Models |
+| 5 | Results | 50 | V1-V4 Results, Statistical Tests, Validation |
+| 6 | Discussion | 30 | Interpretation, SOTA Comparison, Limitations |
+| 7 | Conclusions | 15 | Contributions, Future Work |
+| - | References | - | 100-150 Q1 entries |
+| - | Appendices | - | Code, Tables, Figures |
+
+### 13.3 LaTeX Figure Width Standards
+
+**CRITICAL:** All figures must stay within page margins:
+
+```latex
+\newcommand{\fullwidth}{0.95\textwidth}     % Single full-width figure
+\newcommand{\halfwidth}{0.47\textwidth}     % Two figures side-by-side
+\newcommand{\thirdwidth}{0.31\textwidth}    % Three figures in row
+\newcommand{\quarterwidth}{0.23\textwidth}  % Four figures in row
+```
+
+### 13.4 Light Mode Notation
+
+When presenting results from reduced grid experiments (5×5 grid subset), include this disclaimer:
+
+```latex
+\textbf{Important Note:} Results were obtained using \textit{light mode}
+(5×5 grid subset) for rapid prototyping. Full-grid validation (61×65)
+is pending and will be reported in Section~\ref{sec:full-grid-results}.
+```
+
+### 13.5 Bibliography Requirements
+
+- **Location:** `docs/tesis/references.bib`
+- **Minimum Entries:** 100+ Q1 references
+- **Categories:**
+  - Graph Neural Networks (25 refs)
+  - Precipitation/Weather ML (25 refs)
+  - Climate/Hydrology Data (15 refs)
+  - Deep Learning Fundamentals (20 refs)
+  - Statistical Methods (10 refs)
+  - Spatiotemporal Modeling (15 refs)
+
+---
+
+## 14. FILE SCOPE RULES
+
+### 14.1 Project Scope Definition
+
+This project focuses EXCLUSIVELY on the doctoral thesis: **"Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas"**
+
+All files must directly support:
+1. Model training and evaluation (V1-V6)
+2. Data preprocessing pipeline (CHIRPS, SRTM, ERA5)
+3. Thesis and paper documentation
+4. Statistical analysis and benchmarking
+5. Feature engineering (BASIC, KCE, PAFC)
+
+### 14.2 Directory Scope Classification
+
+| Directory | Scope | Purpose |
+|-----------|-------|---------|
+| `models/*.ipynb` | **CORE** | Model implementations |
+| `models/output/` | **CORE** | Training outputs |
+| `data/` | **CORE** | ETL pipeline |
+| `docs/tesis/` | **CORE** | Doctoral thesis |
+| `docs/papers/4/` | **CORE** | Comparative paper |
+| `scripts/benchmark/` | **CORE** | Results analysis |
+| `notebooks/` | **CORE** | EDA and preprocessing |
+| Other `docs/`, `utils/` | **SUPPORTING** | Pipeline utilities |
+| `.venv/`, `.git/` | **SYSTEM** | Auto-generated |
+
+### 14.3 OUT-OF-SCOPE Criteria
+
+**DO NOT CREATE files that:**
+1. Are backups or copies (`*_backup.py`, `*_old.ipynb`)
+2. Serve non-thesis AI tasks
+3. Are temporary exploration unrelated to precipitation prediction
+4. Duplicate existing functionality
+5. Are in languages other than English
+
+### 14.4 Before Creating New Files
+
+1. Verify the file serves thesis objectives (H1-H4)
+2. Check if existing file can be modified instead
+3. Follow naming conventions (Section 6)
+4. Place in appropriate directory (Section 14.2)
+5. Document purpose if new pattern
+
+---
+
+## 15. REFERENCES
+
+### 15.1 Fundamental Papers
 
 1. Kipf & Welling (2017) - "Semi-Supervised Classification with Graph Convolutional Networks"
 2. Velickovic et al. (2018) - "Graph Attention Networks"
@@ -662,13 +778,13 @@ RANKING POR MODELO (promedio todos horizontes):
 4. Shi et al. (2015) - "Convolutional LSTM Network" (ConvLSTM)
 5. Vaswani et al. (2017) - "Attention Is All You Need"
 
-### 12.2 Datasets
+### 15.2 Datasets
 
 - **CHIRPS 2.0**: Climate Hazards Group InfraRed Precipitation with Station data
 - **SRTM DEM**: Shuttle Radar Topography Mission Digital Elevation Model
-- **ERA5**: ECMWF Reanalysis v5 (planificado para V5)
+- **ERA5**: ECMWF Reanalysis v5 (planned for V5)
 
 ---
 
-*Documento generado como parte del Framework ML Precipitation Prediction*
-*Ultima actualizacion: Enero 2026*
+*Document generated as part of the ML Precipitation Prediction Framework*
+*Last updated: January 2026*
