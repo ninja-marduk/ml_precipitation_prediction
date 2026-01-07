@@ -8,39 +8,49 @@
 
 ## Project Overview
 
-This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows Specification-Driven Development (SDD) and Data-Driven (DD) methodologies.
+This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows a Data-Driven (DD) scientific methodology with rigorous statistical validation.
 
-### Key Achievement: GNN-TAT (V4)
+### Key Achievement: GNN-TAT (V4) - Full Grid Results
 
-| Metric | V2 Baseline | V4 GNN-TAT | Improvement |
-|--------|-------------|------------|-------------|
-| R² | 0.437 | **0.707** | **+62%** |
-| RMSE | 98.17mm | **52.45mm** | **-47%** |
-| Parameters | 2M+ | **~98K** | **-95%** |
+| Metric | V2 ConvLSTM | V4 GNN-TAT | Comparison |
+|--------|-------------|------------|------------|
+| R² | 0.642 | **0.628** | Comparable (-2.2%) |
+| RMSE | 77.55mm | 82.29mm | Comparable |
+| Parameters | 500K-2.1M | **98K** | **95% fewer** |
+| Mean RMSE | 112.02mm | **92.12mm** | **17.8% lower*** |
+
+*Statistical significance: Mann-Whitney U=57.00, p=0.015, Cohen's d=1.03 (large effect)
+
+### Value Proposition
+
+GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines while offering:
+1. **95% parameter reduction** (98K vs 500K-2.1M parameters)
+2. **Interpretable spatial relationships** through explicit graph structure
+3. **Significantly lower mean RMSE** across all configurations (p=0.015)
 
 ---
 
 ## Research Hypotheses
 
-| ID | Hypothesis | Status |
-|----|------------|--------|
-| H1 | Hybrid GNN-Temporal models outperform ConvLSTM | **VALIDATED** |
-| H2 | Topographic features improve prediction accuracy | **VALIDATED** |
-| H3 | Non-Euclidean spatial relations capture orographic dynamics | IN VALIDATION |
-| H4 | Multi-scale temporal attention improves long horizons | PARTIALLY VALIDATED |
+| ID | Hypothesis | Status | Evidence |
+|----|------------|--------|----------|
+| H1 | Hybrid GNN-Temporal models achieve comparable or better accuracy than ConvLSTM | **PARTIALLY VALIDATED** | R²=0.628 vs 0.642; Mean RMSE significantly lower (p=0.015) |
+| H2 | Topographic features improve prediction accuracy | **VALIDATED** | KCE and PAFC significantly improve GNN performance (p<0.05) |
+| H3 | Non-Euclidean spatial relations capture orographic dynamics | **VALIDATED** | 3,965 nodes, 500,000 edges successfully trained |
+| H4 | Multi-scale temporal attention improves long horizons | **VALIDATED** | R² degradation 9.6% (H1→H12), below 20% threshold |
 
 ---
 
 ## Model Versions
 
-| Version | Architecture | Purpose | Status |
-|---------|--------------|---------|--------|
-| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete |
-| V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete |
-| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete (underperformed) |
-| **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **In Progress** |
-| V5 | Multi-Modal | ERA5 + Satellite integration | Planned |
-| V6 | Ensemble | Meta-learning | Planned |
+| Version | Architecture | Purpose | Status | Best R² |
+|---------|--------------|---------|--------|---------|
+| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete | 0.642 |
+| V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete | 0.653 |
+| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 (underperformed) |
+| **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **Complete** | **0.628** |
+| V5 | Multi-Modal | ERA5 + Satellite integration | Planned | TBD |
+| V6 | Ensemble | Meta-learning | Planned | TBD |
 
 ---
 
@@ -193,4 +203,4 @@ MIT License - See LICENSE file for details.
 ---
 
 *Last Updated: January 2026*
-*Project Status: V4 GNN-TAT in progress*
+*Project Status: V4 GNN-TAT complete (full-grid 61x65), thesis and paper ready for submission*

@@ -1,0 +1,68 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Research Hypothesis}{3}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Derived Hypotheses}{3}{subsection.1.1.1}%
+\contentsline {section}{\numberline {1.2}Objectives}{3}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Overall Objective}{3}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Specific Objectives}{4}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Additional Research Objectives}{4}{subsection.1.2.3}%
+\contentsline {section}{\numberline {1.3}Methodological Framework}{4}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Data Acquisition and Preprocessing}{5}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Dataset: CHIRPS-2.0}{5}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Preprocessing Pipeline}{5}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Feature Engineering and Exploratory Analysis}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Feature Sets}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Exploratory Analysis}{7}{section.3.2}%
+\contentsline {chapter}{\numberline {4}Model Development Methodology}{8}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Pipeline Overview}{8}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Hybrid Models: Theoretical Foundation}{8}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Model Zoo}{9}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Training Setup}{9}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Evaluation Protocol}{10}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Metrics and Diagnostics}{10}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Figures}{10}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Results}{13}{chapter.6}%
+\contentsline {section}{\numberline {6.1}V2 Enhanced Results (H=12)}{13}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Effect of Feature Engineering}{13}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Statistical Significance}{13}{section.6.3}%
+\contentsline {section}{\numberline {6.4}V3 FNO Results}{13}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Hypothesis Assessment (V2-V3)}{14}{section.6.5}%
+\contentsline {section}{\numberline {6.6}Innovation Roadmap}{14}{section.6.6}%
+\contentsline {section}{\numberline {6.7}Implementation Plan}{14}{section.6.7}%
+\contentsline {chapter}{\numberline {7}V4 GNN-TAT: Graph Neural Networks with Temporal Attention}{16}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Architecture Design}{16}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Motivation}{16}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Model Components}{16}{subsection.7.1.2}%
+\contentsline {subsubsection}{Spatial Graph Construction}{16}{section*.2}%
+\contentsline {subsubsection}{Spatial GNN Encoder}{17}{section*.3}%
+\contentsline {subsubsection}{Temporal Attention Module}{17}{section*.4}%
+\contentsline {subsubsection}{LSTM Decoder}{17}{section*.5}%
+\contentsline {subsubsection}{Output Projection}{17}{section*.6}%
+\contentsline {section}{\numberline {7.2}Experimental Configuration}{17}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Hyperparameters}{17}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Training Protocol}{17}{subsection.7.2.2}%
+\contentsline {section}{\numberline {7.3}Results}{18}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Full-Grid Results (61$\times $65 Grid)}{18}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Comparison with Baselines}{18}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Analysis by Feature Set}{19}{subsection.7.3.3}%
+\contentsline {subsection}{\numberline {7.3.4}Analysis by Horizon (GNN\_TAT\_GAT + BASIC)}{19}{subsection.7.3.4}%
+\contentsline {section}{\numberline {7.4}Hypothesis Validation}{20}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Main Hypothesis}{20}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Derived Hypotheses}{20}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Key Insights}{20}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Statistical Significance}{20}{section.7.6}%
+\contentsline {chapter}{\numberline {8}Discussion and Future Work}{22}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Conclusion}{23}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Main Hypothesis Validation}{23}{section.9.1}%
+\contentsline {section}{\numberline {9.2}Fulfillment of Specific Objectives}{23}{section.9.2}%
+\contentsline {section}{\numberline {9.3}Derived Hypotheses Validation}{24}{section.9.3}%
+\contentsline {section}{\numberline {9.4}Summary of Contributions}{24}{section.9.4}%
+\contentsline {section}{\numberline {9.5}Future Directions}{24}{section.9.5}%
+\contentsline {chapter}{\numberline {A}Research Schedule}{25}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Research Phases}{25}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Milestone Completion}{25}{section.A.2}%
+\contentsline {chapter}{\numberline {B}Research Budget}{26}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Budget Summary}{26}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Computational Resources}{26}{section.B.2}%
+\contentsline {subsection}{\numberline {B.2.1}GPU Hardware Specifications}{26}{subsection.B.2.1}%
+\contentsline {section}{\numberline {B.3}Publication Costs}{26}{section.B.3}%

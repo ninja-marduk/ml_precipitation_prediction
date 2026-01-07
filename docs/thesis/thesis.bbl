@@ -1,0 +1,88 @@
+\begin{thebibliography}{10}
+
+\bibitem{ardabili2020deep}
+Sina Ardabili, Amir Mosavi, and Annam{\'a}ria~R V{\'a}rkonyi-K{\'o}czy.
+\newblock Deep learning and machine learning in hydrological processes climate
+  change and earth systems: A systematic review.
+\newblock {\em International Conference on Global Research and Education},
+  pages 52--62, 2020.
+
+\bibitem{funk2015chirps}
+Chris Funk, Pete Peterson, Martin Landsfeld, Diego Pedreros, James Verdin,
+  Shraddhanand Shukla, Gregory Husak, James Rowland, Laura Harrison, Andrew
+  Hoell, et~al.
+\newblock The climate hazards infrared precipitation with stations—a new
+  environmental record for monitoring extremes.
+\newblock {\em Scientific Data}, 2(1):1--21, 2015.
+
+\bibitem{kratzert2019toward}
+Frederik Kratzert, Daniel Klotz, Christoph Brenner, Karsten Schulz, and Matjaz
+  Herrnegger.
+\newblock Toward improved predictions in ungauged basins: Exploiting the power
+  of machine learning.
+\newblock {\em Water Resources Research}, 55(12):11344--11354, 2019.
+
+\bibitem{li2020fourier}
+Zongyi Li, Nikola Kovachki, Kamyar Azizzadenesheli, Burigede Liu, Kaushik
+  Bhattacharya, Andrew Stuart, and Anima Anandkumar.
+\newblock Fourier neural operator for parametric partial differential
+  equations.
+\newblock {\em arXiv preprint arXiv:2010.08895}, 2020.
+
+\bibitem{perez2025hybrid}
+Manuel~Ricardo P{\'e}rez, Marco~Javier Su{\'a}rez, and Oscar~Javier
+  Garc{\'\i}a.
+\newblock Spatiotemporal prediction of monthly precipitation: A systematic
+  review of hybrid models.
+\newblock {\em Under Review}, 2025.
+\newblock Systematic review of 85 studies (2020--2025) on hybrid and ensemble
+  ML models for monthly precipitation prediction. Provides taxonomy:
+  decomposition-based, optimization-enhanced, component combination/ensemble,
+  and post-processing hybrids. RMSE reductions 15--35\% typical.
+
+\bibitem{ravuri2021skillful}
+Shreya Ravuri, Karel Lenc, Matthew Willson, Dmitry Kangin, Ricky Lam, Piotr
+  Mirowski, Mark Fitzsimons, M{\'e}lanie Athanassiadou, Saikiran Kashem, Simon
+  Madge, et~al.
+\newblock Skillful precipitation nowcasting using deep generative models of
+  radar.
+\newblock {\em Nature}, 597(7878):672--677, 2021.
+
+\bibitem{reichstein2019deep}
+Markus Reichstein, Gustau Camps-Valls, Bjorn Stevens, Martin Jung, Joachim
+  Denzler, Nuno Carvalhais, and Prabhat.
+\newblock Deep learning and process understanding for data-driven earth system
+  science.
+\newblock {\em Nature}, 566(7743):195--204, 2019.
+
+\bibitem{shi2015convolutional}
+Xingjian Shi, Zhourong Chen, Hao Wang, Dit-Yan Yeung, Wai-Kin Wong, and
+  Wang-chun Woo.
+\newblock Convolutional lstm network: A machine learning approach for
+  precipitation nowcasting.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  28, 2015.
+\newblock Foundational ConvLSTM paper.
+
+\bibitem{sun2018review}
+Qiaohong Sun, Chiyuan Miao, Qingyun Duan, Hamed Ashouri, Soroosh Sorooshian,
+  and Kuo-Lin Hsu.
+\newblock A review of global precipitation data sets: Data sources, estimation,
+  and intercomparisons.
+\newblock {\em Reviews of Geophysics}, 56(1):79--107, 2018.
+
+\bibitem{vaswani2017attention}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, Lukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  volume~30, 2017.
+\newblock Transformer architecture.
+
+\bibitem{wang2024hybrid}
+Yu~Wang, Ming Li, and Wei Zhang.
+\newblock Hybrid machine learning models for precipitation prediction: A
+  comprehensive review.
+\newblock {\em Environmental Modelling \& Software}, 172:105927, 2024.
+
+\end{thebibliography}
