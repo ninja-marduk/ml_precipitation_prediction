@@ -277,8 +277,13 @@ models/output/**/*.pt
 models/output/**/*.pth
 models/output/**/*.h5
 models/output/**/*.keras
+CLAUDE.md
 
 # Prediction arrays
 models/output/**/*.npy
-
 models/output/
+
+# Production documents
+docs/tesis/
+docs/papers/
+**.pdf
