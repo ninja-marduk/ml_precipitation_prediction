@@ -28,6 +28,16 @@ GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines whi
 2. **Interpretable spatial relationships** through explicit graph structure
 3. **Significantly lower mean RMSE** across all configurations (p=0.015)
 
+### Hybridization Rescue Effect (H5)
+
+A key finding: **Pure spectral methods (FNO) fail for precipitation** (R²=0.206), but **hybridization rescues performance** through component integration:
+
+- Pure FNO: R²=0.206
+- FNO-ConvLSTM Hybrid: R²=0.582
+- **Improvement: 182%**
+
+This validates the component-combination approach used across all V2-V4 architectures.
+
 ---
 
 ## Research Hypotheses
@@ -38,6 +48,7 @@ GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines whi
 | H2 | Topographic features improve prediction accuracy | **VALIDATED** | KCE and PAFC significantly improve GNN performance (p<0.05) |
 | H3 | Non-Euclidean spatial relations capture orographic dynamics | **VALIDATED** | 3,965 nodes, 500,000 edges successfully trained |
 | H4 | Multi-scale temporal attention improves long horizons | **VALIDATED** | R² degradation 9.6% (H1→H12), below 20% threshold |
+| H5 | Hybridization rescues architectural limitations | **VALIDATED** | Pure FNO R²=0.206 → Hybrid R²=0.582 (182% improvement) |
 
 ---
 
@@ -49,7 +60,7 @@ GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines whi
 | V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete | 0.653 |
 | V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 (underperformed) |
 | **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **Complete** | **0.628** |
-| V5 | Multi-Modal | ERA5 + Satellite integration | Planned | TBD |
+| V5 | **GNN-ConvLSTM Stacking** | Dual-branch ensemble | Planned | TBD |
 | V6 | Ensemble | Meta-learning | Planned | TBD |
 
 ---
@@ -161,6 +172,18 @@ V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geom
 
 ---
 
+## Publications
+
+| Paper | Status | Target Journal |
+|-------|--------|----------------|
+| Paper-4: Hybrid Architecture Benchmark | **Publication-Ready** | MDPI Hydrology (Q2) |
+| Paper-5: GNN-ConvLSTM Stacking | Specification Complete | GRL/WRR (Q1) |
+
+Paper-4 establishes the hybrid taxonomy and validates H1-H5 hypotheses.
+Paper-5 will introduce the novel GNN-ConvLSTM stacking architecture.
+
+---
+
 ## Citation
 
 ```bibtex
@@ -202,5 +225,5 @@ MIT License - See LICENSE file for details.
 
 ---
 
-*Last Updated: January 2026*
-*Project Status: V4 GNN-TAT complete (full-grid 61x65), thesis and paper ready for submission*
+*Last Updated: January 7, 2026*
+*Project Status: V4 GNN-TAT complete (full-grid 61x65), Paper-4 publication-ready, V5 stacking planned*

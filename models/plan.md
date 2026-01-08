@@ -22,7 +22,7 @@ This document defines the strategic roadmap for the precipitation prediction fra
 | V2 Enhanced      [##########] 100%  - Attention + Bidirectional  |
 | V3 FNO           [##########] 100%  - Complete (underperformed)  |
 | V4 GNN-TAT       [##########] 100%  - Full grid VALIDATED        |
-| V5 GNN-ConvLSTM  [----------]   0%  - Stacking (Planned)         |
+| V5 GNN-ConvLSTM  [####------]  40%  - Training pipeline ready    |
 | V6 Ensemble      [----------]   0%  - Planned                    |
 | Thesis Written   [####------]  40%  - In progress                |
 | Paper-4 Written  [########--]  80%  - Hybrid improvements done   |
@@ -968,18 +968,23 @@ Development:
 - [x] Add H5 hypothesis (Hybridization Rescue Effect)
 - [x] Create Paper-5 specification (docs/papers/5/paper_5_spec.md)
 - [x] Sync documentation: spec.md, INNOVATION_ANALYSIS.md, plan.md
+- [x] Create V5 notebook skeleton (models/base_models_gnn_convlstm_stacking_v5.ipynb)
+- [x] V5 architecture prototype with all components
 
-### Immediate (January 8-15)
+### Immediate (January 8-15) ✅ COMPLETE
 
-- [ ] Complete thesis.tex hybrid sections (Chapter 4 Methods)
-- [ ] V5 architecture design implementation
-- [ ] Grid-Graph alignment module prototype
-- [ ] Review Paper-4 for final submission
+- [x] V5 architecture design implementation ✅
+- [x] Grid-Graph alignment module prototype ✅
+- [x] Cross-attention fusion layer design ✅
+- [x] Complete thesis.tex hybrid sections (Chapter 4 Methods) ✅
+- [x] Review Paper-4 for final submission ✅
 
-### Short Term (January 16-31)
+### Short Term (January 16-31) 🚧 IN PROGRESS
 
-- [ ] V5 training pipeline implementation
-- [ ] Initial V5 experiments
+- [x] Copy graph construction from V4 to V5 ✅
+- [x] Implement real data loading pipeline (CHIRPS + SRTM) ✅
+- [x] V5 training pipeline implementation ✅
+- [ ] Initial V5 experiments on light mode (5×5 grid)
 - [ ] Present V4 results to advisor
 - [ ] Submit Paper-4 to MDPI Hydrology
 
