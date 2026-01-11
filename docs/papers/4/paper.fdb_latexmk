@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1767759977.99928 "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/papers/4/paper.tex" "paper.pdf" "paper" 1767759990.91159 0
+["pdflatex"] 1768155416.06506 "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/papers/4/paper.tex" "paper.pdf" "paper" 1768155430.22689 0
   "../MDPI_template_ACS/Definitions/mdpi.cls" 1766637538 66546 fda76bfe2ce6b8ce4b3fd03194f3cd8c ""
   "C:/Users/manue/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1765069159 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/manue/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi375/ecss0800.pk" 1765069170 10028 349a0ce00d6b8218230c53f83d79ad23 ""
@@ -254,7 +254,7 @@
   "Definitions/journalnames.tex" 1766637537 113144 51bb0add7e0b584095abfc2c449f42f6 ""
   "Definitions/logo-mdpi.eps" 1766637537 563678 5cdc8f4064e4e6cc8ec19e9f9b0d5b7c ""
   "Definitions/logo-orcid.pdf" 1766637537 12671 39a20ba789123aa897c7efc569fb5270 ""
-  "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/papers/4/paper.tex" 1767756626 61264 a1b06ae14170355156ca9d8909c386fb ""
+  "d:/github.com/ninja-marduk/ml_precipitation_prediction/docs/papers/4/paper.tex" 1768155400 85273 3fd6ffa82e9c465ff505115bcdbbbbbb ""
   "figures/colombia_map.png" 1766637538 376328 218214c0d6201fa18ee12f37dc5d767b ""
   "figures/feature_heatmap.png" 1767759718 362263 826441114288fcfaafbf6026261fcfff ""
   "figures/h12/best_val_loss_matrix.png" 1767664454 145818 cf120d0110ff0994f55d00d31d24fcf1 ""
@@ -265,9 +265,9 @@
   "figures/parameter_efficiency.png" 1767759720 282210 0ece65a1b272f643bef1bd1a1dff418c ""
   "figures/radar_chart.png" 1767759719 510349 84ba05d3ec82e0a615f1900a88ad3114 ""
   "figures/training_dynamics.png" 1767759721 327647 0237c30db49c56bb5169f550f03c2e69 ""
-  "paper.aux" 1767759990 17087 b6c7f64338d7acb7b4caf1cbe5db454f "pdflatex"
-  "paper.out" 1767759990 6345 8f6ced107b5ccc202c2397975b2b9642 "pdflatex"
-  "paper.tex" 1767756626 61264 a1b06ae14170355156ca9d8909c386fb ""
+  "paper.aux" 1768155429 22198 a2017cbf43764bf39f6604a7884a1396 "pdflatex"
+  "paper.out" 1768155429 10257 a80d38bde3488dc3f1025f265e60e9d5 "pdflatex"
+  "paper.tex" 1768155400 85273 3fd6ffa82e9c465ff505115bcdbbbbbb ""
   (generated)
   "paper.aux"
   "paper.log"
