@@ -284,6 +284,6 @@ models/output/**/*.npy
 models/output/
 
 # Production documents
-docs/tesis/
-docs/papers/
+docs/tesis/*
+docs/papers/*
 **.pdf
