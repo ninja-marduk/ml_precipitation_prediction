@@ -23,148 +23,154 @@
 \citation{Ayzel2020}
 \citation{Gao2022Earthformer}
 \citation{Schulz2024}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Hybrid Deep Learning Taxonomy for Precipitation Forecasting}{3}{subsection.2.1}\protected@file@percent }
 \citation{Lam2023}
 \citation{Chen2024GRL}
 \citation{Peng2023JGR}
 \citation{Funk2015}
 \citation{LopezBermeo2022,Urrea2019}
 \citation{Poveda2011}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Graph Neural Networks in Atmospheric Science}{4}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Hybrid Deep Learning Taxonomy for Precipitation Forecasting}{3}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Graph Neural Networks in Atmospheric Science}{3}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Precipitation Data Products for the Tropical Andes}{4}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}Materials and Methods}{4}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Data access and preprocessing pipeline}{4}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Study area and spatial extent}{4}{subsection.3.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Study area: Colombia with Boyac\'a Department highlighted in red (QGIS-derived). The CHIRPS precipitation grid at 0.05$^{\circ }$ resolution covers the full Boyac\'a domain (61$\times $65 = 3,965 grid cells). All experiments use this full-grid configuration.}}{5}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Study area: Colombia with Boyac\'a Department highlighted in red (QGIS-derived). The CHIRPS precipitation grid at 0.05$^{\circ }$ resolution covers the full Boyac\'a domain (61$\times $65 = 3,965 grid cells). All experiments use this full-grid configuration.}}{4}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:maps}{{1}{5}{Study area: Colombia with Boyac\'a Department highlighted in red (QGIS-derived). The CHIRPS precipitation grid at 0.05$^{\circ }$ resolution covers the full Boyac\'a domain (61$\times $65 = 3,965 grid cells). All experiments use this full-grid configuration}{figure.caption.1}{}}
-\newlabel{fig:maps@cref}{{[figure][1][]1}{[1][4][]5}{}{}{}}
+\newlabel{fig:maps}{{1}{4}{Study area: Colombia with Boyac\'a Department highlighted in red (QGIS-derived). The CHIRPS precipitation grid at 0.05$^{\circ }$ resolution covers the full Boyac\'a domain (61$\times $65 = 3,965 grid cells). All experiments use this full-grid configuration}{figure.caption.1}{}}
+\newlabel{fig:maps@cref}{{[figure][1][]1}{[1][4][]4}{}{}{}}
+\citation{Perez2025}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Compute environment}{5}{subsection.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{\numberline {3.3.0.1}Software Environment}{5}{paragraph.3.3.0.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Feature bundles and preprocessing}{5}{subsection.3.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Hybrid architecture families and component integration}{5}{subsection.3.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Family 1: Convolutional-Recurrent Hybrids (ConvLSTM)}{6}{subsubsection.3.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}Family 2: Spectral-Temporal Hybrids (FNO-ConvLSTM)}{6}{subsubsection.3.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Family 3: Graph-Attention-LSTM Hybrids (GNN-TAT)}{6}{subsubsection.3.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\numberline {3.5.3.1}Architectural variants within GNN-TAT family:}{7}{paragraph.3.5.3.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Hybrid architecture components for each model family. All models are Type (iii) component-combination hybrids integrating multiple processing paradigms. Input shape: $(\mathrm  {None}, \mathrm  {None}, 61, 65, F)$ where $F$ is the number of features (12--18) and $H=12$ output horizons.}}{7}{table.caption.2}\protected@file@percent }
-\newlabel{tab:model-summaries}{{1}{7}{Hybrid architecture components for each model family. All models are Type (iii) component-combination hybrids integrating multiple processing paradigms. Input shape: $(\mathrm {None}, \mathrm {None}, 61, 65, F)$ where $F$ is the number of features (12--18) and $H=12$ output horizons}{table.caption.2}{}}
-\newlabel{tab:model-summaries@cref}{{[table][1][]1}{[1][7][]7}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Training protocol and metrics}{7}{subsection.3.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{8}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Global performance}{8}{subsection.4.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Master Model Comparison: All Architectures at H=12 Forecast Horizon}}{8}{table.caption.3}\protected@file@percent }
-\newlabel{tab:master-comparison}{{2}{8}{Master Model Comparison: All Architectures at H=12 Forecast Horizon}{table.caption.3}{}}
-\newlabel{tab:master-comparison@cref}{{[table][2][]2}{[1][8][]8}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Hybrid architecture comparison overview}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Family 1: Convolutional-Recurrent Hybrids (ConvLSTM)}{5}{subsubsection.3.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}Family 2: Spectral-Temporal (FNO-ConvLSTM)}{6}{subsubsection.3.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Family 3: Graph-Attention-LSTM (GNN-TAT)}{6}{subsubsection.3.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Training protocol and metrics}{6}{subsection.3.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Architecture components for each model family. All models integrate multiple processing paradigms end-to-end. Input shape: $(\mathrm  {None}, \mathrm  {None}, 61, 65, F)$ where $F$ is the number of features (12--18) and $H=12$ output horizons.}}{7}{table.caption.2}\protected@file@percent }
+\newlabel{tab:model-summaries}{{1}{7}{Architecture components for each model family. All models integrate multiple processing paradigms end-to-end. Input shape: $(\mathrm {None}, \mathrm {None}, 61, 65, F)$ where $F$ is the number of features (12--18) and $H=12$ output horizons}{table.caption.2}{}}
+\newlabel{tab:model-summaries@cref}{{[table][1][]1}{[1][6][]7}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{7}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Global performance}{7}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Master Model Comparison: All Architectures at H=12 Forecast Horizon}}{7}{table.caption.3}\protected@file@percent }
+\newlabel{tab:master-comparison}{{2}{7}{Master Model Comparison: All Architectures at H=12 Forecast Horizon}{table.caption.3}{}}
+\newlabel{tab:master-comparison@cref}{{[table][2][]2}{[1][7][]7}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Hybrid architecture comparison overview}{7}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces High-level experimental framework comparing three Type (iii) component-combination hybrid families. \textbf  {Family 1 (ConvLSTM)}: Convolutional-recurrent hybrids integrating spatial convolutions with LSTM temporal gates. \textbf  {Family 2 (FNO-ConvLSTM)}: Spectral-temporal hybrids combining Fourier operators with ConvLSTM decoders. \textbf  {Family 3 (GNN-TAT)}: Graph-attention-LSTM hybrids integrating non-Euclidean spatial encoding, temporal attention, and recurrent decoding. All families process the same feature bundles (BASIC, KCE, PAFC) and are evaluated with identical metrics.}}{8}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:arch}{{2}{8}{High-level experimental framework comparing three Type (iii) component-combination hybrid families. \textbf {Family 1 (ConvLSTM)}: Convolutional-recurrent hybrids integrating spatial convolutions with LSTM temporal gates. \textbf {Family 2 (FNO-ConvLSTM)}: Spectral-temporal hybrids combining Fourier operators with ConvLSTM decoders. \textbf {Family 3 (GNN-TAT)}: Graph-attention-LSTM hybrids integrating non-Euclidean spatial encoding, temporal attention, and recurrent decoding. All families process the same feature bundles (BASIC, KCE, PAFC) and are evaluated with identical metrics}{figure.caption.4}{}}
+\newlabel{fig:arch@cref}{{[figure][2][]2}{[1][7][]8}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Training convergence and validation analysis}{8}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Comprehensive benchmark analysis}{8}{subsection.4.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces High-level experimental framework comparing three Type (iii) component-combination hybrid families. \textbf  {Family 1 (ConvLSTM)}: Convolutional-recurrent hybrids integrating spatial convolutions with LSTM temporal gates. \textbf  {Family 2 (FNO-ConvLSTM)}: Spectral-temporal hybrids combining Fourier operators with ConvLSTM decoders. \textbf  {Family 3 (GNN-TAT)}: Graph-attention-LSTM hybrids integrating non-Euclidean spatial encoding, temporal attention, and recurrent decoding. All families process the same feature bundles (BASIC, KCE, PAFC) and are evaluated with identical metrics.}}{9}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:arch}{{2}{9}{High-level experimental framework comparing three Type (iii) component-combination hybrid families. \textbf {Family 1 (ConvLSTM)}: Convolutional-recurrent hybrids integrating spatial convolutions with LSTM temporal gates. \textbf {Family 2 (FNO-ConvLSTM)}: Spectral-temporal hybrids combining Fourier operators with ConvLSTM decoders. \textbf {Family 3 (GNN-TAT)}: Graph-attention-LSTM hybrids integrating non-Euclidean spatial encoding, temporal attention, and recurrent decoding. All families process the same feature bundles (BASIC, KCE, PAFC) and are evaluated with identical metrics}{figure.caption.4}{}}
-\newlabel{fig:arch@cref}{{[figure][2][]2}{[1][8][]9}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Convergence behaviour by architecture and experiment for $H{=}12$. Cooler colors indicate lower loss. Only a subset of KCE/PAFC models remain competitive, underscoring the need for stronger regularization when adding lags and attention.}}{9}{figure.caption.5}\protected@file@percent }
-\newlabel{fig:valloss}{{3}{9}{Convergence behaviour by architecture and experiment for $H{=}12$. Cooler colors indicate lower loss. Only a subset of KCE/PAFC models remain competitive, underscoring the need for stronger regularization when adding lags and attention}{figure.caption.5}{}}
-\newlabel{fig:valloss@cref}{{[figure][3][]3}{[1][8][]9}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Forecast horizon degradation analysis: $R^{2}$ performance from H=1 to H=12 for top models from each family (ConvLSTM, FNO, GNN-TAT). ConvLSTM variants show 6--7\% degradation, GNN-TAT shows 9--11\% degradation, while FNO exhibits inconsistent behavior across horizons. Most ConvLSTM and GNN-TAT models maintain $R^{2}>0.55$ at H=12.}}{10}{figure.caption.6}\protected@file@percent }
-\newlabel{fig:benchmark-horizon}{{4}{10}{Forecast horizon degradation analysis: $R^{2}$ performance from H=1 to H=12 for top models from each family (ConvLSTM, FNO, GNN-TAT). ConvLSTM variants show 6--7\% degradation, GNN-TAT shows 9--11\% degradation, while FNO exhibits inconsistent behavior across horizons. Most ConvLSTM and GNN-TAT models maintain $R^{2}>0.55$ at H=12}{figure.caption.6}{}}
-\newlabel{fig:benchmark-horizon@cref}{{[figure][4][]4}{[1][10][]10}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}GNN-TAT: Graph Neural Networks with Temporal Attention}{10}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}GNN-TAT Hybrid Architecture: Internal Component Integration}{10}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.1}Component 1: Graph Spatial Encoder (Non-Euclidean)}{10}{paragraph.5.1.0.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Convergence behaviour by architecture and experiment for $H{=}12$. Cooler colors indicate lower loss. Only a subset of KCE/PAFC models remain competitive, which points to the need for stronger regularization when adding lags and attention.}}{8}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:valloss}{{3}{8}{Convergence behaviour by architecture and experiment for $H{=}12$. Cooler colors indicate lower loss. Only a subset of KCE/PAFC models remain competitive, which points to the need for stronger regularization when adding lags and attention}{figure.caption.5}{}}
+\newlabel{fig:valloss@cref}{{[figure][3][]3}{[1][8][]8}{}{}{}}
+\citation{Kipf2017}
+\citation{Velickovic2018}
+\citation{Hamilton2017}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Full benchmark analysis}{9}{subsection.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Forecast horizon degradation analysis: $R^{2}$ performance from H=1 to H=12 for top models from each family (ConvLSTM, FNO, GNN-TAT). ConvLSTM variants show 6--7\% degradation, GNN-TAT shows 9--11\% degradation, while FNO exhibits inconsistent behavior across horizons. Most ConvLSTM and GNN-TAT models maintain $R^{2}>0.55$ at H=12.}}{9}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:benchmark-horizon}{{4}{9}{Forecast horizon degradation analysis: $R^{2}$ performance from H=1 to H=12 for top models from each family (ConvLSTM, FNO, GNN-TAT). ConvLSTM variants show 6--7\% degradation, GNN-TAT shows 9--11\% degradation, while FNO exhibits inconsistent behavior across horizons. Most ConvLSTM and GNN-TAT models maintain $R^{2}>0.55$ at H=12}{figure.caption.6}{}}
+\newlabel{fig:benchmark-horizon@cref}{{[figure][4][]4}{[1][9][]9}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}GNN-TAT: Graph Neural Networks with Temporal Attention}{9}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}GNN-TAT Hybrid Architecture: Internal Component Integration}{9}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.1}Component 1: Graph Spatial Encoder (Non-Euclidean)}{9}{paragraph.5.1.0.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Feature set performance heatmap: $R^{2}$ at H=12 by model and feature engineering strategy (all families: ConvLSTM, FNO, GNN-TAT). BASIC features perform best with ConvLSTM variants, PAFC improves GNN-TAT performance (particularly GCN), while FNO struggles across all feature sets due to precipitation's discontinuous nature.}}{10}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:benchmark-features}{{5}{10}{Feature set performance heatmap: $R^{2}$ at H=12 by model and feature engineering strategy (all families: ConvLSTM, FNO, GNN-TAT). BASIC features perform best with ConvLSTM variants, PAFC improves GNN-TAT performance (particularly GCN), while FNO struggles across all feature sets due to precipitation's discontinuous nature}{figure.caption.7}{}}
+\newlabel{fig:benchmark-features@cref}{{[figure][5][]5}{[1][9][]10}{}{}{}}
 \@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.2}Component 2: Temporal Attention Module}{10}{paragraph.5.1.0.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Feature set performance heatmap: $R^{2}$ at H=12 by model and feature engineering strategy (all families: ConvLSTM, FNO, GNN-TAT). BASIC features perform best with ConvLSTM variants, PAFC improves GNN-TAT performance (particularly GCN), while FNO struggles across all feature sets due to precipitation's discontinuous nature.}}{11}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:benchmark-features}{{5}{11}{Feature set performance heatmap: $R^{2}$ at H=12 by model and feature engineering strategy (all families: ConvLSTM, FNO, GNN-TAT). BASIC features perform best with ConvLSTM variants, PAFC improves GNN-TAT performance (particularly GCN), while FNO struggles across all feature sets due to precipitation's discontinuous nature}{figure.caption.7}{}}
-\newlabel{fig:benchmark-features@cref}{{[figure][5][]5}{[1][10][]11}{}{}{}}
-\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.3}Component 3: LSTM Decoder}{11}{paragraph.5.1.0.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.4}Hybridization Advantages}{11}{paragraph.5.1.0.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Multi-metric radar comparison: ConvLSTM vs FNO vs GNN-TAT across normalized metrics (higher is better). GNN-TAT achieves superior parameter efficiency and stability, ConvLSTM achieves highest peak $R^{2}$, while FNO underperforms on accuracy metrics but offers moderate parameter efficiency.}}{12}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:benchmark-radar}{{6}{12}{Multi-metric radar comparison: ConvLSTM vs FNO vs GNN-TAT across normalized metrics (higher is better). GNN-TAT achieves superior parameter efficiency and stability, ConvLSTM achieves highest peak $R^{2}$, while FNO underperforms on accuracy metrics but offers moderate parameter efficiency}{figure.caption.8}{}}
-\newlabel{fig:benchmark-radar@cref}{{[figure][6][]6}{[1][10][]12}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Parameter efficiency frontier: $R^{2}$ vs model size (log scale) for all families. GNN-TAT models cluster in the efficient region ($\sim $98K parameters) with competitive $R^{2}$, ConvLSTM variants span a wide parameter range (78K--2.1M), and FNO models show poor accuracy-efficiency trade-off. The Pareto frontier indicates GNN-TAT offers the best accuracy-efficiency balance.}}{12}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:benchmark-efficiency}{{7}{12}{Parameter efficiency frontier: $R^{2}$ vs model size (log scale) for all families. GNN-TAT models cluster in the efficient region ($\sim $98K parameters) with competitive $R^{2}$, ConvLSTM variants span a wide parameter range (78K--2.1M), and FNO models show poor accuracy-efficiency trade-off. The Pareto frontier indicates GNN-TAT offers the best accuracy-efficiency balance}{figure.caption.9}{}}
-\newlabel{fig:benchmark-efficiency@cref}{{[figure][7][]7}{[1][10][]12}{}{}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.3}Component 3: LSTM Decoder}{10}{paragraph.5.1.0.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.1.0.4}Design rationale.}{10}{paragraph.5.1.0.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Multi-metric radar comparison: ConvLSTM vs FNO vs GNN-TAT across normalized metrics (higher is better). GNN-TAT achieves superior parameter efficiency and stability, ConvLSTM achieves highest peak $R^{2}$, while FNO underperforms on accuracy metrics but offers moderate parameter efficiency.}}{11}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:benchmark-radar}{{6}{11}{Multi-metric radar comparison: ConvLSTM vs FNO vs GNN-TAT across normalized metrics (higher is better). GNN-TAT achieves superior parameter efficiency and stability, ConvLSTM achieves highest peak $R^{2}$, while FNO underperforms on accuracy metrics but offers moderate parameter efficiency}{figure.caption.8}{}}
+\newlabel{fig:benchmark-radar@cref}{{[figure][6][]6}{[1][9][]11}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Parameter efficiency frontier: $R^{2}$ vs model size (log scale) for all families. GNN-TAT models cluster in the efficient region ($\sim $98K parameters) with competitive $R^{2}$, ConvLSTM variants span a wide parameter range (78K--2.1M), and FNO models show poor accuracy-efficiency trade-off. The Pareto frontier indicates GNN-TAT offers the best accuracy-efficiency balance.}}{11}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:benchmark-efficiency}{{7}{11}{Parameter efficiency frontier: $R^{2}$ vs model size (log scale) for all families. GNN-TAT models cluster in the efficient region ($\sim $98K parameters) with competitive $R^{2}$, ConvLSTM variants span a wide parameter range (78K--2.1M), and FNO models show poor accuracy-efficiency trade-off. The Pareto frontier indicates GNN-TAT offers the best accuracy-efficiency balance}{figure.caption.9}{}}
+\newlabel{fig:benchmark-efficiency@cref}{{[figure][7][]7}{[1][9][]11}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Model ranking by $R^{2}$ at H=12: Top 15 model configurations across all families (ConvLSTM, FNO, GNN-TAT). ConvLSTM with BASIC features dominates the top positions, followed by GNN-TAT variants. FNO models appear in lower ranks due to underperformance on precipitation prediction. The dashed line indicates the target $R^{2}=0.6$.}}{12}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:benchmark-ranking}{{8}{12}{Model ranking by $R^{2}$ at H=12: Top 15 model configurations across all families (ConvLSTM, FNO, GNN-TAT). ConvLSTM with BASIC features dominates the top positions, followed by GNN-TAT variants. FNO models appear in lower ranks due to underperformance on precipitation prediction. The dashed line indicates the target $R^{2}=0.6$}{figure.caption.10}{}}
+\newlabel{fig:benchmark-ranking@cref}{{[figure][8][]8}{[1][9][]12}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Training dynamics comparison: Validation loss curves for representative models from each family. GNN-TAT models converge faster (fewer epochs) and achieve lower final validation loss, demonstrating training efficiency advantages.}}{12}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:benchmark-training}{{9}{12}{Training dynamics comparison: Validation loss curves for representative models from each family. GNN-TAT models converge faster (fewer epochs) and achieve lower final validation loss, demonstrating training efficiency advantages}{figure.caption.11}{}}
+\newlabel{fig:benchmark-training@cref}{{[figure][9][]9}{[1][9][]12}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}GNN-TAT Results}{12}{subsection.5.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Model ranking by $R^{2}$ at H=12: Top 15 model configurations across all families (ConvLSTM, FNO, GNN-TAT). ConvLSTM with BASIC features dominates the top positions, followed by GNN-TAT variants. FNO models appear in lower ranks due to underperformance on precipitation prediction. The dashed line indicates the target $R^{2}=0.6$.}}{13}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:benchmark-ranking}{{8}{13}{Model ranking by $R^{2}$ at H=12: Top 15 model configurations across all families (ConvLSTM, FNO, GNN-TAT). ConvLSTM with BASIC features dominates the top positions, followed by GNN-TAT variants. FNO models appear in lower ranks due to underperformance on precipitation prediction. The dashed line indicates the target $R^{2}=0.6$}{figure.caption.10}{}}
-\newlabel{fig:benchmark-ranking@cref}{{[figure][8][]8}{[1][10][]13}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Training dynamics comparison: Validation loss curves for representative models from each family. GNN-TAT models converge faster (fewer epochs) and achieve lower final validation loss, demonstrating training efficiency advantages.}}{13}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:benchmark-training}{{9}{13}{Training dynamics comparison: Validation loss curves for representative models from each family. GNN-TAT models converge faster (fewer epochs) and achieve lower final validation loss, demonstrating training efficiency advantages}{figure.caption.11}{}}
-\newlabel{fig:benchmark-training@cref}{{[figure][9][]9}{[1][10][]13}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces GNN-TAT internal hybrid architecture showing three-component integration. \textbf  {Component 1 (Graph encoder)}: Non-Euclidean spatial encoding via message-passing on topography-aware graph (3,965 nodes, edges weighted by elevation similarity). \textbf  {Component 2 (Temporal attention)}: Multi-head attention selects relevant historical timesteps for seasonal pattern learning. \textbf  {Component 3 (LSTM decoder)}: Sequential decoding generates multi-horizon predictions. This component-combination hybrid enables specialized learning of spatial structure (graph), temporal relevance (attention), and forecast generation (LSTM).}}{13}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:gnn-tat-internal}{{10}{13}{GNN-TAT internal hybrid architecture showing three-component integration. \textbf {Component 1 (Graph encoder)}: Non-Euclidean spatial encoding via message-passing on topography-aware graph (3,965 nodes, edges weighted by elevation similarity). \textbf {Component 2 (Temporal attention)}: Multi-head attention selects relevant historical timesteps for seasonal pattern learning. \textbf {Component 3 (LSTM decoder)}: Sequential decoding generates multi-horizon predictions. This component-combination hybrid enables specialized learning of spatial structure (graph), temporal relevance (attention), and forecast generation (LSTM)}{figure.caption.12}{}}
+\newlabel{fig:gnn-tat-internal@cref}{{[figure][10][]10}{[1][9][]13}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Horizon Degradation Analysis}{13}{subsection.5.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces GNN-TAT internal hybrid architecture showing three-component integration. \textbf  {Component 1 (Graph encoder)}: Non-Euclidean spatial encoding via message-passing on topography-aware graph (3,965 nodes, edges weighted by elevation similarity). \textbf  {Component 2 (Temporal attention)}: Multi-head attention selects relevant historical timesteps for seasonal pattern learning. \textbf  {Component 3 (LSTM decoder)}: Sequential decoding generates multi-horizon predictions. This component-combination hybrid enables specialized learning of spatial structure (graph), temporal relevance (attention), and forecast generation (LSTM).}}{14}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:gnn-tat-internal}{{10}{14}{GNN-TAT internal hybrid architecture showing three-component integration. \textbf {Component 1 (Graph encoder)}: Non-Euclidean spatial encoding via message-passing on topography-aware graph (3,965 nodes, edges weighted by elevation similarity). \textbf {Component 2 (Temporal attention)}: Multi-head attention selects relevant historical timesteps for seasonal pattern learning. \textbf {Component 3 (LSTM decoder)}: Sequential decoding generates multi-horizon predictions. This component-combination hybrid enables specialized learning of spatial structure (graph), temporal relevance (attention), and forecast generation (LSTM)}{figure.caption.12}{}}
-\newlabel{fig:gnn-tat-internal@cref}{{[figure][10][]10}{[1][10][]14}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}GNN-TAT Advantages Over ConvLSTM}{14}{subsection.5.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Hyperparameter Configuration for All Model Families}}{15}{table.caption.13}\protected@file@percent }
-\newlabel{tab:hyperparameters}{{3}{15}{Hyperparameter Configuration for All Model Families}{table.caption.13}{}}
-\newlabel{tab:hyperparameters@cref}{{[table][3][]3}{[1][11][]15}{}{}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces GNN-TAT model comparison on full Boyac\'a grid: (a) RMSE by model and feature set, (b) $R^{2}$ by model and feature set with ConvLSTM baseline (dashed red), (c) RMSE degradation across horizons H=1--12, (d) bias distribution by GNN variant.}}{15}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:v4-comparison}{{11}{15}{GNN-TAT model comparison on full Boyac\'a grid: (a) RMSE by model and feature set, (b) $R^{2}$ by model and feature set with ConvLSTM baseline (dashed red), (c) RMSE degradation across horizons H=1--12, (d) bias distribution by GNN variant}{figure.caption.14}{}}
-\newlabel{fig:v4-comparison@cref}{{[figure][11][]11}{[1][13][]15}{}{}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Forecast Horizon Degradation Analysis: R$^2$ Performance from H=1 to H=12 (All Families)}}{16}{table.caption.15}\protected@file@percent }
-\newlabel{tab:horizon-degradation}{{4}{16}{Forecast Horizon Degradation Analysis: R$^2$ Performance from H=1 to H=12 (All Families)}{table.caption.15}{}}
-\newlabel{tab:horizon-degradation@cref}{{[table][4][]4}{[1][13][]16}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{16}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Component-Combination Hybridization: Why It Works}{16}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Specialized Learning via Component Decoupling}{16}{subsubsection.6.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}Complementary Inductive Biases}{16}{subsubsection.6.1.2}\protected@file@percent }
-\citation{Li2021FNO}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Empirical Validation of Robustness}{17}{subsubsection.6.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.4}Guidance for Architecture Selection in Hydrology}{17}{subsubsection.6.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}FNO-ConvLSTM Hybridization: Rescuing Spectral Methods for Precipitation}{17}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Why Pure FNO Underperforms}{17}{subsubsection.6.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}GNN-TAT Advantages Over ConvLSTM}{13}{subsection.5.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Hyperparameter Configuration for All Model Families}}{14}{table.caption.13}\protected@file@percent }
+\newlabel{tab:hyperparameters}{{3}{14}{Hyperparameter Configuration for All Model Families}{table.caption.13}{}}
+\newlabel{tab:hyperparameters@cref}{{[table][3][]3}{[1][11][]14}{}{}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces GNN-TAT model comparison on full Boyac\'a grid: (a) RMSE by model and feature set, (b) $R^{2}$ by model and feature set with ConvLSTM baseline (dashed red), (c) RMSE degradation across horizons H=1--12, (d) bias distribution by GNN variant.}}{14}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:v4-comparison}{{11}{14}{GNN-TAT model comparison on full Boyac\'a grid: (a) RMSE by model and feature set, (b) $R^{2}$ by model and feature set with ConvLSTM baseline (dashed red), (c) RMSE degradation across horizons H=1--12, (d) bias distribution by GNN variant}{figure.caption.14}{}}
+\newlabel{fig:v4-comparison@cref}{{[figure][11][]11}{[1][12][]14}{}{}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Forecast Horizon Degradation Analysis: R$^2$ Performance from H=1 to H=12 (All Families)}}{15}{table.caption.15}\protected@file@percent }
+\newlabel{tab:horizon-degradation}{{4}{15}{Forecast Horizon Degradation Analysis: R$^2$ Performance from H=1 to H=12 (All Families)}{table.caption.15}{}}
+\newlabel{tab:horizon-degradation@cref}{{[table][4][]4}{[1][13][]15}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{15}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Component-Combination Hybridization: Why It Works}{15}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Specialized Learning via Component Decoupling}{15}{subsubsection.6.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}Complementary Inductive Biases}{15}{subsubsection.6.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Empirical Validation of Consistency}{16}{subsubsection.6.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.4}Practical Guidance}{16}{subsubsection.6.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}FNO-ConvLSTM: When Spectral Methods Need Help}{16}{subsection.6.2}\protected@file@percent }
 \citation{Roe2005}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}How Hybridization Rescues FNO}{18}{subsubsection.6.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.3}Implications for Physics-Informed Hybrid Design}{18}{subsubsection.6.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Feature Engineering Value}{18}{subsection.6.3}\protected@file@percent }
 \citation{Kratzert2019}
 \citation{Wani2024}
 \citation{He2024}
 \citation{Reichstein2019}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Horizon Degradation and Predictability Limits}{19}{subsection.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Comparison with State-of-the-Art}{19}{subsection.6.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Statistical Significance}{19}{subsection.6.6}\protected@file@percent }
+\citation{Demsar2006}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Implications for Physics-Informed Design}{17}{subsubsection.6.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Feature Engineering Value}{17}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Horizon Degradation and Predictability Limits}{17}{subsection.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Comparison with State-of-the-Art}{17}{subsection.6.5}\protected@file@percent }
 \citation{Poveda2011}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Statistical Significance Tests: Pairwise Family Comparisons}}{20}{table.caption.16}\protected@file@percent }
-\newlabel{tab:statistical-tests}{{5}{20}{Statistical Significance Tests: Pairwise Family Comparisons}{table.caption.16}{}}
-\newlabel{tab:statistical-tests@cref}{{[table][5][]5}{[1][20][]20}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Limitations and Future Directions}{20}{subsection.6.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.8}Next Steps: Multi-Architecture Stacking Ensembles}{20}{subsection.6.8}\protected@file@percent }
-\newlabel{sec:future-stacking}{{6.8}{20}{Next Steps: Multi-Architecture Stacking Ensembles}{subsection.6.8}{}}
-\newlabel{sec:future-stacking@cref}{{[subsection][8][6]6.8}{[1][20][]20}{}{}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusions}{21}{section.7}\protected@file@percent }
-\bibcite{Perez2025}{{1}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Statistical Significance}{18}{subsection.6.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Statistical Significance Tests: Pairwise Family Comparisons}}{18}{table.caption.16}\protected@file@percent }
+\newlabel{tab:statistical-tests}{{5}{18}{Statistical Significance Tests: Pairwise Family Comparisons}{table.caption.16}{}}
+\newlabel{tab:statistical-tests@cref}{{[table][5][]5}{[1][18][]18}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.7}Limitations and Future Directions}{18}{subsection.6.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.8}Next Steps: Multi-Architecture Stacking Ensembles}{18}{subsection.6.8}\protected@file@percent }
+\newlabel{sec:future-stacking}{{6.8}{18}{Next Steps: Multi-Architecture Stacking Ensembles}{subsection.6.8}{}}
+\newlabel{sec:future-stacking@cref}{{[subsection][8][6]6.8}{[1][18][]18}{}{}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusions}{19}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{\numberline {7.0.0.1}Future directions.}{19}{paragraph.7.0.0.1}\protected@file@percent }
+\bibcite{Perez2025}{{1}{2025}{{P\'erez et~al.}}{{}}}
 \bibcite{Shi2015}{{2}{}{{}}{{}}}
 \bibcite{Wang2018}{{3}{}{{}}{{}}}
-\bibcite{Lam2023}{{4}{}{{}}{{}}}
-\bibcite{Chen2024GRL}{{5}{}{{}}{{}}}
-\bibcite{Peng2023JGR}{{6}{}{{}}{{}}}
-\bibcite{Bi2023}{{7}{}{{}}{{}}}
-\bibcite{Li2021FNO}{{8}{}{{}}{{}}}
-\bibcite{Funk2015}{{9}{}{{}}{{}}}
-\bibcite{LopezBermeo2022}{{10}{}{{}}{{}}}
-\bibcite{Urrea2019}{{11}{}{{}}{{}}}
-\bibcite{Rivera2018}{{12}{}{{}}{{}}}
-\bibcite{Kratzert2019}{{13}{}{{}}{{}}}
-\bibcite{Gao2020}{{14}{}{{}}{{}}}
-\bibcite{Reichstein2019}{{15}{}{{}}{{}}}
-\bibcite{Roe2005}{{16}{}{{}}{{}}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}}{23}{section.8}\protected@file@percent }
-\bibcite{Poveda2011}{{17}{}{{}}{{}}}
-\bibcite{Trebing2021}{{18}{}{{}}{{}}}
-\bibcite{Gao2022Earthformer}{{19}{}{{}}{{}}}
-\bibcite{Schulz2024}{{20}{}{{}}{{}}}
-\bibcite{Ayzel2020}{{21}{}{{}}{{}}}
-\bibcite{Ravuri2021}{{22}{}{{}}{{}}}
-\bibcite{Wani2024}{{23}{}{{}}{{}}}
-\bibcite{He2024}{{24}{}{{}}{{}}}
-\bibcite{ElHafyani2024}{{25}{}{{}}{{}}}
-\bibcite{Zhao2024}{{26}{}{{}}{{}}}
-\bibcite{Hirpa2010}{{27}{}{{}}{{}}}
-\bibcite{Liu2023}{{28}{}{{}}{{}}}
+\bibcite{Kipf2017}{{4}{}{{}}{{}}}
+\bibcite{Velickovic2018}{{5}{}{{}}{{}}}
+\bibcite{Hamilton2017}{{6}{}{{}}{{}}}
+\bibcite{Lam2023}{{7}{}{{}}{{}}}
+\bibcite{Chen2024GRL}{{8}{}{{}}{{}}}
+\bibcite{Peng2023JGR}{{9}{}{{}}{{}}}
+\bibcite{Bi2023}{{10}{}{{}}{{}}}
+\bibcite{Li2021FNO}{{11}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}}{20}{section.8}\protected@file@percent }
+\bibcite{Funk2015}{{12}{}{{}}{{}}}
+\bibcite{LopezBermeo2022}{{13}{}{{}}{{}}}
+\bibcite{Urrea2019}{{14}{}{{}}{{}}}
+\bibcite{Rivera2018}{{15}{}{{}}{{}}}
+\bibcite{Kratzert2019}{{16}{}{{}}{{}}}
+\bibcite{Gao2020}{{17}{}{{}}{{}}}
+\bibcite{Reichstein2019}{{18}{}{{}}{{}}}
+\bibcite{Roe2005}{{19}{}{{}}{{}}}
+\bibcite{Poveda2011}{{20}{}{{}}{{}}}
+\bibcite{Trebing2021}{{21}{}{{}}{{}}}
+\bibcite{Gao2022Earthformer}{{22}{}{{}}{{}}}
+\bibcite{Schulz2024}{{23}{}{{}}{{}}}
+\bibcite{Ayzel2020}{{24}{}{{}}{{}}}
+\bibcite{Ravuri2021}{{25}{}{{}}{{}}}
+\bibcite{Wani2024}{{26}{}{{}}{{}}}
+\bibcite{He2024}{{27}{}{{}}{{}}}
+\bibcite{ElHafyani2024}{{28}{}{{}}{{}}}
+\bibcite{Zhao2024}{{29}{}{{}}{{}}}
+\bibcite{Demsar2006}{{30}{}{{}}{{}}}
+\bibcite{Hirpa2010}{{31}{}{{}}{{}}}
+\bibcite{Liu2023}{{32}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\newlabel{LastPage}{{7}{24}{}{page.24}{}}
-\gdef\lastpage@lastpage{24}
-\gdef\lastpage@lastpageHy{24}
-\gdef \@abspage@last{24}
+\newlabel{LastPage}{{7.0.0.1}{22}{Future directions.}{page.22}{}}
+\gdef\lastpage@lastpage{22}
+\gdef\lastpage@lastpageHy{22}
+\gdef \@abspage@last{22}
