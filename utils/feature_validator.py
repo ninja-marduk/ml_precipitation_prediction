@@ -192,38 +192,38 @@ def safe_has_nan(arr):
 
 def test_feature_validation():
     """
-    Función de prueba para validar la detección de características
+    Funcion de prueba para validar la deteccion de caracteristicas
     """
     # Crear un dataset de prueba
     test_features = BASE_FEATURES + ['cluster_elevation']
-    print(f"✅ Test dataset con {len(test_features)} características")
-    
+    print(f"[OK] Test dataset con {len(test_features)} caracteristicas")
+
     # Probar cada modelo
     for model_key, req in MODEL_FEATURE_REQUIREMENTS.items():
         # Verificar modelo base
         if model_key == 'ConvGRU-ED':
             is_valid, missing = validate_features_for_model(model_key, test_features)
-            print(f"  📊 {model_key}: {'✅ Válido' if is_valid else '❌ Inválido'}")
-            assert is_valid, f"El modelo base debería ser válido con las características base"
-        
+            print(f"  [INFO] {model_key}: {'[OK] Valido' if is_valid else '[ERROR] Invalido'}")
+            assert is_valid, f"El modelo base deberia ser valido con las caracteristicas base"
+
         # Verificar modelos que usan cluster
         elif req['uses_cluster']:
             # Primero sin transformar cluster_elevation
             is_valid, missing = validate_features_for_model(model_key, test_features)
-            print(f"  📊 {model_key} (sin transformar): {'✅ Válido' if is_valid else '❌ Inválido - Faltan: ' + str(missing)}")
-            assert not is_valid, f"El modelo {model_key} debería ser inválido sin transformar cluster_elevation"
-            
-            # Ahora simulando transformación cluster_elevation → [cluster_high, cluster_medium, cluster_low]
+            print(f"  [INFO] {model_key} (sin transformar): {'[OK] Valido' if is_valid else '[ERROR] Invalido - Faltan: ' + str(missing)}")
+            assert not is_valid, f"El modelo {model_key} deberia ser invalido sin transformar cluster_elevation"
+
+            # Ahora simulando transformacion cluster_elevation -> [cluster_high, cluster_medium, cluster_low]
             transformed_features = test_features + ELEVATION_CLUSTER_FEATURES
             transformed_features.remove('cluster_elevation')  # Eliminar feature original
             is_valid, missing = validate_features_for_model(model_key, transformed_features)
-            print(f"  📊 {model_key} (transformado): {'✅ Válido' if is_valid else '❌ Inválido - Faltan: ' + str(missing)}")
-            
-            # Todavía faltarán características para modelos avanzados
+            print(f"  [INFO] {model_key} (transformado): {'[OK] Valido' if is_valid else '[ERROR] Invalido - Faltan: ' + str(missing)}")
+
+            # Todavia faltaran caracteristicas para modelos avanzados
             if model_key in ['ConvGRU-ED-KCE-PAFC', 'AE-FUSION-ConvGRU-ED-KCE-PAFC-MHA', 'AE-FUSION-ConvGRU-ED-KCE-PAFC-MHA-TopoMask']:
-                assert not is_valid, f"El modelo {model_key} debería requerir más características"
-    
-    print("\n✅ Validación de características completada")
+                assert not is_valid, f"El modelo {model_key} deberia requerir mas caracteristicas"
+
+    print("\n[OK] Validacion de caracteristicas completada")
 
 if __name__ == "__main__":
     test_feature_validation() 
