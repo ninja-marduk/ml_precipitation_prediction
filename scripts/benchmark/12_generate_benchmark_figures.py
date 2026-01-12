@@ -709,11 +709,17 @@ def create_gnn_tat_comparison_plot(combined_df: pd.DataFrame) -> plt.Figure:
                      colLabels=['Architecture', 'Best\nFeatures', 'R²', 'RMSE\n(mm)', 'MAE\n(mm)'],
                      cellLoc='center',
                      loc='center',
-                     bbox=[0.1, 0.2, 0.8, 0.6])
+                     bbox=[0.05, 0.2, 0.9, 0.6],
+                     colWidths=[0.25, 0.20, 0.15, 0.20, 0.20])
 
     table.auto_set_font_size(False)
     table.set_fontsize(10)
     table.scale(1, 2)
+
+    # Add padding to Architecture column header
+    for key, cell in table.get_celld().items():
+        cell.set_text_props(ha='center')
+        cell.PAD = 0.05  # Add padding to all cells
 
     # Style header
     for i in range(5):
