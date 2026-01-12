@@ -247,24 +247,24 @@ def test_improved_dataloader():
         )
         
         # Verificar resultados
-        print(f"   ✅ Características disponibles: {len(available_features)}")
+        print(f"   [OK] Caracteristicas disponibles: {len(available_features)}")
         cluster_features_found = [f for f in available_features if f.startswith('cluster_')]
-        print(f"   ✅ Características de cluster: {cluster_features_found}")
-        
+        print(f"   [OK] Caracteristicas de cluster: {cluster_features_found}")
+
         # Verificar dimensiones
         spatial_shapes = set(str(shape) for shape in feature_shapes.values())
-        print(f"   ✅ Estructuras encontradas: {spatial_shapes}")
-    
-    print("\n✅ Pruebas completadas")
-    
-    # Probar la transformación directa
-    print("\n🧪 Probando transformación directa de cluster_elevation")
+        print(f"   [OK] Estructuras encontradas: {spatial_shapes}")
+
+    print("\n[OK] Pruebas completadas")
+
+    # Probar la transformacion directa
+    print("\n[TEST] Probando transformacion directa de cluster_elevation")
     ds_transformed = transform_cluster_elevation(ds)
     for feature in ELEVATION_CLUSTER_FEATURES:
         if feature in ds_transformed:
-            print(f"   ✅ Variable {feature} creada correctamente")
+            print(f"   [OK] Variable {feature} creada correctamente")
         else:
-            print(f"   ❌ Error: Variable {feature} no creada")
+            print(f"   [ERROR] Variable {feature} no creada")
     
     return ds_transformed
 

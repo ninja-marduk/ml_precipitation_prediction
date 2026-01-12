@@ -296,15 +296,15 @@ def normalize_metrics(df):
     final_df = analysis_df[['Model','Error_RMSE_pct_preferred','Error_MAE_pct_preferred','RMSE_source','MAE_source']].rename(columns={'Error_RMSE_pct_preferred':'RMSE','Error_MAE_pct_preferred':'MAE'})
     final_df.to_csv('hybrid_model_final_normalized.csv', index=False)
 
-    print(f"\n📊 ANALYSIS SUMMARY:")
+    print(f"\n[ANALYSIS SUMMARY]")
     print(f"   Total models processed: {len(analysis_df)}")
-    print(f"   Models with R² available: {analysis_df['R_squared'].notna().sum()}")
+    print(f"   Models with R2 available: {analysis_df['R_squared'].notna().sum()}")
     print(f"   RSE available: {analysis_df['RSE'].notna().sum()}")
     print(f"   Preferred RMSE available: {final_df['RMSE'].notna().sum()}")
     print(f"   Preferred MAE available: {final_df['MAE'].notna().sum()}")
 
     print("\n" + "="*80)
-    print("✅ NORMALIZATION COMPLETED!")
+    print("[OK] NORMALIZATION COMPLETED!")
     print("="*80)
 
     return final_df, [], analysis_df
@@ -313,10 +313,10 @@ def normalize_metrics(df):
 def main():
     print("Starting comprehensive metrics normalization...")
     df = create_proper_csv()
-    print(f"✅ Processed {len(df)} records from {len(df['Model'].unique())} models")
+    print(f"[OK] Processed {len(df)} records from {len(df['Model'].unique())} models")
     df = apply_overrides(df)
     final_df, _, analysis_df = normalize_metrics(df)
-    print(f"\n🎯 NEXT STEPS:\n   1. Review 'detailed_metrics_analysis.csv'\n   2. Use 'hybrid_model_final_normalized.csv' for visualizations")
+    print(f"\n[NEXT STEPS]\n   1. Review 'detailed_metrics_analysis.csv'\n   2. Use 'hybrid_model_final_normalized.csv' for visualizations")
     return final_df
 
 if __name__ == "__main__":
