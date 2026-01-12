@@ -105,33 +105,33 @@ def update_chirps_daily():
                 for chunk in resp.iter_content(chunk_size=1024):
                     if chunk:
                         f.write(chunk)
-            print(f"✔️ Archivo {daily_file_name} descargado/actualizado.")
+            print(f"[OK] Archivo {daily_file_name} descargado/actualizado.")
         else:
-            print(f"❌ Error al descargar {daily_file_name}: HTTP {resp.status_code}")
+            print(f"[ERROR] Error al descargar {daily_file_name}: HTTP {resp.status_code}")
 
     # 1) Si no existe, descargar
     if not os.path.exists(daily_file_path):
-        print(f"⏬ {daily_file_name} no existe. Descargando...")
+        print(f"[DOWNLOAD] {daily_file_name} no existe. Descargando...")
         download_file()
     else:
-        print(f"🔍 {daily_file_name} ya existe. Comprobando fecha...")
+        print(f"[CHECK] {daily_file_name} ya existe. Comprobando fecha...")
 
-    # 2) Leer la última fecha del dataset
+    # 2) Leer la ultima fecha del dataset
     ds = xr.open_dataset(daily_file_path)
     last_date = pd.to_datetime(ds.time.values[-1])
-    print(f"📅 Última fecha disponible: {last_date.date()}")
+    print(f"[DATE] Ultima fecha disponible: {last_date.date()}")
 
     # 3) Si el desfase es > 2 meses, volver a descargar
     threshold = current_date - pd.DateOffset(months=2)
     if last_date < threshold:
-        print(f"⚠️ Dataset desactualizado (>2 meses). Intentando actualizar...")
+        print(f"[WARNING] Dataset desactualizado (>2 meses). Intentando actualizar...")
         download_file()
         # Releer para verificar
         ds = xr.open_dataset(daily_file_path)
         new_last = pd.to_datetime(ds.time.values[-1])
-        print(f"📅 Nueva última fecha: {new_last.date()}")
+        print(f"[DATE] Nueva ultima fecha: {new_last.date()}")
     else:
-        print("✅ El dataset está actualizado (≤ 2 meses de desfase).") 
+        print("[OK] El dataset esta actualizado (<= 2 meses de desfase).") 
 
 def process_new_data():
     """
@@ -233,7 +233,7 @@ def process_new_data():
         ds.to_netcdf(outp, compute=True)
     ds.close()
 
-    print(f"✅ Dataset final listo: {os.path.basename(outp)}")
+    print(f"[OK] Dataset final listo: {os.path.basename(outp)}")
 
 def validate_output_dataset(output_path=None, expected_time_length=80, required_columns=None):
     """
@@ -357,7 +357,7 @@ if __name__ == "__main__":
     if args.enable_chirps_update:
         update_chirps_daily()
     else:
-        print("⚙️ CHIRPS-update desactivado (usa --enable-chirps-update para activarlo)")
+        print("[CONFIG] CHIRPS-update desactivado (usa --enable-chirps-update para activarlo)")
 
     process_new_data()
     verify_updated_dataset()

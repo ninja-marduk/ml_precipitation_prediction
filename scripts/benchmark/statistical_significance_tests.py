@@ -7,7 +7,6 @@ that GNN-TAT significantly outperforms ConvLSTM and FNO baselines.
 
 Output: LaTeX table and p-values for paper.tex
 
-Author: Claude Code
 Date: January 2026
 """
 

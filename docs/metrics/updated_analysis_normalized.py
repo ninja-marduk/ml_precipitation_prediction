@@ -284,38 +284,38 @@ def main():
     print("="*80)
     print("STARTING NORMALIZED HYBRID MODELS ANALYSIS")
     print("="*80)
-    print("🎯 Using normalized data where R² was available")
-    print("📊 All metrics now consistently scaled")
-    
+    print("[INFO] Using normalized data where R2 was available")
+    print("[INFO] All metrics now consistently scaled")
+
     # 1. Load and prepare normalized data
     df = pd.read_csv(csv_file, index_col=0)
     df = classify_hybrid_models(df)
     baseline_df = create_baseline_data()
-    
-    print(f"\n✅ Loaded {len(df)} normalized hybrid models and {len(baseline_df)} baseline models")
-    
+
+    print(f"\n[OK] Loaded {len(df)} normalized hybrid models and {len(baseline_df)} baseline models")
+
     # 2. Create normalized logarithmic plot
     print("\n1. Creating normalized logarithmic plot...")
     log_fig = create_logarithmic_plot(df)
     log_path = os.path.join(script_dir, "normalized_logarithmic_comparison.png")
     log_fig.savefig(log_path, dpi=300, bbox_inches='tight')
-    print(f"📊 Normalized logarithmic plot saved: {log_path}")
-    
+    print(f"[INFO] Normalized logarithmic plot saved: {log_path}")
+
     # 3. Perform meta-analysis with normalized data
     print("\n2. Performing normalized meta-analysis...")
     results = perform_meta_analysis(df, baseline_df)
-    
+
     # 4. Create meta-analysis plots
     print("\n3. Creating normalized meta-analysis plots...")
     meta_fig = create_meta_analysis_plots(results)
     meta_path = os.path.join(script_dir, "normalized_meta_analysis_plots.png")
     meta_fig.savefig(meta_path, dpi=300, bbox_inches='tight')
-    print(f"📈 Normalized meta-analysis plots saved: {meta_path}")
-    
+    print(f"[INFO] Normalized meta-analysis plots saved: {meta_path}")
+
     # 5. Create summary report
     print("\n4. Generating normalized summary report...")
     create_summary_report(results, baseline_df)
-    
+
     # 6. Save normalized results
     results_path = os.path.join(script_dir, "normalized_meta_analysis_results.xlsx")
     with pd.ExcelWriter(results_path) as writer:
@@ -324,20 +324,20 @@ def main():
         for metric, data in results.items():
             data['analysis_df'].to_excel(writer, sheet_name=f'{metric}_Analysis', index=False)
             data['category_stats'].to_excel(writer, sheet_name=f'{metric}_Stats')
-    
-    print(f"\n💾 Normalized results saved: {results_path}")
-    
+
+    print(f"\n[SAVED] Normalized results saved: {results_path}")
+
     # Show plots
     plt.show()
-    
+
     print("\n" + "="*80)
-    print("✅ NORMALIZED ANALYSIS COMPLETED")
+    print("[OK] NORMALIZED ANALYSIS COMPLETED")
     print("="*80)
-    print("📁 Generated files:")
+    print("[FILES] Generated files:")
     print(f"  - {log_path}")
     print(f"  - {meta_path}")
     print(f"  - {results_path}")
-    print("\n🎯 All metrics are now consistently normalized!")
+    print("\n[INFO] All metrics are now consistently normalized!")
 
 if __name__ == "__main__":
     main()

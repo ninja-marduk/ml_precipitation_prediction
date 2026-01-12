@@ -26,7 +26,7 @@ def create_framework_diagram():
     ax1 = plt.subplot(2, 2, (1, 2))  # Top spanning both columns
     ax1.set_xlim(0, 10)
     ax1.set_ylim(0, 8)
-    ax1.set_title('🚀 DATA-DRIVEN PRECIPITATION PREDICTION FRAMEWORK V2', 
+    ax1.set_title('DATA-DRIVEN PRECIPITATION PREDICTION FRAMEWORK V2',
                   fontsize=16, fontweight='bold', pad=20)
     
     # Data Layer
@@ -35,51 +35,51 @@ def create_framework_diagram():
                               facecolor='lightblue', 
                               edgecolor='navy', linewidth=2)
     ax1.add_patch(data_box)
-    ax1.text(1.5, 6.75, '📊 DATA LAYER\n• CHIRPS-2.0\n• Multi-temporal\n• Spatio-temporal', 
+    ax1.text(1.5, 6.75, 'DATA LAYER\n- CHIRPS-2.0\n- Multi-temporal\n- Spatio-temporal',
              ha='center', va='center', fontweight='bold')
-    
+
     # Model Layer - Current V2
-    model_box = FancyBboxPatch((4, 5.5), 2.5, 2.5, 
-                               boxstyle="round,pad=0.1", 
-                               facecolor='lightgreen', 
+    model_box = FancyBboxPatch((4, 5.5), 2.5, 2.5,
+                               boxstyle="round,pad=0.1",
+                               facecolor='lightgreen',
                                edgecolor='darkgreen', linewidth=2)
     ax1.add_patch(model_box)
-    ax1.text(5.25, 6.75, '🤖 MODEL LAYER V2\n• 11 Architectures\n• 3 Experiments\n• 33 Combinations\n• R² = 0.75', 
+    ax1.text(5.25, 6.75, 'MODEL LAYER V2\n- 11 Architectures\n- 3 Experiments\n- 33 Combinations\n- R2 = 0.75',
              ha='center', va='center', fontweight='bold')
-    
+
     # Evaluation Layer
-    eval_box = FancyBboxPatch((7.5, 6), 2, 1.5, 
-                              boxstyle="round,pad=0.1", 
-                              facecolor='lightyellow', 
+    eval_box = FancyBboxPatch((7.5, 6), 2, 1.5,
+                              boxstyle="round,pad=0.1",
+                              facecolor='lightyellow',
                               edgecolor='orange', linewidth=2)
     ax1.add_patch(eval_box)
-    ax1.text(8.5, 6.75, '📈 EVAL LAYER\n• Benchmarking\n• Meta-analysis\n• Q1 Standards', 
+    ax1.text(8.5, 6.75, 'EVAL LAYER\n- Benchmarking\n- Meta-analysis\n- Q1 Standards',
              ha='center', va='center', fontweight='bold')
-    
+
     # Current Models Detail
-    models_detail = FancyBboxPatch((1, 3), 8, 2, 
-                                   boxstyle="round,pad=0.1", 
-                                   facecolor='#f0f8ff', 
+    models_detail = FancyBboxPatch((1, 3), 8, 2,
+                                   boxstyle="round,pad=0.1",
+                                   facecolor='#f0f8ff',
                                    edgecolor='blue', linewidth=1)
     ax1.add_patch(models_detail)
-    ax1.text(5, 4, '''🏗️ CURRENT ARCHITECTURE HIERARCHY
-    
+    ax1.text(5, 4, '''CURRENT ARCHITECTURE HIERARCHY
+
 ENHANCED (3): ConvLSTM/GRU/RNN + Dropout + Multi-horizon Loss
-ADVANCED (3): Bidirectional + Residual + Skip Connections  
+ADVANCED (3): Bidirectional + Residual + Skip Connections
 ATTENTION (2): Basic Temporal + Spatial Attention
-COMPETITIVE (3): MeteoAttention + EfficientBidir + Transformer''', 
+COMPETITIVE (3): MeteoAttention + EfficientBidir + Transformer''',
              ha='center', va='center', fontsize=9)
-    
+
     # Performance indicators
-    perf_box = FancyBboxPatch((1, 0.5), 8, 1.5, 
-                              boxstyle="round,pad=0.1", 
-                              facecolor='#ffe4e1', 
+    perf_box = FancyBboxPatch((1, 0.5), 8, 1.5,
+                              boxstyle="round,pad=0.1",
+                              facecolor='#ffe4e1',
                               edgecolor='red', linewidth=1)
     ax1.add_patch(perf_box)
-    ax1.text(5, 1.25, '''🏆 CURRENT PERFORMANCE (Data-Driven Results)
-    
-BEST: ConvRNN_Enhanced + PAFC → R² = 0.7520 (75.2% variance explained)
-KEY INSIGHT: Simple + Enhanced > Complex architectures (Data-driven discovery!)''', 
+    ax1.text(5, 1.25, '''CURRENT PERFORMANCE (Data-Driven Results)
+
+BEST: ConvRNN_Enhanced + PAFC -> R2 = 0.7520 (75.2% variance explained)
+KEY INSIGHT: Simple + Enhanced > Complex architectures (Data-driven discovery!)''',
              ha='center', va='center', fontsize=9, fontweight='bold')
     
     # Arrows
@@ -343,9 +343,9 @@ if __name__ == "__main__":
     fig2.savefig('/Users/riperez/Conda/anaconda3/envs/precipitation_prediction/github.com/ml_precipitation_prediction/docs/data_driven_evidence.png', 
                  dpi=300, bbox_inches='tight', facecolor='white')
     
-    print("✅ Framework diagrams generated successfully!")
-    print("📁 Files saved:")
-    print("   • framework_architecture.png")
-    print("   • data_driven_evidence.png")
+    print("[OK] Framework diagrams generated successfully!")
+    print("[FILES] Files saved:")
+    print("   - framework_architecture.png")
+    print("   - data_driven_evidence.png")
     
     plt.show()

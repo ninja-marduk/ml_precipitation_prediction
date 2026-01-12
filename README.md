@@ -69,19 +69,13 @@ This validates the component-combination approach used across all V2-V4 architec
 
 ```
 ml_precipitation_prediction/
-├── CLAUDE.md                     # Project rules and standards
 ├── data/                         # Input data (CHIRPS, SRTM)
-├── docs/
-│   ├── tesis/                    # Doctoral thesis (thesis.tex)
-│   │   └── references.bib        # 110+ Q1 references
-│   └── papers/4/                 # Comparative paper (paper.tex)
 ├── models/
-│   ├── spec.md                   # Technical specifications
-│   ├── plan.md                   # Development roadmap
 │   ├── base_models_*.ipynb       # Model notebooks (V1-V4)
 │   └── output/                   # Training outputs
 ├── notebooks/                    # Exploratory analysis
-└── scripts/                      # Automation scripts
+├── scripts/                      # Automation scripts
+└── utils/                        # Utility functions
 ```
 
 ---
@@ -166,9 +160,6 @@ V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geom
 |----------|----------|---------|
 | Thesis | `docs/tesis/thesis.tex` | Complete methodology |
 | Paper | `docs/papers/4/paper.tex` | Comparative results |
-| Specifications | `models/spec.md` | Technical standards |
-| Plan | `models/plan.md` | Development roadmap |
-| Rules | `CLAUDE.md` | Project governance |
 
 ---
 
