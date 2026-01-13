@@ -154,54 +154,6 @@ V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geom
 
 ---
 
-## Documentation
-
-| Document | Location | Purpose |
-|----------|----------|---------|
-| Thesis | `docs/tesis/thesis.tex` | Complete methodology |
-| Paper | `docs/papers/4/paper.tex` | Comparative results |
-
----
-
-## Publications
-
-| Paper | Status | Target Journal |
-|-------|--------|----------------|
-| Paper-4: Hybrid Architecture Benchmark | **Publication-Ready** | MDPI Hydrology (Q2) |
-| Paper-5: GNN-ConvLSTM Stacking | Specification Complete | GRL/WRR (Q1) |
-
-Paper-4 establishes the hybrid taxonomy and validates H1-H5 hypotheses.
-Paper-5 will introduce the novel GNN-ConvLSTM stacking architecture.
-
----
-
-## Citation
-
-```bibtex
-@phdthesis{perez2026precipitation,
-  title={Computational Model for Spatiotemporal Prediction of Monthly
-         Precipitation in Mountainous Areas: A Hybrid Deep Learning
-         Approach Using Graph Neural Networks with Temporal Attention},
-  author={P{\'e}rez Reyes, Manuel Ricardo},
-  year={2026},
-  school={Pedagogical and Technological University of Colombia (UPTC)}
-}
-```
-
----
-
-## Key References
-
-1. Kipf & Welling (2017) - Graph Convolutional Networks
-2. Velickovic et al. (2018) - Graph Attention Networks
-3. Shi et al. (2015) - ConvLSTM for Precipitation Nowcasting
-4. Vaswani et al. (2017) - Attention Is All You Need
-5. Funk et al. (2015) - CHIRPS Precipitation Dataset
-
-Full bibliography: `docs/tesis/references.bib` (110+ Q1 references)
-
----
-
 ## License
 
 MIT License - See LICENSE file for details.
