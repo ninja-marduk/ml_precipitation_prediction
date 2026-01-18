@@ -106,6 +106,14 @@ ml_precipitation_prediction/
 
 ## Installation
 
+### Dataset Download
+
+Download the Boyacá precipitation dataset:
+- **Google Drive**: [Boyacá Dataset (CHIRPS + SRTM)](https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view?usp=drive_link)
+- **Extract to**: `data/` directory in the repository
+
+### Local Environment
+
 ```bash
 # Clone repository
 git clone https://github.com/ninja-marduk/ml_precipitation_prediction.git
@@ -126,21 +134,48 @@ pip install torch-geometric
 
 ## Usage
 
+### Execution Modes
+
+#### Light Mode (CPU/Small GPU)
+- **Environment**: Google Colab Free Tier (CPU with High RAM)
+- **RAM**: 12+ GB
+- **Dataset**: 5×5 grid subset for rapid prototyping
+- **Use Case**: Testing, development, debugging
+- **Notebooks**: All V1-V5 notebooks support light mode
+
+#### Full Mode (Production Training)
+- **Environment**: Google Colab Pro/Pro+ with GPU
+- **GPU Required**: A100 (40GB) or H100 (80GB) recommended
+- **RAM**: 40+ GB
+- **Dataset**: Full 61×65 grid (3,965 nodes, 500,000 edges for GNN)
+- **Use Case**: Final model training, benchmark experiments
+- **Training Time**: 2-8 hours depending on model complexity
+
 ### Running Notebooks
 
+#### Local Execution
 1. **V4 GNN-TAT** (recommended):
    ```bash
-   jupyter notebook models/base_models_GNN_TAT_V4.ipynb
+   jupyter notebook models/base_models_gnn_tat_v4.ipynb
    ```
 
-2. **V2 Enhanced Models**:
+2. **V5 GNN-ConvLSTM Stacking** (latest):
    ```bash
-   jupyter notebook models/base_models_Enhanced_V2.ipynb
+   jupyter notebook models/base_models_gnn_convlstm_stacking_v5.ipynb
    ```
 
-### Google Colab
+#### Google Colab Execution
+1. Open notebook from GitHub in Colab
+2. **For Light Mode**:
+   - Runtime → Change runtime type → CPU
+   - Edit → Notebook settings → Hardware accelerator: None
+   - Runtime settings → High RAM
+3. **For Full Mode**:
+   - Runtime → Change runtime type → GPU
+   - Select: A100 GPU or H100 GPU (Colab Pro+)
+   - Runtime settings → High RAM
 
-V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geometric installation.
+All notebooks include automatic GPU detection and PyTorch Geometric installation.
 
 ---
 
