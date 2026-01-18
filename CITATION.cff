@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "ML Precipitation Prediction: Hybrid Deep Learning for Spatiotemporal Forecasting in Mountainous Areas"
+version: 5.0.1
+date-released: 2026-01-18
+authors:
+  - family-names: "Perez Reyes"
+    given-names: "Manuel Ricardo"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+    affiliation: "Pedagogical and Technological University of Colombia (UPTC)"
+    email: "your.email@uptc.edu.co"
+repository-code: "https://github.com/ninja-marduk/ml_precipitation_prediction"
+url: "https://github.com/ninja-marduk/ml_precipitation_prediction"
+abstract: >
+  A hybrid deep learning framework for monthly precipitation prediction in mountainous
+  areas of Boyacá, Colombia. Combines Graph Neural Networks (GNN) with temporal attention
+  mechanisms and ConvLSTM architectures for accurate spatiotemporal forecasting. This
+  implementation supports multiple model versions (V1-V5) including baseline ConvLSTM,
+  Fourier Neural Operators (FNO), GNN-Temporal Attention Transformer (GNN-TAT), and
+  novel GNN-ConvLSTM stacking ensemble.
+keywords:
+  - precipitation prediction
+  - graph neural networks
+  - deep learning
+  - spatiotemporal forecasting
+  - ConvLSTM
+  - temporal attention
+  - hybrid models
+  - mountainous areas
+  - hydrology
+  - climate modeling
+license: CC-BY-4.0
+preferred-citation:
+  type: thesis
+  title: "Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas: A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention"
+  authors:
+    - family-names: "Perez Reyes"
+      given-names: "Manuel Ricardo"
+      orcid: "https://orcid.org/0000-0000-0000-0000"
+  institution:
+    name: "Pedagogical and Technological University of Colombia (UPTC)"
+  thesis-type: "PhD thesis"
+  year: 2026
+  department: "Doctoral Program in Engineering"
+references:
+  - type: dataset
+    title: "Boyacá Precipitation Dataset (CHIRPS + SRTM)"
+    authors:
+      - family-names: "Perez Reyes"
+        given-names: "Manuel Ricardo"
+    year: 2026
+    url: "https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view"
+    description: "61×65 grid, 518 monthly steps, Colombian Andes precipitation and topography data"
