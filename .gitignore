@@ -289,10 +289,5 @@ docs/thesis/*
 docs/papers/*
 **.pdf
 
-# Development and planning files (keep local)
-spec.md
-plan.md
-AGENTS.md
-AI_ANALYSIS_DUMP.md
-docs/INNOVATION_ANALYSIS_GNN_CONVLSTM_STACKING.md
-docs/analysis/v5_robust_plan.md
+# Pytest cache and test artifacts
+.pytest_cache/
