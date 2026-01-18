@@ -7,7 +7,7 @@ date-released: 2026-01-18
 authors:
   - family-names: "Perez Reyes"
     given-names: "Manuel Ricardo"
-    orcid: "https://orcid.org/0000-0000-0000-0000"
+    orcid: "https://orcid.org/0009-0003-2963-1631"
     affiliation: "Pedagogical and Technological University of Colombia (UPTC)"
     email: "manuelricardo.perez@uptc.edu.co"
 repository-code: "https://github.com/ninja-marduk/ml_precipitation_prediction"
@@ -37,7 +37,7 @@ preferred-citation:
   authors:
     - family-names: "Perez Reyes"
       given-names: "Manuel Ricardo"
-      orcid: "https://orcid.org/0000-0000-0000-0000"
+      orcid: "https://orcid.org/0009-0003-2963-1631"
   institution:
     name: "Pedagogical and Technological University of Colombia (UPTC)"
   thesis-type: "PhD thesis"
