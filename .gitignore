@@ -289,21 +289,5 @@ docs/thesis/*
 docs/papers/*
 **.pdf
 
-# =============================================================================
-# AI Assistant Files (keep locally, exclude from GitHub)
-# =============================================================================
-AGENTS.md
-models/spec.md
-models/plan.md
-docs/thesis/spec.md
-docs/thesis/plan.md
-docs/papers/4/spec.md
-docs/papers/4/plan.md
-docs/papers/5/spec.md
-docs/papers/5/paper_5_spec.md
-
-# Analysis dump file
-AI_ANALYSIS_DUMP.md
-
-# Innovation analysis (contains AI patterns)
-docs/INNOVATION_ANALYSIS_GNN_CONVLSTM_STACKING.md
+# Pytest cache and test artifacts
+.pytest_cache/
