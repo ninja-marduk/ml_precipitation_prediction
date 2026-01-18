@@ -281,12 +281,12 @@ This research is supported by:
 
 **Author**: Manuel Ricardo Perez Reyes
 **ORCID**: [Add your ORCID ID]
-**Email**: [Your institutional email]
+**Email**: manuelricardo.perez@uptc.edu.co
 **Institution**: Pedagogical and Technological University of Colombia (UPTC)
 **Program**: Doctoral Program in Engineering
 
 **For Collaboration Inquiries**:
-- Research collaboration: [institutional email]
+- Research collaboration: manuelricardo.perez@uptc.edu.co
 - Technical questions: GitHub Issues
 - Citations and academic use: Contact via ORCID profile
 
