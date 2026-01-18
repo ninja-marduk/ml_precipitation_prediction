@@ -420,7 +420,7 @@ def main():
         # Entrenar cada modelo
         for model_name, model_builder in MODELS.items():
             print(f"\n{'─'*50}")
-            print(f"🤖 Modelo: {model_name}")
+            print(f"Modelo: {model_name}")
             print(f"{'─'*50}")
             
             try:
