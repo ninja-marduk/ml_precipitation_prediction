@@ -192,15 +192,103 @@ All notebooks include automatic GPU detection and PyTorch Geometric installation
 
 ## License
 
-MIT License - See LICENSE file for details.
+This project is licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**.
+
+You are free to:
+- **Share**: Copy and redistribute the material in any medium or format
+- **Adapt**: Remix, transform, and build upon the material for any purpose, including commercial use
+
+Under the following terms:
+- **Attribution**: You must give appropriate credit, provide a link to the license, and indicate if changes were made
+
+See [LICENSE](LICENSE) file for complete terms.
+
+---
+
+## Citation
+
+If you use this code, dataset, or methodology in your research, please cite:
+
+### Software Citation (BibTeX)
+
+```bibtex
+@software{Perez2026MLPrecipitation,
+  author       = {Perez Reyes, Manuel Ricardo},
+  title        = {{ML Precipitation Prediction: Hybrid Deep Learning
+                   for Spatiotemporal Forecasting in Mountainous Areas}},
+  year         = {2026},
+  publisher    = {GitHub},
+  url          = {https://github.com/ninja-marduk/ml_precipitation_prediction},
+  note         = {Doctoral Thesis Project - UPTC}
+}
+```
+
+### Dataset Citation (BibTeX)
+
+```bibtex
+@dataset{Perez2026BoyacaDataset,
+  author       = {Perez Reyes, Manuel Ricardo},
+  title        = {{Boyacá Precipitation Dataset (CHIRPS + SRTM)}},
+  year         = {2026},
+  publisher    = {Google Drive},
+  url          = {https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view},
+  note         = {61×65 grid, 518 monthly steps, Colombian Andes}
+}
+```
+
+### Doctoral Thesis Citation (BibTeX)
+
+```bibtex
+@phdthesis{PerezThesis2026,
+  author       = {Perez Reyes, Manuel Ricardo},
+  title        = {{Computational Model for Spatiotemporal Prediction of
+                   Monthly Precipitation in Mountainous Areas: A Hybrid
+                   Deep Learning Approach Using Graph Neural Networks
+                   with Temporal Attention}},
+  school       = {Pedagogical and Technological University of Colombia (UPTC)},
+  year         = {2026},
+  note         = {Doctoral Program in Engineering}
+}
+```
+
+### Academic Use
+
+For academic publications using this work:
+1. Cite the software repository (required)
+2. Cite the dataset if you use Boyacá data (required)
+3. Cite the doctoral thesis once published (recommended)
+4. Cite related publications with DOIs when available (check repository for updates)
+
+### Commercial Use
+
+Commercial use is permitted under CC BY 4.0 with proper attribution:
+1. Include citation in product documentation
+2. Acknowledge original author and institution
+3. Provide link to this repository
+4. For collaboration inquiries, contact author directly
+
+---
+
+## Funding Acknowledgment
+
+This research is supported by:
+- **Institution**: Pedagogical and Technological University of Colombia (UPTC)
+- **Program**: Doctoral Program in Engineering
 
 ---
 
 ## Contact
 
 **Author**: Manuel Ricardo Perez Reyes
+**ORCID**: [Add your ORCID ID]
+**Email**: [Your institutional email]
 **Institution**: Pedagogical and Technological University of Colombia (UPTC)
 **Program**: Doctoral Program in Engineering
+
+**For Collaboration Inquiries**:
+- Research collaboration: [institutional email]
+- Technical questions: GitHub Issues
+- Citations and academic use: Contact via ORCID profile
 
 ---
 
