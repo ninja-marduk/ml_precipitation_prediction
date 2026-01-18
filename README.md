@@ -170,4 +170,4 @@ MIT License - See LICENSE file for details.
 ---
 
 *Last Updated: January 18, 2026*
-*Project Status: V4 complete (R²=0.628, 61×65 full-grid), Paper-4 submitted to MDPI Hydrology, V5 stacking implementation in progress*
+*Project Status: V4 complete (R²=0.628, 61×65 full-grid), V5 stacking implementation in progress*
