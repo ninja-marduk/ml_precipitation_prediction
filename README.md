@@ -60,7 +60,7 @@ This validates the component-combination approach used across all V2-V4 architec
 | V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete | 0.653 |
 | V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 (underperformed) |
 | **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **Complete** | **0.628** |
-| V5 | **GNN-ConvLSTM Stacking** | Dual-branch ensemble | Planned | TBD |
+| V5 | **GNN-ConvLSTM Stacking** | Dual-branch ensemble | In Progress | TBD |
 | V6 | Ensemble | Meta-learning | Planned | TBD |
 
 ---
@@ -167,11 +167,12 @@ V4 notebook is optimized for Colab with automatic GPU detection and PyTorch Geom
 
 | Paper | Status | Target Journal |
 |-------|--------|----------------|
-| Paper-4: Hybrid Architecture Benchmark | **Publication-Ready** | MDPI Hydrology (Q2) |
+| Paper-4: Hybrid Architecture Benchmark | **Submitted (Jan 2026)** | MDPI Hydrology (Q2) |
 | Paper-5: GNN-ConvLSTM Stacking | Specification Complete | GRL/WRR (Q1) |
 
-Paper-4 establishes the hybrid taxonomy and validates H1-H5 hypotheses.
-Paper-5 will introduce the novel GNN-ConvLSTM stacking architecture.
+**Paper-4** establishes the hybrid taxonomy and validates H1-H5 hypotheses. Submitted to MDPI Hydrology Special Issue "Advancing Hydrological Science Through Artificial Intelligence" (January 18, 2026).
+
+**Paper-5** will introduce the novel GNN-ConvLSTM stacking architecture.
 
 ---
 
@@ -216,5 +217,5 @@ MIT License - See LICENSE file for details.
 
 ---
 
-*Last Updated: January 7, 2026*
-*Project Status: V4 GNN-TAT complete (full-grid 61x65), Paper-4 publication-ready, V5 stacking planned*
+*Last Updated: January 18, 2026*
+*Project Status: V4 complete (R²=0.628, 61×65 full-grid), Paper-4 submitted to MDPI Hydrology, V5 stacking implementation in progress*
