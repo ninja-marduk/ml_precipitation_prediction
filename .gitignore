@@ -292,5 +292,11 @@ docs/papers/*
 # Research notes and drafts (personal, not for public repo)
 docs/research/
 
-# Pytest cache and test artifacts
+# Collaboration files (plans, specs, and workspace files)
+**/plan.md
+**/spec.md
+**/*_plan.md
+**/*_spec.md
+
+# Pytest cache and test artifacts (includes AI workspace)
 .pytest_cache/
