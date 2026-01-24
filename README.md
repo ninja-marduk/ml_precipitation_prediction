@@ -10,16 +10,19 @@
 
 This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows a Data-Driven (DD) scientific methodology with rigorous statistical validation.
 
-### Key Achievement: GNN-TAT (V4) - Full Grid Results
+### Model Performance Summary (H=12, Full Grid Results)
 
-| Metric | V2 ConvLSTM | V4 GNN-TAT | Comparison |
-|--------|-------------|------------|------------|
-| R² | 0.642 | **0.628** | Comparable (-2.2%) |
-| RMSE | 77.55mm | 82.29mm | Comparable |
-| Parameters | 500K-2.1M | **98K** | **95% fewer** |
-| Mean RMSE | 112.02mm | **92.12mm** | **17.8% lower*** |
+| Metric | V2 ConvLSTM (BASIC) | V4 GNN-TAT (BASIC) | V5 Stacking (BASIC_KCE) | Best Model |
+|--------|---------------------|--------------------|-----------------------|------------|
+| **R²** | **0.628** | 0.516 | 0.212 | **V2** ✅ |
+| **RMSE (mm)** | **81.03** | 92.12 | 117.93 | **V2** ✅ |
+| **MAE (mm)** | **58.91** | 66.57 | 92.41 | **V2** ✅ |
+| **Parameters** | 316K | **98K** | 83.5K | V4 (efficiency) |
+| **Status** | Validated | Validated | Failed objectives | V2 recommended |
 
-*Statistical significance: Mann-Whitney U=57.00, p=0.015, Cohen's d=1.03 (large effect)
+**V5 Stacking Analysis:** V5 attempted to combine ConvLSTM and GNN-TAT through grid-graph fusion and meta-learning. Results were significantly worse than individual models (R² 66% lower than V2, RMSE 46% higher). Root cause: GridGraphFusion architecture destroyed information by mixing branch features before predictions, preventing effective meta-learning.
+
+**Recommendation for Thesis:** Use **V2 Enhanced ConvLSTM (BASIC)** as final validated model.
 
 ### Value Proposition
 
@@ -28,15 +31,47 @@ GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines whi
 2. **Interpretable spatial relationships** through explicit graph structure
 3. **Significantly lower mean RMSE** across all configurations (p=0.015)
 
-### Hybridization Rescue Effect (H5)
+### Key Research Findings
 
-A key finding: **Pure spectral methods (FNO) fail for precipitation** (R²=0.206), but **hybridization rescues performance** through component integration:
-
+**1. Hybridization Rescue Effect (H5 - Validated):**
+Pure spectral methods (FNO) fail for precipitation (R²=0.206), but hybridization rescues performance through component integration:
 - Pure FNO: R²=0.206
 - FNO-ConvLSTM Hybrid: R²=0.582
 - **Improvement: 182%**
 
-This validates the component-combination approach used across all V2-V4 architectures.
+**2. When Stacking Fails (H6 - Rejected):**
+Complex fusion architectures don't guarantee better results. V5 Stacking attempted to combine ConvLSTM and GNN-TAT but performed catastrophically worse:
+- V2 ConvLSTM (individual): R²=0.628, RMSE=81mm
+- V4 GNN-TAT (individual): R²=0.516, RMSE=92mm
+- **V5 Stacking (ensemble): R²=0.212, RMSE=118mm** ❌
+
+**Root Cause:** GridGraphFusion mixed branch features BEFORE predictions, destroying branch identity and preventing effective meta-learning.
+
+**Lesson:** Simpler models (V2 ConvLSTM) often outperform sophisticated ensembles when the fusion mechanism isn't well-designed. Fusion timing and architecture matter more than complexity.
+
+**3. When Ensemble Stratification Works vs Fails (V6 - Complete):**
+V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 stratification dimensions to rescue the ensemble approach. Results (on validation set):
+
+**Stratification Dimensions Tested:**
+- **Elevation:** High (>3000m), Medium (2000-3000m), Low (<2000m)
+- **Precipitation Magnitude:** Light, Moderate, Heavy
+- **Season:** DJF (Winter), MAM (Spring), JJA (Summer), SON (Autumn)
+- **Forecast Horizon:** Short (H1-4), Medium (H5-8), Long (H9-12)
+
+**Results Across ALL Dimensions:**
+| Dimension | V2 R² Range | V4 R² Range | Winner |
+|-----------|-------------|-------------|--------|
+| Elevation (3 zones) | 0.136-0.240 | 0.568-0.610 | V4 all zones |
+| Season (4 seasons) | -3.67-0.250 | 0.264-0.611 | V4 all seasons |
+| Horizon (3 groups) | 0.103-0.218 | 0.583-0.608 | V4 all groups |
+
+**Ensemble Strategies Performance:**
+- Simple Average (50/50): R²=0.478 (-20% vs V4) ❌
+- All Stratified Ensembles: R²=0.597 (equals V4, no improvement)
+
+**Critical Finding:** Ensemble stratification CANNOT improve performance when one model dominates universally. V4 outperforms V2 across ALL tested dimensions, so optimal weights are 100% V4, 0% V2.
+
+**Theoretical Lesson:** Successful ensembles require **complementary strengths** - different models excelling in different conditions. V2 vs V4 lack complementarity, making ensemble futile.
 
 ---
 
@@ -44,24 +79,28 @@ This validates the component-combination approach used across all V2-V4 architec
 
 | ID | Hypothesis | Status | Evidence |
 |----|------------|--------|----------|
-| H1 | Hybrid GNN-Temporal models achieve comparable or better accuracy than ConvLSTM | **PARTIALLY VALIDATED** | R²=0.628 vs 0.642; Mean RMSE significantly lower (p=0.015) |
-| H2 | Topographic features improve prediction accuracy | **VALIDATED** | KCE and PAFC significantly improve GNN performance (p<0.05) |
-| H3 | Non-Euclidean spatial relations capture orographic dynamics | **VALIDATED** | 3,965 nodes, 500,000 edges successfully trained |
+| H1 | Hybrid GNN-Temporal models achieve comparable or better accuracy than ConvLSTM | **PARTIALLY VALIDATED** | V4 R²=0.516 vs V2 R²=0.628; GNN captures spatial structure but ConvLSTM superior overall |
+| H2 | Topographic features improve prediction accuracy | **VALIDATED** | KCE features improve V4 GNN performance (p<0.05) |
+| H3 | Non-Euclidean spatial relations capture orographic dynamics | **VALIDATED** | 3,965 nodes, 500,000 edges successfully trained in V4 |
 | H4 | Multi-scale temporal attention improves long horizons | **VALIDATED** | R² degradation 9.6% (H1→H12), below 20% threshold |
 | H5 | Hybridization rescues architectural limitations | **VALIDATED** | Pure FNO R²=0.206 → Hybrid R²=0.582 (182% improvement) |
+| H6 | Stacking improves upon best individual models | **❌ REJECTED** | V5 Stacking R²=0.212 vs V2 R²=0.628 (66% worse); GridGraphFusion destroyed information |
+| H7 | Ensemble stratification can leverage complementary strengths | **❌ REJECTED** | V6 tested 8 strategies × 4 dimensions; V4 dominates all strata, no complementarity exists |
 
 ---
 
 ## Model Versions
 
-| Version | Architecture | Purpose | Status | Best R² |
-|---------|--------------|---------|--------|---------|
-| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete | 0.642 |
-| V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete | 0.653 |
-| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 (underperformed) |
-| **V4** | **GNN-TAT** | **Hybrid spatial-temporal** | **Complete** | **0.628** |
-| V5 | **GNN-ConvLSTM Stacking** | Dual-branch ensemble | In Progress | TBD |
-| V6 | Ensemble | Meta-learning | Planned | TBD |
+| Version | Architecture | Purpose | Status | Best R² | Recommendation |
+|---------|--------------|---------|--------|---------|----------------|
+| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete | 0.642 | Superseded by V2 |
+| **V2** | **Enhanced + Attention + Bidirectional** | **Improved baselines** | **Complete** | **0.628** | **✅ USE FOR THESIS** |
+| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 (underperformed) | Research only |
+| V4 | GNN-TAT | Hybrid spatial-temporal | Complete | 0.516 | Alternative option |
+| V5 | GNN-ConvLSTM Stacking | Dual-branch ensemble | Complete - Failed | 0.212 | ❌ Do not use |
+| V6 | Late Fusion Ensemble + Multi-Dim Matrix | Ensemble strategies | Complete | 0.597* | Research complete |
+
+**Note on V6:** V6 tested 8 ensemble strategies across 4 stratification dimensions (elevation, magnitude, season, horizon). *Results on validation set show V4 (R²=0.597) superior to V2 (R²=0.175). All ensemble strategies either equal or worsen V4's performance because V4 dominates across all tested dimensions. **Finding:** Ensemble stratification cannot improve when one model is universally superior. See [V6 Multi-Dimensional Ensemble README](docs/models/V6_Multi_Dimensional_Ensemble/README.md) for complete analysis.
 
 ---
 
@@ -292,5 +331,5 @@ This research is supported by:
 
 ---
 
-*Last Updated: January 18, 2026*
-*Project Status: V4 complete (R²=0.628, 61×65 full-grid), V5 stacking implementation in progress*
+*Last Updated: January 23, 2026*
+*Project Status: V5 stacking completed (failed to meet objectives), V2 ConvLSTM (R²=0.628) selected as final model for doctoral thesis, Paper-4 submitted to MDPI Hydrology*

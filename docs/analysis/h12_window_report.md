@@ -44,3 +44,44 @@
 1. **Re-ejecutar el notebook actualizado** para regenerar los artefactos de `h12` (y, si aplica, `h6`). Esto asegurará que los splits sin fuga, el escalado por bloques y los chequeos de sesgo/escala entren en vigor.
 2. **Validar los tamaños de ventana producidos por `preprocess_data`** (imprimir `X_tr.shape[0]` y `X_va.shape[0]` tras la nueva división). Si el conteo no coincide con lo esperado (343/33 para H=12), ajustar `compute_split_indices`.
 3. **Revisar los modelos con sesgo sistemático**: usar los nuevos logs de `mean_bias_pct` para descartar automáticamente horizontes con |bias|>10 % o aplicar regularización adicional en los experimentos KCE/PAFC antes de considerarlos para despliegue.
+
+---
+
+## Apéndice: V5 Stacking Results (H=12) - January 2026
+
+### Performance Summary
+
+V5 GNN-ConvLSTM Stacking fue evaluado con horizonte H=12 (full grid, 61×65). **Los resultados fueron significativamente peores que todos los modelos individuales previos:**
+
+| Model | R² | RMSE (mm) | MAE (mm) | Parameters | Status vs V2 |
+|-------|-----|-----------|----------|------------|--------------|
+| **V2 ConvLSTM (BASIC)** | **0.628** | **81.03** | **58.91** | 316K | Baseline ✅ |
+| V4 GNN-TAT (BASIC) | 0.516 | 92.12 | 66.57 | 98K | -18% R² |
+| **V5 Stacking (BASIC_KCE)** | **0.212** | **117.93** | **92.41** | 83.5K | **-66% R²** ❌ |
+
+### Key Findings
+
+1. **Catastrophic Performance Degradation:**
+   - R² degradation: V2 0.628 → V5 0.212 = -66% (peor que ambos modelos base)
+   - RMSE degradation: V2 81mm → V5 118mm = +46% (significativamente peor)
+   - V5 falló en TODOS los horizontes H=1-12 (ninguno superó R²=0.23)
+
+2. **Training Issues:**
+   - Best epoch: 34 de 55 total
+   - Train-val gap: 2656 (19% overfitting severo)
+   - Imbalanced weights: 30% ConvLSTM / 70% GNN (a pesar de regularización fuerte)
+
+3. **Root Cause:**
+   - GridGraphFusion mezcla features ANTES de predicciones
+   - Destruye identidad de ramas antes de que meta-learner pueda ponderarlas
+   - Arquitectura de "early fusion" es fundamentalmente incorrecta
+
+### Recommendation
+
+**NO usar V5 Stacking.** El modelo V2 Enhanced ConvLSTM (BASIC) con R²=0.628 es significativamente superior y debe usarse como modelo final validado para la tesis doctoral.
+
+**Ver análisis completo:** `docs/analysis/v5_stacking_failure_analysis.md`
+
+---
+
+*Última actualización: 23 de enero de 2026*

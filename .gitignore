@@ -289,5 +289,8 @@ docs/thesis/*
 docs/papers/*
 **.pdf
 
+# Research notes and drafts (personal, not for public repo)
+docs/research/
+
 # Pytest cache and test artifacts
 .pytest_cache/
