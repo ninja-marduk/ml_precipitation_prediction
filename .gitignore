@@ -292,7 +292,7 @@ docs/papers/*
 # Research notes and drafts (personal, not for public repo)
 docs/research/
 
-# AI collaboration files (plans, specs, and workspace files)
+# Collaboration files (plans, specs, and workspace files)
 **/plan.md
 **/spec.md
 **/*_plan.md
