@@ -10,6 +10,18 @@
 
 This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows a Data-Driven (DD) scientific methodology with rigorous statistical validation.
 
+### Research Publications
+
+This work is organized into three complementary studies, each addressing a different aspect of the research:
+
+| Study | Focus | Journal | Status |
+|-------|-------|---------|--------|
+| **Systematic Review** (Paper 1) | Survey of hybrid DL models for precipitation prediction | Hydrology Research (IWA) | Under R3 review |
+| **Hybrid Architecture Benchmark** (Paper 4) | ConvLSTM vs FNO vs GNN-TAT comparison | Hydrology (MDPI) | Accepted |
+| **Sub-grid Feature Engineering** (Paper 5) | Intra-cell DEM topographic heterogeneity | Hydrology (MDPI) | In preparation |
+
+Throughout this documentation, papers are referenced by their descriptive name or by number (e.g., "Paper 4") following this convention.
+
 ### Model Performance Summary (H=12, Full Grid Results)
 
 | Metric | V2 ConvLSTM | V4 GNN-TAT | V5 Stacking | V9 BiMamba | **V10 Late Fusion** |
@@ -145,17 +157,17 @@ V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 strat
 ml_precipitation_prediction/
 ├── data/                         # Input data (CHIRPS, SRTM DEM)
 ├── models/
-│   ├── base_models_*.ipynb       # Model notebooks (V1-V10, Paper 4)
+│   ├── base_models_*.ipynb       # Model notebooks (V1-V10)
 │   └── output/                   # Training outputs
 ├── notebooks/                    # Exploratory analysis
 ├── preprocessing/                # Feature engineering scripts
-│   ├── dem_intra_cell_features.py  # Intra-cell DEM (Paper 5)
+│   ├── dem_intra_cell_features.py  # Intra-cell DEM feature extraction
 │   └── ds1_ds2_analysis.py         # Bidirectional analysis
 ├── scripts/                      # Benchmark and evaluation
 │   └── benchmark/                # ACC, FSS, elevation metrics
 ├── workflows/                    # End-to-end pipeline (see below)
 │   ├── 01-09_*.py                # Pipeline stages
-│   ├── colab/                    # Colab notebooks (Paper 5 GPU)
+│   ├── colab/                    # Colab notebooks (GPU training)
 │   └── config.yaml               # Central configuration
 └── utils/                        # Utility functions
 ```
@@ -165,19 +177,19 @@ ml_precipitation_prediction/
 The [`workflows/`](workflows/) directory contains an end-to-end pipeline (9 stages) for reproducing all results. See the **[Workflows README](workflows/README.md)** for full documentation.
 
 ```bash
-# Reproduce Paper 4 results (stages 7-9, no GPU)
+# Reproduce hybrid architecture benchmark results (stages 7-9, no GPU)
 python workflows/run_pipeline.py --from 7
 
-# Paper 5 feature engineering (no GPU)
+# Intra-cell DEM feature engineering (no GPU)
 python preprocessing/dem_intra_cell_features.py --dem data/input/dem/dem_boyaca_90m.tif --integrate --figures
 
-# Paper 5 GPU training: see workflows/colab/ notebooks
+# DEM-enhanced model training: see models/intracell_dem/ notebooks
 ```
 
-| Paper | Notebooks | Feature Sets | Output Directory |
+| Study | Notebooks | Feature Sets | Output Directory |
 |-------|-----------|--------------|------------------|
-| **Paper 4** | `models/base_models_*_v2/v4/v10.ipynb` | BASIC, KCE, PAFC | `models/output/V2_Enhanced_Models/` |
-| **Paper 5** | `workflows/colab/*_intracell_dem.ipynb` | BASIC_D10, BASIC_PCA6 | `models/output/V2_Enhanced_Models_intracell_dem/` |
+| **Hybrid Architecture Benchmark** | `models/base_models_*_v2/v4/v10.ipynb` | BASIC, KCE, PAFC | `models/output/V2_Enhanced_Models/` |
+| **Sub-grid Feature Engineering** | `models/intracell_dem/*_intracell_dem.ipynb` | BASIC_D10, BASIC_PCA6 | `models/output/V2_Enhanced_Models_intracell_dem/` |
 
 ---
 
@@ -197,7 +209,7 @@ python preprocessing/dem_intra_cell_features.py --dem data/input/dem/dem_boyaca_
 
 ## Feature Sets
 
-### Paper 4 (Original)
+### Baseline Feature Sets (Hybrid Architecture Benchmark)
 
 | Set | Features | Description |
 |-----|----------|-------------|
@@ -205,7 +217,7 @@ python preprocessing/dem_intra_cell_features.py --dem data/input/dem/dem_boyaca_
 | KCE | 15 | BASIC + K-means elevation clusters |
 | PAFC | 18 | KCE + precipitation autocorrelation lags (t-1, t-2, t-12) |
 
-### Paper 5 (Intra-Cell DEM Heterogeneity)
+### Intra-Cell DEM Feature Sets (Sub-grid Feature Engineering)
 
 | Set | Features | Description |
 |-----|----------|-------------|
@@ -298,8 +310,8 @@ All notebooks include automatic GPU detection and PyTorch Geometric installation
 - **MAE**: Mean Absolute Error (mm)
 - **R²**: Coefficient of Determination
 - **Bias**: Mean prediction bias (mm, %)
-- **ACC**: Anomaly Correlation Coefficient (Paper 5)
-- **FSS**: Fractions Skill Score at 1/5/10mm thresholds (Paper 5)
+- **ACC**: Anomaly Correlation Coefficient
+- **FSS**: Fractions Skill Score at 1/5/10mm thresholds
 - **Statistical Tests**: Friedman + Nemenyi post-hoc
 
 
@@ -351,7 +363,7 @@ If you use this code, dataset, or methodology in your research, please cite:
 }
 ```
 
-### Paper 1 — Systematic Review (BibTeX)
+### Systematic Review — Paper 1 (BibTeX)
 
 ```bibtex
 @article{PerezReyes2025Review,
@@ -365,7 +377,7 @@ If you use this code, dataset, or methodology in your research, please cite:
 }
 ```
 
-### Paper 4 — Hybrid Architectures (BibTeX)
+### Hybrid Architecture Benchmark — Paper 4 (BibTeX)
 
 ```bibtex
 @article{PerezReyes2026Hybrid,
@@ -380,7 +392,7 @@ If you use this code, dataset, or methodology in your research, please cite:
 }
 ```
 
-### Paper 5 — Ensemble Strategies and Emerging Paradigms (BibTeX)
+### Sub-grid Feature Engineering — Paper 5 (BibTeX)
 
 ```bibtex
 @article{PerezReyes2026Ensemble,
@@ -415,9 +427,9 @@ If you use this code, dataset, or methodology in your research, please cite:
 For academic publications using this work:
 1. Cite the software repository (required)
 2. Cite the relevant paper(s) for the methodology you use:
-   - **Systematic review of hybrid models** → cite Paper 1
-   - **ConvLSTM, GNN-TAT, FNO architectures** → cite Paper 4
-   - **Ensemble strategies, late fusion, SSM results** → cite Paper 5
+   - **Systematic review of hybrid models** → cite the Systematic Review (Paper 1)
+   - **ConvLSTM, GNN-TAT, FNO architectures** → cite the Hybrid Architecture Benchmark (Paper 4)
+   - **Ensemble strategies, late fusion, SSM results** → cite the Sub-grid Feature Engineering study (Paper 5)
 3. Cite the dataset if you use Boyaca data (required)
 4. Cite the doctoral thesis once published (recommended)
 
@@ -454,5 +466,5 @@ This research is supported by:
 
 ---
 
-*Last Updated: February 28, 2026*
-*Project Status: V10 Late Fusion (R2=0.668) is best model for thesis, Paper 1 (R3 submitted to IWA), Paper 4 (ACCEPTED at MDPI Hydrology), Paper 5 in preparation (intra-cell DEM features + new benchmarks)*
+*Last Updated: March 2026*
+*Project Status: V10 Late Fusion (R2=0.668) is the best model. Systematic Review under R3 review (IWA), Hybrid Architecture Benchmark accepted (MDPI Hydrology), Sub-grid Feature Engineering study in preparation.*

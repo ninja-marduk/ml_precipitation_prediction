@@ -11,10 +11,10 @@ python workflows/run_pipeline.py
 # Only post-training stages (V10 fusion + benchmarks + figures)
 python workflows/run_pipeline.py --from 7
 
-# Paper 5: Use intra-cell DEM models instead of Paper 4 defaults
+# Use intra-cell DEM models instead of baseline defaults
 python workflows/run_pipeline.py --from 7 --intracell-dem
 
-# Paper 5 with a specific feature bundle
+# Intra-cell DEM with a specific feature bundle
 python workflows/run_pipeline.py --from 7 --intracell-dem --bundle BASIC_PCA6
 
 # Specific stages
@@ -29,16 +29,16 @@ python workflows/run_pipeline.py --skip-gpu
 
 ---
 
-## Paper 4 vs Paper 5: `--intracell-dem`
+## Baseline vs Intra-Cell DEM: `--intracell-dem`
 
 The pipeline supports two modes via the `--intracell-dem` flag:
 
 | Mode | Command | Prediction Paths | Description |
 |------|---------|-----------------|-------------|
-| **Paper 4** (default) | `--from 7` | `V2_Enhanced_Models/`, `V4_GNN_TAT_Models/` | Original BASIC/KCE/PAFC features |
-| **Paper 5** | `--from 7 --intracell-dem` | `V2_Enhanced_Models_intracell_dem/`, `V4_GNN_TAT_Models_intracell_dem/` | Intra-cell DEM features |
+| **Baseline** (default) | `--from 7` | `V2_Enhanced_Models/`, `V4_GNN_TAT_Models/` | Original BASIC/KCE/PAFC features |
+| **Intra-cell DEM** | `--from 7 --intracell-dem` | `V2_Enhanced_Models_intracell_dem/`, `V4_GNN_TAT_Models_intracell_dem/` | Sub-grid DEM features |
 
-When `--intracell-dem` is active, stages 7-9 automatically use the Paper 5 prediction directories:
+When `--intracell-dem` is active, stages 7-9 automatically use the DEM-enhanced prediction directories:
 
 - **Stage 7 (V10 Fusion):** Reads from `_intracell_dem/` predictions, saves to `V10_Late_Fusion_intracell_dem/`
 - **Stage 8 (Benchmarks):** Computes ACC, FSS, elevation metrics from `_intracell_dem/` predictions. Results saved to `scripts/benchmark/output/intracell_dem/{bundle}/`
@@ -90,11 +90,11 @@ When `--intracell-dem` is active, stages 7-9 automatically use the Paper 5 predi
 
 ## Reproducibility Guide
 
-This project spans two papers. Each has its own training configuration and output directories.
+This project spans two complementary studies. Each has its own training configuration and output directories.
 
-### Paper 4 (Accepted - MDPI Hydrology)
+### Hybrid Architecture Benchmark (Baseline)
 
-**Title:** A Data-Driven Deep Learning Framework for Monthly Precipitation Prediction in Complex Mountainous Terrain: Systematic Evaluation of Hybrid Architectures
+**Focus:** Systematic comparison of ConvLSTM, FNO, and GNN-TAT architectures for precipitation prediction.
 
 **Feature sets:** BASIC (12), KCE (15), PAFC (18)
 
@@ -106,38 +106,38 @@ This project spans two papers. Each has its own training configuration and outpu
 **Output directories:**
 ```
 models/output/
-  V2_Enhanced_Models/         # Paper 4 V2 predictions
-  V4_GNN_TAT_Models/          # Paper 4 V4 predictions
-  V10_Late_Fusion/            # Paper 4 V10 fusion (R2=0.668)
+  V2_Enhanced_Models/         # Baseline V2 predictions
+  V4_GNN_TAT_Models/          # Baseline V4 predictions
+  V10_Late_Fusion/            # Baseline V10 fusion (R2=0.668)
 ```
 
-**To reproduce Paper 4 results (no GPU needed for stages 7-9):**
+**To reproduce baseline results (no GPU needed for stages 7-9):**
 ```bash
 python workflows/run_pipeline.py --from 7
 ```
 
-### Paper 5 (In Preparation)
+### Sub-grid Feature Engineering (Intra-Cell DEM)
 
-**Title:** Systematic Evaluation of Hybrid Architectures, Ensemble Strategies, and Emerging Paradigms
+**Focus:** Capturing sub-grid topographic heterogeneity through intra-cell DEM analysis.
 
 **New feature sets:** BASIC_D10 (22), BASIC_PCA6 (18), BASIC_D10_STATS (27)
 
-**Technique:** Intra-cell DEM heterogeneity. Each CHIRPS cell (~5.5 km) contains ~3,477 DEM pixels at 90m resolution. Features capture sub-grid topographic heterogeneity through elevation deciles and PCA.
+**Technique:** Each CHIRPS cell (~5.5 km) contains ~3,477 DEM pixels at 90m resolution. Features capture sub-grid topographic heterogeneity through elevation deciles and PCA.
 
 **Colab notebooks (GPU training):**
-- `models/intracell_dem/train_v2_convlstm_intracell_dem.ipynb` - V2 with new features
-- `models/intracell_dem/train_v4_gnn_tat_intracell_dem.ipynb` - V4 with new features
+- `models/intracell_dem/train_v2_convlstm_intracell_dem.ipynb` - V2 with DEM features
+- `models/intracell_dem/train_v4_gnn_tat_intracell_dem.ipynb` - V4 with DEM features
 - `models/intracell_dem/evaluate_v10_fusion_intracell_dem.ipynb` - V10 fusion + evaluation
 
 **Output directories:**
 ```
 models/output/
-  V2_Enhanced_Models_intracell_dem/   # Paper 5 V2 predictions
-  V4_GNN_TAT_Models_intracell_dem/   # Paper 5 V4 predictions
-  V10_Late_Fusion_intracell_dem/     # Paper 5 V10 fusion
+  V2_Enhanced_Models_intracell_dem/   # DEM-enhanced V2 predictions
+  V4_GNN_TAT_Models_intracell_dem/   # DEM-enhanced V4 predictions
+  V10_Late_Fusion_intracell_dem/     # DEM-enhanced V10 fusion
 ```
 
-**To reproduce Paper 5 feature engineering (no GPU):**
+**To reproduce DEM feature engineering (no GPU):**
 ```bash
 # Step 1: Compute intra-cell DEM features from 90m GeoTIFF
 python preprocessing/dem_intra_cell_features.py \
@@ -148,12 +148,12 @@ python preprocessing/dem_intra_cell_features.py \
 python preprocessing/ds1_ds2_analysis.py
 ```
 
-**To reproduce Paper 5 training (GPU required):**
+**To reproduce DEM-enhanced training (GPU required):**
 1. Upload the extended dataset to Google Drive
 2. Open Colab notebooks from `models/intracell_dem/`
 3. Run in order: V2 -> V4 -> V10 evaluation
 
-**To reproduce Paper 5 post-training evaluation (no GPU):**
+**To reproduce DEM-enhanced post-training evaluation (no GPU):**
 ```bash
 # After downloading Colab predictions to models/output/*_intracell_dem/
 python workflows/run_pipeline.py --from 7 --intracell-dem --bundle BASIC_D10
@@ -161,11 +161,11 @@ python workflows/run_pipeline.py --from 7 --intracell-dem --bundle BASIC_D10
 
 ---
 
-## Feature Engineering (Paper 5)
+## Feature Engineering (Sub-grid DEM)
 
 ### Intra-Cell DEM Features
 
-Each CHIRPS cell at 0.05 deg resolution covers ~5.5 km and contains ~3,477 DEM pixels at 90m. Instead of using a single nearest-neighbor elevation value (Paper 4), Paper 5 computes the full intra-cell elevation distribution.
+Each CHIRPS cell at 0.05 deg resolution covers ~5.5 km and contains ~3,477 DEM pixels at 90m. Instead of using a single nearest-neighbor elevation value (baseline approach), the sub-grid feature engineering computes the full intra-cell elevation distribution.
 
 **Script:** `preprocessing/dem_intra_cell_features.py`
 
@@ -183,7 +183,7 @@ Each CHIRPS cell at 0.05 deg resolution covers ~5.5 km and contains ~3,477 DEM p
 
 | Bundle | Features | Count | Description |
 |--------|----------|:-----:|-------------|
-| BASIC | Paper 4 original | 12 | Temporal + precip stats + single elevation |
+| BASIC | Baseline | 12 | Temporal + precip stats + single elevation |
 | BASIC_D10 | BASIC + deciles | 22 | + 10 elevation percentiles |
 | BASIC_PCA6 | BASIC + PCA | 18 | + 6 PCA components |
 | BASIC_D10_STATS | BASIC + deciles + stats | 27 | + 10 percentiles + 5 statistics |
@@ -235,7 +235,7 @@ workflows/
 ├── 08_benchmark_metrics.py    # Stage 8: All benchmarks
 └── 09_generate_figures.py     # Stage 9: Figures + tables
 
-models/intracell_dem/          # Colab notebooks (GPU training, Paper 5)
+models/intracell_dem/          # Colab notebooks (GPU training, DEM features)
 ├── train_v2_convlstm_intracell_dem.ipynb
 ├── train_v4_gnn_tat_intracell_dem.ipynb
 └── evaluate_v10_fusion_intracell_dem.ipynb
