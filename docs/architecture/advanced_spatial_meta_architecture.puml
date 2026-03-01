@@ -1,0 +1,70 @@
+@startuml Architecture
+title Advanced Spatial + Meta Models: Architecture
+
+package "Data Layer" {
+  [NetCDF Dataset] as NCD
+}
+
+package "Training Layer" {
+  component "Advanced Spatial Models Notebook" as NB1
+  component "Model Zoo\n- ConvLSTM_Att\n- ConvGRU_Res\n- Hybrid_Trans" as ZOO
+  component "Trainer / Evaluator" as TRAIN
+  component "Exporter" as EXPORT
+}
+
+package "Storage" {
+  folder "models/output/advanced_spatial" as STORE {
+    folder "base_models" as BASE
+    file "metrics_advanced.csv" as METRICS
+    folder "images" as IMAGES
+    folder "gifs" as GIFS
+    folder "meta_models" as META2 {
+      folder "<model>_<experiment>" as SUBDIR
+      file "predictions.npy"
+      file "targets.npy"
+      file "inputs.npy"
+      file "metadata.json"
+      file "scalers/*.npy"
+      file "export_summary.json"
+    }
+  }
+}
+
+package "Meta-Model Layer" {
+  component "Meta Models Notebook" as NB2
+  component "Discovery Loader" as LOADER
+  component "Stacking (RF)" as STACK
+  component "Cross-Attention Fusion" as CAF
+  component "Evaluator" as EVAL
+}
+
+package "Outputs" {
+  file "meta_models_comparison.csv" as OUTCSV
+  file "meta_models_comparison.png" as OUTPNG
+  file "discovery_manifest.json" as OUTMAN
+}
+
+NCD --> NB1
+NB1 --> ZOO
+NB1 --> TRAIN
+TRAIN --> STORE
+NB1 --> EXPORT
+EXPORT --> SUBDIR
+
+NB2 --> LOADER
+LOADER --> SUBDIR
+LOADER --> STACK
+LOADER --> CAF
+STACK --> EVAL
+CAF --> EVAL
+EVAL --> OUTCSV
+EVAL --> OUTPNG
+LOADER --> OUTMAN
+
+note right of LOADER
+  Loads all exports under META root
+  Aligns shapes to common (N, H, Y, X)
+  Exposes 'predictions' and 'y_true'
+end note
+
+@enduml

@@ -1,0 +1,124 @@
+@startuml modelos_bloques_3d
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 11
+skinparam titleFontSize 16
+skinparam rectangleBackgroundColor white
+skinparam rectangleBorderColor black
+skinparam rectangleBorderThickness 2
+skinparam minClassWidth 200
+skinparam minClassHeight 60
+skinparam padding 6
+
+title Arquitecturas de Capas con Dimensiones Detalladas
+
+' ConvLSTM Encoder-Decoder
+package "01. ConvLSTM Encoder-Decoder + Attention" as model1 #F8F9FA {
+    left to right direction
+    
+    ' Input
+    rectangle "📥 **INPUT**\n(B, 60, 45, 90, 11)" as layer1_1 #E3F2FD
+    
+    ' Encoder Layer 1
+    rectangle "🧠 **ConvLSTM2D-1**\n(B, 60, 45, 90, 64)\nFilters: 64, Kernel: 3x3" as layer1_2 #BBDEFB
+    
+    ' Encoder Layer 2
+    rectangle "🧠 **ConvLSTM2D-2**\n(B, 60, 45, 90, 32)\nFilters: 32, Kernel: 3x3" as layer1_3 #90CAF9
+    
+    ' Attention
+    rectangle "⚡ **CBAM Attention**\n(B, 60, 45, 90, 32)\nChannel + Spatial Attention" as layer1_4 #64B5F6
+    
+    ' Decoder
+    rectangle "🧠 **ConvLSTM2D-3**\n(B, 45, 90, 16)\nFilters: 16, Kernel: 3x3" as layer1_5 #42A5F5
+    
+    ' Output Head
+    rectangle "🎯 **Spatial Head**\n(B, 3, 45, 90, 1)\nHorizontes: t+1, t+2, t+3" as layer1_6 #2196F3
+    
+    layer1_1 -right-> layer1_2 : **Encoder**
+    layer1_2 -right-> layer1_3
+    layer1_3 -right-> layer1_4 : **Attention**
+    layer1_4 -right-> layer1_5 : **Decoder**
+    layer1_5 -right-> layer1_6 : **Output**
+}
+
+' ConvGRU Residual
+package "02. ConvGRU Residual + BatchNorm Reforzada" as model2 #F1F8E9 {
+    left to right direction
+    
+    rectangle "📥 **INPUT**\n(B, 60, 45, 90, 11)" as layer2_1 #DCEDC8
+    
+    rectangle "🔄 **Projection**\n(B, 60, 45, 90, 32)\nConv2D: 1x1" as layer2_2 #C5E1A5
+    
+    rectangle "🧠 **ConvGRU2D-1**\n(B, 60, 45, 90, 64)\nFilters: 64, Kernel: 3x3" as layer2_3 #AED581
+    
+    rectangle "🧠 **ConvGRU2D-2**\n(B, 45, 90, 32)\nFilters: 32, Kernel: 3x3" as layer2_4 #9CCC65
+    
+    rectangle "🔗 **Skip Connection**\n(B, 45, 90, 32)\nConv2D: 1x1" as layer2_5 #8BC34A
+    
+    rectangle "➕ **Add + ReLU**\n(B, 45, 90, 32)\nElement-wise Add + ReLU" as layer2_6 #7CB342
+    
+    rectangle "🎯 **Spatial Head**\n(B, 3, 45, 90, 1)\nHorizontes: t+1, t+2, t+3" as layer2_7 #689F38
+    
+    layer2_1 -right-> layer2_2
+    layer2_2 -right-> layer2_3
+    layer2_3 -right-> layer2_4
+    layer2_4 -right-> layer2_6
+    
+    ' Skip connection
+    layer2_1 -down-> layer2_5 : **Skip**
+    layer2_5 -up-> layer2_6
+    
+    layer2_6 -right-> layer2_7
+}
+
+' Transformer Híbrido
+package "03. Transformer Híbrido CNN + LSTM" as model3 #FFF3E0 {
+    left to right direction
+    
+    rectangle "📥 **INPUT**\n(B, 60, 45, 90, 11)" as layer3_1 #FFE0B2
+    
+    rectangle "🖼️ **CNN Layer 1**\n(B, 60, 45, 90, 64)\nConv2D: 3x3, 64 filters" as layer3_2 #FFCC02
+    
+    rectangle "🖼️ **CNN Layer 2**\n(B, 60, 45, 90, 32)\nConv2D: 3x3, 32 filters" as layer3_3 #FFB74D
+    
+    rectangle "📉 **MaxPool + Flatten**\n(B, 60, 31680)\nMaxPool2D: 2x2 + Flatten" as layer3_4 #FFA726
+    
+    rectangle "🎯 **Multi-Head Attention**\n(B, 60, 31680)\nHeads: 4, Key_dim: 32" as layer3_5 #FF9800
+    
+    rectangle "📊 **LayerNorm**\n(B, 60, 31680)\nLayer Normalization" as layer3_6 #F57C00
+    
+    rectangle "🔄 **LSTM**\n(B, 128)\nHidden units: 128" as layer3_7 #EF6C00
+    
+    rectangle "🎯 **Dense Decoder**\n(B, 3, 45, 90, 1)\nHorizontes: t+1, t+2, t+3" as layer3_8 #E65100
+    
+    layer3_1 -right-> layer3_2 : **CNN Encoder**
+    layer3_2 -right-> layer3_3
+    layer3_3 -right-> layer3_4 : **Spatial Reduction**
+    layer3_4 -right-> layer3_5 : **Attention**
+    layer3_5 -right-> layer3_6
+    layer3_6 -right-> layer3_7 : **Temporal Agg**
+    layer3_7 -right-> layer3_8 : **Decoder**
+}
+
+' Organización vertical de los modelos (uno debajo del otro)
+model1 -[hidden]down-> model2
+model2 -[hidden]down-> model3
+
+' Performance metrics
+note bottom
+**🏆 Performance Comparison:**
+• **ConvLSTM**: RMSE=0.145, MAE=0.089, R2=0.78, Params=2.1M, Time=45min/epoch
+• **ConvGRU**: RMSE=0.142, MAE=0.087, R2=0.79, Params=1.8M, Time=32min/epoch  
+• **Transformer**: RMSE=0.138, MAE=0.084, R2=0.81, Params=2.5M, Time=52min/epoch
+
+**📐 Common Configuration:**
+• Input resolution: 0.05° x 0.05° (Boyacá region)
+• Temporal window: 60 months (5 years)
+• Output horizons: 1, 2, 3 months ahead
+• Features: 11 (BASE + KCE + PAFC)
+end note
+
+@enduml

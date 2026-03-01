@@ -1,0 +1,83 @@
+@startmindmap
+* Hybrid Modeling Approaches
+** Data preprocessing-based hybrid models
+*** Preprocessing techniques
+**** PCA
+**** AFC
+**** ACF
+**** SSA
+**** K-means
+**** Sequential preprocessing combinations
+***** PCA → LSTM
+***** SMOTE → K-means
+*** Preprocessing data
+**** Normalization
+**** Interpolation
+**** SMOTE
+
+** Parameter optimization-based hybrid models
+*** Optimization algorithms
+**** PSO
+**** GA
+**** HBA
+**** BAT
+**** BBO
+**** FFOA
+**** FFA
+**** CPO
+**** SCE
+
+** Component combination-based hybrid models
+*** Decomposition-based hybrids
+**** EEMD-ARIMA
+**** WT-SVR
+**** SSA-SVR
+**** EMD-LSTM
+*** Clustering-based hybrids
+**** K-means + SVR
+**** K-means + LSTM
+*** Fuzzy logic-based hybrids
+**** FIS-ANN
+**** ANFIS
+*** Optimization-enhanced hybrids
+**** Optimization enhanced hybrid
+*** Decomposition-based hybrid with optimization
+*** Sequential hybrids
+**** NMF → GALMA → empirical model
+**** SMOTE → K-means
+**** Sequential Hybrid
+**** Sequential multiscale hybrid
+*** Hybrid decomposition-based ensemble
+*** Ensemble-based methods
+**** Bagging
+**** Boosting
+**** Dagging
+**** Snapshot Ensembles
+*** Meta-model-based hybrids
+**** Stacking
+***** Base models → Meta-LR
+***** Base models → Meta-XGB
+***** Base models → Meta-MARS
+***** Base models → Meta-polyMARS
+***** Base models → Meta-RF
+***** Base models → Meta-BRNN
+***** Base models → Meta-GBM
+***** Base models → Meta-Lasso
+**** Dynamic Ensembles
+
+** Postprocessing-based hybrid models
+*** Statistical correction
+**** Bias correction
+**** Bayesian Joint Probability (BJP)
+*** Probabilistic model fusion
+**** Bayesian Model Averaging (BMA)
+**** Probabilistic Model Averaging
+*** Averaging-based (as postprocessing)
+**** Prediction Averaging
+***** Mean Combiner
+***** Median Combiner
+**** Feature Averaging 
+**** Model Averaging
+**** Prediction Selection
+***** Best Learners
+@endmindmap

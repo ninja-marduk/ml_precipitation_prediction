@@ -1,0 +1,608 @@
+Original file: docs/papers/1\Revisión 202501\Review_20250912_PérezManuel_Spatiotemporal prediction_v3.docx
+Generated file: docs/papers/1/latex/paper_revision4_formatted_v4.docx
+
+================================================================================
+  ORIGINAL -- FRONT MATTER (paragraphs 0 to 39)
+================================================================================
+
+    P[0] [FRONT] style="Title_document"
+    text=""
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[1] [FRONT] style="Title_document"
+    text="Spatiotemporal Prediction of Monthly Precipitation: A Systematic Review of Hybri"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Spatiotemporal " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[1]: "P" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[2]: "rediction of " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[3]: "M" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[4]: "onthly " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[5]: "P" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[6]: "recipitation: A " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[7]: "S" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[8]: "ystematic " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[9]: "R" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[10]: "eview " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[11]: "of Hybrid" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[12]: " " font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[13]: "M" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[14]: "odels" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+
+    P[2] [FRONT] style="Title_document"
+    text=""
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[3] [FRONT] style="Authors"
+    text="Manuel, R, Pérez a, Marco, J, Suárez b, Oscar, J, García c"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=3
+    run[0]: "Manuel, R, Pérez " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[1]: "" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[2]: "a" font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[3]: ", " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[4]: "Marco, J, Suárez " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[5]: "" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[6]: "b" font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[7]: ", Oscar, J, García " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[8]: "" font=Open Sans sz=Nonept b=None i=None c=#None u=None
+    run[9]: "c" font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+
+    P[4] [FRONT] style="Normal"
+    text="aDoctoral Program in Engineering, Pedagogical and Technological University of Co"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "a" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[1]: "Doctoral Program in Engineering, Pedagog" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[2]: " Sogamoso" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[3]: "," font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[4]: " 152210," font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[5]: " Colombia" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[6]: "." font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[7]: "                                 " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[8]: "b" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[9]: "S" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[10]: "chool of Systems and Computing Engineeri" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[11]: ", Sogamoso" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[12]: "," font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[13]: " 152210" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[14]: ", Colombia" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[15]: "." font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[16]: "        " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[17]: "c" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[18]: "School of Geological Engineering, Pedago" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[19]: "Sogamoso" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[20]: "," font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[21]: " 152210, " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[22]: "Colombia" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[23]: "." font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[24]: "                 " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[25]: "*Corresponding author. E-mail: " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+
+    P[5] [FRONT] style="Normal"
+    text="MP, 0009-0003-2963-1631; MS, 0000-0003-1656-4452; OG, 0000-0002-7396-8915"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[1]: "MP, " font=Arial sz=9.0pt b=None i=None c=#000000 u=False
+    run[2]: "; " font=Arial sz=9.0pt b=None i=None c=#002060 u=False
+    run[3]: "MS," font=Arial sz=9.0pt b=None i=None c=#None u=False
+    run[4]: " " font=Arial sz=9.0pt b=None i=None c=#002060 u=False
+    run[5]: "; " font=Arial sz=9.0pt b=None i=None c=#002060 u=False
+    run[6]: "OG, " font=Arial sz=9.0pt b=None i=None c=#None u=False
+
+    P[6] [FRONT] style="Normal"
+    text="_______"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "______" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+    run[1]: "_" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[7] [FRONT] style="Normal"
+    text="ABSTRACT"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "ABSTRACT" font=Open Sans sz=8.0pt b=True i=None c=#0070C0 u=None
+
+    P[8] [FRONT] style="CCSDescription"
+    text="Hybrid and ensemble machine learning models are increasingly used to predict mon"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(240,auto) border=False imgs=0
+    run[0]: "Hybrid and ensemble machine learning mod" font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+    run[1]: "published between " font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+    run[2]: "2020" font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+    run[3]: " and " font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+    run[4]: "2025) using a unified R²-based framework" font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+
+    P[9] [FRONT] style="CCSDescription"
+    text="Key Words: Hybrid models, machine learning, monthly precipitation prediction, sp"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(240,auto) border=False imgs=0
+    run[0]: "Key Words:" font=Open Sans sz=Nonept b=True i=None c=#None u=None
+    run[1]: " " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[2]: "Hybrid models, machine learning, monthly" font=Open Sans sz=8.0pt b=False i=None c=#None u=None
+
+    P[10] [FRONT] style="Normal"
+    text=""
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[11] [FRONT] style="Normal"
+    text="________"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "_" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+    run[1]: "_" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+    run[2]: "______" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[12] [FRONT] style="Normal"
+    text="HIGHLIGHTS"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "HIGHLIGHTS" font=Open Sans sz=8.0pt b=True i=None c=#0070C0 u=None
+
+    P[13] [FRONT] style="List Paragraph"
+    text="PRISMA review of 85 studies (2020–2025) on hybrid/ensemble monthly-precipitation"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "PRISMA review of 85 studies (2020–2025) " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[14] [FRONT] style="List Paragraph"
+    text="Functional taxonomy and compact tables summarize models, metrics, and regions."
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Functional taxonomy and compact tables s" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[15] [FRONT] style="List Paragraph"
+    text="Perf.: global median R²=0.859; PO≈0.975, DP≈0.904, Deep≈0.870; CC/Post≈0.650."
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Perf.: global median R²=0.859; PO≈0.975," font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[16] [FRONT] style="List Paragraph"
+    text="Guidance: report ΔR² under leakage-safe spatiotemporal CV with uncertainty; high"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Guidance: report ΔR² under leakage-safe " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[17] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[18] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[19] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[20] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[21] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[22] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[23] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[24] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[25] [FRONT] style="Normal"
+    text=""
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+
+    P[26] [FRONT] style="Normal"
+    text="______________"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "______________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[27] [FRONT] style="Head1"
+    text="GRAPHICAL ABSTRACT"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "GRAPHICAL ABSTRACT" font=None sz=8.0pt b=None i=None c=#None u=None
+
+    P[28] [FRONT] style="Normal"
+    text="_______________"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[1]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[2]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[3]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[4]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[5]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[6]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[7]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[8]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[9]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[10]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[11]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[12]: "" font=None sz=Nonept b=None i=None c=#None u=None
+    run[13]: "______________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+    run[14]: "_" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[29] [FRONT] style="Head1"
+    text="Introduction"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Introduction" font=None sz=10.0pt b=None i=None c=#None u=None
+
+    P[30] [FRONT] style="ParaContinue"
+    text="Precipitation, derived from the condensation of atmospheric water vapor, is the"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Precipitation, derived from " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "the condensation of " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "atmospheric water vapor, is the primary " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: ". " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "In recent year" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "s" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: ", climate change has intensified the c" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: "hallenges" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: " associated with precipitation predictio" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: ". These shifts significantly impact agri" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: "underscor" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: "ing " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[13]: "the need for effective predictive modeli" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[14]: "." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[31] [FRONT] style="ParaContinue"
+    text="In response to these challenges, machine learning (ML) has been increasingly app"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "In response to these challenges, m" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[1]: "achine learning " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[2]: "(ML) " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[3]: "has been increasingly applied to detect " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[4]: "t" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[5]: "s subfields, " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[6]: "Deep Learning (DL)" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[7]: " " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[8]: "an advanced form of " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[9]: "A" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[10]: "rtificial " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[11]: "N" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[12]: "eural " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[13]: "N" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[14]: "etworks " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[15]: "(ANN) " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[16]: "has shown particular effectiveness in mo" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[17]: "(Rahman et al., 2022" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[18]: ";" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[19]: " " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[20]: "Anwar et al., 2018" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[21]: ";" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[22]: ". DL" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[23]: " " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[24]: "techniques" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[25]: " have been successfully applied to preci" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[26]: "." font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+
+    P[32] [FRONT] style="ParaContinue"
+    text="Traditional statistical models, which explore the relationship between precipita"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Traditional " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[1]: "statistical " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[2]: "models" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[3]: ", which explore the relationship between" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[4]: "o the inherent complexity of hydrologica" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[5]: "(Barrera-Animas et al., 2022" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[6]: ";" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[7]: " Wu and Chau, 2013; Li et al., 2023)" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[8]: ". " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: "This" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: " has led to the increased application of" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: ", " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: "L" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[13]: "ong short-term memory" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[14]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[15]: "(" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[16]: "LSTM" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[17]: ")" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[18]: " networks " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[19]: ", random forests " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[20]: ", and support vector machines (SVM) " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[21]: "some enhanced with generic algorithms fo" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[22]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[23]: ";" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[24]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[25]: ". These models" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[26]: " are commonly evaluated using metrics li" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[27]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[28]: "MAE and NSE to ensure prediction reliabi" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[29]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[30]: "." font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[31]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[33] [FRONT] style="ParaContinue"
+    text="Among the most widely applied techniques, Artificial Neural Networks (ANNs) have"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Among the most" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: " widely applied techniques, " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "Artificial Neural Networks (" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "ANNs" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: ")" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: " have become" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: " essential tools for precipitation forec" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "used deep neural networks to estimate " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: "precipitation from remote sensing data, " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: " integrated convolutional neural network" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: "°" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: ")" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[13]: " and temporal resolution, achieving lowe" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[14]: ". In Kerala, an " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[15]: "A" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[16]: "daptive " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[17]: "B" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[18]: "asis " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[19]: "F" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[20]: "unction " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[21]: "N" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[22]: "eural " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[23]: "N" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[24]: "etwork (AB-FNN)" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[25]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[26]: "a backpropagation algorithm variation" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[27]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[28]: "outperformed " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[29]: "Fourier" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[30]: " analysis, " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[31]: "achieving a stabilized mean squared erro" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[32]: ". " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[34] [FRONT] style="ParaContinue"
+    text="In addition, soft computing techniques applied during the Indian monsoon, such a"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "In addition, soft computing techniques " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "applied " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "during the Indian monsoon" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: ", such as feedforward neural networks (F" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "and multilayer perceptrons (MLPs), reduc" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: "prediction errors from " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: "18.3% to 10.2% " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "relative to persistence models, indicati" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: " in accuracy" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: ". " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[35] [FRONT] style="ParaContinue"
+    text="The STConvS2S model proposed by , which uses 3D convolutional neural networks wi"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "The STConvS2S model" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: " proposed by" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: ", " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "which uses 3D convolutional neural netwo" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: ". By" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: "using a sequence-to-sequence network bas" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "operating " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: "five times faster than RNN-based models." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: " Similarly," font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: " showed that a hybrid model combining AN" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[13]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[36] [FRONT] style="ParaContinue"
+    text="Other innovative approaches include focused time-delay neural network models , w"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Other innovative approaches include focu" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[13]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[37] [FRONT] style="ParaContinue"
+    text="Modular systems that combine support vector regression (SVR) with ANN have also"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Modular systems that combine support vec" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[5]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: "" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[7]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[38] [FRONT] style="ParaContinue"
+    text="Recent advancements have focused on hybrid models that integrate time series dec"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Recent advance" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "ments have focused on hybrid models that" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: " " font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[3]: " " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "showed that combining Complementary Ense" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: ". The" font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+    run[6]: " CEEMD-FCMSE" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[7]: " (" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "F" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[9]: "uzzy " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: "C" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[11]: "omprehensive " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: "M" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[13]: "ulti-" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[14]: "C" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[15]: "riteria " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[16]: "E" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[17]: "valuation)" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[18]: "-Stacking model, for instance, significa" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[19]: "." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+    P[39] [FRONT] style="ParaContinue"
+    text="A detailed assessment of hybrid and ensemble models is therefore essential to be"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "A detailed assessment of hybrid and ense" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: ". " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "Moreover, ensemble strategies such as mo" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: " Unlike prior reviews, this study offers" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+
+>>> P[40] [BODY] style="Head2"
+    text="1.1 Hydrologic data & modeling context"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "1." font=Open Sans sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "1" font=Open Sans sz=10.0pt b=None i=None c=#None u=None
+    run[2]: " " font=Open Sans sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "Hydrologic data & modeling context" font=Open Sans sz=10.0pt b=None i=None c=#None u=None
+
+    P[41] [BODY] style="ParaContinue"
+    text="Monthly precipitation prediction operates at the interface of hydrologic data li"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Monthly precipitation prediction operate" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: ". These factors yield heteroskedastic, s" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[2]: "-" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "scale variability are especially relevan" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[4]: "-" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "climate robustness " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: "." font=Times New Roman sz=10.0pt b=None i=None c=#000000 u=None
+
+================================================================================
+  GENERATED v4 -- FRONT MATTER (paragraphs 0 to 17)
+================================================================================
+
+    P[0] [FRONT] style="Title"
+    text="Spatiotemporal Prediction of Monthly Precipitation: A Systematic Review of Hybri"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(360,atLeast) border=False imgs=0
+    run[0]: "Spatiotemporal Prediction of Monthly Pre" font=Open Sans sz=12.0pt b=True i=None c=#None u=None
+
+    P[1] [FRONT] style="Author"
+    text="Manuel, R, Pérez , Marco, J, Suárez , Oscar, J, García"
+    para: align=inherit SB=3.0pt SA=Nonept FI=Nonept LS_xml=(320,atLeast) border=False imgs=3
+    run[0]: "Manuel, R, Pérez " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[1]: ", Marco, J, Suárez " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+    run[2]: ", Oscar, J, García " font=Open Sans sz=12.0pt b=None i=None c=#None u=None
+
+    P[2] [FRONT] style="First Paragraph"
+    text="Doctoral Program in Engineering, Pedagogical and Technological University of Co"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: " " font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[1]: "Doctoral Program in Engineering, Pedagog" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[2]: "
+" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[3]: "School of Systems and Computing Engineer" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[4]: "
+" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[5]: "School of Geological Engineering, Pedago" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[6]: "
+" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+    run[7]: "Corresponding author. E-mail: manuelrica" font=Open Sans sz=7.0pt b=None i=None c=#None u=None
+
+    P[3] [FRONT] style="Body Text"
+    text="MP, 0009-0003-2963-1631; MS, 0000-0003-1656-4452; OG, 0000-0002-7396-8915"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: " MP, " font=Arial sz=9.0pt b=None i=None c=#None u=None
+    run[1]: "; MS, " font=Arial sz=9.0pt b=None i=None c=#None u=None
+    run[2]: "; OG, " font=Arial sz=9.0pt b=None i=None c=#None u=None
+
+    P[4] [FRONT] style="Normal"
+    text="________"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[5] [FRONT] style="Heading 1"
+    text="ABSTRACT"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "ABSTRACT" font=Open Sans sz=8.0pt b=True i=None c=#0070C0 u=None
+
+    P[6] [FRONT] style="First Paragraph"
+    text="Hybrid and ensemble machine learning models are increasingly used to predict mon"
+    para: align=JUSTIFY  SB=7.0pt SA=Nonept FI=Nonept LS_xml=(240,auto) border=False imgs=0
+    run[0]: "Hybrid and ensemble machine learning mod" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[1]: "-based framework. For each study, the hy" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[2]: " is contrasted with the best non-hybrid " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[3]: " is highest for parameter optimization a" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[4]: " across classes indicates no statistical" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[5]: " (" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[6]: "). The review clarifies complementarity " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[7]: " sound evaluation and reporting. While m" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[7] [FRONT] style="Body Text"
+    text="Key Words: Hybrid models, machine learning, monthly precipitation prediction, sp"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(240,auto) border=False imgs=0
+    run[0]: "Key Words:" font=Open Sans sz=8.0pt b=True i=None c=#None u=None
+    run[1]: " Hybrid models, machine learning, monthl" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[8] [FRONT] style="Normal"
+    text="________"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[9] [FRONT] style="Heading 1"
+    text="HIGHLIGHTS"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "HIGHLIGHTS" font=Open Sans sz=8.0pt b=True i=None c=#0070C0 u=None
+
+    P[10] [FRONT] style="Normal"
+    text="PRISMA review of 85 studies (2020–2025) on hybrid/ensemble monthly-precipitation"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "PRISMA review of 85 studies (2020–2025) " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[1]: "-only synthesis." font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[11] [FRONT] style="Normal"
+    text="Functional taxonomy and compact tables summarize models, metrics, and regions."
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Functional taxonomy and compact tables s" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[12] [FRONT] style="Normal"
+    text="Performance: global median . By class: PO , DP , Deep , CC ."
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Performance: global median " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[1]: ". By class: PO " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[2]: ", DP " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[3]: ", Deep " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[4]: ", CC " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[5]: "." font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[13] [FRONT] style="Normal"
+    text="Guidance: report  under leakage-safe spatiotemporal CV with uncertainty; highlig"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Guidance: report " font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+    run[1]: " under leakage-safe spatiotemporal CV wi" font=Open Sans sz=8.0pt b=None i=None c=#None u=None
+
+    P[14] [FRONT] style="Normal"
+    text="________"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+    P[15] [FRONT] style="Heading 1"
+    text="GRAPHICAL ABSTRACT"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "GRAPHICAL ABSTRACT" font=Open Sans sz=8.0pt b=None i=None c=#0070C0 u=None
+
+    P[16] [FRONT] style="First Paragraph"
+    text=""
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=1
+    run[0]: "" font=None sz=Nonept b=None i=None c=#None u=None
+
+    P[17] [FRONT] style="Normal"
+    text="________"
+    para: align=inherit SB=6.0pt SA=9.0pt FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "________" font=None sz=Nonept b=True i=None c=#0070C0 u=None
+
+>>> P[18] [BODY] style="Heading 1"
+    text="1. INTRODUCTION"
+    para: align=inherit SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "1. INTRODUCTION" font=Open Sans sz=10.0pt b=None i=None c=#0070C0 u=None
+
+    P[19] [BODY] style="First Paragraph"
+    text="Precipitation, derived from the condensation of atmospheric water vapor, is the"
+    para: align=JUSTIFY  SB=Nonept SA=Nonept FI=Nonept LS_xml=(None,None) border=False imgs=0
+    run[0]: "Precipitation, derived from the condensa" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[1]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[2]: ", 2023). In recent years, climate change" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[3]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[4]: ", 201" font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[5]: "9; Ali " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[6]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[7]: ", 2020; Foufoula-Georgiou " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[8]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[9]: ", 2020; Liu " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[10]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[11]: ", 2022; Wang " font=Times New Roman sz=10.0pt b=None i=None c=#None u=None
+    run[12]: "et al." font=Times New Roman sz=10.0pt b=None i=True c=#None u=None
+    run[13]: ", 2024)." font=Times New Roman sz=10.0pt b=None i=None c=#None u=None

@@ -1,0 +1,10 @@
+@startmindmap
+* Data preprocessing-based hybrid models
+** Preprocessing techniques
+*** PCA
+*** AFC
+*** ACF
+*** SSA
+*** K-means
+*** Sequential preprocessing combinations
+@endmindmap

@@ -1,0 +1,193 @@
+@startuml modelos_tensores_3d
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 9
+skinparam titleFontSize 16
+skinparam rectangleBackgroundColor white
+skinparam rectangleBorderColor black
+skinparam rectangleBorderThickness 2
+skinparam minClassWidth 90
+skinparam minClassHeight 75
+skinparam padding 3
+
+title **Arquitecturas de Redes Neuronales - Representación de Tensores 3D**
+
+' Layout horizontal para los 3 modelos
+left to right direction
+
+' Alineación de todos los modelos al mismo nivel
+skinparam packageAlignment top
+
+' ConvLSTM Model
+package "01. ConvLSTM Encoder-Decoder + Attention" as convlstm_arch {
+    left to right direction
+    
+    ' Input - Large block representing temporal data
+    rectangle "<b>INPUT</b>\n(60, 45, 90, 11)\n\n📊 Temporal\n🌍 Spatial\n📈 Features" as input_conv #E8F4FD {
+        rectangle "    " as input_vol #D4E6F1
+    }
+    
+    ' ConvLSTM Layer 1 - Wider block for more channels
+    rectangle "<b>ConvLSTM2D-1</b>\n(60, 45, 90, 64)\n\n🧠 64 filters\n⚡ 3×3 kernel\n🔄 Temporal" as conv_1 #BBDEFB {
+        rectangle "        " as conv1_vol #90CAF9
+    }
+    
+    ' ConvLSTM Layer 2 - Medium block
+    rectangle "<b>ConvLSTM2D-2</b>\n(60, 45, 90, 32)\n\n🧠 32 filters\n⚡ 3×3 kernel\n🔄 Sequence" as conv_2 #90CAF9 {
+        rectangle "    " as conv2_vol #64B5F6
+    }
+    
+    ' Attention - Same size but different color
+    rectangle "<b>CBAM Attention</b>\n(60, 45, 90, 32)\n\n🎯 Channel\n🗺️ Spatial\n⚡ Weights" as att_conv #64B5F6 {
+        rectangle "    " as att_vol #42A5F5
+    }
+    
+    ' Decoder - Smaller temporal dimension
+    rectangle "<b>ConvLSTM2D-3</b>\n(45, 90, 16)\n\n🧠 16 filters\n🔄 Decoder\n📉 Reduced" as dec_conv #42A5F5 {
+        rectangle "  " as dec_vol #2196F3
+    }
+    
+    ' Output - Multi-horizon
+    rectangle "<b>OUTPUT</b>\n(3, 45, 90, 1)\n\n🎯 t+1, t+2, t+3\n🌧️ Precipitation\n📊 Prediction" as out_conv #2196F3 {
+        rectangle " " as out_vol #1976D2
+    }
+    
+    input_conv -right-> conv_1 : <size:8>Encoding</size>
+    conv_1 -right-> conv_2
+    conv_2 -right-> att_conv : <size:8>Attention</size>
+    att_conv -right-> dec_conv : <size:8>Decoding</size>
+    dec_conv -right-> out_conv
+}
+
+' ConvGRU Model
+package "02. ConvGRU Residual + BatchNorm" as convgru_arch {
+    left to right direction
+    
+    rectangle "<b>INPUT</b>\n(60, 45, 90, 11)\n\n📊 Temporal\n🌍 Spatial\n📈 Features" as input_gru #DCEDC8 {
+        rectangle "    " as input_gru_vol #C5E1A5
+    }
+    
+    rectangle "<b>Projection</b>\n(60, 45, 90, 32)\n\n🔄 Conv2D 1×1\n📏 Feature proj\n🎯 Dimension" as proj_gru #C5E1A5 {
+        rectangle "    " as proj_vol #AED581
+    }
+    
+    rectangle "<b>ConvGRU2D-1</b>\n(60, 45, 90, 64)\n\n🧠 64 filters\n⚡ 3×3 kernel\n🔄 GRU gates" as gru1 #AED581 {
+        rectangle "        " as gru1_vol #9CCC65
+    }
+    
+    rectangle "<b>ConvGRU2D-2</b>\n(45, 90, 32)\n\n🧠 32 filters\n📉 Last timestep\n🔄 GRU output" as gru2 #9CCC65 {
+        rectangle "    " as gru2_vol #8BC34A
+    }
+    
+    rectangle "<b>Residual Add</b>\n(45, 90, 32)\n\n➕ Element-wise\n🔗 Skip connection\n⚡ ReLU" as add_gru #8BC34A {
+        rectangle "    " as add_vol #7CB342
+    }
+    
+    rectangle "<b>OUTPUT</b>\n(3, 45, 90, 1)\n\n🎯 t+1, t+2, t+3\n🌧️ Precipitation\n📊 Prediction" as out_gru #689F38 {
+        rectangle " " as out_gru_vol #558B2F
+    }
+    
+    ' Skip connection representation
+    rectangle "<b>SKIP</b>\n(45, 90, 32)\n\n🔗 Residual\n📏 1×1 Conv\n⚡ Identity" as skip_conn #7CB342 {
+        rectangle "  " as skip_vol #689F38
+    }
+    
+    input_gru -right-> proj_gru
+    proj_gru -right-> gru1 : <size:8>GRU Encoding</size>
+    gru1 -right-> gru2
+    gru2 -right-> add_gru : <size:8>Residual</size>
+    
+    ' Skip path horizontal
+    input_gru -down-> skip_conn : <size:8>Skip Path</size>
+    skip_conn -up-> add_gru
+    
+    add_gru -right-> out_gru
+}
+
+' Transformer Model
+package "03. Transformer Híbrido CNN + LSTM" as transformer_arch {
+    left to right direction
+    
+    rectangle "<b>INPUT</b>\n(60, 45, 90, 11)\n\n📊 Temporal\n🌍 Spatial\n📈 Features" as input_trans #FFE0B2 {
+        rectangle "    " as input_trans_vol #FFCC02
+    }
+    
+    rectangle "<b>CNN Layer 1</b>\n(60, 45, 90, 64)\n\n🖼️ Conv2D 3×3\n🧠 64 filters\n📏 Feature maps" as cnn1_trans #FFCC02 {
+        rectangle "        " as cnn1_vol #FFB74D
+    }
+    
+    rectangle "<b>CNN Layer 2</b>\n(60, 45, 90, 32)\n\n🖼️ Conv2D 3×3\n🧠 32 filters\n📏 Refinement" as cnn2_trans #FFB74D {
+        rectangle "    " as cnn2_vol #FFA726
+    }
+    
+    rectangle "<b>MaxPool</b>\n(60, 22, 45, 32)\n\n📉 2×2 pooling\n🗜️ Spatial reduce\n📏 Downsampling" as pool_trans #FFA726 {
+        rectangle "  " as pool_vol #FF9800
+    }
+    
+    rectangle "<b>Flatten</b>\n(60, 31680)\n\n📊 Flattened\n🔢 31680 features\n📏 Vector" as flat_trans #FF9800 {
+        rectangle "                    " as flat_vol #F57C00
+    }
+    
+    rectangle "<b>Multi-Head\nAttention</b>\n(60, 31680)\n\n🎯 4 heads\n⚡ Self-attention\n🔄 Temporal" as att_trans #F57C00 {
+        rectangle "                    " as att_trans_vol #EF6C00
+    }
+    
+    rectangle "<b>LSTM</b>\n(128)\n\n🧠 128 hidden\n🔄 Sequence agg\n📊 Final encoding" as lstm_trans #EF6C00 {
+        rectangle "      " as lstm_vol #E65100
+    }
+    
+    rectangle "<b>OUTPUT</b>\n(3, 45, 90, 1)\n\n🎯 Dense + Reshape\n🌧️ Precipitation\n📊 Multi-horizon" as out_trans #E65100 {
+        rectangle " " as out_trans_vol #D84315
+    }
+    
+    input_trans -right-> cnn1_trans : <size:8>CNN Encoding</size>
+    cnn1_trans -right-> cnn2_trans
+    cnn2_trans -right-> pool_trans : <size:8>Spatial Reduction</size>
+    pool_trans -right-> flat_trans
+    flat_trans -right-> att_trans : <size:8>Attention</size>
+    att_trans -right-> lstm_trans : <size:8>Temporal Agg</size>
+    lstm_trans -right-> out_trans : <size:8>Reconstruction</size>
+}
+
+' Organización horizontal de los 3 modelos (01, 02, 03)
+convlstm_arch -[hidden]right-> convgru_arch
+convgru_arch -[hidden]right-> transformer_arch
+
+' Alineación de inputs al mismo nivel horizontal
+input_conv -[hidden]right-> input_gru
+input_gru -[hidden]right-> input_trans
+
+' Alineación de outputs al mismo nivel horizontal
+out_conv -[hidden]right-> out_gru
+out_gru -[hidden]right-> out_trans
+
+' Performance legend
+note bottom of transformer_arch
+<size:11><b>🏆 Model Performance</b></size>
+
+<size:10><b>ConvLSTM + Attention:</b></size>
+<size:9>• RMSE: 0.145 | MAE: 0.089</size>
+<size:9>• R²: 0.78 | Params: 2.1M</size>
+<size:9>• Training: 45 min/epoch</size>
+
+<size:10><b>ConvGRU Residual:</b></size>
+<size:9>• RMSE: 0.142 | MAE: 0.087</size>
+<size:9>• R²: 0.79 | Params: 1.8M</size>
+<size:9>• Training: 32 min/epoch</size>
+
+<size:10><b>Transformer Híbrido:</b></size>
+<size:9>• RMSE: 0.138 | MAE: 0.084</size>
+<size:9>• R²: 0.81 | Params: 2.5M</size>
+<size:9>• Training: 52 min/epoch</size>
+
+<size:10><b>📐 Data Specifications:</b></size>
+<size:9>• Temporal: 60 months (5 years)</size>
+<size:9>• Spatial: 45×90 (Boyacá, 0.05°)</size>
+<size:9>• Features: 11 (BASE+KCE+PAFC)</size>
+<size:9>• Output: t+1, t+2, t+3 months</size>
+end note
+
+@enduml

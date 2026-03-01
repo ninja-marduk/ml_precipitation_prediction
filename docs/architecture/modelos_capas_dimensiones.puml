@@ -1,0 +1,121 @@
+@startuml modelos_capas_dimensiones
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 12
+skinparam titleFontSize 18
+skinparam packageStyle rectangle
+skinparam minClassWidth 120
+skinparam minClassHeight 80
+skinparam padding 8
+
+title Arquitectura de Capas con Dimensiones - Modelos Evaluados
+
+' Layout horizontal para los 3 modelos
+left to right direction
+
+package "01. ConvLSTM Encoder-Decoder + Attention" as convlstm_model {
+    left to right direction
+    
+    rectangle "INPUT\n(B, 60, 45, 90, 11)\nBatch x Time x Height x Width x Features" as input_conv #E8F4FD
+    
+    rectangle "ConvLSTM2D(64)\n(B, 60, 45, 90, 64)\nKernel: 3x3, Return_seq: True\n+ BatchNorm + Dropout(0.2)" as conv1 #D4E6F1
+    
+    rectangle "ConvLSTM2D(32)\n(B, 60, 45, 90, 32)\nKernel: 3x3, Return_seq: True\n+ BatchNorm" as conv2 #AED6F1
+    
+    rectangle "CBAM Attention\n(B, 60, 45, 90, 32)\nChannel + Spatial Attention\nTimeDistributed" as attn #85C1E9
+    
+    rectangle "ConvLSTM2D(16)\n(B, 45, 90, 16)\nKernel: 3x3, Return_seq: False\n+ BatchNorm" as conv3 #5DADE2
+    
+    rectangle "Multi-scale Head\n(B, 3, 45, 90, 1)\nOutput: t+1, t+2, t+3" as head1 #3498DB
+    
+    input_conv -right-> conv1
+    conv1 -right-> conv2
+    conv2 -right-> attn
+    attn -right-> conv3
+    conv3 -right-> head1
+}
+
+package "02. ConvGRU Residual + BatchNorm" as convgru_model {
+    left to right direction
+    
+    rectangle "INPUT\n(B, 60, 45, 90, 11)\nBatch x Time x Height x Width x Features" as input_gru #FDF2E9
+    
+    rectangle "Conv2D(32)\n(B, 60, 45, 90, 32)\nKernel: 1x1, TimeDistributed" as proj #F8C471
+    
+    rectangle "ConvGRU2D(64)\n(B, 60, 45, 90, 64)\nKernel: 3x3, Return_seq: True\n+ BatchNorm + Dropout" as gru1 #F4D03F
+    
+    rectangle "ConvGRU2D(32)\n(B, 45, 90, 32)\nKernel: 3x3, Return_seq: False\n+ BatchNorm" as gru2 #F7DC6F
+    
+    rectangle "Skip Conv2D(32)\n(B, 45, 90, 32)\nKernel: 1x1, Last timestep" as skip #52BE80
+    
+    rectangle "Residual Add\n(B, 45, 90, 32)\nElement-wise Addition\n+ ReLU Activation" as add #58D68D
+    
+    rectangle "Spatial Head\n(B, 3, 45, 90, 1)\nOutput: t+1, t+2, t+3" as head2 #27AE60
+    
+    input_gru -right-> proj
+    proj -right-> gru1
+    gru1 -right-> gru2
+    gru2 -right-> add
+    
+    ' Skip connection
+    input_gru -down-> skip
+    skip -up-> add
+    
+    add -right-> head2
+}
+
+package "03. Transformer Híbrido CNN + LSTM" as transformer_model {
+    left to right direction
+    
+    rectangle "INPUT\n(B, 60, 45, 90, 11)\nBatch x Time x Height x Width x Features" as input_trans #FADBD8
+    
+    rectangle "Conv2D(64)\n(B, 60, 45, 90, 64)\nKernel: 3x3, TimeDistributed\n+ BatchNorm + ReLU" as cnn1 #F1948A
+    
+    rectangle "Conv2D(32)\n(B, 60, 45, 90, 32)\nKernel: 3x3, TimeDistributed\n+ BatchNorm + ReLU" as cnn2 #EC7063
+    
+    rectangle "MaxPool2D + Flatten\n(B, 60, 31680)\nPool: 2x2, Spatial reduction\n45x90 -> 22x45, 32 channels\n22x45x32 = 31680 features" as pool #E74C3C
+    
+    rectangle "MultiHeadAttention\n(B, 60, 31680)\nHeads: 4, Key_dim: 32\nSelf-attention temporal" as mha #CB4335
+    
+    rectangle "LayerNorm\n(B, 60, 31680)\nNormalization + Residual" as ln #A93226
+    
+    rectangle "LSTM(128)\n(B, 128)\nReturn_seq: False\n+ BatchNorm + Dropout(0.1)" as lstm #922B21
+    
+    rectangle "Dense + Reshape\n(B, 3, 45, 90, 1)\nSpatial reconstruction" as dense #7B241C
+    
+    input_trans -right-> cnn1
+    cnn1 -right-> cnn2
+    cnn2 -right-> pool
+    pool -right-> mha
+    mha -right-> ln
+    ln -right-> lstm
+    lstm -right-> dense
+}
+
+' Organización horizontal de los 3 modelos
+convlstm_model -[hidden]right-> convgru_model
+convgru_model -[hidden]right-> transformer_model
+
+' Notas de dimensiones
+note bottom of convlstm_model
+**Parámetros: ~2.1M**
+Tiempo: 45 min/epoch
+RMSE: 0.145, R2: 0.78
+end note
+
+note bottom of convgru_model
+**Parámetros: ~1.8M**
+Tiempo: 32 min/epoch
+RMSE: 0.142, R2: 0.79
+end note
+
+note bottom of transformer_model
+**Parámetros: ~2.5M**
+Tiempo: 52 min/epoch
+RMSE: 0.138, R2: 0.81
+end note
+
+@enduml
