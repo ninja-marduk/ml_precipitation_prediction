@@ -1,0 +1,15 @@
+============================================================
+NOTEBOOK EXTRACTION LOG
+============================================================
+
+V2 Notebook Extraction:
+  Total metrics extracted: 10853
+  Unique metric types: 24
+  Cells with outputs: 6
+
+V3 Notebook Extraction:
+  Total metrics extracted: 1316
+  Unique metric types: 24
+  Cells with outputs: 8
+
+============================================================

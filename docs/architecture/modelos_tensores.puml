@@ -1,0 +1,255 @@
+@startuml modelos_tensores
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 10
+skinparam titleFontSize 16
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam minClassWidth 200
+skinparam minClassHeight 100
+skinparam padding 8
+
+title Arquitecturas con Dimensiones de Tensores Detalladas
+
+class "Input Tensor" as input {
+    **Shape: (B, 60, 45, 90, 11)**
+    --
+    • B: Batch size (variable)
+    • 60: Temporal dimension (months)  
+    • 45: Height (latitude points)
+    • 90: Width (longitude points)
+    • 11: Features (BASE+KCE+PAFC)
+    --
+    **Memory:** ~B × 60 × 45 × 90 × 11 × 4 bytes
+    **Example:** B=32 → ~340 MB
+}
+
+package "ConvLSTM Encoder-Decoder Architecture" as arch1 {
+    
+    class "ConvLSTM2D Layer 1" as conv1 {
+        **Input:** (B, 60, 45, 90, 11)
+        **Output:** (B, 60, 45, 90, 64)
+        --
+        **Parameters:**
+        • Filters: 64
+        • Kernel size: (3, 3)
+        • Return sequences: True
+        • Activation: tanh/sigmoid
+        --
+        **Trainable params:** 
+        4 × (11+64) × 64 × 3 × 3 = 172,800
+        **+ BatchNorm:** 64 × 2 = 128
+        **Total:** 172,928
+    }
+    
+    class "ConvLSTM2D Layer 2" as conv2 {
+        **Input:** (B, 60, 45, 90, 64)
+        **Output:** (B, 60, 45, 90, 32)
+        --
+        **Parameters:**
+        • Filters: 32
+        • Kernel size: (3, 3)
+        • Return sequences: True
+        --
+        **Trainable params:**
+        4 × (64+32) × 32 × 3 × 3 = 110,592
+        **+ BatchNorm:** 32 × 2 = 64
+        **Total:** 110,656
+    }
+    
+    class "CBAM Attention" as cbam {
+        **Input:** (B, 60, 45, 90, 32)
+        **Output:** (B, 60, 45, 90, 32)
+        --
+        **Channel Attention:**
+        • Global Avg/Max Pool → (B, 60, 32)
+        • MLP: 32 → 16 → 32
+        • Sigmoid activation
+        **Spatial Attention:**
+        • Channel pool → (B, 60, 45, 90, 2)
+        • Conv2D 7×7 → (B, 60, 45, 90, 1)
+        • Sigmoid activation
+        --
+        **Trainable params:** ~2,080
+    }
+    
+    class "ConvLSTM2D Layer 3" as conv3 {
+        **Input:** (B, 60, 45, 90, 32)
+        **Output:** (B, 45, 90, 16)
+        --
+        **Parameters:**
+        • Filters: 16
+        • Kernel size: (3, 3)
+        • Return sequences: False
+        --
+        **Trainable params:**
+        4 × (32+16) × 16 × 3 × 3 = 27,648
+        **+ BatchNorm:** 16 × 2 = 32
+        **Total:** 27,680
+    }
+    
+    class "Spatial Head" as head1 {
+        **Input:** (B, 45, 90, 16)
+        **Output:** (B, 3, 45, 90, 1)
+        --
+        **Multi-scale processing:**
+        • Conv2D layers for upsampling
+        • Skip connections
+        • Final projection to 3 horizons
+        --
+        **Trainable params:** ~50,000
+        **Total model params:** ~2.1M
+    }
+}
+
+package "ConvGRU Residual Architecture" as arch2 {
+    
+    class "Projection Layer" as proj {
+        **Input:** (B, 60, 45, 90, 11)
+        **Output:** (B, 60, 45, 90, 32)
+        --
+        **TimeDistributed Conv2D:**
+        • Filters: 32
+        • Kernel size: (1, 1)
+        • No padding needed
+        --
+        **Trainable params:**
+        11 × 32 × 1 × 1 = 352
+        **+ Bias:** 32
+        **Total:** 384
+    }
+    
+    class "ConvGRU2D Layer 1" as gru1 {
+        **Input:** (B, 60, 45, 90, 32)
+        **Output:** (B, 60, 45, 90, 64)
+        --
+        **GRU Gates (Update, Reset, New):**
+        • Update gate: σ(W_z * [x_t, h_{t-1}])
+        • Reset gate: σ(W_r * [x_t, h_{t-1}])
+        • New gate: tanh(W_h * [x_t, r_t ⊙ h_{t-1}])
+        --
+        **Trainable params:**
+        3 × (32+64) × 64 × 3 × 3 = 165,888
+        **+ BatchNorm:** 64 × 2 = 128
+        **Total:** 166,016
+    }
+    
+    class "ConvGRU2D Layer 2" as gru2 {
+        **Input:** (B, 60, 45, 90, 64)
+        **Output:** (B, 45, 90, 32)
+        --
+        **Parameters:**
+        • Filters: 32
+        • Return sequences: False
+        • Takes last timestep output
+        --
+        **Trainable params:**
+        3 × (64+32) × 32 × 3 × 3 = 82,944
+        **+ BatchNorm:** 32 × 2 = 64
+        **Total:** 83,008
+    }
+    
+    class "Skip Connection" as skip {
+        **Input:** (B, 60, 45, 90, 11)
+        **Output:** (B, 45, 90, 32)
+        --
+        **Operations:**
+        • Take last timestep: [:, -1, :, :, :]
+        • Conv2D(32, 1×1) projection
+        • Residual connection to main path
+        --
+        **Trainable params:** 11 × 32 + 32 = 384
+        **Total model params:** ~1.8M
+    }
+}
+
+package "Transformer Hybrid Architecture" as arch3 {
+    
+    class "CNN Encoder" as cnn_enc {
+        **Input:** (B, 60, 45, 90, 11)
+        **Layer 1:** (B, 60, 45, 90, 64)
+        **Layer 2:** (B, 60, 45, 90, 32)
+        --
+        **TimeDistributed Conv2D:**
+        • Layer 1: 3×3, 64 filters
+        • Layer 2: 3×3, 32 filters
+        • BatchNorm + ReLU after each
+        --
+        **Params Layer 1:** 11×64×3×3 + 64 = 6,400
+        **Params Layer 2:** 64×32×3×3 + 32 = 18,464
+    }
+    
+    class "Spatial Reduction" as reduction {
+        **Input:** (B, 60, 45, 90, 32)
+        **MaxPool:** (B, 60, 22, 45, 32)
+        **Flatten:** (B, 60, 31,680)
+        --
+        **Operations:**
+        • MaxPooling2D(2×2, stride=2)
+        • Spatial: 45×90 → 22×45
+        • Flatten: 22×45×32 = 31,680
+        --
+        **No trainable parameters**
+    }
+    
+    class "Multi-Head Attention" as mha {
+        **Input:** (B, 60, 31,680)
+        **Output:** (B, 60, 31,680)
+        --
+        **Configuration:**
+        • Heads: 4
+        • Key dimension: 32
+        • Query, Key, Value projections
+        • Self-attention mechanism
+        --
+        **Trainable params:**
+        4 × (31,680×32×3) + output_proj
+        **≈ 12.2M parameters**
+    }
+    
+    class "LSTM Aggregation" as lstm_agg {
+        **Input:** (B, 60, 31,680)
+        **Output:** (B, 128)
+        --
+        **LSTM Parameters:**
+        • Hidden units: 128
+        • Return sequences: False
+        • 4 gates: input, forget, output, cell
+        --
+        **Trainable params:**
+        4 × (31,680 + 128) × 128 ≈ 16.3M
+        **Total model params:** ~2.5M
+    }
+}
+
+' Connections
+input --> arch1
+input --> arch2  
+input --> arch3
+
+conv1 --> conv2 : **Temporal\nEncoding**
+conv2 --> cbam : **Attention\nMechanism**
+cbam --> conv3 : **Decoder\nStage**
+conv3 --> head1 : **Multi-horizon\nOutput**
+
+proj --> gru1 : **Feature\nProjection**
+gru1 --> gru2 : **Temporal\nProcessing**
+gru2 --> skip : **Residual\nFusion**
+
+cnn_enc --> reduction : **Spatial\nCompression**
+reduction --> mha : **Temporal\nAttention**
+mha --> lstm_agg : **Sequence\nAggregation**
+
+' Technical notes
+note bottom of input
+**Data Specifications:**
+• Temporal resolution: Monthly (60 timesteps = 5 years)
+• Spatial resolution: 0.05° × 0.05° (≈5.5 km)
+• Geographic extent: Boyacá region, Colombia
+• Feature engineering: BASE(4) + KCE(3) + PAFC(4) = 11 features
+end note
+
+@enduml

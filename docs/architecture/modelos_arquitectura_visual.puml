@@ -1,0 +1,156 @@
+@startuml modelos_arquitectura_visual
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 10
+skinparam titleFontSize 18
+skinparam rectangleBackgroundColor white
+skinparam rectangleBorderColor black
+skinparam rectangleBorderThickness 1
+skinparam minClassWidth 80
+skinparam minClassHeight 60
+skinparam padding 4
+
+title **Arquitecturas de Modelos - Vista 3D de Tensores**
+
+' Layout horizontal para los 3 modelos
+left to right direction
+
+' Alineación perfecta de modelos
+skinparam packageAlignment top
+
+' ConvLSTM Architecture
+package "01. ConvLSTM Encoder-Decoder + Attention" as model1 {
+    left to right direction
+    
+    ' Input tensor
+    rectangle "<size:8><b>INPUT</b></size>\n<size:7>(B x 60 x 45 x 90 x 11)</size>\n<size:6>Temporal Window\n5 years</size>" as input1 #E3F2FD {
+    }
+    
+    ' ConvLSTM layers with different heights representing channels
+    rectangle "<size:8><b>ConvLSTM2D</b></size>\n<size:7>(B x 60 x 45 x 90 x 64)</size>\n<size:6>64 filters\n3x3 kernel</size>" as conv1_1 #BBDEFB {
+    }
+    
+    rectangle "<size:8><b>ConvLSTM2D</b></size>\n<size:7>(B x 60 x 45 x 90 x 32)</size>\n<size:6>32 filters\n3x3 kernel</size>" as conv1_2 #90CAF9 {
+    }
+    
+    rectangle "<size:8><b>CBAM</b></size>\n<size:7>(B x 60 x 45 x 90 x 32)</size>\n<size:6>Channel +\nSpatial Attention</size>" as att1 #64B5F6 {
+    }
+    
+    rectangle "<size:8><b>ConvLSTM2D</b></size>\n<size:7>(B x 45 x 90 x 16)</size>\n<size:6>16 filters\nDecoder</size>" as dec1 #42A5F5 {
+    }
+    
+    rectangle "<size:8><b>OUTPUT</b></size>\n<size:7>(B x 3 x 45 x 90 x 1)</size>\n<size:6>Multi-horizon\nt+1, t+2, t+3</size>" as out1 #2196F3 {
+    }
+    
+    input1 -right-> conv1_1 : <size:6><b>Encoding</b></size>
+    conv1_1 -right-> conv1_2
+    conv1_2 -right-> att1 : <size:6><b>Attention</b></size>
+    att1 -right-> dec1 : <size:6><b>Decoding</b></size>
+    dec1 -right-> out1
+}
+
+' ConvGRU Architecture
+package "02. ConvGRU Residual + BatchNorm" as model2 {
+    left to right direction
+    
+    rectangle "<size:8><b>INPUT</b></size>\n<size:7>(B x 60 x 45 x 90 x 11)</size>\n<size:6>Temporal Window\n5 years</size>" as input2 #DCEDC8 {
+    }
+    
+    rectangle "<size:8><b>Projection</b></size>\n<size:7>(B x 60 x 45 x 90 x 32)</size>\n<size:6>Conv2D 1x1\nFeature Proj</size>" as proj2 #C5E1A5 {
+    }
+    
+    rectangle "<size:8><b>ConvGRU2D</b></size>\n<size:7>(B x 60 x 45 x 90 x 64)</size>\n<size:6>64 filters\n3x3 kernel</size>" as gru2_1 #AED581 {
+    }
+    
+    rectangle "<size:8><b>ConvGRU2D</b></size>\n<size:7>(B x 45 x 90 x 32)</size>\n<size:6>32 filters\nLast timestep</size>" as gru2_2 #9CCC65 {
+    }
+    
+    rectangle "<size:8><b>Skip + Add</b></size>\n<size:7>(B x 45 x 90 x 32)</size>\n<size:6>Residual\nConnection</size>" as add2 #8BC34A {
+    }
+    
+    rectangle "<size:8><b>OUTPUT</b></size>\n<size:7>(B x 3 x 45 x 90 x 1)</size>\n<size:6>Multi-horizon\nt+1, t+2, t+3</size>" as out2 #689F38 {
+    }
+    
+    ' Skip connection
+    rectangle "<size:7><b>SKIP</b></size>\n<size:6>(B x 45 x 90 x 32)</size>" as skip2 #7CB342 {
+    }
+    
+    input2 -right-> proj2
+    proj2 -right-> gru2_1 : <size:6><b>GRU Encoding</b></size>
+    gru2_1 -right-> gru2_2
+    gru2_2 -right-> add2 : <size:6><b>Residual</b></size>
+    
+    ' Skip connection path
+    input2 -down-> skip2 : <size:6><b>Skip Path</b></size>
+    skip2 -up-> add2
+    
+    add2 -right-> out2
+}
+
+' Transformer Architecture
+package "03. Transformer Híbrido CNN + LSTM" as model3 {
+    left to right direction
+    
+    rectangle "<size:8><b>INPUT</b></size>\n<size:7>(B x 60 x 45 x 90 x 11)</size>\n<size:6>Temporal Window\n5 years</size>" as input3 #FFE0B2 {
+    }
+    
+    rectangle "<size:8><b>CNN-1</b></size>\n<size:7>(B x 60 x 45 x 90 x 64)</size>\n<size:6>Conv2D 3x3\n64 filters</size>" as cnn3_1 #FFCC02 {
+    }
+    
+    rectangle "<size:8><b>CNN-2</b></size>\n<size:7>(B x 60 x 45 x 90 x 32)</size>\n<size:6>Conv2D 3x3\n32 filters</size>" as cnn3_2 #FFB74D {
+    }
+    
+    rectangle "<size:8><b>MaxPool</b></size>\n<size:7>(B x 60 x 22 x 45 x 32)</size>\n<size:6>2x2 pooling\nSpatial reduce</size>" as pool3 #FFA726 {
+    }
+    
+    rectangle "<size:8><b>Flatten</b></size>\n<size:7>(B x 60 x 31680)</size>\n<size:6>22x45x32\nFlattened</size>" as flat3 #FF9800 {
+    }
+    
+    rectangle "<size:8><b>Multi-Head\nAttention</b></size>\n<size:7>(B x 60 x 31680)</size>\n<size:6>4 heads\nTemporal attn</size>" as att3 #F57C00 {
+    }
+    
+    rectangle "<size:8><b>LSTM</b></size>\n<size:7>(B x 128)</size>\n<size:6>128 hidden\nTemporal agg</size>" as lstm3 #EF6C00 {
+    }
+    
+    rectangle "<size:8><b>OUTPUT</b></size>\n<size:7>(B x 3 x 45 x 90 x 1)</size>\n<size:6>Dense + Reshape\nt+1, t+2, t+3</size>" as out3 #E65100 {
+    }
+    
+    input3 -right-> cnn3_1 : <size:6><b>CNN Encoding</b></size>
+    cnn3_1 -right-> cnn3_2
+    cnn3_2 -right-> pool3 : <size:6><b>Spatial Reduction</b></size>
+    pool3 -right-> flat3
+    flat3 -right-> att3 : <size:6><b>Attention</b></size>
+    att3 -right-> lstm3 : <size:6><b>Temporal Agg</b></size>
+    lstm3 -right-> out3 : <size:6><b>Reconstruction</b></size>
+}
+
+' Organización horizontal de los 3 modelos (01, 02, 03)
+model1 -[hidden]right-> model2
+model2 -[hidden]right-> model3
+
+' Alineación de inputs al mismo nivel horizontal
+input1 -[hidden]right-> input2
+input2 -[hidden]right-> input3
+
+' Alineación de outputs al mismo nivel horizontal
+out1 -[hidden]right-> out2
+out2 -[hidden]right-> out3
+
+' Legend and performance
+note bottom
+<size:10><b>🏆 Performance Comparison:</b></size>
+<size:9>• <b>ConvLSTM</b>: RMSE=0.145, MAE=0.089, R2=0.78, Params=2.1M</size>
+<size:9>• <b>ConvGRU</b>: RMSE=0.142, MAE=0.087, R2=0.79, Params=1.8M</size>  
+<size:9>• <b>Transformer</b>: RMSE=0.138, MAE=0.084, R2=0.81, Params=2.5M</size>
+
+<size:10><b>📐 Configuration:</b></size>
+<size:9>• Input: 60 months temporal window (5 years)</size>
+<size:9>• Spatial: 45x90 grid (0.05 deg resolution, Boyaca region)</size>
+<size:9>• Features: 11 (BASE + KCE + PAFC)</size>
+<size:9>• Output: Multi-horizon predictions (t+1, t+2, t+3)</size>
+end note
+
+@enduml

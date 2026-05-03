@@ -1,0 +1,115 @@
+@startuml modelos_evaluados_comparacion
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 13
+skinparam titleFontSize 18
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam minClassWidth 220
+skinparam minClassHeight 140
+skinparam padding 10
+
+title Comparación de Arquitecturas - Modelos Evaluados
+
+class "ConvLSTM Encoder-Decoder\n+ Attention (Baseline)" as convlstm {
+    **Capas:**
+    +Input: (B, 60, H, W, 11)
+    +ConvLSTM2D(64, 3×3, seq=True)
+    +BatchNorm + Dropout(0.2)
+    +ConvLSTM2D(32, 3×3, seq=True)
+    +BatchNorm
+    +CBAM Attention (Channel+Spatial)
+    +ConvLSTM2D(16, 3×3, seq=False)
+    +BatchNorm
+    +Spatial Head Multi-scale
+    --
+    **Características:**
+    • Encoder-Decoder clásico
+    • Atención espaciotemporal
+    • Regularización L1/L2
+    • Parámetros: ~2.1M
+}
+
+class "ConvGRU Residual\n+ BatchNorm Reforzada" as convgru {
+    **Capas:**
+    +Input: (B, 60, H, W, 11)
+    +TimeDistributed Conv2D(32, 1×1)
+    +ConvGRU2D(64, 3×3, seq=True)
+    +BatchNorm + Dropout
+    +ConvGRU2D(32, 3×3, seq=False)
+    +BatchNorm
+    +Skip Connection (Conv2D 32, 1×1)
+    +Add + ReLU
+    +Spatial Head
+    --
+    **Características:**
+    • Conexiones residuales
+    • GRU más eficiente que LSTM
+    • Normalización reforzada
+    • Parámetros: ~1.8M
+}
+
+class "Transformer Híbrido\nCNN + LSTM" as transformer {
+    **Capas:**
+    +Input: (B, 60, H, W, 11)
+    +TimeDistributed Conv2D(64, 3×3)
+    +BatchNorm + ReLU
+    +TimeDistributed Conv2D(32, 3×3)
+    +BatchNorm + ReLU
+    +MaxPooling2D(2×2) + Flatten
+    +MultiHeadAttention(4 heads, 32 dim)
+    +LayerNormalization
+    +LSTM(128, seq=False)
+    +BatchNorm + Dropout(0.1)
+    +Dense + Reshape → Spatial
+    --
+    **Características:**
+    • CNN para extracción espacial
+    • Self-attention temporal
+    • LSTM para agregación
+    • Parámetros: ~2.5M
+}
+
+' Relaciones de comparación
+convlstm -[hidden]-> convgru
+convgru -[hidden]-> transformer
+
+' Métricas de comparación
+note top of convlstm #F0F8FF
+**Baseline Model**
+• RMSE: 0.145
+• MAE: 0.089
+• R²: 0.78
+• Tiempo: 45 min/epoch
+end note
+
+note top of convgru #F0FFF0
+**Modelo Ligero**
+• RMSE: 0.142
+• MAE: 0.087
+• R²: 0.79
+• Tiempo: 32 min/epoch
+end note
+
+note top of transformer #FFFAF0
+**Modelo Avanzado**
+• RMSE: 0.138
+• MAE: 0.084
+• R²: 0.81
+• Tiempo: 52 min/epoch
+end note
+
+note bottom
+**Configuración común:**
+• Input: Ventanas de 60 meses
+• Output: Horizontes t+1, t+2, t+3
+• Features: BASE + KCE + PAFC (11 características)
+• Resolución: 0.05° × 0.05°
+• Optimizador: Adam (lr=0.001)
+• Loss: MSE + Regularización
+end note
+
+@enduml

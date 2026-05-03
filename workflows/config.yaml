@@ -1,0 +1,204 @@
+# ============================================================================
+# ML Precipitation Prediction - Pipeline Configuration
+# ============================================================================
+# All paths are relative to project root unless marked absolute.
+# Override per-environment with config_colab.yaml or config_barcelona.yaml.
+
+# Project metadata
+project:
+  name: "ML Precipitation Prediction"
+  description: "Spatiotemporal prediction of monthly precipitation in mountainous areas"
+  version: "1.0"
+
+# Geographic region of interest (Boyaca, Colombia)
+region:
+  name: "Boyaca"
+  lon_min: -74.975
+  lon_max: -71.725
+  lat_min: 4.325
+  lat_max: 7.375
+  grid_height: 61
+  grid_width: 65
+  resolution_chirps_deg: 0.05
+  resolution_dem_m: 90
+
+# ============================================================================
+# DATA PATHS (relative to project root)
+# ============================================================================
+data:
+  # Raw inputs
+  chirps_raw_dir: "data/input/chirps"
+  dem_path: "data/input/dem/boyaca_dem_90m.tif"
+  shapefile: "data/input/shapes/MGN_Departamento.shp"
+
+  # Processed outputs
+  daily_nc: "data/output/boyaca_region_daily.nc"
+  monthly_nc: "data/output/boyaca_region_monthly_coordinates_sum.nc"
+  annual_avg_nc: "data/output/boyaca_region_months_aggregate_avg.nc"
+  merged_nc: "data/output/boyaca_region_months_aggregated_avg_merged_dem.nc"
+  dataset_nc: "data/output/complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc"
+
+  # Temp directory for intermediate files
+  temp_dir: "data/output/temp"
+
+# ============================================================================
+# MODEL CONFIGURATIONS
+# ============================================================================
+models:
+  # Common settings
+  n_horizons: 12
+  test_size: 33  # number of test samples
+  feature_set: "BASIC"  # BASIC, KCE, or PAFC
+
+  # V2 ConvLSTM
+  v2:
+    name: "V2_ConvLSTM"
+    architecture: "ConvLSTM"
+    epochs: 150
+    batch_size: 2
+    learning_rate: 0.001
+    early_stopping_patience: 50
+    input_window: 60
+    train_val_split: 0.8
+    loss_weighting: "uniform"        # uniform | linear_decay
+    consistency_weight: 0.1          # CombinedLoss temporal consistency
+    prediction_batch_size: 1
+    enabled_horizons: [12]
+    output_dir: "models/output/V2_Enhanced_Models"
+    predictions_path: "models/output/V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM/predictions.npy"
+    targets_path: "models/output/V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM/targets.npy"
+
+  # V4 GNN-TAT
+  v4:
+    name: "V4_GNN_TAT"
+    architecture: "GNN_TAT_GAT"
+    epochs: 150
+    batch_size: 2
+    learning_rate: 0.001
+    early_stopping_patience: 50
+    input_window: 60
+    train_val_split: 0.8
+    weight_decay: 0.00001
+    enabled_horizons: [12]
+    output_dir: "models/output/V4_GNN_TAT_Models"
+    predictions_path: "models/output/V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT/predictions.npy"
+    # Uses V2 targets (same test set)
+    targets_path: "models/output/V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM/targets.npy"
+    gnn_config:
+      hidden_dim: 64
+      num_gnn_layers: 2
+      gnn_type: "GAT"
+      num_heads: 4
+      dropout: 0.1
+      temporal_hidden_dim: 64
+      num_temporal_heads: 4
+      temporal_dropout: 0.1
+      lstm_hidden_dim: 64
+      num_lstm_layers: 2
+      edge_threshold: 0.3
+      max_neighbors: 8
+      use_distance_edges: true
+      use_elevation_edges: true
+      use_correlation_edges: true
+      distance_scale_km: 10.0
+      elevation_scale: 0.2
+      elevation_weight: 0.3
+      correlation_weight: 0.5
+      min_edge_weight: 0.01
+
+  # Intracell DEM settings (used when --intracell-dem flag is passed)
+  intracell_dem:
+    dataset_nc: "data/output/complete_dataset_extended_dem_features.nc"
+    v2_output_dir: "models/output/V2_Enhanced_Models_intracell_dem"
+    v4_output_dir: "models/output/V4_GNN_TAT_Models_intracell_dem"
+
+  # V10 Late Fusion
+  v10:
+    name: "V10_Late_Fusion"
+    method: "ridge_oof"
+    ridge_alpha: 1.0
+    n_folds: 5
+    output_dir: "models/output/V10_Late_Fusion"
+    predictions_path: "models/output/V10_Late_Fusion/predictions.npy"
+    targets_path: "models/output/V10_Late_Fusion/targets.npy"
+
+# ============================================================================
+# FEATURE ENGINEERING
+# ============================================================================
+features:
+  # Elevation clustering
+  elevation_clusters:
+    n_clusters: 3
+    labels: ["Low (<1500m)", "Medium (1500-2500m)", "High (>2500m)"]
+    boundaries: [[0, 1500], [1500, 2500], [2500, 5000]]
+
+  # Precipitation clustering
+  precipitation_clusters:
+    n_clusters: 4
+
+  # Input window sizes for temporal features
+  window_sizes: [3, 6, 12]
+
+  # Intra-cell DEM features (Pos2 + Pos3)
+  dem_intra_cell:
+    min_pixels: 10  # minimum DEM pixels per CHIRPS cell for valid stats
+    # Posibilidad 2: Deciles
+    decile_percentiles: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # Posibilidad 3: PCA/UMAP
+    n_pca_components: 6
+    n_umap_components: 6
+    # Feature bundles for retraining
+    bundles:
+      BASIC_D10: "BASIC + 10 elevation deciles"
+      BASIC_PCA6: "BASIC + 6 PCA components"
+      BASIC_D10_PCA6: "BASIC + deciles + PCA"
+
+# ============================================================================
+# BENCHMARK & EVALUATION
+# ============================================================================
+benchmark:
+  output_dir: "scripts/benchmark/output"
+  figures_dir: "scripts/benchmark/output/figures"
+  tables_dir: "scripts/benchmark/output/tables"
+
+  # ACC settings
+  acc:
+    train_fraction: 0.8  # for climatology estimation
+
+  # FSS settings
+  fss:
+    thresholds_mm: [1, 5, 10]
+    neighborhoods: [1, 3, 5, 7]
+
+# ============================================================================
+# PIPELINE EXECUTION
+# ============================================================================
+pipeline:
+  # Which stages to run (all by default)
+  stages:
+    - download_chirps
+    - aggregate_monthly
+    - merge_dem
+    - feature_engineering
+    - train_v2
+    - train_v4
+    - late_fusion_v10
+    - benchmark_metrics
+    - generate_figures
+
+  # Logging
+  log_dir: "logs"
+  log_level: "INFO"
+
+  # Resource limits
+  max_memory_gb: 16
+  dask_chunks:
+    time: 100
+
+# ============================================================================
+# ENVIRONMENT-SPECIFIC
+# ============================================================================
+environment:
+  platform: "local"  # local, colab, bsc
+  gpu_available: false
+  random_seed: 42

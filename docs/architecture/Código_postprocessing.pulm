@@ -1,0 +1,14 @@
+@startmindmap
+* Postprocessing-based hybrid models
+** Statistical correction
+*** Bias correction
+*** Bayesian Joint Probability (BJP)
+** Probabilistic model fusion
+*** Bayesian Model Averaging (BMA)
+*** Probabilistic Model Averaging
+** Averaging-based (as postprocessing)
+*** Prediction Averaging 
+*** Feature Averaging 
+*** Model Averaging
+*** Prediction Selection
+@endmindmap

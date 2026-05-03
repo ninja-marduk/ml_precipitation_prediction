@@ -1,0 +1,14 @@
+📦 Resumen del pipeline ideal
+Agregación mensual de precipitación desde CHIRPS (.nc)
+
+Interpolación / alineación de DEM a resolución CHIRPS
+
+Cálculo de derivados topográficos (slope, aspect, etc.)
+
+Categorización altitudinal (K-means) como feature
+
+Construcción de tensor multivariable [mes, lat, lon, canales]
+
+Normalización o estandarización por canal
+
+Entrenamiento de modelos ConvLSTM o ensembles

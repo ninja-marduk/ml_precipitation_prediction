@@ -1,0 +1,22 @@
+@startmindmap
+* Component combination-based hybrid models
+** Decomposition-based hybrids
+** Clustering-based hybrids
+** Fuzzy logic-based hybrids
+** Optimization-enhanced hybrids
+*** Optimization enhanced hybrid
+** Decomposition-based hybrid with optimization
+** Sequential hybrids
+*** NMF → GALMA → empirical model
+*** SMOTE → K-means
+*** Sequential Hybrid
+*** Sequential multiscale hybrid
+** Hybrid decomposition-based ensemble
+** Ensemble-based methods
+*** Bagging
+*** Boosting
+*** Dagging
+*** Snapshot Ensembles
+** Meta-model-based hybrids
+*** Stacking
+@endmindmap

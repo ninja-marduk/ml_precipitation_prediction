@@ -1,0 +1,32 @@
+@startuml
+title Advanced Spatial Models → Meta Models: Functional Flow
+
+actor "User" as U
+participant "advanced_spatial_models.ipynb" as ASM
+database "Xarray Dataset (.nc)" as DS
+participant "Models Dir\nmodels/output/advanced_spatial" as OUT <<Collection>>
+participant "Meta Exports\nmodels/output/advanced_spatial/meta_models" as META <<Folder>>
+participant "advanced_spatial_meta_models.ipynb" as AMM
+participant "Predictions Dict" as PRED <<Collection>>
+participant "Ground Truth (y_true)" as YT <<Collection>>
+participant "Ensembles:\n- Stacking (RandomForest)\n- Cross-Attention Fusion (Keras)" as ENSEMBLES
+participant "Reports" as REPORTS <<Collection>>
+
+U -> ASM: Run training & evaluation
+ASM -> DS: xr.open_dataset()
+ASM -> ASM: Build models (ConvLSTM_Att, ConvGRU_Res, Hybrid_Trans)
+ASM -> OUT: Save *.keras, metrics_advanced.csv, images, gifs
+ASM -> META: Export per model/experiment\n- predictions.npy\n- targets.npy\n- inputs.npy\n- scalers/*.npy\n- metadata.json
+
+U -> AMM: Run meta-model pipeline
+AMM -> META: Discover export subdirectories
+AMM -> PRED: Load predictions
+AMM -> YT: Load targets (alias true_values)
+AMM -> ENSEMBLES: Fit per horizon
+ENSEMBLES -> REPORTS: meta_models_comparison.csv\nmeta_models_comparison.png
+
+note right of AMM
+  Discovery aligns shapes to a common (N, H, Y, X)
+  and exposes variables: predictions, y_true
+end note
+@enduml

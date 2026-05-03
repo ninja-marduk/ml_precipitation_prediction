@@ -1,0 +1,82 @@
+@startuml ingenieria_caracteristicas_flujo
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 15
+skinparam titleFontSize 20
+skinparam packageStyle rectangle
+skinparam minClassWidth 200
+skinparam minClassHeight 120
+skinparam padding 10
+
+title Flujo de Ingeniería de Características
+
+package "Datos Base" as base_data #lightblue {
+    rectangle "Precipitación\n(CHIRPS-2.0)" as precip
+    rectangle "Modelo Digital\nde Elevación (DEM)" as dem
+    rectangle "Coordenadas\n(lat, lon)" as coords
+}
+
+package "01. KCE - K-means Clustering Elevation" as kce_package #lightcoral {
+    rectangle "K-means\n(k=3)" as kmeans
+    rectangle "Bandas de\nElevación" as bandas
+    rectangle "One-Hot\nEncoding" as onehot
+    
+    dem -> kmeans : Clustering
+    kmeans -> bandas : 3 grupos altitudinales
+    bandas -> onehot : Codificación categórica
+}
+
+package "02. PAFC - Partial AutoCorrelation Features" as pafc_package #lightgreen {
+    rectangle "Análisis\nACF/PACF" as acf_analysis
+    rectangle "Selección de\nLags {1,2,4,12}" as lag_selection
+    rectangle "Variables\nAutorregresivas" as autoregressive
+    
+    precip -> acf_analysis : Análisis temporal
+    acf_analysis -> lag_selection : Identificación de lags
+    lag_selection -> autoregressive : Creación de features
+}
+
+package "03. Conjuntos de Características" as feature_sets #lightyellow {
+    rectangle "BASE" as base_set #wheat
+    rectangle "BASE + KCE" as base_kce_set #wheat
+    rectangle "BASE + KCE + PAFC" as full_set #wheat
+}
+
+' Flujo principal
+precip -> base_set
+coords -> base_set
+dem -> base_set
+
+onehot -> base_kce_set
+base_set -> base_kce_set
+
+autoregressive -> full_set
+base_kce_set -> full_set
+
+' Anotaciones
+note top of kce_package
+**Características espaciales:**
+• Elevación baja: < 1000m
+• Elevación media: 1000-2500m  
+• Elevación alta: > 2500m
+end note
+
+note top of pafc_package
+**Características temporales:**
+• Lag 1: Mes anterior
+• Lag 2: Dos meses atrás
+• Lag 4: Cuatro meses atrás
+• Lag 12: Mismo mes año anterior
+end note
+
+note bottom of feature_sets
+**Evaluación comparativa:**
+• BASE: Variables fundamentales
+• BASE+KCE: + información orográfica
+• BASE+KCE+PAFC: + memoria temporal
+end note
+
+@enduml

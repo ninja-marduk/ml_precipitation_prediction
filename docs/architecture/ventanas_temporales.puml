@@ -1,0 +1,51 @@
+@startuml ventanas_temporales
+!theme plain
+!define SCALE 3
+!define DPI 800
+skinparam dpi 800
+skinparam backgroundColor white
+skinparam defaultFontSize 16
+skinparam titleFontSize 22
+skinparam packageStyle rectangle
+skinparam minClassWidth 200
+skinparam minClassHeight 120
+skinparam padding 10
+
+title Ventanas Temporales - Arquitectura de Predicción
+
+package "01. Entrada" as entrada #lightblue {
+    rectangle "Ventanas deslizantes\nde 60 meses" as ventanas60 #aliceblue
+    note right of ventanas60 : Datos históricos de precipitación\ny variables meteorológicas
+}
+
+package "02. Salida" as salida #lightgreen {
+    rectangle "Horizonte t+1" as t1 #palegreen
+    rectangle "Horizonte t+2" as t2 #palegreen  
+    rectangle "Horizonte t+3" as t3 #palegreen
+    note right of t3 : Predicciones a 1, 2 y 3 meses
+}
+
+package "03. Partición" as particion #lightyellow {
+    rectangle "Entrenamiento\n(70%)" as train #wheat
+    rectangle "Validación\n(15%)" as validation #wheat
+    rectangle "Prueba\n(15%)" as test #wheat
+}
+
+' Flujo principal
+ventanas60 --> t1 : Modelo de\nPredicción
+ventanas60 --> t2
+ventanas60 --> t3
+
+' Conexiones de partición
+entrada --> train : División\ntemporal
+entrada --> validation
+entrada --> test
+
+' Detalles del proceso
+note top of entrada : Secuencias temporales\ncon información espacial\ny meteorológica
+
+note bottom of salida : Predicciones multi-horizonte\ncon resolución espacial\ny temporal específica
+
+note bottom of particion : División cronológica\npara evitar data leakage
+
+@enduml
