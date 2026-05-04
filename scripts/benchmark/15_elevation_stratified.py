@@ -3,8 +3,8 @@ Benchmark Analysis Script 15: Elevation-Stratified Metrics
 
 Computes R2, RMSE, MAE, and Bias stratified by elevation clusters:
 - Low: < 1500m
-- Medium: 1500-2500m
-- High: > 2500m
+- Medium: 1500-2800m  (KCE-aligned, k-means upper threshold)
+- High: > 2800m
 
 Also computes Pearson correlation between elevation and per-cell R2
 to quantify altitudinal bias.
@@ -29,12 +29,12 @@ OUTPUT_DIR = PROJECT_ROOT / 'scripts' / 'benchmark' / 'output'
 
 MODELS = {
     'V2_ConvLSTM': {
-        'predictions': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'predictions.npy',
-        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'targets.npy',
+        'predictions': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM_Bidirectional' / 'predictions.npy',
+        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM_Bidirectional' / 'targets.npy',
     },
     'V4_GNN_TAT': {
         'predictions': PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / 'map_exports' / 'H12' / 'BASIC' / 'GNN_TAT_GAT' / 'predictions.npy',
-        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'targets.npy',
+        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM_Bidirectional' / 'targets.npy',
     },
     'V10_Late_Fusion': {
         'predictions': PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion' / 'predictions.npy',
@@ -90,8 +90,8 @@ def get_intracell_dem_models(bundle='BASIC_D10'):
 
 ELEVATION_CLUSTERS = {
     'Low (<1500m)': (0, 1500),
-    'Medium (1500-2500m)': (1500, 2500),
-    'High (>2500m)': (2500, 5000),
+    'Medium (1500-2800m)': (1500, 2800),
+    'High (>2800m)': (2800, 5000),
 }
 
 

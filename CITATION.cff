@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: "ML Precipitation Prediction: Hybrid Deep Learning for Spatiotemporal Forecasting in Mountainous Areas"
-version: 5.0.1
-date-released: 2026-01-18
+version: 5.1.0-paper5-submission
+date-released: 2026-05-04
 authors:
   - family-names: "Perez Reyes"
     given-names: "Manuel Ricardo"
