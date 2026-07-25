@@ -5,7 +5,7 @@ Generates boyaca.png at 800 DPI for Paper 5.
 Adapted from Paper 4's figure_dem_elevation().
 
 Usage:
-    python models/scripts/generate_paper5_study_area.py
+    python models/scripts/figures/analysis/study_area.py
 """
 
 import os
@@ -15,12 +15,13 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-# Add scripts directory to path for figure_config
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from figure_config import setup_style, OUTPUT_DPI
+# Bootstrap _config from figures/
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
+from _config import setup_style, OUTPUT_DPI  # noqa: E402
 
 # ── Paths ──────────────────────────────────────────────────────────────
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_NC = PROJECT_ROOT / "notebooks" / "data" / "output" / \
     "complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc"
 SHP_PATH = PROJECT_ROOT / "data" / "input" / "MGN_Departamento.shp"

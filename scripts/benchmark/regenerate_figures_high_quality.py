@@ -43,7 +43,7 @@ LEGEND_SIZE = 10
 LINE_WIDTH = 2.0
 MARKER_SIZE = 8
 
-# Okabe-Ito colorblind-safe palette (consistent with figure_config.py)
+# Okabe-Ito colorblind-safe palette (consistent with models/scripts/figures/_config.py)
 COLORS = {
     'BASIC': '#009E73',  # Bluish green (Okabe-Ito)
     'KCE': '#CC79A7',    # Reddish purple (Okabe-Ito)

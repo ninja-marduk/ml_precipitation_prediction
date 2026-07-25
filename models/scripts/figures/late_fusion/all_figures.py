@@ -10,7 +10,10 @@ Output: models/output/final_figures/
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
+# Bootstrap _config from figures/
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
 
 import numpy as np
 import pandas as pd
@@ -18,10 +21,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.patches import FancyBboxPatch
 
-from figure_config import COLORS, setup_style, add_panel_label, OUTPUT_DPI
+from _config import COLORS, setup_style, add_panel_label, OUTPUT_DPI  # noqa: E402
 
 # Configuration
-OUTPUT_DIR = Path("models/output/final_figures")
+OUTPUT_DIR = PROJECT_ROOT / "models" / "output" / "final_figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Apply Q1 style
@@ -45,8 +48,8 @@ def figure_stacking_comparison_heatmap():
     ]
 
     data = {
-        'R²': [0.628, 0.628, 0.212, 0.597, 0.200, 0.668],
-        'RMSE (mm)': [81.05, 82.29, 117.93, 84.10, 111.18, 76.67],
+        'R²': [0.629, 0.628, 0.212, 0.597, 0.200, 0.672],
+        'RMSE (mm)': [81.05, 82.29, 117.93, 84.10, 111.18, 76.23],
         'MAE (mm)': [58.91, 58.19, 92.41, 60.50, 87.33, 56.12],
     }
     df = pd.DataFrame(data, index=models)
@@ -97,10 +100,10 @@ def figure_ensemble_evolution():
 
     fig, ax = plt.subplots(figsize=(12, 5))
 
-    strategies = ['ConvLSTM', 'GNN-TAT', 'Simple Avg',
+    strategies = ['Enh. ConvLSTM', 'GNN-TAT', 'Simple Avg',
                   'Stacking Ens.\n(Early Fusion)', 'Stratified\nEns.',
                   'Weighted Avg', 'Late Fusion']
-    r2_values = [0.628, 0.628, 0.633, 0.212, 0.597, 0.636, 0.668]
+    r2_values = [0.629, 0.628, 0.633, 0.212, 0.597, 0.636, 0.672]
 
     bar_colors = [COLORS['v2'], COLORS['v4'], COLORS['baseline'],
                   COLORS['v5'], COLORS['v6'],
@@ -119,8 +122,8 @@ def figure_ensemble_evolution():
     # Reference lines
     ax.axhline(y=0.628, color=COLORS['v2'], linestyle='--', alpha=0.6,
                linewidth=1, label='Best single model (0.628)')
-    ax.axhline(y=0.668, color=COLORS['v10'], linestyle='--', alpha=0.6,
-               linewidth=1, label='Late Fusion best (0.668)')
+    ax.axhline(y=0.672, color=COLORS['v10'], linestyle='--', alpha=0.6,
+               linewidth=1, label='Late Fusion best (0.672)')
 
     ax.set_xticks(x)
     ax.set_xticklabels(strategies, rotation=25, ha='right', fontsize=7)
@@ -155,7 +158,7 @@ def figure_failure_modes_analysis():
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
 
     failures = ['FNO\n(pure)', 'Stacking\nEns.', 'GNN-\nBiMamba']
-    r2_vals = [0.312, 0.212, 0.200]
+    r2_vals = [0.206, 0.212, 0.200]
     # Darker palette: FNO sky-blue, Stacking vermillion, BiMamba wine
     failure_colors = [COLORS['v3'], COLORS['v5'], COLORS['v9']]
     edge_colors = ['#9E8C00', '#8B3A00', '#551133']
@@ -168,8 +171,8 @@ def figure_failure_modes_analysis():
                    edgecolor=edge_colors, linewidth=1.2)
     ax1.axhline(y=0.628, color=COLORS['v2'], linestyle='--', linewidth=1.5,
                 label='ConvLSTM base (0.628)')
-    ax1.axhline(y=0.668, color=COLORS['v10'], linestyle='--', linewidth=1.5,
-                label='Late Fusion best (0.668)')
+    ax1.axhline(y=0.672, color=COLORS['v10'], linestyle='--', linewidth=1.5,
+                label='Late Fusion best (0.672)')
 
     # FIGURE EXCEPTION: bar value labels use bold font.size for emphasis
     for bar, val in zip(bars, r2_vals):
@@ -221,7 +224,7 @@ def figure_v10_detailed_performance():
                        0.595, 0.590, 0.580, 0.570, 0.560, 0.554])
     v10_r2 = 0.446 * v2_r2 + 0.710 * v4_r2 * 1.05
     v10_r2 = np.clip(v10_r2, 0, 0.75)
-    v10_r2 = v10_r2 * (0.668 / v10_r2.mean())
+    v10_r2 = v10_r2 * (0.672 / v10_r2.mean())
 
     # (a) R² by horizon
     ax1 = axes[0]
@@ -256,6 +259,9 @@ def figure_v10_detailed_performance():
     ax2.set_xlabel('Forecast horizon (months)')
     ax2.set_ylabel('Improvement (%)')
     ax2.set_xticks(horizons)
+    # Headroom so the upper-left legend does not overlap the tallest bars (~14.5%)
+    ymax = max(improvement_v2.max(), improvement_v4.max())
+    ax2.set_ylim(0, ymax * 1.45)
     ax2.legend(loc='upper left', framealpha=0.9)
 
     plt.tight_layout()
@@ -275,7 +281,7 @@ def figure_comprehensive_radar():
         'Enh. ConvLSTM': [0.628/0.7, 1-81.05/120, 1-58.91/100, 1-316/500, 0.8, 1-10.5/30],
         'GNN-TAT': [0.628/0.7, 1-82.29/120, 1-58.19/100, 1-98/500, 0.85, 1-28.8/30],
         'Stacking Ens.': [0.212/0.7, 1-117.93/120, 1-92.41/100, 1-200/500, 0.3, 0.3],
-        'Late Fusion': [0.668/0.7, 1-76.67/120, 1-56.12/100, 1.0, 0.95, 1-0.002/30],
+        'Late Fusion': [0.672/0.7, 1-76.23/120, 1-55.92/100, 1.0, 0.95, 1-0.004/30],
     }
 
     model_colors = {
@@ -285,7 +291,9 @@ def figure_comprehensive_radar():
         'Late Fusion': COLORS['v10'],
     }
 
-    fig, ax = plt.subplots(figsize=(8, 8), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(10.0, 7.0), subplot_kw=dict(polar=True))
+    # Shrink polar axes so labels (esp. 'Efficiency') sit clearly outside the data area
+    ax.set_position([0.20, 0.10, 0.55, 0.80])
 
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -298,16 +306,18 @@ def figure_comprehensive_radar():
         ax.fill(angles, values_plot, alpha=0.1, color=model_colors[model_name])
 
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories, size=8)
+    ax.set_xticklabels(categories, size=10)
+    # Push axis labels well outside the polar plot so 'Efficiency' (180 deg) does not overlap data
+    ax.tick_params(axis='x', pad=22)
+    ax.set_rlabel_position(45)  # Move radial tick labels off the data spokes
     ax.set_ylim(0, 1)
     ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], size=6)
+    ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], size=8)
 
-    ax.legend(loc='lower right', bbox_to_anchor=(1.15, -0.05), framealpha=0.9)
+    ax.legend(loc='center left', bbox_to_anchor=(1.18, 0.5), framealpha=0.9)
 
-    plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'comprehensive_radar.png',
-                dpi=OUTPUT_DPI, bbox_inches='tight')
+                dpi=OUTPUT_DPI, bbox_inches='tight', pad_inches=0.05)
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'comprehensive_radar.png'}")
 
@@ -339,7 +349,7 @@ def figure_parameter_efficiency_extended():
         (106, 0.518, 'GNN-TAT (SAGE)', COLORS['v4'], 's'),
         (1800, 0.212, 'Stacking Ens.', COLORS['v5'], 'X'),
         (148, 0.200, 'GNN-BiMamba', COLORS['v9'], 'X'),
-        (0.5, 0.668, 'Late Fusion', COLORS['v10'], '*'),
+        (0.5, 0.672, 'Late Fusion', COLORS['v10'], '*'),
     ]
 
     for params, r2, name, color, marker in models:
@@ -371,7 +381,7 @@ def figure_parameter_efficiency_extended():
 
     # Pareto frontier
     pareto_params = [0.5, 78, 98, 234, 1200]
-    pareto_r2 = [0.668, 0.601, 0.5545, 0.589, 0.598]
+    pareto_r2 = [0.672, 0.601, 0.5545, 0.589, 0.598]
     ax.plot(pareto_params, pareto_r2, '--', color=COLORS['success'],
             linewidth=1.2, alpha=0.6, label='Pareto frontier')
 

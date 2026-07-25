@@ -2,7 +2,7 @@
 Paper 1 Data Chart Generation Script (v3 - PDF vector output)
 ==============================================================
 Generates data chart figures as vector PDF for Paper 1.
-Tree diagrams and PRISMA are now TikZ (see generate_paper1_tikz.py).
+Tree diagrams and PRISMA are now TikZ (see sibling prisma_taxonomy.py).
 
 Figures:
   image10.pdf - Metric frequency bar chart
@@ -11,7 +11,7 @@ Figures:
   image13.pdf - Boxplots + histogram (R2 by category)
 
 Usage:
-  python models/scripts/generate_paper1_figures.py
+  python models/scripts/figures/literature_review/charts.py
 """
 import sys
 import io
@@ -31,7 +31,7 @@ warnings.filterwarnings("ignore")
 
 # --- Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parents[1]
+PROJECT_ROOT = SCRIPT_DIR.parents[3]
 DATA_DIR = PROJECT_ROOT / "docs" / "papers" / "1" / "data"
 FIG_DIR = PROJECT_ROOT / "docs" / "papers" / "1" / "latex" / "figures"
 
@@ -442,7 +442,7 @@ def main():
 
     print()
     print("NOTE: Tree diagrams and PRISMA are now TikZ files.")
-    print("      Run generate_paper1_tikz.py to regenerate them.")
+    print("      Run sibling prisma_taxonomy.py to regenerate them.")
     print()
     print("=" * 55)
     print("  Done")

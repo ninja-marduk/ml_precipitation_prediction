@@ -6,7 +6,7 @@ to the paper typography (14/11/10 hierarchy) and embedded width (0.95 textwidth)
 Output: `.docs/papers/5/figures/spatial_r2_map_3panel.png` at 800 DPI.
 
 Usage:
-    python models/scripts/generate_paper5_spatial_r2.py
+    python models/scripts/figures/analysis/spatial_r2.py
 """
 from __future__ import annotations
 
@@ -18,12 +18,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-# figure_config (single source of truth for fonts + colors)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from figure_config import setup_paper_style, OUTPUT_DPI  # noqa: E402
+# Bootstrap _config from figures/
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
+from _config import setup_paper_style, OUTPUT_DPI  # noqa: E402
 
 # ── Paths ──────────────────────────────────────────────────────────────
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 V2_PRED = PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / \
     'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM_Bidirectional'
 V4_PRED = PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / \

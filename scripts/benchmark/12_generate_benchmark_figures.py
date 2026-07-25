@@ -60,7 +60,7 @@ V3_DIR = PROJECT_ROOT / 'models' / 'output' / 'V3_FNO_Models'
 V4_DIR = PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models'
 OUTPUT_DIR = PROJECT_ROOT / 'docs' / 'papers' / '4' / 'figures'
 
-# Okabe-Ito colorblind-safe palette (consistent with figure_config.py)
+# Okabe-Ito colorblind-safe palette (consistent with models/scripts/figures/_config.py)
 COLORS = {
     # Model families
     'ConvLSTM': '#0072B2',   # Blue (Okabe-Ito) - Baselines & Enhanced

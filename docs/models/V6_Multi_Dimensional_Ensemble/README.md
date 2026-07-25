@@ -361,7 +361,6 @@ V6 Multi-Dimensional Ensemble Matrix provides comprehensive evidence that:
 - [V2 Enhanced Models README](../V2_Enhanced_Models/h12/README.md)
 - [V4 GNN-TAT Models README](../V4_GNN_TAT_Models/h12/README.md)
 - [V6 Late Fusion Ensemble README](../V6_Late_Fusion_Ensemble/README.md)
-- [Plan File](../../../.pytest_cache/.dev_workspace/models/plan.md)
 
 ### Theoretical Foundation
 

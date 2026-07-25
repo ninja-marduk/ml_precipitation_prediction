@@ -17,10 +17,11 @@ which is the visual reference Octavio approved (2026-04-30).
 
 USAGE
 -----
-    from figure_config import COLORS, setup_paper_style
+    # First add the figures/ directory to sys.path, then:
+    from _config import COLORS, setup_paper_style
     setup_paper_style()           # for paper / thesis figures (single rcParams)
 
-    from figure_config import setup_poster_style
+    from _config import setup_poster_style
     setup_poster_style()          # for poster figures (~1m viewing distance)
 
     add_panel_label(ax, 'a')      # consistent (a)/(b)/(c) panel labels

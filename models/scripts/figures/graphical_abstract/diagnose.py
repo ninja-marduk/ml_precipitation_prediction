@@ -446,7 +446,7 @@ def generate_debug_overlay(fig, ax, texts, patches, arrows, all_issues):
 def run_diagnostics():
     """Run all diagnostics and print report."""
     # Import and generate the figure
-    from generate_graphical_abstract import draw
+    from generate import draw
 
     fig = draw()
     ax = fig.axes[0]

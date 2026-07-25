@@ -35,7 +35,7 @@ INPUT_DIR = PROJECT_ROOT / 'scripts' / 'benchmark' / 'output'
 OUTPUT_DIR = PROJECT_ROOT / 'scripts' / 'benchmark' / 'output' / 'figures'
 LATEX_DIR = PROJECT_ROOT / 'scripts' / 'benchmark' / 'output' / 'tables'
 
-# Okabe-Ito palette (matching figure_config.py)
+# Okabe-Ito palette (matching models/scripts/figures/_config.py)
 COLORS = {
     'V2_ConvLSTM': '#0072B2',   # Blue
     'V4_GNN_TAT': '#E69F00',    # Orange

@@ -8,10 +8,10 @@ Generates figures addressing Reviewer 2 feedback (MDPI Hydrology):
   4. Elevation-stratified analysis (R²/RMSE by elevation band)
   5. Time series at representative grid cells
 
-Uses Q1 journal standards from figure_config.py.
+Uses Q1 journal standards from sibling figures/_config.py.
 
 Usage:
-    python models/scripts/generate_paper4_reviewer_figures.py
+    python models/scripts/figures/benchmark/reviewer_annotations.py
 """
 
 import os
@@ -23,12 +23,13 @@ import matplotlib.colors as mcolors
 from matplotlib.gridspec import GridSpec
 from pathlib import Path
 
-# Add scripts directory to path for figure_config
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from figure_config import COLORS, setup_style, add_panel_label, OUTPUT_DPI
+# Bootstrap _config from figures/
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
+from _config import COLORS, setup_style, add_panel_label, OUTPUT_DPI  # noqa: E402
 
 # ── Paths ──────────────────────────────────────────────────────────────
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_NC = PROJECT_ROOT / "data" / "output" / \
     "complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc"
 SHP_PATH = PROJECT_ROOT / "data" / "input" / "MGN_Departamento.shp"
@@ -171,8 +172,8 @@ def figure_spatial_r2(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_v4, gdf):
     norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
 
     for ax, r2, title, label in [
-        (axes[0], r2_v2, "V2 ConvLSTM", "a"),
-        (axes[1], r2_v4, "V4 GNN-TAT", "b"),
+        (axes[0], r2_v2, "Enhanced ConvLSTM", "a"),
+        (axes[1], r2_v4, "GNN-TAT", "b"),
     ]:
         im = ax.pcolormesh(lon_grid, lat_grid, r2, cmap=cmap, norm=norm, shading="auto")
         if gdf is not None:
@@ -201,8 +202,8 @@ def figure_scatter(pred_v2, tgt_v2, pred_v4, tgt_v4):
     fig, axes = plt.subplots(1, 2, figsize=(11, 5))
 
     for ax, pred, tgt, title, color, label in [
-        (axes[0], pred_v2, tgt_v2, "V2 ConvLSTM", COLORS["v2"], "a"),
-        (axes[1], pred_v4, tgt_v4, "V4 GNN-TAT", COLORS["v4"], "b"),
+        (axes[0], pred_v2, tgt_v2, "Enhanced ConvLSTM", COLORS["v2"], "a"),
+        (axes[1], pred_v4, tgt_v4, "GNN-TAT", COLORS["v4"], "b"),
     ]:
         obs = tgt.ravel()
         prd = pred.ravel()
@@ -255,16 +256,16 @@ def figure_elevation_stratified(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_
         (3000, 5000, ">3000 m"),
     ]
 
-    results = {"V2 ConvLSTM": {"r2": [], "rmse": [], "n": []},
-               "V4 GNN-TAT": {"r2": [], "rmse": [], "n": []}}
+    results = {"Enhanced ConvLSTM": {"r2": [], "rmse": [], "n": []},
+               "GNN-TAT": {"r2": [], "rmse": [], "n": []}}
 
     for lo, hi, _ in bands:
         mask = (elev >= lo) & (elev < hi)
         n_cells = np.sum(mask)
 
         for name, pred, tgt in [
-            ("V2 ConvLSTM", pred_v2, tgt_v2),
-            ("V4 GNN-TAT", pred_v4, tgt_v4),
+            ("Enhanced ConvLSTM", pred_v2, tgt_v2),
+            ("GNN-TAT", pred_v4, tgt_v4),
         ]:
             s, h, nlat, nlon = pred.shape
             p_flat = pred.reshape(s * h, nlat, nlon)[:, mask]
@@ -291,12 +292,12 @@ def figure_elevation_stratified(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_
 
     # (a) R² by elevation
     ax = axes[0]
-    ax.bar(x - w / 2, results["V2 ConvLSTM"]["r2"], w, color=COLORS["v2"],
-           label="V2 ConvLSTM", edgecolor="none")
-    ax.bar(x + w / 2, results["V4 GNN-TAT"]["r2"], w, color=COLORS["v4"],
-           label="V4 GNN-TAT", edgecolor="none")
+    ax.bar(x - w / 2, results["Enhanced ConvLSTM"]["r2"], w, color=COLORS["v2"],
+           label="Enhanced ConvLSTM", edgecolor="none")
+    ax.bar(x + w / 2, results["GNN-TAT"]["r2"], w, color=COLORS["v4"],
+           label="GNN-TAT", edgecolor="none")
     for i, (r2_v2, r2_v4) in enumerate(
-        zip(results["V2 ConvLSTM"]["r2"], results["V4 GNN-TAT"]["r2"])
+        zip(results["Enhanced ConvLSTM"]["r2"], results["GNN-TAT"]["r2"])
     ):
         ax.text(i - w / 2, r2_v2 + 0.01, f"{r2_v2:.3f}", ha="center", va="bottom", fontsize=6)
         ax.text(i + w / 2, r2_v4 + 0.01, f"{r2_v4:.3f}", ha="center", va="bottom", fontsize=6)
@@ -309,12 +310,12 @@ def figure_elevation_stratified(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_
 
     # (b) RMSE by elevation
     ax = axes[1]
-    ax.bar(x - w / 2, results["V2 ConvLSTM"]["rmse"], w, color=COLORS["v2"],
-           label="V2 ConvLSTM", edgecolor="none")
-    ax.bar(x + w / 2, results["V4 GNN-TAT"]["rmse"], w, color=COLORS["v4"],
-           label="V4 GNN-TAT", edgecolor="none")
+    ax.bar(x - w / 2, results["Enhanced ConvLSTM"]["rmse"], w, color=COLORS["v2"],
+           label="Enhanced ConvLSTM", edgecolor="none")
+    ax.bar(x + w / 2, results["GNN-TAT"]["rmse"], w, color=COLORS["v4"],
+           label="GNN-TAT", edgecolor="none")
     for i, (r_v2, r_v4) in enumerate(
-        zip(results["V2 ConvLSTM"]["rmse"], results["V4 GNN-TAT"]["rmse"])
+        zip(results["Enhanced ConvLSTM"]["rmse"], results["GNN-TAT"]["rmse"])
     ):
         ax.text(i - w / 2, r_v2 + 1, f"{r_v2:.1f}", ha="center", va="bottom", fontsize=6)
         ax.text(i + w / 2, r_v4 + 1, f"{r_v4:.1f}", ha="center", va="bottom", fontsize=6)
@@ -326,7 +327,7 @@ def figure_elevation_stratified(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_
     add_panel_label(ax, "b")
 
     # Cell count annotation
-    for i, n in enumerate(results["V2 ConvLSTM"]["n"]):
+    for i, n in enumerate(results["Enhanced ConvLSTM"]["n"]):
         axes[0].text(i, -0.03, f"n={n}", ha="center", va="top",
                      fontsize=5, transform=axes[0].get_xaxis_transform())
 
@@ -340,11 +341,11 @@ def figure_elevation_stratified(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_
     print("\n  Elevation-Stratified Results:")
     print(f"  {'Band':<14} {'V2 R²':>8} {'V4 R²':>8} {'V2 RMSE':>9} {'V4 RMSE':>9} {'Cells':>6}")
     for i, (_, _, lbl) in enumerate(bands):
-        print(f"  {lbl:<14} {results['V2 ConvLSTM']['r2'][i]:8.3f} "
-              f"{results['V4 GNN-TAT']['r2'][i]:8.3f} "
-              f"{results['V2 ConvLSTM']['rmse'][i]:9.1f} "
-              f"{results['V4 GNN-TAT']['rmse'][i]:9.1f} "
-              f"{results['V2 ConvLSTM']['n'][i]:6d}")
+        print(f"  {lbl:<14} {results['Enhanced ConvLSTM']['r2'][i]:8.3f} "
+              f"{results['GNN-TAT']['r2'][i]:8.3f} "
+              f"{results['Enhanced ConvLSTM']['rmse'][i]:9.1f} "
+              f"{results['GNN-TAT']['rmse'][i]:9.1f} "
+              f"{results['Enhanced ConvLSTM']['n'][i]:6d}")
 
 
 # ── Figure 5: Time Series at Representative Grid Cells ────────────────
@@ -378,9 +379,9 @@ def figure_timeseries(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_v4):
         horizons = np.arange(1, len(obs_ts) + 1)
         ax.plot(horizons, obs_ts, "k-o", markersize=3, linewidth=1.2, label="Observed")
         ax.plot(horizons, v2_ts, "-s", markersize=3, linewidth=1.0,
-                color=COLORS["v2"], label="V2 ConvLSTM")
+                color=COLORS["v2"], label="Enhanced ConvLSTM")
         ax.plot(horizons, v4_ts, "-^", markersize=3, linewidth=1.0,
-                color=COLORS["v4"], label="V4 GNN-TAT")
+                color=COLORS["v4"], label="GNN-TAT")
 
         ax.set_ylabel("Precipitation (mm)")
         ax.set_title(f"{zone_name} \u2014 cell ({iy},{ix}), elev={actual_elev:.0f} m",

@@ -1,7 +1,7 @@
 """Generate bimodal seasonal-cycle climograph for EGU26 poster.
 
 Renders monthly mean precipitation across Boyaca with peak-month markers,
-using the Okabe-Ito palette and project figure_config defaults.
+using the Okabe-Ito palette and project figures/_config.py defaults.
 
 Output: .docs/conferences/EGU26/poster/figures/bimodal_cycle.png  (600 DPI)
 """
@@ -11,9 +11,10 @@ import sys
 import xarray as xr
 import matplotlib.pyplot as plt
 
-ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(ROOT / "models" / "scripts"))
-from figure_config import setup_paper_style, COLORS  # noqa: E402
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
+from _config import setup_paper_style, COLORS  # noqa: E402
 
 DATA = ROOT / "data" / "output" / (
     "complete_dataset_with_features_with_clusters_elevation_windows_"

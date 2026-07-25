@@ -21,7 +21,7 @@ AGG_CSV = REPO / '.docs' / 'papers' / '5' / 'data' / 'factorial_feat_variant.csv
 FIG_PNG = REPO / '.docs' / 'papers' / '5' / 'figures' / 'factorial_feat_variant_r2.png'
 FIG_PDF = REPO / '.docs' / 'papers' / '5' / 'figures' / 'factorial_feat_variant_r2.pdf'
 
-# Okabe-Ito feature-set colours (match project figure_config convention)
+# Okabe-Ito feature-set colours (match models/scripts/figures/_config.py convention)
 FEAT_COLORS = {
     'BASIC': '#009E73',  # Bluish green
     'PAFC':  '#56B4E9',  # Sky blue
@@ -46,9 +46,9 @@ def run(args: argparse.Namespace) -> int:
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
 
-    # Single source of truth: figure_config.PAPER_RC
-    sys.path.insert(0, str(REPO / 'models' / 'scripts'))
-    from figure_config import setup_paper_style  # noqa: E402
+    # Single source of truth: figures/_config.PAPER_RC
+    sys.path.insert(0, str(REPO / 'models' / 'scripts' / 'figures'))
+    from _config import setup_paper_style  # noqa: E402
     setup_paper_style()
     plt.rcParams.update({'axes.edgecolor': '#333333', 'axes.linewidth': 0.8})
 

@@ -20,7 +20,7 @@ UNIFIED_CSV = REPO / '.docs' / 'papers' / '5' / 'data' / 'horizon_multiseed_v2_v
 FIG_PATH = REPO / '.docs' / 'papers' / '5' / 'figures' / 'horizon_degradation_multiseed.png'
 
 # Okabe-Ito: V2=Blue, V4=Orange (GNN), V10=Vermillion
-# (match the existing project palette documented in figure_config.py)
+# (match the existing project palette documented in models/scripts/figures/_config.py)
 COLORS = {
     'V2':  '#0072B2',  # Blue
     'V4':  '#E69F00',  # Orange
@@ -42,9 +42,9 @@ def run(args: argparse.Namespace) -> int:
     import matplotlib.pyplot as plt
     from matplotlib.ticker import MultipleLocator
 
-    # Single source of truth: figure_config.PAPER_RC
-    sys.path.insert(0, str(REPO / 'models' / 'scripts'))
-    from figure_config import setup_paper_style  # noqa: E402
+    # Single source of truth: figures/_config.PAPER_RC
+    sys.path.insert(0, str(REPO / 'models' / 'scripts' / 'figures'))
+    from _config import setup_paper_style  # noqa: E402
     setup_paper_style()
     plt.rcParams.update({'axes.edgecolor': '#333333', 'axes.linewidth': 0.8})
 

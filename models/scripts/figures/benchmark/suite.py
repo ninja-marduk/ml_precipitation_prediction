@@ -12,8 +12,10 @@ Output: models/output/final_figures/
 import sys
 from pathlib import Path
 
-# Ensure scripts directory is on path for imports
-sys.path.insert(0, str(Path(__file__).parent))
+# Bootstrap _config from figures/
+FIGURES_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = FIGURES_ROOT.parents[2]
+sys.path.insert(0, str(FIGURES_ROOT))
 
 import numpy as np
 import pandas as pd
@@ -21,10 +23,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import json
 
-from figure_config import COLORS, setup_style, add_panel_label, OUTPUT_DPI
+from _config import COLORS, setup_style, add_panel_label, OUTPUT_DPI  # noqa: E402
 
 # Configuration
-OUTPUT_DIR = Path("models/output/final_figures")
+OUTPUT_DIR = PROJECT_ROOT / "models" / "output" / "final_figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Apply Q1 style
@@ -54,7 +56,7 @@ def figure_1_v1_v10_r2_evolution():
 
     architectures = ['Baseline', 'Enh.\nConvLSTM', 'FNO-\nHybrid', 'GNN-\nTAT',
                      'Stacking\nEns.', 'Stratified\nEns.', 'GNN-\nBiMamba', 'Late\nFusion']
-    r2_values = [0.58, 0.628, 0.312, 0.628, 0.212, 0.597, 0.200, 0.668]
+    r2_values = [0.58, 0.629, 0.582, 0.628, 0.212, 0.597, 0.200, 0.672]
     status = ['baseline', 'baseline', 'failed', 'success', 'failed', 'no_improve', 'failed', 'best']
 
     color_map = {
@@ -77,8 +79,8 @@ def figure_1_v1_v10_r2_evolution():
 
     ax.axhline(y=0.628, color=COLORS['v2'], linestyle='--', alpha=0.7,
                linewidth=1, label='ConvLSTM baseline (0.628)')
-    ax.axhline(y=0.668, color=COLORS['v10'], linestyle='--', alpha=0.7,
-               linewidth=1, label='Late Fusion best (0.668)')
+    ax.axhline(y=0.672, color=COLORS['v10'], linestyle='--', alpha=0.7,
+               linewidth=1, label='Late Fusion best (0.672)')
 
     ax.set_xlabel('Architecture')
     ax.set_ylabel('R² score')
@@ -242,7 +244,7 @@ def figure_4_master_comparison():
     data = {
         'Version': ['Baseline', 'Enh. ConvLSTM', 'FNO-Hybrid', 'GNN-TAT',
                      'Stacking Ens.', 'Stratified Ens.', 'GNN-BiMamba', 'Late Fusion'],
-        'R2': [0.58, 0.628, 0.312, 0.628, 0.212, 0.597, 0.200, 0.668],
+        'R2': [0.58, 0.629, 0.582, 0.628, 0.212, 0.597, 0.200, 0.672],
         'RMSE': [85.0, 81.05, 110.0, 82.29, 117.93, 84.1, 111.18, 76.67],
         'Status': ['baseline', 'v2', 'v3', 'v4', 'v5', 'baseline', 'v9', 'v10']
     }
@@ -256,7 +258,7 @@ def figure_4_master_comparison():
     add_panel_label(ax1, 'a')
     bars1 = ax1.barh(df['Version'], df['R2'], color=colors)
     ax1.axvline(x=0.628, color=COLORS['v2'], linestyle='--', alpha=0.6, linewidth=1)
-    ax1.axvline(x=0.668, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
+    ax1.axvline(x=0.672, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
     ax1.set_xlabel('R² score')
     ax1.set_xlim(0, 0.8)
 
@@ -320,8 +322,8 @@ def figure_5_v9_failure_analysis():
     # (b) Comparison of failures
     ax2 = axes[1]
     add_panel_label(ax2, 'b')
-    failures = ['FNO-Hybrid', 'Stacking Ens.', 'GNN-BiMamba']
-    failure_r2 = [0.312, 0.212, 0.200]
+    failures = ['FNO (pure)', 'Stacking Ens.', 'GNN-BiMamba']
+    failure_r2 = [0.206, 0.212, 0.200]
     failure_colors = [COLORS['v3'], COLORS['v5'], COLORS['v9']]
 
     bars = ax2.bar(failures, failure_r2, color=failure_colors, width=0.5)
@@ -351,7 +353,7 @@ def figure_6_v10_improvement():
     fig, ax = plt.subplots(figsize=(10, 5))
 
     methods = ['ConvLSTM', 'GNN-TAT', 'Simple Avg', 'Weighted Avg', 'Late Fusion\n(Ridge)']
-    r2_vals = [0.629, 0.597, 0.633, 0.636, 0.668]
+    r2_vals = [0.629, 0.597, 0.633, 0.636, 0.672]
     bar_colors = [COLORS['v2'], COLORS['v4'], COLORS['baseline'],
                   COLORS['baseline'], COLORS['v10']]
 
