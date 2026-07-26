@@ -1,0 +1,59 @@
+{
+  "seed": 123,
+  "version": "V10_Late_Fusion",
+  "timestamp": "2026-04-23T11:11:00.702067",
+  "config": {
+    "ridge_alpha": 1.0,
+    "n_folds": 5,
+    "seed": 123,
+    "feature_set": "BASIC",
+    "v2_variant": "ConvLSTM_Bidirectional"
+  },
+  "baselines": {
+    "v2_convlstm_bidirectional": {
+      "R2": 0.498690128326416,
+      "RMSE": 94.17944868540854,
+      "MAE": 66.9648208618164,
+      "Bias": -40.18129348754883
+    },
+    "v4_gnn_tat": {
+      "R2": 0.464227557182312,
+      "RMSE": 97.36283420471592,
+      "MAE": 70.06436920166016,
+      "Bias": -48.78395462036133
+    }
+  },
+  "results": {
+    "simple_average": {
+      "R2": 0.5004988312721252,
+      "RMSE": 94.00940154114906,
+      "MAE": 66.91387176513672,
+      "Bias": -44.482627868652344
+    },
+    "weighted_average": {
+      "R2": 0.5043543577194214,
+      "RMSE": 93.64587968111572,
+      "MAE": 66.52738952636719,
+      "Bias": -42.331966400146484,
+      "w_v2": 0.7500000000000002,
+      "w_v4": 0.24999999999999978
+    },
+    "ridge_oof": {
+      "R2": 0.6564203500747681,
+      "RMSE": 77.96806111920124,
+      "MAE": 57.85813903808594,
+      "Bias": 0.008084798231720924,
+      "w_v2": 0.6013515591621399,
+      "w_v4": 0.747057318687439,
+      "bias": -7.6895599365234375
+    }
+  },
+  "learned_weights": {
+    "w_v2": 0.6013515591621399,
+    "w_v4": 0.747057318687439,
+    "bias": -7.6895599365234375
+  },
+  "improvement_over_baseline": "+31.63%",
+  "regenerated_by": "scripts/regenerate_multiseed_horizon.py --phase v10-fusion (path C)",
+  "regenerated_note": "V2 variant switched to ConvLSTM_Bidirectional to match paper naming"
+}
