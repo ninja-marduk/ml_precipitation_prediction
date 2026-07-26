@@ -1,0 +1,67 @@
+{
+  "title": "ML Precipitation Prediction Framework",
+  "description": "<p>Open-source framework for monthly precipitation prediction in mountainous areas using hybrid deep learning. The framework provides reference implementations for eight model families and a uniform training, evaluation, and benchmarking pipeline:</p><ul><li><strong>ConvLSTM family</strong> &mdash; baseline, bidirectional, residual, and attention variants</li><li><strong>Fourier Neural Operators</strong> &mdash; pure FNO and FNO-ConvLSTM hybrid decoder</li><li><strong>Graph Neural Networks with Temporal Attention (GNN-TAT)</strong> &mdash; GCN, GAT, and GraphSAGE encoders combined with multi-head temporal attention</li><li><strong>Late Fusion meta-learner</strong> &mdash; Ridge regression combining ConvLSTM and GNN-TAT predictions</li></ul><p>The framework was developed and validated on the Boyac&aacute; (Colombian Andes) CHIRPS-SRTM dataset (61&times;65 grid, 518 monthly steps, 1981&ndash;2024), with multi-seed validation across seeds {42, 123, 456} and lead times H=1..12. The Late Fusion ensemble attains R&sup2;=0.655&plusmn;0.018 across seeds; a per-cell monthly climatology (R&sup2;=0.73) is reported as an explicit predictability ceiling.</p><p><strong>Verified reference environment.</strong> Python 3.12.5, PyTorch 2.6.0+cu124, PyTorch Geometric 2.7.0, NVIDIA CUDA 12.4. The <code>requirements-lock.txt</code> file pins every transitive dependency for byte-level reproducibility.</p><p><strong>v1.0.1 scope.</strong> Documentation and citation-metadata release synchronized with the archived DOI: full author list, published-companion references, and the benchmark artifact accompanying the manuscript under submission to Earth Science Informatics. Establishes the eight-family benchmark, the BASIC/KCE/PAFC feature taxonomy, the multi-seed multi-horizon evaluation protocol, and the Late Fusion ensemble interface.</p>",
+  "creators": [
+    {
+      "name": "Pérez Reyes, Manuel Ricardo",
+      "affiliation": "Pedagogical and Technological University of Colombia (UPTC)",
+      "orcid": "0009-0003-2963-1631"
+    },
+    {
+      "name": "Suárez Barón, Marco Javier",
+      "affiliation": "Pedagogical and Technological University of Colombia (UPTC)",
+      "orcid": "0000-0003-1656-4452"
+    },
+    {
+      "name": "García Cabrejo, Óscar Javier",
+      "affiliation": "Pedagogical and Technological University of Colombia (UPTC)",
+      "orcid": "0000-0002-7396-8915"
+    },
+    {
+      "name": "Castillo-Reyes, Octavio",
+      "affiliation": "Universitat Politècnica de Catalunya (UPC) and Barcelona Supercomputing Center (BSC)",
+      "orcid": "0000-0003-4271-5015"
+    }
+  ],
+  "keywords": [
+    "precipitation prediction",
+    "graph neural networks",
+    "temporal attention",
+    "ConvLSTM",
+    "deep learning",
+    "spatiotemporal forecasting",
+    "hybrid models",
+    "ensemble learning",
+    "late fusion",
+    "Ridge regression",
+    "mountainous hydrology",
+    "tropical Andes",
+    "CHIRPS",
+    "SRTM",
+    "machine learning for Earth sciences",
+    "reproducibility",
+    "open source"
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "language": "eng",
+  "communities": [
+    {"identifier": "earth-and-environmental-sciences"}
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.3390/hydrology13030098",
+      "relation": "isReferencedBy",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.1016/j.hydrch.2026.100008",
+      "relation": "isReferencedBy",
+      "resource_type": "publication-article",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "Development partially supported by Becas de Excelencia Doctoral del Bicentenario (MinCiencias Colombia, BPIN 2021000100031, Plan Bienal FCTeI - Sistema General de Regalias), Universidad Pedagogica y Tecnologica de Colombia, grant 2021-SGR-00478 (Generalitat de Catalunya, AGAUR), and in-kind compute on the Barcelona Supercomputing Center MareNostrum 5 supercomputer."
+}

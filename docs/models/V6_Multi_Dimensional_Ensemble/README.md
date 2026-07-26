@@ -317,10 +317,10 @@ Located in `models/output/V6_Multi_Dimensional_Ensemble/visualizations/`:
 
 ### For Publications
 
-#### Paper 4: V2 vs V3 Benchmark
-- **Status:** Ready for submission
-- **Model:** V2 Enhanced ConvLSTM vs V3 FNO-ConvLSTM
-- **Expected journal:** Q1 (GRL, WRR)
+#### Paper 4: Hybrid Architecture Benchmark
+- **Status:** Published (Hydrology 2026, 13(3), 98; doi:10.3390/hydrology13030098)
+- **Model:** ConvLSTM vs FNO-ConvLSTM vs GNN-TAT
+- **Journal:** Hydrology (MDPI)
 
 #### V6 Ensemble Analysis
 - **Status:** Not recommended for standalone paper

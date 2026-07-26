@@ -4,6 +4,8 @@
 
 **A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21576208.svg)](https://doi.org/10.5281/zenodo.21576208)
+
 ---
 
 ## Project Overview
@@ -16,9 +18,9 @@ This work is organized into three complementary studies, each addressing a diffe
 
 | Study | Focus | Journal | Status |
 |-------|-------|---------|--------|
-| **Systematic Review** (Paper 1) | Survey of hybrid DL models for precipitation prediction | Hydrology Research (IWA) | R3 being processed |
-| **Hybrid Architecture Benchmark** (Paper 4) | ConvLSTM vs FNO vs GNN-TAT comparison | Hydrology (MDPI) | Accepted |
-| **Sub-grid Feature Engineering** (Paper 5) | Intra-cell DEM topographic heterogeneity | Hydrology (MDPI) | In preparation |
+| **Systematic Review** (Paper 1) | Survey of hybrid DL models for precipitation prediction | Hydrology Research (Elsevier) | **Published 2026** ([doi:10.1016/j.hydrch.2026.100008](https://doi.org/10.1016/j.hydrch.2026.100008)) |
+| **Hybrid Architecture Benchmark** (Paper 4) | ConvLSTM vs FNO vs GNN-TAT comparison | Hydrology (MDPI), 13(3), 98 | **Published 2026-03-18** ([doi:10.3390/hydrology13030098](https://doi.org/10.3390/hydrology13030098)) |
+| **Hybrid Architectures and Fusion** (Paper 5) | Late Fusion via Ridge + predictability-ceiling benchmark | Earth Science Informatics (Springer) | Under submission (2026) |
 
 Throughout this documentation, papers are referenced by their descriptive name or by number (e.g., "Paper 4") following this convention.
 
@@ -26,17 +28,17 @@ Throughout this documentation, papers are referenced by their descriptive name o
 
 | Metric | V2 ConvLSTM | V4 GNN-TAT | V5 Stacking | V9 BiMamba | **V10 Late Fusion** |
 |--------|-------------|------------|-------------|------------|---------------------|
-| **R²** | 0.628 | 0.597 | 0.212 | 0.200 | **0.668** ✅ |
-| **RMSE (mm)** | 81.05 | 84.40 | 117.93 | 111.18 | **76.67** ✅ |
-| **MAE (mm)** | 58.91 | 59.74 | 92.41 | 87.33 | **56.12** ✅ |
-| **Bias (mm)** | -10.50 | -28.79 | -- | 8.23 | **-0.002** |
+| **R²** | 0.628 | 0.597 | 0.212 | 0.200 | **0.672** ✅ |
+| **RMSE (mm)** | 81.05 | 84.40 | 117.93 | 111.18 | **76.23** ✅ |
+| **MAE (mm)** | 58.91 | 59.74 | 92.41 | 87.33 | **55.92** ✅ |
+| **Bias (mm)** | -10.50 | -28.79 | -- | 8.23 | **-0.004** |
 | **Status** | Baseline | Efficient | ❌ Failed | ❌ Failed | **Best** ✅ |
 
-**V10 Late Fusion Success:** V10 combines V2 and V4 predictions through Ridge regression, achieving +6.2% improvement over the best baseline. Learned weights: w_V2=0.446, w_V4=0.710, bias=-5.53mm. Both models contribute complementary information.
+**V10 Late Fusion Success:** V10 combines V2 (ConvLSTM-Bidirectional) and V4 (GNN-TAT-GAT) predictions through Ridge regression, achieving +6.2% improvement over the best baseline. Canonical seed-42 learned weights: w_C=0.509, w_G=0.652, bias=-6.37mm (regenerated 2026-04-23). Multi-seed mean across {42, 123, 456}: R²=0.655 ± 0.018. Both models contribute complementary information.
 
 **Key Insight:** Late fusion (V10) succeeds where early fusion (V5) failed. When combining heterogeneous architectures, fuse predictions rather than intermediate features.
 
-**Recommendation for Thesis:** Use **V10 Late Fusion Ridge Ensemble** as final best model (R²=0.668).
+**Recommendation for Thesis:** Use **V10 Late Fusion Ridge Ensemble** as final best model (R²=0.655 ± 0.018 across three seeds; 0.672 for the seed-42 single split).
 
 ### Value Proposition
 
@@ -116,7 +118,7 @@ V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 strat
 | V7 | AMES (Multi-Expert System) | MoE + Physics-guided | In Development | TBD | Research |
 | V8 | GNN-Mamba | State Space Models | In Development | TBD | Research |
 | V9 | GNN-BiMamba | Bidirectional Mamba | Complete | 0.200 | ❌ Failed - SSM |
-| **V10** | **Late Fusion Ridge Ensemble** | **Prediction-level fusion** | **Complete** | **0.668** | **✅ BEST MODEL** |
+| **V10** | **Late Fusion Ridge Ensemble** | **Prediction-level fusion** | **Complete** | **0.672** | **✅ BEST MODEL** |
 
 **Note on V6:** V6 tested 8 ensemble strategies across 4 stratification dimensions (elevation, magnitude, season, horizon). *Results on validation set show V4 (R²=0.597) superior to V2 (R²=0.175). All ensemble strategies either equal or worsen V4's performance because V4 dominates across all tested dimensions. **Finding:** Ensemble stratification cannot improve when one model is universally superior. See [V6 Multi-Dimensional Ensemble README](docs/models/V6_Multi_Dimensional_Ensemble/README.md) for complete analysis.
 
@@ -130,11 +132,12 @@ V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 strat
 - Mamba's selective state space mechanism unsuited for chaotic, threshold-driven precipitation dynamics
 
 **V10: Late Fusion Ridge Ensemble (SUCCESS - BEST MODEL)**
-- Combines V2 ConvLSTM and V4 GNN-TAT predictions through Ridge regression
-- **Result:** R²=0.668, RMSE=76.67mm, MAE=56.12mm
+- Combines V2 ConvLSTM-Bidirectional and V4 GNN-TAT-GAT predictions through Ridge regression
+- **Result:** R²=0.672 (seed-42), RMSE=76.23mm, MAE=55.92mm
+- **Multi-seed:** R²=0.655 ± 0.018 across seeds {42, 123, 456}
 - **Improvement:** +6.2% over best baseline (V2)
-- Learned weights: w_V2=0.446, w_V4=0.710, bias=-5.53mm
-- Near-zero bias (-0.002mm) demonstrates effective bias correction
+- Canonical seed-42 weights: w_C=0.509, w_G=0.652, bias=-6.37mm
+- Near-zero residual bias (-0.004mm) demonstrates effective bias correction
 - **Key finding:** Late fusion preserves component strengths that early fusion (V5) destroyed
 
 ### V7-V8: In Development
@@ -142,7 +145,7 @@ V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 strat
 **V7: AMES (Adaptive Multi-Expert Ensemble System)**
 - Mixture of Experts with physics-guided routing
 - Expert specialization by elevation zones
-- Target: Must exceed V10's R²=0.668 to justify complexity
+- Target: Must exceed V10's R²=0.672 to justify complexity
 
 **V8: GNN-Mamba**
 - Unidirectional Mamba State Space Models
@@ -210,7 +213,7 @@ More features = worse R² (monotonic degradation). GNN-TAT is 2x more resilient 
 
 - **CHIRPS 2.0**: Climate Hazards InfraRed Precipitation with Stations (0.05° resolution)
 - **SRTM DEM**: Shuttle Radar Topography Mission elevation data (90m)
-- **ERA5**: ECMWF Reanalysis v5 (planned for V5)
+- **ERA5**: ECMWF Reanalysis v5 (planned for future work / Mixture of Experts)
 
 ### Study Area
 - **Region**: Boyaca, Colombian Andes
@@ -353,13 +356,15 @@ If you use this code, dataset, or methodology in your research, please cite:
 
 ```bibtex
 @software{Perez2026MLPrecipitation,
-  author       = {Perez Reyes, Manuel Ricardo},
+  author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
+                  and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
   title        = {{ML Precipitation Prediction: Hybrid Deep Learning
                    for Spatiotemporal Forecasting in Mountainous Areas}},
   year         = {2026},
-  publisher    = {GitHub},
-  url          = {https://github.com/ninja-marduk/ml_precipitation_prediction},
-  note         = {Doctoral Thesis Project - UPTC}
+  version      = {v1.0.1},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.21576208},
+  url          = {https://doi.org/10.5281/zenodo.21576208}
 }
 ```
 
@@ -379,14 +384,15 @@ If you use this code, dataset, or methodology in your research, please cite:
 ### Systematic Review - Paper 1 (BibTeX)
 
 ```bibtex
-@article{PerezReyes2025Review,
+@article{PerezReyes2026Review,
   author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
                   and Garc\'ia Cabrejo, \'Oscar Javier},
   title        = {{Hybrid Deep Learning Models for Monthly Precipitation
                    Prediction: A Systematic Review}},
   journal      = {Hydrology Research},
-  year         = {2025},
-  note         = {R3 being processed (co-author verified 2026-03-06)}
+  year         = {2026},
+  publisher    = {Elsevier},
+  doi          = {10.1016/j.hydrch.2026.100008}
 }
 ```
 
@@ -400,23 +406,28 @@ If you use this code, dataset, or methodology in your research, please cite:
                    Prediction in Complex Mountainous Terrain: Systematic Evaluation
                    of Hybrid Architectures}},
   journal      = {Hydrology},
+  volume       = {13},
+  number       = {3},
+  pages        = {98},
   year         = {2026},
-  note         = {Accepted at MDPI Hydrology (hydrology-4131162)}
+  publisher    = {MDPI},
+  doi          = {10.3390/hydrology13030098},
+  url          = {https://www.mdpi.com/2306-5338/13/3/98}
 }
 ```
 
-### Sub-grid Feature Engineering - Paper 5 (BibTeX)
+### Hybrid Architectures and Fusion - Paper 5 (BibTeX)
 
 ```bibtex
-@article{PerezReyes2026Ensemble,
+@article{PerezReyes2026Fusion,
   author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
-                  and Garc\'ia Cabrejo, \'Oscar Javier},
-  title        = {{A Data-Driven Deep Learning Framework for Monthly Precipitation
-                   Prediction in Complex Mountainous Terrain: Systematic Evaluation
-                   of Hybrid Architectures, Ensemble Strategies, and Emerging Paradigms}},
-  journal      = {Hydrology},
+                  and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
+  title        = {{Hybrid Deep Learning for Monthly Precipitation over the
+                   Colombian Andes: A Predictability-Ceiling Benchmark}},
+  journal      = {Earth Science Informatics},
   year         = {2026},
-  note         = {Ready for submission to MDPI Hydrology}
+  publisher    = {Springer},
+  note         = {Under submission}
 }
 ```
 
@@ -442,7 +453,7 @@ For academic publications using this work:
 2. Cite the relevant paper(s) for the methodology you use:
    - **Systematic review of hybrid models** → cite the Systematic Review (Paper 1)
    - **ConvLSTM, GNN-TAT, FNO architectures** → cite the Hybrid Architecture Benchmark (Paper 4)
-   - **Ensemble strategies, late fusion, SSM results** → cite the Sub-grid Feature Engineering study (Paper 5)
+   - **Late Fusion, Stacking failure, ensemble strategies, SSM results, sub-cell DEM** → cite the Hybrid Architectures and Fusion paper (Paper 5)
 3. Cite the dataset if you use Boyaca data (required)
 4. Cite the doctoral thesis once published (recommended)
 
@@ -479,5 +490,5 @@ This research is supported by:
 
 ---
 
-*Last Updated: March 2026*
-*Project Status: V10 Late Fusion (R2=0.668) is the best model. Systematic Review R3 being processed (IWA), Hybrid Architecture Benchmark accepted (MDPI Hydrology), Sub-grid Feature Engineering study in preparation.*
+*Last Updated: 2026-05-07*
+*Project Status: V10 Late Fusion (R2=0.655 +/- 0.018 multi-seed; 0.672 seed-42) is the best model. Systematic Review published (Hydrology Research, doi:10.1016/j.hydrch.2026.100008), Hybrid Architecture Benchmark published (Hydrology 2026, 13(3), 98, doi:10.3390/hydrology13030098), Hybrid Architectures and Fusion under submission (Earth Science Informatics). Software archived at doi:10.5281/zenodo.21576208.*

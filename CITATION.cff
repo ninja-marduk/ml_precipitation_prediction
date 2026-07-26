@@ -1,26 +1,43 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+message: "If you use this software, please cite it using the metadata below."
 type: software
 title: "ML Precipitation Prediction: Hybrid Deep Learning for Spatiotemporal Forecasting in Mountainous Areas"
-version: 5.1.0-paper5-submission
-date-released: 2026-05-04
+version: 1.0.1
+date-released: 2026-07-25
+doi: 10.5281/zenodo.21576208
 authors:
   - family-names: "Perez Reyes"
     given-names: "Manuel Ricardo"
     orcid: "https://orcid.org/0009-0003-2963-1631"
     affiliation: "Pedagogical and Technological University of Colombia (UPTC)"
     email: "manuelricardo.perez@uptc.edu.co"
+  - family-names: "Suarez Baron"
+    given-names: "Marco Javier"
+    orcid: "https://orcid.org/0000-0003-1656-4452"
+    affiliation: "Pedagogical and Technological University of Colombia (UPTC)"
+  - family-names: "Garcia Cabrejo"
+    given-names: "Oscar Javier"
+    orcid: "https://orcid.org/0000-0002-7396-8915"
+    affiliation: "Pedagogical and Technological University of Colombia (UPTC)"
+  - family-names: "Castillo-Reyes"
+    given-names: "Octavio"
+    orcid: "https://orcid.org/0000-0003-4271-5015"
+    affiliation: "Universitat Politecnica de Catalunya (UPC) and Barcelona Supercomputing Center (BSC)"
 repository-code: "https://github.com/ninja-marduk/ml_precipitation_prediction"
-url: "https://github.com/ninja-marduk/ml_precipitation_prediction"
+url: "https://doi.org/10.5281/zenodo.21576208"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21576208
+    description: "Concept DOI (always resolves to the latest release)"
 abstract: >
   A hybrid deep learning framework for monthly precipitation prediction in mountainous
-  areas of Boyacá, Colombia. Combines Graph Neural Networks (GNN) with temporal attention
-  mechanisms and ConvLSTM architectures for accurate spatiotemporal forecasting. This
-  implementation includes baseline ConvLSTM (with bidirectional, residual, and
-  attention variants), Fourier Neural Operators (FNO and FNO-ConvLSTM hybrids),
-  Graph Neural Networks with Temporal Attention (GNN-TAT, with GCN/GAT/GraphSAGE
-  encoders), and a Late Fusion Ridge ensemble that combines ConvLSTM and GNN-TAT
-  predictions for improved accuracy.
+  areas of Boyaca, Colombia. Provides reference implementations of eight model families
+  and a uniform training, evaluation, and benchmarking pipeline: baseline ConvLSTM (with
+  bidirectional, residual, and attention variants), Fourier Neural Operators (FNO and
+  FNO-ConvLSTM hybrids), Graph Neural Networks with Temporal Attention (GNN-TAT, with
+  GCN/GAT/GraphSAGE encoders), state-space (Mamba) variants, and a Late Fusion Ridge
+  ensemble. Validated on the CHIRPS-SRTM dataset (61x65 grid, 518 monthly steps,
+  1981-2024) with multi-seed evaluation across seeds {42, 123, 456} and lead times 1-12.
 keywords:
   - precipitation prediction
   - graph neural networks
@@ -28,29 +45,39 @@ keywords:
   - spatiotemporal forecasting
   - ConvLSTM
   - temporal attention
-  - hybrid models
-  - mountainous areas
+  - late fusion
+  - ensemble learning
+  - benchmarking
+  - reproducibility
+  - tropical Andes
+  - CHIRPS
   - hydrology
-  - climate modeling
 license: MIT
-preferred-citation:
-  type: thesis
-  title: "Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas: A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention"
-  authors:
-    - family-names: "Perez Reyes"
-      given-names: "Manuel Ricardo"
-      orcid: "https://orcid.org/0009-0003-2963-1631"
-  institution:
-    name: "Pedagogical and Technological University of Colombia (UPTC)"
-  thesis-type: "PhD thesis"
-  year: 2026
-  department: "Doctoral Program in Engineering"
 references:
-  - type: dataset
-    title: "Boyacá Precipitation Dataset (CHIRPS + SRTM)"
+  - type: article
+    title: "Hybrid Deep Learning Models for Monthly Precipitation Prediction: A Systematic Review"
     authors:
       - family-names: "Perez Reyes"
         given-names: "Manuel Ricardo"
+      - family-names: "Suarez Baron"
+        given-names: "Marco Javier"
+      - family-names: "Garcia Cabrejo"
+        given-names: "Oscar Javier"
+    journal: "Hydrology Research"
     year: 2026
-    url: "https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view"
-    description: "61×65 grid, 518 monthly steps, Colombian Andes precipitation and topography data"
+    doi: "10.1016/j.hydrch.2026.100008"
+  - type: article
+    title: "A Data-Driven Deep Learning Framework for Monthly Precipitation Prediction in Complex Mountainous Terrain: Systematic Evaluation of Hybrid Architectures"
+    authors:
+      - family-names: "Perez Reyes"
+        given-names: "Manuel Ricardo"
+      - family-names: "Suarez Baron"
+        given-names: "Marco Javier"
+      - family-names: "Garcia Cabrejo"
+        given-names: "Oscar Javier"
+    journal: "Hydrology"
+    volume: 13
+    issue: 3
+    start: 98
+    year: 2026
+    doi: "10.3390/hydrology13030098"
