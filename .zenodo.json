@@ -1,6 +1,6 @@
 {
-  "title": "ML Precipitation Prediction Framework",
-  "description": "<p>Open-source framework for monthly precipitation prediction in mountainous areas using hybrid deep learning. The framework provides reference implementations for eight model families and a uniform training, evaluation, and benchmarking pipeline:</p><ul><li><strong>ConvLSTM family</strong> &mdash; baseline, bidirectional, residual, and attention variants</li><li><strong>Fourier Neural Operators</strong> &mdash; pure FNO and FNO-ConvLSTM hybrid decoder</li><li><strong>Graph Neural Networks with Temporal Attention (GNN-TAT)</strong> &mdash; GCN, GAT, and GraphSAGE encoders combined with multi-head temporal attention</li><li><strong>Late Fusion meta-learner</strong> &mdash; Ridge regression combining ConvLSTM and GNN-TAT predictions</li></ul><p>The framework was developed and validated on the Boyac&aacute; (Colombian Andes) CHIRPS-SRTM dataset (61&times;65 grid, 518 monthly steps, 1981&ndash;2024), with multi-seed validation across seeds {42, 123, 456} and lead times H=1..12. The Late Fusion ensemble attains R&sup2;=0.655&plusmn;0.018 across seeds; a per-cell monthly climatology (R&sup2;=0.73) is reported as an explicit predictability ceiling.</p><p><strong>Verified reference environment.</strong> Python 3.12.5, PyTorch 2.6.0+cu124, PyTorch Geometric 2.7.0, NVIDIA CUDA 12.4. The <code>requirements-lock.txt</code> file pins every transitive dependency for byte-level reproducibility.</p><p><strong>v1.0.1 scope.</strong> Documentation and citation-metadata release synchronized with the archived DOI: full author list, published-companion references, and the benchmark artifact accompanying the manuscript under submission to Earth Science Informatics. Establishes the eight-family benchmark, the BASIC/KCE/PAFC feature taxonomy, the multi-seed multi-horizon evaluation protocol, and the Late Fusion ensemble interface.</p>",
+  "title": "ML Precipitation Prediction Framework and CeilBench v1.0 evaluation protocol",
+  "description": "<p>Open-source framework and evaluation protocol for monthly precipitation\nprediction in mountainous areas using hybrid deep learning. The archive contains the\nmodel implementations, the analysis scripts that produce every number and figure in the\naccompanying manuscript, and the per-seed metric files needed to recompute them.</p>\n\n<p><strong>Model families.</strong> ConvLSTM (baseline, bidirectional, residual and\nattention variants); Fourier Neural Operators (pure FNO and an FNO-ConvLSTM hybrid\ndecoder); Graph Neural Networks with Temporal Attention (GNN-TAT) with GCN, GAT and\nGraphSAGE encoders; a state-space (Mamba) variant; and a Late Fusion Ridge\nmeta-learner over ConvLSTM and GNN-TAT predictions.</p>\n\n<p><strong>Evaluation protocol (CeilBench v1.0).</strong> Five components, each with a\nreleased implementation: anchoring every architecture to zero-cost references\n(persistence, seasonal-naive, per-cell monthly climatology) scored on identical\ntargets; a multi-seed feature-by-architecture factorial that separates architectural\neffect from initialisation variance; a decomposition of apparent ensemble gain into\ncalibration and combination terms; a deseasonalised anomaly test; and spatially\nexplicit diagnostics of the learned spatial prior.</p>\n\n<p><strong>Study area and results.</strong> Boyac&aacute;, Colombian Andes, on the\nCHIRPS-SRTM dataset (61&times;65 grid, 3,965 cells, 518 monthly steps, 1981&ndash;2024),\nseeds {42, 123, 456}, lead times H=1..12. The Late Fusion ensemble attains\nR&sup2;=0.655&plusmn;0.018 across seeds. A per-cell monthly climatology attains\nR&sup2;=0.73 and is exceeded by no architecture, and the same anchoring step applied to\neight further precipitation regimes returns a climatology ceiling between 0.548 and\n0.899, so the ceiling is a property of the problem rather than of this region.</p>\n\n<p><strong>What is new in v1.2.0.</strong> The graph construction was corrected: inter-cell\ncorrelations are now estimated on the training period only, removing a target leakage,\nand the edge budget is an explicit hyperparameter rather than a constant behind a\ntrigger. The training loop was instrumented, so compute cost is measured and recorded in\nthe run metadata rather than estimated. New analysis scripts quantify the leakage\n(&minus;0.002 in R&sup2;, measured by a paired three-seed ablation), characterise the\ngraph the model actually receives, rebuild the benchmark from per-seed files instead of\nbest-seed values, and apply the anchoring step to eight regimes of global CHIRPS. A CPU\nsmoke test extracts the training loop from the notebook and exercises it without a\nGPU.</p>\n\n<p><strong>Reference environment.</strong> Python 3.12.5, PyTorch 2.6.0+cu124, PyTorch\nGeometric 2.7.0, CUDA 12.4. <code>requirements-lock.txt</code> pins every transitive\ndependency. Training measured on one NVIDIA A100-SXM4-80GB.</p>\n\n<p><strong>Scope of this release.</strong> Archive accompanying the manuscript under\nsubmission to Geoscientific Model Development. It supersedes the earlier deposits, whose\nGNN-TAT results were produced with the leaked graph and reported as best-seed values;\nsee <code>models/provenance/investigation_headline_r2_2026-08-03.md</code> in\nthe archive for the full account of what changed and why.</p>",
   "creators": [
     {
       "name": "Pérez Reyes, Manuel Ricardo",
@@ -40,14 +40,21 @@
     "SRTM",
     "machine learning for Earth sciences",
     "reproducibility",
-    "open source"
+    "open source",
+    "predictability ceiling",
+    "baseline anchoring",
+    "multi-seed evaluation",
+    "benchmark protocol",
+    "model evaluation"
   ],
   "license": "MIT",
   "upload_type": "software",
   "access_right": "open",
   "language": "eng",
   "communities": [
-    {"identifier": "earth-and-environmental-sciences"}
+    {
+      "identifier": "earth-and-environmental-sciences"
+    }
   ],
   "related_identifiers": [
     {
@@ -63,5 +70,6 @@
       "scheme": "doi"
     }
   ],
-  "notes": "Development partially supported by Becas de Excelencia Doctoral del Bicentenario (MinCiencias Colombia, BPIN 2021000100031, Plan Bienal FCTeI - Sistema General de Regalias), Universidad Pedagogica y Tecnologica de Colombia, grant 2021-SGR-00478 (Generalitat de Catalunya, AGAUR), and in-kind compute on the Barcelona Supercomputing Center MareNostrum 5 supercomputer."
+  "notes": "Development partially supported by Becas de Excelencia Doctoral del Bicentenario (MinCiencias Colombia, BPIN 2021000100031, Plan Bienal FCTeI - Sistema General de Regalias), Universidad Pedagogica y Tecnologica de Colombia, grant 2021-SGR-00478 (Generalitat de Catalunya, AGAUR), and in-kind compute on the Barcelona Supercomputing Center MareNostrum 5 supercomputer.",
+  "version": "1.2.0"
 }
