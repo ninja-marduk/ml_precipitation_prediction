@@ -16,12 +16,24 @@ This supersedes three earlier analyses whose definitions inflated their results:
       marginally; and the procedure must be compared against the same interval built
       on a zero-cost climatology.
 
-Usage: python models/scripts/figures/benchmark/beyond_aggregate_corrected.py
+Usage:
+    python models/scripts/figures/benchmark/beyond_aggregate_corrected.py
+    python models/scripts/figures/benchmark/beyond_aggregate_corrected.py --figure out.png
 """
 from __future__ import annotations
+import argparse
 from pathlib import Path
 import numpy as np
 import xarray as xr
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
+FIG_DPI = 700
+# values are accumulated here as the analysis runs, so the figure and the printed
+# numbers cannot drift apart
+FIG: dict = {"acc": [], "conn": {}, "conf": {}}
 
 ROOT = Path(__file__).resolve().parents[4]
 NC = ROOT / "notebooks" / "data" / "output" / \
@@ -109,6 +121,7 @@ def main():
             pooled = np.corrcoef(fa[m], ft[m])[0, 1]
             print(f"{name:<16}{h+1:>3}{np.nanmean(acc_cell):>10.3f}"
                   f"{100*np.mean(acc_cell > 0):>9.1f}%{np.nanmean(acc_pat):>13.3f}{pooled:>12.3f}")
+            FIG["acc"].append((name, h + 1, float(np.nanmean(acc_cell)), float(pooled)))
 
     # ================= (C) OROGRAPHIC CONNECTIVITY, deseasonalized =================
     print()
@@ -148,6 +161,7 @@ def main():
                              (dist - dist.mean()) / dist.std(),
                              (dele - dele.mean()) / dele.std()])
         beta, *_ = np.linalg.lstsq(A, rho, rcond=None)
+        FIG["conn"][label] = (dist.copy(), dele.copy(), rho.copy())
         pred = A @ beta
         r2reg = 1 - np.sum((rho - pred) ** 2) / np.sum((rho - rho.mean()) ** 2)
         print(f"\n[{label}]")
@@ -189,6 +203,8 @@ def main():
 
     w_lf, c_lf, neg_lf = conformal(plf)
     w_cl, c_cl, _ = conformal(pred_clim)
+    FIG["conf"] = {"w_lf": w_lf, "c_lf": c_lf, "w_cl": w_cl, "c_cl": c_cl,
+                   "level": float(min(lvl, 1.0)), "ncal": int(ncal)}
     print(f"\nLate Fusion : coverage {c_lf.mean():.3f} | mean truncated width {w_lf.mean():.1f} mm"
           f" | width H1->H12 {w_lf[0]:.0f}->{w_lf[-1]:.0f}")
     print(f"Climatology : coverage {c_cl.mean():.3f} | mean truncated width {w_cl.mean():.1f} mm")
@@ -213,5 +229,89 @@ def main():
         print(f"  {nm:<15} n={mask.sum():>5}  coverage={np.mean(cs):.3f}")
 
 
+def draw(path: Path) -> None:
+    """Render the three corrected diagnostics from the values just computed."""
+    fig = plt.figure(figsize=(7.2, 8.4))
+    gs = fig.add_gridspec(3, 2, height_ratios=[1.0, 1.0, 1.0], hspace=0.52, wspace=0.30)
+
+    # ---------------- (a) anomaly correlation, correct against inflated
+    ax = fig.add_subplot(gs[0, :])
+    labels = [f"{n}\nH={h}" for n, h, _, _ in FIG["acc"]]
+    cell = [c for _, _, c, _ in FIG["acc"]]
+    pooled = [p for _, _, _, p in FIG["acc"]]
+    x = np.arange(len(labels))
+    ax.bar(x - 0.2, cell, 0.4, label="per-cell temporal ACC (standard)", color="#0072B2")
+    ax.bar(x + 0.2, pooled, 0.4, label="pooled (inflating definition)", color="#D55E00", alpha=0.85)
+    ax.axhline(0, color="k", lw=0.8)
+    ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=7)
+    ax.set_ylabel("anomaly correlation")
+    ax.set_title("(a) Anomaly skill vanishes under the standard definition", fontsize=9, loc="left")
+    ax.legend(fontsize=7, frameon=False)
+
+    # ---------------- (b) connectivity on deseasonalized series
+    dist, dele, rho = FIG["conn"].get("DESEASONALIZED", (None, None, None))
+    ax = fig.add_subplot(gs[1, 0])
+    if dist is not None:
+        edges = np.linspace(0, dist.max(), 26)
+        mid = 0.5 * (edges[1:] + edges[:-1])
+        prof = [np.nanmean(rho[(dist >= a) & (dist < b)]) for a, b in zip(edges[:-1], edges[1:])]
+        ax.plot(mid, prof, color="#0072B2", lw=1.6)
+        ax.axhline(0, color="k", lw=0.6, ls=":")
+        ax.set_xlabel("separation (km)"); ax.set_ylabel(r"mean $\rho$")
+    ax.set_title("(b) decay with distance", fontsize=9, loc="left")
+
+    ax = fig.add_subplot(gs[1, 1])
+    if dist is not None:
+        band = (dist > 50) & (dist < 100)
+        eedges = np.array([0, 100, 200, 400, 800, 1600, 3200])
+        mids, vals = [], []
+        for a, b in zip(eedges[:-1], eedges[1:]):
+            m = band & (dele >= a) & (dele < b)
+            if m.sum() > 30:
+                mids.append(0.5 * (a + b)); vals.append(np.nanmean(rho[m]))
+        ax.plot(mids, vals, "o-", color="#009E73", lw=1.6, ms=4)
+        ax.set_xscale("log")
+        ax.set_xlabel(r"$|\Delta$elevation$|$ (m)"); ax.set_ylabel(r"mean $\rho$")
+    ax.set_title("(b) at 50-100 km, by terrain contrast", fontsize=9, loc="left")
+
+    # ---------------- (c) conformal
+    c = FIG["conf"]
+    ax = fig.add_subplot(gs[2, 0])
+    if c:
+        h = np.arange(1, len(c["c_lf"]) + 1)
+        ax.plot(h, c["c_lf"], "o-", color="#0072B2", lw=1.5, ms=3.5, label="Late Fusion")
+        ax.plot(h, c["c_cl"], "s--", color="#666666", lw=1.3, ms=3.5, label="climatology")
+        ax.axhline(0.90, color="#D55E00", lw=0.9, ls=":", label="nominal 0.90")
+        ax.set_ylim(0.85, 1.01)
+        ax.set_xlabel("horizon (months)"); ax.set_ylabel("empirical coverage")
+        ax.legend(fontsize=6.5, frameon=False)
+    ax.set_title("(c) coverage saturates near one", fontsize=9, loc="left")
+
+    ax = fig.add_subplot(gs[2, 1])
+    if c:
+        h = np.arange(1, len(c["w_lf"]) + 1)
+        ax.plot(h, c["w_lf"], "o-", color="#0072B2", lw=1.5, ms=3.5, label="Late Fusion")
+        ax.plot(h, c["w_cl"], "s--", color="#666666", lw=1.3, ms=3.5, label="climatology")
+        ax.set_xlabel("horizon (months)"); ax.set_ylabel("truncated width (mm)")
+        ax.legend(fontsize=6.5, frameon=False)
+    ax.set_title("(c) intervals no narrower than free", fontsize=9, loc="left")
+
+    for a in fig.get_axes():
+        a.tick_params(labelsize=7)
+        for s in ("top", "right"):
+            a.spines[s].set_visible(False)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(path, dpi=FIG_DPI, bbox_inches="tight")
+    plt.close(fig)
+    print(f"\nfigure written to {path} at {FIG_DPI} DPI")
+
+
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--figure", type=Path, default=None,
+                    help="also render the three panels to this path")
+    args = ap.parse_args()
     main()
+    if args.figure:
+        draw(args.figure)
