@@ -9,9 +9,18 @@ distinct sources that the headline number conflates:
   (2) COMBINATION. Genuinely exploiting two different architectures, over and above
       what recalibrating the better one achieves.
 
-This script fits every variant with the SAME out-of-fold protocol used for the Ridge
-meta-learner, so the comparison is like-for-like, and reports the incremental value of
-combination against the paper's own inter-seed dispersion.
+Every variant is fitted with out-of-fold least squares whose folds are blocked by
+validation window, so no held-out scalar has a near-duplicate neighbour in training.
+This matters: the released meta-learner (`ridge_fusion_oof` in the V10 notebook)
+flattens windows, horizons and cells into one vector and calls KFold(shuffle=True),
+which leaves each held-out cell surrounded by its own neighbours in the training
+fold. Its reported skill is therefore not out-of-sample, and this script exists to
+replace it.
+
+The design is fully crossed: the same three seeds run every architecture and the
+fusion. Comparisons are consequently PAIRED, and the uncertainty of a difference is
+the standard deviation of the per-seed difference, not the marginal spread of each
+arm. The distinction decides whether the combination term separates from noise.
 
 Usage: python models/scripts/figures/benchmark/fusion_decomposition.py
 """
@@ -21,11 +30,14 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[4]
 OUT = ROOT / "models" / "output"
-V2 = OUT / "V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM_Bidirectional"
-V4 = OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT"
-LF = OUT / "V10_Late_Fusion/SEED42"
+SEEDS = (42, 123, 456)
 N_FOLDS = 5
-SEED = 42
+
+
+def paths(seed):
+    return (OUT / f"V2_Enhanced_Models/SEED{seed}/map_exports/H12/BASIC/ConvLSTM_Bidirectional",
+            OUT / f"V4_GNN_TAT_Models/SEED{seed}/map_exports/H12/BASIC/GNN_TAT_GAT",
+            OUT / f"V10_Late_Fusion/SEED{seed}")
 
 
 def load(d, what="predictions"):
@@ -39,75 +51,116 @@ def r2(pred, tgt):
     return float(1 - np.sum((t - p) ** 2) / np.sum((t - t.mean()) ** 2))
 
 
-def oof_linear(X, y, groups, n_folds=N_FOLDS):
-    """Out-of-fold least-squares with intercept, folds blocked by group (window)."""
+def oof_linear(X, y, groups, seed, n_folds=N_FOLDS):
+    """Out-of-fold least squares with intercept, folds blocked by group (window)."""
     oof = np.full(y.shape, np.nan)
     ug = np.unique(groups)
-    rng = np.random.default_rng(SEED)
-    order = rng.permutation(ug)
-    chunks = np.array_split(order, n_folds)
-    for held in chunks:
+    order = np.random.default_rng(seed).permutation(ug)
+    for held in np.array_split(order, n_folds):
         te = np.isin(groups, held)
         tr = ~te
         A = np.column_stack([X[tr], np.ones(tr.sum())])
         coef, *_ = np.linalg.lstsq(A, y[tr], rcond=None)
         oof[te] = np.column_stack([X[te], np.ones(te.sum())]) @ coef
-    # full-data coefficients for reporting
     A = np.column_stack([X, np.ones(len(y))])
     full, *_ = np.linalg.lstsq(A, y, rcond=None)
     return oof, full
 
 
-def main():
-    tgt = load(LF, "targets")
-    p2, p4, plf = load(V2), load(V4), load(LF)
-    assert p2.shape == p4.shape == tgt.shape, (p2.shape, p4.shape, tgt.shape)
-    S, H = tgt.shape[0], tgt.shape[1]
+def one_seed(seed):
+    d2, d4, dlf = paths(seed)
+    tgt = load(dlf, "targets")
+    p2, p4, plf = load(d2), load(d4), load(dlf)
+    if not (p2.shape == p4.shape == tgt.shape):
+        raise SystemExit(f"seed {seed}: shape mismatch {p2.shape} {p4.shape} {tgt.shape}")
+    S = tgt.shape[0]
 
-    # flatten, keeping window id as the grouping unit for blocked folds
     win = np.broadcast_to(np.arange(S)[:, None, None, None], tgt.shape).ravel()
-    y = tgt.ravel()
-    x2, x4, xlf = p2.ravel(), p4.ravel(), plf.ravel()
+    y, x2, x4, xlf = tgt.ravel(), p2.ravel(), p4.ravel(), plf.ravel()
     m = np.isfinite(y) & np.isfinite(x2) & np.isfinite(x4)
     y, x2, x4, xlf, win = y[m], x2[m], x4[m], xlf[m], win[m]
 
-    print(f"evaluated scalars: {y.size:,}  windows: {S}  horizons: {H}")
-    print(f"target mean {y.mean():.1f} mm, sd {y.std():.1f} mm\n")
+    oof2, c2 = oof_linear(x2[:, None], y, win, seed)
+    oof4, c4 = oof_linear(x4[:, None], y, win, seed)
+    oofR, cR = oof_linear(np.column_stack([x2, x4]), y, win, seed)
 
-    rows = []
-    rows.append(("ConvLSTM-Bidir (raw)", r2(x2, y), ""))
-    rows.append(("GNN-TAT-GAT (raw)", r2(x4, y), ""))
-    rows.append(("Simple average (50/50)", r2((x2 + x4) / 2, y), "combination only, no calibration"))
+    return {
+        "seed": seed, "n": y.size, "windows": S,
+        "conv_raw": r2(x2, y), "gnn_raw": r2(x4, y),
+        "average": r2((x2 + x4) / 2, y),
+        "conv_recal": r2(oof2, y), "gnn_recal": r2(oof4, y),
+        "ridge": r2(oofR, y), "published": r2(xlf, y),
+        "coef": (cR[0], cR[1], cR[2]),
+    }
 
-    oof2, c2 = oof_linear(x2[:, None], y, win)
-    rows.append(("ConvLSTM + affine recal.", r2(oof2, y), f"a={c2[0]:.3f}, b={c2[1]:+.1f} mm"))
-    oof4, c4 = oof_linear(x4[:, None], y, win)
-    rows.append(("GNN-TAT + affine recal.", r2(oof4, y), f"a={c4[0]:.3f}, b={c4[1]:+.1f} mm"))
 
-    oofR, cR = oof_linear(np.column_stack([x2, x4]), y, win)
-    rows.append(("Ridge over both (refit)", r2(oofR, y),
-                 f"w2={cR[0]:.3f}, w4={cR[1]:.3f}, b={cR[2]:+.1f} mm"))
-    rows.append(("Late Fusion (as published)", r2(xlf, y), "seed-42 released predictions"))
+def main():
+    res = [one_seed(s) for s in SEEDS]
 
-    print(f"{'variant':<28}{'R2':>8}   detail")
-    print("-" * 78)
-    for n, v, d in rows:
-        print(f"{n:<28}{v:>8.4f}   {d}")
+    print(f"window-blocked out-of-fold, {N_FOLDS} folds, {len(SEEDS)} seeds")
+    print(f"evaluated scalars per seed: {res[0]['n']:,} over {res[0]['windows']} windows\n")
 
-    best_raw = max(r2(x2, y), r2(x4, y))
-    best_recal = max(r2(oof2, y), r2(oof4, y))
-    avg = r2((x2 + x4) / 2, y)
-    ridge = r2(oofR, y)
-    print("\n--- decomposition of the fusion gain ---")
-    print(f"best single raw model                  : {best_raw:.4f}")
-    print(f"  + combination only (simple average)  : {avg:.4f}   (delta {avg-best_raw:+.4f})")
-    print(f"  + calibration only (best single)     : {best_recal:.4f}   (delta {best_recal-best_raw:+.4f})")
-    print(f"  + both (Ridge)                       : {ridge:.4f}   (delta {ridge-best_raw:+.4f})")
-    print(f"\nincremental value of COMBINING two architectures,")
-    print(f"over simply recalibrating the better one: {ridge-best_recal:+.4f} R2")
-    print(f"paper's inter-seed s.d. of Late Fusion  :  0.018")
-    verdict = "SMALLER than seed noise" if (ridge - best_recal) < 0.018 else "larger than seed noise"
-    print(f"=> the combination term is {verdict}.")
+    cols = [("conv_raw", "ConvLSTM raw"), ("gnn_raw", "GNN-TAT raw"),
+            ("average", "simple average"), ("conv_recal", "ConvLSTM recalibrated"),
+            ("gnn_recal", "GNN-TAT recalibrated"), ("ridge", "Ridge over both"),
+            ("published", "Late Fusion as published")]
+    print(f"{'variant':<26}" + "".join(f"{'seed '+str(s):>11}" for s in SEEDS)
+          + f"{'mean':>10}{'s.d.':>8}")
+    print("-" * 89)
+    for k, label in cols:
+        v = np.array([r[k] for r in res])
+        print(f"{label:<26}" + "".join(f"{x:>11.4f}" for x in v)
+              + f"{v.mean():>10.4f}{v.std(ddof=1):>8.4f}")
+
+    # ---- paired differences, computed within seed then aggregated
+    print("\n--- decomposition, paired within seed ---")
+    print(f"{'term':<46}{'mean':>9}{'s.d.':>8}   per-seed")
+    print("-" * 89)
+
+    def paired(f, label):
+        d = np.array([f(r) for r in res])
+        print(f"{label:<46}{d.mean():>+9.4f}{d.std(ddof=1):>8.4f}   "
+              + " ".join(f"{x:+.4f}" for x in d))
+        return d
+
+    best_raw = lambda r: max(r["conv_raw"], r["gnn_raw"])
+    best_recal = lambda r: max(r["conv_recal"], r["gnn_recal"])
+    d_comb_only = paired(lambda r: r["average"] - best_raw(r),
+                         "combination only (average) over best raw")
+    d_cal_only = paired(lambda r: best_recal(r) - best_raw(r),
+                        "calibration only (recalibrate best) over best raw")
+    d_both = paired(lambda r: r["ridge"] - best_raw(r),
+                    "both (Ridge) over best raw")
+    d_incr = paired(lambda r: r["ridge"] - best_recal(r),
+                    "INCREMENTAL value of combining, over recalibrating")
+
+    share = d_cal_only.mean() / d_both.mean() if d_both.mean() != 0 else np.nan
+    print(f"\ncalibration accounts for {100*share:.0f}% of the total Ridge gain")
+
+    # ---- the verdict, on the paired standard deviation
+    t = d_incr.mean() / (d_incr.std(ddof=1) / np.sqrt(len(d_incr))) if d_incr.std(ddof=1) > 0 else np.inf
+    marginal = np.array([r["ridge"] for r in res]).std(ddof=1)
+    print("\n--- does the combination term separate from noise? ---")
+    print(f"paired mean                     : {d_incr.mean():+.4f}")
+    print(f"paired s.d. across seeds        : {d_incr.std(ddof=1):.4f}")
+    print(f"marginal s.d. of Ridge R2       : {marginal:.4f}   <- what the manuscript compared against")
+    print(f"paired t (n={len(SEEDS)}, 2 d.f.)          : {t:.2f}   (|t|>4.30 for p<0.05)")
+    if abs(t) > 4.303:
+        print("=> the combination term DOES separate from noise under the paired test,")
+        print("   although n=3 makes this a weak inference; the manuscript's claim that it")
+        print("   is smaller than seed noise used the marginal spread and must be revised.")
+    else:
+        print("=> the combination term does NOT separate from noise, and the conclusion")
+        print("   survives the correction to a paired test.")
+
+    print("\n--- published meta-learner versus a correctly blocked refit ---")
+    pub = np.array([r["published"] for r in res])
+    rid = np.array([r["ridge"] for r in res])
+    dd = pub - rid
+    print(f"published (KFold shuffled over cells) : {pub.mean():.4f} +/- {pub.std(ddof=1):.4f}")
+    print(f"refit (folds blocked by window)       : {rid.mean():.4f} +/- {rid.std(ddof=1):.4f}")
+    print(f"paired difference                     : {dd.mean():+.4f} +/- {dd.std(ddof=1):.4f}")
+    print("The published figure is the one to replace throughout the manuscript.")
 
 
 if __name__ == "__main__":
