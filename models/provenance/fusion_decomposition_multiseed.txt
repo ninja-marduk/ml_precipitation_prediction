@@ -1,0 +1,36 @@
+window-blocked out-of-fold, 5 folds, 3 seeds
+evaluated scalars per seed: 1,570,140 over 33 windows
+
+variant                       seed 42   seed 123   seed 456      mean    s.d.
+-----------------------------------------------------------------------------------------
+ConvLSTM raw                   0.6322     0.4987     0.5443    0.5584  0.0678
+GNN-TAT raw                    0.3893     0.4970     0.4556    0.4473  0.0543
+simple average                 0.5565     0.5126     0.5299    0.5330  0.0221
+ConvLSTM recalibrated          0.6445     0.6127     0.5895    0.6156  0.0276
+GNN-TAT recalibrated           0.5515     0.6073     0.6128    0.5905  0.0339
+Ridge over both                0.6469     0.6351     0.6381    0.6400  0.0061
+Late Fusion as published       0.6716     0.6564     0.6364    0.6548  0.0176
+
+--- decomposition, paired within seed ---
+term                                               mean    s.d.   per-seed
+-----------------------------------------------------------------------------------------
+combination only (average) over best raw        -0.0254  0.0458   -0.0757 +0.0139 -0.0144
+calibration only (recalibrate best) over best raw  +0.0650  0.0510   +0.0123 +0.1141 +0.0685
+both (Ridge) over best raw                      +0.0816  0.0618   +0.0147 +0.1364 +0.0938
+INCREMENTAL value of combining, over recalibrating  +0.0167  0.0125   +0.0024 +0.0224 +0.0253
+
+calibration accounts for 80% of the total Ridge gain
+
+--- does the combination term separate from noise? ---
+paired mean                     : +0.0167
+paired s.d. across seeds        : 0.0125
+marginal s.d. of Ridge R2       : 0.0061   <- what the manuscript compared against
+paired t (n=3, 2 d.f.)          : 2.32   (|t|>4.30 for p<0.05)
+=> the combination term does NOT separate from noise, and the conclusion
+   survives the correction to a paired test.
+
+--- published meta-learner versus a correctly blocked refit ---
+published (KFold shuffled over cells) : 0.6548 +/- 0.0176
+refit (folds blocked by window)       : 0.6400 +/- 0.0061
+paired difference                     : +0.0148 +/- 0.0143
+The published figure is the one to replace throughout the manuscript.
