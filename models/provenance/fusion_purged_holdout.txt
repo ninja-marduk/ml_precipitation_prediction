@@ -1,0 +1,22 @@
+purged split: 10 training windows, 12 test windows,
+embargo of 11 windows so no training lead reaches a test month
+
+  seed   raw best  recalibrated    Ridge  Ridge in-sample
+------------------------------------------------------------
+    42     0.6945        0.6293   0.6112           0.6893
+   123     0.5757        0.5664   0.5732           0.6878
+   456     0.6472        0.5966   0.6102           0.6708
+------------------------------------------------------------
+  mean     0.6392        0.5974   0.5982           0.6826
+  s.d.     0.0598        0.0315   0.0216           0.0103
+
+incremental value of combining over recalibrating, out of sample:
+  +0.0008 +/- 0.0167 (paired across seeds)
+
+in-sample minus out-of-sample for the Ridge: +0.0844
+That gap is what any cross-validation on overlapping windows understates.
+
+This estimate rests on one split of a 44-month evaluation period and
+should be reported as such, not as a headline. What it establishes is a
+direction: the blocked-fold figure is optimistic, and the ranking of
+calibration over combination is unchanged.

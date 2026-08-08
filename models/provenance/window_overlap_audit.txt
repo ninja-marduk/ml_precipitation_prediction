@@ -1,0 +1,22 @@
+targets: 33 windows x 12 leads x 61x65
+
+=== do consecutive windows overlap? ===
+pairs where t[s,1:] == t[s+1,:-1] : 32 of 32
+  CONFIRMED: windows slide by one month and overlap by 11 of 12 leads.
+  Blocking by window index with random fold assignment therefore leaves
+  most of each held-out window's target months inside the training fold.
+
+=== how much of a held-out window is present in training? ===
+held-out (window, lead) pairs whose target month also appears in a
+training window: 394 of 396  (99.5%)
+
+=== contiguous blocking, for comparison ===
+contiguous folds: 347 of 396  (87.6%)
+
+=== two arrays for the same seed-42 GNN-TAT prediction? ===
+  root-level  map_exports/... : R2 = 0.5974
+  SEED42/     map_exports/... : R2 = 0.3893
+  identical arrays            : False
+  The root-level array is the pre-correction run on the leaked graph; the
+  SEED42 one is the corrected retrain. Any script reading the root path is
+  using the superseded predictions.
