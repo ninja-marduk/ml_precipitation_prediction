@@ -28,6 +28,28 @@ def r2(pred, tgt):
     return float(1 - ss_res / ss_tot) if ss_tot > 0 else np.nan
 
 
+def per_cell_nse(pred, tgt):
+    """NSE against each cell's own temporal mean, then averaged over cells.
+
+    The pooled R2 above uses one global mean, so it is credited with the
+    between-cell variance that a per-cell climatology also captures. This is the
+    metric that does not give that credit.
+    """
+    p = pred.reshape(-1, pred.shape[-2] * pred.shape[-1])
+    g = tgt.reshape(-1, tgt.shape[-2] * tgt.shape[-1])
+    out = []
+    for c in range(g.shape[1]):
+        m = np.isfinite(p[:, c]) & np.isfinite(g[:, c])
+        if m.sum() < 3:
+            continue
+        gt = g[m, c]
+        ss_tot = np.sum((gt - gt.mean()) ** 2)
+        if ss_tot <= 0:
+            continue
+        out.append(1 - np.sum((gt - p[m, c]) ** 2) / ss_tot)
+    return float(np.mean(out)) if out else np.nan
+
+
 def rmse(pred, tgt):
     m = np.isfinite(pred) & np.isfinite(tgt)
     return float(np.sqrt(np.mean((pred[m] - tgt[m]) ** 2)))
@@ -96,7 +118,7 @@ def main():
     def block(name, pred):
         print(f"\n[{name}]")
         print(f"  POOLED (all H): R2={r2(pred, tgt):+.3f}  RMSE={rmse(pred, tgt):5.1f}  "
-              f"MAE={mae(pred, tgt):5.1f}")
+              f"MAE={mae(pred, tgt):5.1f}  per-cell NSE={per_cell_nse(pred, tgt):+.3f}")
         for h in [0, 4, 11]:  # H=1, H=5, H=12
             print(f"  H={h+1:2d}: R2={r2(pred[:, h], tgt[:, h]):+.3f}  "
                   f"RMSE={rmse(pred[:, h], tgt[:, h]):5.1f}  "
@@ -120,11 +142,18 @@ def main():
     OUT = ROOT / "models" / "output"
     models = {
         "ConvLSTM-Bidir (V2)": OUT / "V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM_Bidirectional",
-        "GNN-TAT-GAT (V4)": OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
+        # Two arrays exist for this model. The root map_exports/ is what the
+        # released pipeline wrote; SEED42/map_exports/ is the corrected rerun.
+        # Both are scored so the difference is visible rather than path-dependent.
+        "GNN-TAT-GAT (V4, as released)":
+            OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
+        "GNN-TAT-GAT (V4, corrected rerun)":
+            OUT / "V4_GNN_TAT_Models/SEED42/map_exports/H12/BASIC/GNN_TAT_GAT",
         "Late Fusion (V10)": OUT / "V10_Late_Fusion",
     }
     print("\n================ RECONCILED COMPARISON (same pooled R²) ================")
-    print(f"{'Method':<26}{'R²(pooled)':>11}{'R²(H=5)':>9}{'R²(H=12)':>10}{'RMSE':>7}")
+    print(f"{'Method':<36}{'R2(pooled)':>11}{'R2(H=5)':>9}{'R2(H=12)':>10}"
+          f"{'RMSE':>7}{'perCellNSE':>12}")
     rows = [("Climatology", pred_clim, tgt), ("Seasonal-naive", pred_seas, tgt),
             ("Persistence", pred_pers, tgt)]
     for name, d in models.items():
@@ -137,8 +166,9 @@ def main():
         except Exception as e:
             print(f"{name:<26}  load error: {e}")
     for name, p, t in rows:
-        print(f"{name:<26}{r2(p, t):>+11.3f}{r2(p[:, 4], t[:, 4]):>+9.3f}"
-              f"{r2(p[:, 11], t[:, 11]):>+10.3f}{rmse(p, t):>7.1f}")
+        print(f"{name:<36}{r2(p, t):>+11.3f}{r2(p[:, 4], t[:, 4]):>+9.3f}"
+              f"{r2(p[:, 11], t[:, 11]):>+10.3f}{rmse(p, t):>7.1f}"
+              f"{per_cell_nse(p, t):>+12.3f}")
 
 
 if __name__ == "__main__":
