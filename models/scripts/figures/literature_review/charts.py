@@ -25,6 +25,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import shutil
 from pathlib import Path
 
 warnings.filterwarnings("ignore")
@@ -32,8 +33,9 @@ warnings.filterwarnings("ignore")
 # --- Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parents[3]
-DATA_DIR = PROJECT_ROOT / "docs" / "papers" / "1" / "data"
-FIG_DIR = PROJECT_ROOT / "docs" / "papers" / "1" / "latex" / "figures"
+DATA_DIR = PROJECT_ROOT / ".docs" / "papers" / "1" / "data"
+FIG_DIR = PROJECT_ROOT / ".docs" / "papers" / "1" / "latex" / "figures"
+DELIVERY_FIG_DIR = PROJECT_ROOT / ".docs" / "papers" / "1" / "delivery" / "figures"
 
 # --- Page geometry (IWA template) ---
 TEXT_WIDTH = 6.30   # inches (A4 with 2.5cm margins each side)
@@ -64,10 +66,18 @@ plt.rcParams.update({
 
 
 def _save(fig, path):
-    """Save figure as vector PDF."""
+    """Save figure as vector PDF + 600-DPI PNG; mirror both to delivery/figures."""
+    path = Path(path)
     fig.savefig(path, bbox_inches="tight",
                 facecolor="white", edgecolor="none")
+    png_path = path.with_suffix(".png")
+    fig.savefig(png_path, dpi=600, bbox_inches="tight",
+                facecolor="white", edgecolor="none")
     plt.close(fig)
+    # Mirror PDF + PNG to the delivery/figures directory
+    DELIVERY_FIG_DIR.mkdir(parents=True, exist_ok=True)
+    for p in (path, png_path):
+        shutil.copy2(p, DELIVERY_FIG_DIR / p.name)
 
 
 # =============================================================================
@@ -298,6 +308,16 @@ def generate_boxplots_histogram(output_path):
     r2 = metrics[metrics["metric"].str.strip() == "R^2"].copy()
     r2["result"] = pd.to_numeric(r2["result"], errors="coerce")
     r2 = r2.dropna(subset=["result"])
+
+    # --- Aggregate to STUDY level (one R^2 per study) ---
+    # The quantitative synthesis (Table 5) reports study-level statistics.
+    # One study (Taihu Basin) lists two R^2 values: ANN base model (0.532)
+    # and the Stacking ensemble (0.526). Keeping the first occurrence (ANN,
+    # the R2_hyb value reported in Table 4) collapses it to a single study,
+    # yielding N=19 studies, median R^2 = 0.904, and Component Combination
+    # N=4 -- all consistent with Table 5. Without this step the chart would
+    # double-count that study (N=20, median 0.887, Component Combination N=5).
+    r2 = r2.drop_duplicates(subset=["ref"], keep="first").reset_index(drop=True)
 
     # Use manual category mapping from Table 2
     def get_category(ref_title):

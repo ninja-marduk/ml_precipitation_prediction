@@ -1,4 +1,11 @@
-"""Deseasonalized anomaly-skill benchmark.
+"""Deseasonalized anomaly-skill benchmark. SUPERSEDED, kept for the record.
+
+Do not quote this script's output. It pools cells and time into one correlation,
+which conflates a static spatial pattern with forecast skill, and it reads the
+pre-correction graph array. `beyond_aggregate_corrected.py` replaces it on both
+counts and is the source of every anomaly figure in the manuscript. This file is
+retained because the manuscript states that the pooled definition inflates the
+result, and this is the script that produced the inflated numbers.
 
 Climatology inflates pooled R^2 because it captures the strong seasonal cycle.
 The genuine forecasting target is the interannual anomaly (precip minus the

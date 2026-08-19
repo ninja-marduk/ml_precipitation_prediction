@@ -1,5 +1,9 @@
 """Spatial R^2 (NSE) atlas: 3 models x 12 horizons.
 
+Exploratory. Its output is not used by the manuscript, and it still reads the
+pre-correction graph array; `spatial_r2.py` is the generator of the spatial figure
+that is used. Point this at the SEED42 paths before quoting anything from it.
+
 Rows = ConvLSTM / GNN-TAT / Late Fusion; columns = H=1..12. Each cell is the
 per-grid-cell NSE at that horizon (over the 33 validation windows), sharing the
 palette and Boyaca boundary of the 3-panel figure (spatial_r2.py). Complements

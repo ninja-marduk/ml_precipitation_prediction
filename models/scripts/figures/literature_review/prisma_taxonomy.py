@@ -28,7 +28,7 @@ if sys.platform == "win32":
 # --- Paths ---
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parents[3]
-TIKZ_DIR = PROJECT_ROOT / "docs" / "papers" / "1" / "latex" / "tikz"
+TIKZ_DIR = PROJECT_ROOT / ".docs" / "papers" / "1" / "latex" / "tikz"
 
 # --- Tree layout constants (cm) ---
 ROOT_X = 2.0       # root node center x
@@ -207,7 +207,7 @@ def generate_prisma(filename):
     L.append(f"  \\node[prismabox] (in1) at ({LX},{RY[4]:.1f})"
              f" {{Studies included in\\\\final analysis\\\\(n~=~85)}};")
     L.append(f"  \\node[prismalt] (in2) at ({RX},{RY[4]:.1f})"
-             f" {{Studies included in\\\\quantitative synthesis\\\\(n~=~34)}};")
+             f" {{Studies included in\\\\quantitative synthesis\\\\(n~=~32)}};")
     L.append("")
 
     # Vertical arrows (main flow, left column)

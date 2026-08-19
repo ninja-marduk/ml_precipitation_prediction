@@ -1,0 +1,44 @@
+==========================================================================
+(A) ANOMALY SKILL  [per-cell temporal ACC = standard definition]
+==========================================================================
+model             H  ACC_cell  %cells>0  ACC_pattern  ACC_pooled
+ConvLSTM-Bidir    1    -0.029     43.0%        0.158       0.090
+ConvLSTM-Bidir   12    -0.075     35.1%        0.095       0.005
+GNN-TAT-GAT       1    -0.076     29.4%        0.149       0.059
+GNN-TAT-GAT      12    -0.122     23.3%        0.128      -0.005
+Late Fusion       1     0.028     57.3%        0.190       0.148
+Late Fusion      12    -0.112     30.4%        0.138       0.012
+
+==========================================================================
+(C) OROGRAPHIC CONNECTIVITY  [raw vs deseasonalized]
+==========================================================================
+
+[RAW]
+  mean rho <10 km = +0.983 | >100 km = +0.578
+  far pairs (>50 km) with rho>0.8 : 166,631 (18.0% of far pairs)
+    of those, |dElev|<200 m       : 34,918
+  partial regression: beta_dist=-0.0971  beta_|dElev|=-0.0145  R2=0.199  ratio |elev/dist|=0.15
+
+[DESEASONALIZED]
+  mean rho <10 km = +0.967 | >100 km = +0.377
+  far pairs (>50 km) with rho>0.8 : 1,814 (0.2% of far pairs)
+    of those, |dElev|<200 m       : 467
+  partial regression: beta_dist=-0.1200  beta_|dElev|=-0.0218  R2=0.505  ratio |elev/dist|=0.18
+
+==========================================================================
+(D) CONFORMAL INTERVALS  [window-level exchangeability, truncated at 0]
+==========================================================================
+exchangeable units: 16 calibration windows, 17 test windows
+required conformal level at n=16: 1.000  (=1.0: the guarantee requires the maximum residual)
+
+Late Fusion : coverage 0.999 | mean truncated width 496.4 mm | width H1->H12 460->489
+Climatology : coverage 1.000 | mean truncated width 471.6 mm
+=> zero-cost climatology intervals are NARROWER by 24.8 mm
+untruncated lower bound below zero in 80.7% of cells (intervals are truncated at 0 above)
+
+conditional coverage by elevation (pooled over horizons):
+  Low <1500       n= 2467  coverage=0.999
+  Med 1500-2800   n=  941  coverage=1.000
+  High >2800      n=  557  coverage=1.000
+
+figure written to .docs\papers\5\figures\beyond_aggregate.png at 700 DPI

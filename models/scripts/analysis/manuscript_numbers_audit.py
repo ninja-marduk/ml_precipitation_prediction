@@ -433,6 +433,45 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
+    # -- anomaly skill, connectivity and conformal intervals -----------------
+    p = PROV / "beyond_aggregate.txt"
+    if p.exists():
+        txt = _read(p)
+        for name, key in (("ConvLSTM-Bidir", "conv"), ("GNN-TAT-GAT", "gnn"),
+                          ("Late Fusion", "lf")):
+            for h in (1, 12):
+                m = re.search(re.escape(name) + r"\s+" + str(h) +
+                              r"\s+([-\d.]+)\s+([\d.]+)%\s+([-\d.]+)\s+([-\d.]+)", txt)
+                if m:
+                    s[f"acc.{key}.h{h}"] = float(m.group(1))
+                    s[f"acc.{key}.h{h}.pct"] = float(m.group(2))
+                    s[f"acc.{key}.h{h}.pattern"] = float(m.group(3))
+                    s[f"acc.{key}.h{h}.pooled"] = float(m.group(4))
+        for tag, key in (("RAW", "raw"), ("DESEASONALIZED", "deseas")):
+            blk = txt.split(f"[{tag}]")[-1][:600] if f"[{tag}]" in txt else ""
+            m = re.search(r"rho>0\.8 : [\d,]+ \(([\d.]+)% of far pairs\)", blk)
+            if m:
+                s[f"conn.{key}.far_pct"] = float(m.group(1))
+            m = re.search(r"beta_\|dElev\|=([-\d.]+)\s+R2=([\d.]+)", blk)
+            if m:
+                s[f"conn.{key}.beta_elev"] = float(m.group(1))
+                s[f"conn.{key}.r2"] = float(m.group(2))
+        m = re.search(r"mean truncated width ([\d.]+) mm", txt)
+        if m:
+            s["conformal.lf_width"] = float(m.group(1))
+        m = re.search(r"Climatology : coverage [\d.]+ \| mean truncated width ([\d.]+)", txt)
+        if m:
+            s["conformal.clim_width"] = float(m.group(1))
+        m = re.search(r"below zero in ([\d.]+)% of cells", txt)
+        if m:
+            s["conformal.neg_lower_pct"] = float(m.group(1))
+        m = re.search(r"(\d+) calibration windows, (\d+) test windows", txt)
+        if m:
+            s["conformal.n_cal"] = float(m.group(1))
+            s["conformal.n_test"] = float(m.group(2))
+    else:
+        missing.append(str(p))
+
     # -- variograms of the residual field ------------------------------------
     p = ROOT / "scripts" / "benchmark" / "output" / "variogram_results.csv"
     if p.exists():
@@ -720,6 +759,44 @@ ANCHORS = [
       r"non-zero nugget \((\d+\.\d+)\) reveals", 5e-2),
     A("vario.obs.range", "vario.obs_range",
       r"observed precipitation field has a spatial range of (\d+\.\d+)\\,km", 5e-2),
+
+    # ---- anomaly, connectivity, conformal ----------------------------------
+    A("acc.lf.h1", "acc.lf.h1",
+      r"per-cell ACC of \$\+\$(\d\.\d+) at a one-month lead", 5e-4),
+    A("acc.lf.h12", "acc.lf.h12",
+      r"and \$-\$(\d\.\d+) at twelve months", 5e-4, sign=-1),
+    A("acc.conv.h1", "acc.conv.h1",
+      r"ConvLSTM \$-\$(\d\.\d+) and \$-\$\d\.\d+", 5e-4, sign=-1),
+    A("acc.conv.h12", "acc.conv.h12",
+      r"ConvLSTM \$-\$\d\.\d+ and \$-\$(\d\.\d+)", 5e-4, sign=-1),
+    A("acc.gnn.h1", "acc.gnn.h1",
+      r"GNN-TAT \$-\$(\d\.\d+) and \$-\$\d\.\d+\)", 5e-4, sign=-1),
+    A("acc.gnn.h12", "acc.gnn.h12",
+      r"GNN-TAT \$-\$\d\.\d+ and \$-\$(\d\.\d+)\)", 5e-4, sign=-1),
+    A("acc.pooled.max", "acc.lf.h1.pooled",
+      r"pooled correlation, by contrast, appears as high as (\d\.\d+)", 5e-4),
+    A("conn.raw.far", "conn.raw.far_pct",
+      r"falls from (\d+\.\d+)\\% on raw series", 5e-2),
+    A("conn.deseas.far", "conn.deseas.far_pct",
+      r"to (\d+\.\d+)\\% once the seasonal cycle is removed", 5e-2),
+    A("conn.deseas.beta", "conn.deseas.beta_elev",
+      r"elevation coefficient of \$-\$(\d\.\d+) deseasonalized", 5e-5, sign=-1),
+    A("conn.raw.beta", "conn.raw.beta_elev",
+      r"deseasonalized against \$-\$(\d\.\d+) raw", 5e-5, sign=-1),
+    A("conn.raw.r2", "conn.raw.r2",
+      r"regression \$?R\^\{?2\}?\$? rising from (\d\.\d+) to \d\.\d+", 5e-4),
+    A("conn.deseas.r2", "conn.deseas.r2",
+      r"rising from \d\.\d+ to (\d\.\d+)", 5e-4),
+    A("conformal.width", "conformal.lf_width",
+      r"approximately (\d+)\\,mm wide after truncation", 0.5),
+    A("conformal.clim", "conformal.clim_width",
+      r"zero-cost climatology, which yields (\d+)\\,mm", 0.5),
+    A("conformal.neg", "conformal.neg_lower_pct",
+      r"and (\d+)\\% of the untruncated lower bounds", 0.5),
+    A("conformal.ncal", "conformal.n_cal",
+      r"33 windows split into (\d+) for calibration", 0.5),
+    A("conformal.ntest", "conformal.n_test",
+      r"for calibration and (\d+) for evaluation", 0.5),
 ]
 
 

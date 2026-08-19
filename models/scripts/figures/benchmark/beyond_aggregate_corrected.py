@@ -86,9 +86,12 @@ def main():
             pred_clim[s, h] = clim[months[idx[s, h]]]
     tgt_anom = tgt - pred_clim
 
+    # Seed 42 for all three. The V4 root directory holds the pre-correction run,
+    # whose graph encoded the evaluation months; reading it here while the rest of
+    # the paper reads SEED42 is the defect this line existed to reproduce.
     models = {
         "ConvLSTM-Bidir": OUT / "V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM_Bidirectional",
-        "GNN-TAT-GAT":    OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
+        "GNN-TAT-GAT":    OUT / "V4_GNN_TAT_Models/SEED42/map_exports/H12/BASIC/GNN_TAT_GAT",
         "Late Fusion":    LF,
     }
 

@@ -1,5 +1,9 @@
 """Spatial R^2 (NSE) maps: (a) at H=12 and (b) averaged over H=1..12.
 
+Exploratory. Its output is not used by the manuscript, and it still reads the
+pre-correction graph array; `spatial_r2.py` is the generator of the spatial figure
+that is used. Point this at the SEED42 paths before quoting anything from it.
+
 Two rows (a: hardest horizon H=12; b: mean across all horizons) x three columns
 (ConvLSTM / GNN-TAT / Late Fusion). Same NSE-per-cell computation, RdYlGn palette
 and Boyaca boundary as the single-row figure. Separating H=12 from the average
