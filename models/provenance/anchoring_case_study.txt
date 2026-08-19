@@ -1,0 +1,13 @@
+
+CASE STUDY, forecast targets at leads 1..12
+                                                   --- pooled R2 ---       |  --- per-cell NSE ---  
+region                    regime                    clim    seas    pers   |    clim    seas    pers
+----------------------------------------------------------------------------------------------------
+Boyaca (case study)       bimodal tropical         0.748   0.527  -0.470   |   0.636   0.305  -0.966
+
+origins=92  cells=3965  mean=184.5 mm
+
+The manuscript reports climatology 0.730, seasonal-naive 0.431 and
+persistence -0.510 from naive_baselines.py, which scores the 33 released
+forecast windows. Any residual difference from the pooled column above is
+the window set, not the definition; report one of them, from one script.

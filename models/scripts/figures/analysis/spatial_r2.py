@@ -27,9 +27,13 @@ from _config import setup_paper_style, OUTPUT_DPI  # noqa: E402
 # ── Paths ──────────────────────────────────────────────────────────────
 V2_PRED = PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / \
     'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM_Bidirectional'
-V4_PRED = PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / \
+# Seed 42 explicitly, for both. The parent directories also hold older arrays: the
+# V4 root is the pre-correction graph run and the V10 root predates the seed-42
+# rerun, and reading them here while the tables read SEED42 is what made the figure
+# and the elevation table disagree.
+V4_PRED = PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / 'SEED42' / \
     'map_exports' / 'H12' / 'BASIC' / 'GNN_TAT_GAT'
-V10_DIR = PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion'
+V10_DIR = PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion' / 'SEED42'
 DATA_NC = PROJECT_ROOT / 'notebooks' / 'data' / 'output' / \
     'complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc'
 SHP_PATH = PROJECT_ROOT / 'data' / 'input' / 'MGN_Departamento.shp'

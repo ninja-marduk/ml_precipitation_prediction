@@ -32,19 +32,29 @@ logger = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 OUTPUT_DIR = PROJECT_ROOT / 'scripts' / 'benchmark' / 'output'
 
-# Paper 4 default prediction paths (same as scripts 14-16)
+# The three arrays every other analysis reads, and for the same reasons. This block
+# previously named the plain ConvLSTM rather than the bidirectional variant used
+# everywhere else, the pre-correction graph array, and the root Late Fusion array
+# that predates the seed-42 rerun, so the variogram compared a different set of
+# models from the tables it was quoted alongside.
+_V2 = PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / \
+    'H12' / 'BASIC' / 'ConvLSTM_Bidirectional'
+_V4 = PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / 'SEED42' / \
+    'map_exports' / 'H12' / 'BASIC' / 'GNN_TAT_GAT'
+_V10 = PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion' / 'SEED42'
+
 MODELS = {
     'V2_ConvLSTM': {
-        'predictions': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'predictions.npy',
-        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'targets.npy',
+        'predictions': _V2 / 'predictions.npy',
+        'targets': _V10 / 'targets.npy',
     },
     'V4_GNN_TAT': {
-        'predictions': PROJECT_ROOT / 'models' / 'output' / 'V4_GNN_TAT_Models' / 'map_exports' / 'H12' / 'BASIC' / 'GNN_TAT_GAT' / 'predictions.npy',
-        'targets': PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / 'map_exports' / 'H12' / 'BASIC' / 'ConvLSTM' / 'targets.npy',
+        'predictions': _V4 / 'predictions.npy',
+        'targets': _V10 / 'targets.npy',
     },
     'V10_Late_Fusion': {
-        'predictions': PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion' / 'predictions.npy',
-        'targets': PROJECT_ROOT / 'models' / 'output' / 'V10_Late_Fusion' / 'targets.npy',
+        'predictions': _V10 / 'predictions.npy',
+        'targets': _V10 / 'targets.npy',
     },
 }
 

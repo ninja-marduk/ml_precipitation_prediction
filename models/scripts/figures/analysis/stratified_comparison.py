@@ -23,11 +23,18 @@ NC = ROOT / "notebooks" / "data" / "output" / \
 OUT = ROOT / "models" / "output"
 SPLIT = 414
 
+# Two arrays exist for the seed-42 graph model. The root map_exports/ holds the
+# pre-correction run, whose graph encoded the evaluation months; SEED42/map_exports/
+# holds the retrain on the corrected graph. Both are scored here, side by side, so a
+# table built from this output cannot silently mix them, which is what happened when
+# the stratified tables were built from one and the fusion table from the other.
 MODELS = {
     "ConvLSTM": OUT / "V2_Enhanced_Models/map_exports/H12/BASIC/ConvLSTM_Bidirectional",
-    "GNN-TAT": OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
+    "GNN-TAT": OUT / "V4_GNN_TAT_Models/SEED42/map_exports/H12/BASIC/GNN_TAT_GAT",
+    "GNN-pre": OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
     "LateFusion": OUT / "V10_Late_Fusion/SEED42",
 }
+SHOW = ["ConvLSTM", "GNN-TAT", "GNN-pre", "LateFusion"]
 
 
 def load(d, what="predictions"):
@@ -89,15 +96,17 @@ def main():
 
     def row(label, cellmask=None, tsel=None, n=None):
         vals = {k: percell_r2(flat[k], ftgt, cellmask, tsel) for k in flat}
-        win = max(vals, key=vals.get)
+        # the winner is decided among the current arrays only; the pre-correction
+        # column is shown for continuity and is not a candidate
+        win = max((k for k in vals if k != "GNN-pre"), key=lambda k: vals[k])
         extra = f"n={n}" if n is not None else ""
-        print(f"{label:<22}" + "".join(f"{vals[k]:>12.3f}" for k in ["ConvLSTM", "GNN-TAT", "LateFusion"])
+        print(f"{label:<22}" + "".join(f"{vals[k]:>12.3f}" for k in SHOW)
               + f"   winner: {win:<11}{extra}")
         return vals
 
     print("Per-cell R^2 by stratum (seed 42, pooled over horizons unless stated)\n")
-    print(f"{'stratum':<22}{'ConvLSTM':>12}{'GNN-TAT':>12}{'LateFusion':>12}")
-    print("-" * 74)
+    print(f"{'stratum':<22}" + "".join(f"{k:>12}" for k in SHOW))
+    print("-" * 86)
 
     allv = row("ALL", None, None, n=int(np.isfinite(elev).sum()))
 
@@ -119,6 +128,61 @@ def main():
     for nm, sel in [("Short H1-4", fhor < 4), ("Medium H5-8", (fhor >= 4) & (fhor < 8)),
                     ("Long H9-12", fhor >= 8)]:
         row(nm, tsel=sel, n=int(sel.sum()))
+
+    print("\n[elevation degradation, Low to High]")
+    lo, hi = elev_rows["Low <1500 m"], elev_rows["High >2800 m"]
+    for k in SHOW:
+        print(f"  {k:<12} {lo[k]:.3f} -> {hi[k]:.3f}   {100*(1-hi[k]/lo[k]):+.1f}%")
+
+    print("\n[sensitivity of that degradation to the upper threshold]")
+    print("  the 2,800 m boundary is an ecological convention, so the claim that the")
+    print("  degradation is a property of the terrain rather than of the cut is only")
+    print("  worth making if it survives moving the cut")
+    degr = []
+    for thr in range(2400, 3001, 100):
+        m_lo, m_hi = elev < 1500, elev >= thr
+        if m_hi.sum() < 50:
+            continue
+        v_lo = percell_r2(flat["LateFusion"], ftgt, m_lo)
+        v_hi = percell_r2(flat["LateFusion"], ftgt, m_hi)
+        d = 100 * (1 - v_hi / v_lo)
+        degr.append(d)
+        print(f"  upper cut {thr:>5} m  n={int(m_hi.sum()):>5}  "
+              f"Low {v_lo:.3f} -> High {v_hi:.3f}   {d:+.1f}%")
+    if degr:
+        print(f"  Late Fusion degradation over the sweep: "
+              f"{min(degr):.1f}% to {max(degr):.1f}%")
+
+    print("\n[per-cell complementarity]")
+    print("  a claim that two models fail in complementary places is a claim about")
+    print("  cells, not about zone means, so it is counted here")
+
+    def percell_vector(pred, tgt):
+        N = pred.shape[0]
+        p2, t2 = pred.reshape(N, -1), tgt.reshape(N, -1)
+        mu = np.nanmean(t2, axis=0, keepdims=True)
+        ss_res = np.nansum((t2 - p2) ** 2, axis=0)
+        ss_tot = np.nansum((t2 - mu) ** 2, axis=0)
+        out = np.full(ss_tot.shape, np.nan)
+        ok = ss_tot > 0
+        out[ok] = 1 - ss_res[ok] / ss_tot[ok]
+        return out
+
+    vc = percell_vector(flat["ConvLSTM"], ftgt)
+    vg = percell_vector(flat["GNN-TAT"], ftgt)
+    vf = percell_vector(flat["LateFusion"], ftgt)
+    ok = np.isfinite(vc) & np.isfinite(vg) & np.isfinite(vf)
+    n = int(ok.sum())
+    print(f"  cells where the graph model beats the convolutional one: "
+          f"{int((vg[ok] > vc[ok]).sum())} of {n} "
+          f"({100*(vg[ok] > vc[ok]).mean():.1f}%)")
+    rescue = ok & (np.minimum(vc, vg) < 0.2) & (vf >= 0.5)
+    print(f"  cells where either base learner is below 0.2 and the fusion reaches 0.5: "
+          f"{int(rescue.sum())} of {n} ({100*rescue.sum()/n:.1f}%)")
+    both_low = ok & (np.maximum(vc, vg) < 0.2)
+    print(f"  cells where both base learners are below 0.2: {int(both_low.sum())} "
+          f"({100*both_low.sum()/n:.1f}%), of which the fusion reaches 0.5 in "
+          f"{int((both_low & (vf >= 0.5)).sum())}")
 
     # complementarity verdict
     print("\n--- complementarity check ---")

@@ -175,10 +175,17 @@ def case_study():
     return [r]
 
 
-def regions(csv_path=None):
+def regions(csv_path=None, only=None, merge=False):
+    """Score the references over the listed regions.
+
+    `only` restricts the run to regions whose name contains that substring, and
+    `merge` updates those rows in an existing CSV instead of rewriting the file.
+    The global CHIRPS product is 7.7 GB and is read remotely, so re-running all
+    eight to repair one row is an hour of transfer for nothing.
+    """
     import fsspec
     import xarray as xr
-    print(f"opening remote CHIRPS (lazy): {CHIRPS_URL}")
+    print(f"opening remote CHIRPS (lazy): {CHIRPS_URL}", flush=True)
     fh = fsspec.open(CHIRPS_URL, mode="rb", block_size=2 ** 22).open()
     ds = xr.open_dataset(fh, engine="h5netcdf", chunks={})
     var = "precip" if "precip" in ds.data_vars else list(ds.data_vars)[0]
@@ -187,10 +194,13 @@ def regions(csv_path=None):
     tname = [c for c in ds.coords if "time" in c.lower()][0]
     times = ds[tname].values
     months_all = np.array([int(str(x)[5:7]) for x in times])
-    print(f"{len(times)} months ({str(times[0])[:7]} to {str(times[-1])[:7]})")
+    print(f"{len(times)} months ({str(times[0])[:7]} to {str(times[-1])[:7]})", flush=True)
 
+    todo = [r for r in REGIONS if only is None or only.lower() in r[0].lower()]
+    if only is not None:
+        print(f"restricted to {len(todo)} of {len(REGIONS)} regions", flush=True)
     rows = []
-    for name, la0, la1, lo0, lo1, regime in REGIONS:
+    for name, la0, la1, lo0, lo1, regime in todo:
         try:
             sub = ds[var].sel({lat: slice(la0, la1), lon: slice(lo0, lo1)}).load()
             P = sub.values.astype(np.float64)
@@ -200,9 +210,9 @@ def regions(csv_path=None):
                 print(f"  {name}: too few origins, skipped"); continue
             r.update(region=name, regime=regime, lat=f"{la0},{la1}", lon=f"{lo0},{lo1}")
             rows.append(r)
-            print(f"  {name:<28} done")
+            print(f"  {name:<28} done", flush=True)
         except Exception as exc:
-            print(f"  {name:<28} ERROR {type(exc).__name__}: {str(exc)[:56]}")
+            print(f"  {name:<28} ERROR {type(exc).__name__}: {str(exc)[:56]}", flush=True)
 
     _report(rows, "EIGHT REGIMES, same protocol as the case study")
 
@@ -222,12 +232,26 @@ def regions(csv_path=None):
         keys = ["region", "regime", "lat", "lon", "n_origins", "n_cells", "mean_mm",
                 "pooled_climatology", "pooled_seasonal_naive", "pooled_persistence",
                 "percell_climatology", "percell_seasonal_naive", "percell_persistence"]
+        out = {r["region"]: {k: r.get(k) for k in keys} for r in rows}
+        if merge and Path(csv_path).exists():
+            existing = list(csv.DictReader(Path(csv_path).open(encoding="utf-8")))
+            seen = {e["region"] for e in existing}
+            final = [out.get(e["region"], e) for e in existing]
+            final += [v for k, v in out.items() if k not in seen]
+        else:
+            if only is not None and Path(csv_path).exists():
+                raise SystemExit(
+                    f"refusing to overwrite {csv_path} with a partial run: "
+                    f"--region was given without --merge, which would drop every "
+                    f"region not in this run")
+            final = list(out.values())
         with open(csv_path, "w", newline="", encoding="utf-8") as fp:
             w = csv.DictWriter(fp, fieldnames=keys)
             w.writeheader()
-            for r in rows:
+            for r in final:
                 w.writerow({k: r.get(k) for k in keys})
-        print(f"\nwrote {csv_path}")
+        print(f"\nwrote {csv_path} ({len(final)} rows, {len(rows)} recomputed)",
+              flush=True)
     return rows
 
 
@@ -236,13 +260,17 @@ def main():
     ap.add_argument("--case-study", action="store_true")
     ap.add_argument("--regions", action="store_true")
     ap.add_argument("--csv", default=None)
+    ap.add_argument("--region", default=None,
+                    help="substring: run only the regions whose name contains it")
+    ap.add_argument("--merge", action="store_true",
+                    help="update those rows in --csv instead of rewriting the file")
     a = ap.parse_args()
     if not (a.case_study or a.regions):
         a.case_study = True
     if a.case_study:
         case_study()
     if a.regions:
-        regions(a.csv)
+        regions(a.csv, only=a.region, merge=a.merge)
 
 
 if __name__ == "__main__":

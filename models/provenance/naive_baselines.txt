@@ -1,0 +1,32 @@
+targets: S=33 windows, H=12 horizons, grid=61x65
+index recovery: horizons_consecutive=True window_stride1=True mean_match_MSE=4.923e-12
+validation target months span idx 474..517 (split at 414)
+
+[Climatology (monthly, per-cell)]
+  POOLED (all H): R2=+0.730  RMSE= 69.1  MAE= 49.4  per-cell NSE=+0.608
+  H= 1: R2=+0.724  RMSE= 68.0  MAE= 48.4
+  H= 5: R2=+0.738  RMSE= 69.0  MAE= 49.3
+  H=12: R2=+0.715  RMSE= 70.7  MAE= 50.5
+
+[Persistence (naive, origin value)]
+  POOLED (all H): R2=-0.510  RMSE=163.5  MAE=123.7  per-cell NSE=-0.968
+  H= 1: R2=+0.270  RMSE=110.7  MAE= 82.9
+  H= 5: R2=-0.931  RMSE=187.6  MAE=147.6
+  H=12: R2=+0.413  RMSE=101.5  MAE= 75.0
+
+[Seasonal-naive (t-12)]
+  POOLED (all H): R2=+0.431  RMSE=100.3  MAE= 73.7  per-cell NSE=+0.183
+  H= 1: R2=+0.400  RMSE=100.3  MAE= 73.7
+  H= 5: R2=+0.440  RMSE=101.1  MAE= 74.2
+  H=12: R2=+0.413  RMSE=101.5  MAE= 75.0
+
+================ RECONCILED COMPARISON (same pooled R²) ================
+Method                               R2(pooled)  R2(H=5)  R2(H=12)   RMSE  perCellNSE
+Climatology                              +0.730   +0.738    +0.715   69.1      +0.608
+Seasonal-naive                           +0.431   +0.440    +0.413  100.3      +0.183
+Persistence                              -0.510   -0.931    +0.413  163.5      -0.968
+ConvLSTM-Bidir (V2)                      +0.632   +0.652    +0.598   80.7      +0.479
+GNN-TAT-GAT (V4, as released)            +0.597   +0.628    +0.554   84.4      +0.423
+GNN-TAT-GAT (V4, corrected rerun)        +0.389   +0.356    +0.356  104.0      +0.163
+Late Fusion (V10, root, superseded)      +0.668   +0.687    +0.637   76.7      +0.515
+Late Fusion (V10, seed 42)               +0.672   +0.698    +0.638   76.2      +0.524

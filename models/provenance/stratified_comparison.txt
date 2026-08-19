@@ -1,0 +1,52 @@
+Per-cell R^2 by stratum (seed 42, pooled over horizons unless stated)
+
+stratum                   ConvLSTM     GNN-TAT     GNN-pre  LateFusion
+--------------------------------------------------------------------------------------
+ALL                          0.479       0.163       0.423       0.524   winner: LateFusion n=3965
+
+[elevation]
+Low <1500 m                  0.511       0.207       0.473       0.554   winner: LateFusion n=2467
+Medium 1500-2800 m           0.431       0.067       0.327       0.473   winner: LateFusion n=941
+High >2800 m                 0.419       0.133       0.363       0.475   winner: LateFusion n=557
+
+[season]
+DJF                         -0.866      -0.935      -0.322      -0.568   winner: LateFusion n=99
+MAM                          0.220      -0.512       0.101       0.273   winner: LateFusion n=99
+JJA                         -0.873      -2.362      -0.982      -0.491   winner: LateFusion n=99
+SON                          0.019      -0.580      -0.162       0.043   winner: LateFusion n=99
+
+[horizon group]
+Short H1-4                   0.479       0.199       0.453       0.550   winner: LateFusion n=132
+Medium H5-8                  0.494       0.153       0.418       0.523   winner: LateFusion n=132
+Long H9-12                   0.458       0.128       0.390       0.491   winner: LateFusion n=132
+
+[elevation degradation, Low to High]
+  ConvLSTM     0.511 -> 0.419   +18.1%
+  GNN-TAT      0.207 -> 0.133   +35.7%
+  GNN-pre      0.473 -> 0.363   +23.2%
+  LateFusion   0.554 -> 0.475   +14.3%
+
+[sensitivity of that degradation to the upper threshold]
+  the 2,800 m boundary is an ecological convention, so the claim that the
+  degradation is a property of the terrain rather than of the cut is only
+  worth making if it survives moving the cut
+  upper cut  2400 m  n=  921  Low 0.554 -> High 0.457   +17.5%
+  upper cut  2500 m  n=  872  Low 0.554 -> High 0.454   +18.0%
+  upper cut  2600 m  n=  745  Low 0.554 -> High 0.467   +15.6%
+  upper cut  2700 m  n=  647  Low 0.554 -> High 0.470   +15.2%
+  upper cut  2800 m  n=  557  Low 0.554 -> High 0.475   +14.3%
+  upper cut  2900 m  n=  467  Low 0.554 -> High 0.482   +12.9%
+  upper cut  3000 m  n=  395  Low 0.554 -> High 0.491   +11.2%
+  Late Fusion degradation over the sweep: 11.2% to 18.0%
+
+[per-cell complementarity]
+  a claim that two models fail in complementary places is a claim about
+  cells, not about zone means, so it is counted here
+  cells where the graph model beats the convolutional one: 20 of 3965 (0.5%)
+  cells where either base learner is below 0.2 and the fusion reaches 0.5: 807 of 3965 (20.4%)
+  cells where both base learners are below 0.2: 100 (2.5%), of which the fusion reaches 0.5 in 0
+
+--- complementarity check ---
+elevation bands won: ConvLSTM 3/3, GNN-TAT 0/3
+If one architecture wins every stratum, a stratified (switching) ensemble
+degenerates to selecting that single model, which is the H7 outcome.

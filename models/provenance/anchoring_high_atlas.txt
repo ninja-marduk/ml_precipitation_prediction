@@ -1,0 +1,19 @@
+opening remote CHIRPS (lazy): https://data.chc.ucsb.edu/products/CHIRPS-2.0/global_monthly/netcdf/chirps-v2.0.monthly.nc
+547 months (1981-01 to 2026-07)
+restricted to 1 of 8 regions
+  High Atlas (Morocco)         done
+
+EIGHT REGIMES, same protocol as the case study
+                                                   --- pooled R2 ---       |  --- per-cell NSE ---  
+region                    regime                    clim    seas    pers   |    clim    seas    pers
+----------------------------------------------------------------------------------------------------
+High Atlas (Morocco)      Mediterranean winter     0.583   0.249  -0.659   |   0.454   0.019  -0.907
+
+climatology, pooled   : 0.583 to 0.583  (median 0.583)
+climatology, per-cell : 0.454 to 0.454  (median 0.454)
+
+If the pooled spread is wide and the per-cell spread collapses toward
+zero, the pooled result is a statement about how variance partitions,
+not about a ceiling, and the section should say so.
+
+wrote models/provenance/anchoring_eight_regimes.csv

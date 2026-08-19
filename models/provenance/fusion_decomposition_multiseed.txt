@@ -9,6 +9,7 @@ simple average                 0.5565     0.5126     0.5299    0.5330  0.0221
 ConvLSTM recalibrated          0.6445     0.6127     0.5895    0.6156  0.0276
 GNN-TAT recalibrated           0.5515     0.6073     0.6128    0.5905  0.0339
 Ridge over both                0.6469     0.6351     0.6381    0.6400  0.0061
+Ridge, folds shuffled          0.6499     0.6403     0.6396    0.6433  0.0058
 Late Fusion as published       0.6716     0.6564     0.6364    0.6548  0.0176
 
 --- decomposition, paired within seed ---
@@ -29,8 +30,50 @@ paired t (n=3, 2 d.f.)          : 2.32   (|t|>4.30 for p<0.05)
 => the combination term does NOT separate from noise, and the conclusion
    survives the correction to a paired test.
 
+--- seed 42: what Table 'late-fusion-results' must contain ---
+all three rows scored on the same targets, from the same prediction arrays
+row                                   R2     RMSE     MAE     Bias
+------------------------------------------------------------------
+ConvLSTM-Bidir (base learner)      0.632    80.67   58.58   -12.82
+GNN-TAT-GAT (base learner)         0.389   103.95   75.40   -43.68
+Late Fusion, blocked refit         0.647    79.04   58.35    +0.11
+Late Fusion, as released           0.672    76.23       -    -0.00
+The graph row is the corrected array. An earlier version of this table gave
+0.597 for it, which is the pre-correction array, next to a fusion score from
+the corrected one. Mixing the two is what this block exists to prevent.
+
+--- per seed, blocked refit: what Table 'multiseed-ridge' must contain ---
+  seed       R2  RMSE (mm)   w_Conv   w_GNN   b (mm)  bias (mm)
+---------------------------------------------------------------
+    42   0.6469      79.04    0.945   0.249   -15.14      0.109
+   123   0.6351      80.35    0.708   0.648   -17.78     -0.068
+   456   0.6381      80.02    0.521   0.811   -14.78     -0.113
+---------------------------------------------------------------
+  mean   0.6400      79.80    0.725   0.570   -15.90     -0.024
+  s.d.   0.0061       0.68    0.213   0.289     1.63      0.117
+
+convolutional share of the mean weight: 56.0%  (graph 44.0%)
+w_GNN / w_Conv per seed: 0.26, 0.92, 1.56
+base-learner calibration, fitted on the full sample:
+  seed 42: ConvLSTM slope 1.099 intercept -5.38 mm | GNN-TAT slope 1.473 intercept -28.32 mm
+  seed 123: ConvLSTM slope 1.273 intercept -2.40 mm | GNN-TAT slope 1.337 intercept -17.32 mm
+  seed 456: ConvLSTM slope 1.158 intercept -2.05 mm | GNN-TAT slope 1.333 intercept -3.79 mm
+
 --- published meta-learner versus a correctly blocked refit ---
-published (KFold shuffled over cells) : 0.6548 +/- 0.0176
-refit (folds blocked by window)       : 0.6400 +/- 0.0061
-paired difference                     : +0.0148 +/- 0.0143
-The published figure is the one to replace throughout the manuscript.
+published (released meta-learner, shuffled) : 0.6548 +/- 0.0176
+same estimator, folds shuffled over scalars : 0.6433 +/- 0.0058
+same estimator, folds blocked by window     : 0.6400 +/- 0.0061
+total, published minus blocked refit        : +0.0148 +/- 0.0143
+  of which the fold scheme                  : +0.0032 +/- 0.0018
+  of which not the folds                    : +0.0116 +/- 0.0130
+Quote the fold-scheme term as the cost of the fold defect. The total is not
+that cost. The remainder carries two things at once that cannot be separated
+with what is in the archive: the released meta-learner is a regularised fit,
+not this least-squares refit, and it was fitted on the pre-correction graph
+predictions. Its per-seed base-learner scores in v10_summary.json are
+0.5974, 0.4642 and 0.3866 for the graph model, against 0.3893, 0.4970 and
+0.4556 for the corrected arrays used here. The pre-correction per-seed
+arrays were not archived, so the remainder is reported as unattributed.
+
+seed 42 only, blocked refit on the pre-correction graph array: 0.6690
+  against 0.6469 on the corrected array, a difference of +0.0221 from the inputs alone.

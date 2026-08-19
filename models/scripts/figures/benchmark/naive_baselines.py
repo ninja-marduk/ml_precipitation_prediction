@@ -130,9 +130,15 @@ def main():
 
     # --- reconcile: DL models pooled with the SAME R2 definition ---------------
     def load(d):
+        """Load a prediction array from an explicit path.
+
+        This used to fall back from a directory to its SEED42 subdirectory only when
+        the parent held no array. Several V-directories hold both, written at
+        different times, so the fallback silently chose the older one for Late Fusion
+        while other scripts read the seed-42 rerun. Every path below is now explicit
+        and the seed is part of it.
+        """
         d = Path(d)
-        if not (d / "predictions.npy").exists() and (d / "SEED42").exists():
-            d = d / "SEED42"
         p = np.load(d / "predictions.npy").astype(np.float64)
         t = np.load(d / "targets.npy").astype(np.float64)
         if p.ndim == 5:
@@ -149,7 +155,10 @@ def main():
             OUT / "V4_GNN_TAT_Models/map_exports/H12/BASIC/GNN_TAT_GAT",
         "GNN-TAT-GAT (V4, corrected rerun)":
             OUT / "V4_GNN_TAT_Models/SEED42/map_exports/H12/BASIC/GNN_TAT_GAT",
-        "Late Fusion (V10)": OUT / "V10_Late_Fusion",
+        # Late Fusion also exists twice. The root array predates the seed-42 rerun and
+        # scores 0.004 lower; SEED42 is the one every other analysis reads.
+        "Late Fusion (V10, root, superseded)": OUT / "V10_Late_Fusion",
+        "Late Fusion (V10, seed 42)": OUT / "V10_Late_Fusion/SEED42",
     }
     print("\n================ RECONCILED COMPARISON (same pooled R²) ================")
     print(f"{'Method':<36}{'R2(pooled)':>11}{'R2(H=5)':>9}{'R2(H=12)':>10}"

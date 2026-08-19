@@ -1,0 +1,71 @@
+==============================================================================
+1. ARE THE REPORTED STATISTICS ADMISSIBLE?
+==============================================================================
+comparison                    test              stat   verdict
+------------------------------------------------------------------------------
+GNN-TAT vs ConvLSTM (RMSE)    Mann-Whitney     57.00   ok
+GNN-TAT vs ConvLSTM (R2)      Mann-Whitney     72.50   ok
+FNO vs FNO-ConvLSTM           Wilcoxon          0.00   ok
+KCE vs BASIC (GNN)            Wilcoxon          2.10   INADMISSIBLE (W integer in [0, 78])
+KCE vs BASIC (ConvLSTM)       Wilcoxon          0.85   INADMISSIBLE (W integer in [0, 78])
+PAFC vs BASIC (all)           Wilcoxon          1.23   INADMISSIBLE (W integer in [0, 666])
+Stacking vs Best Individual   Mann-Whitney      0.00   ok
+Stratified vs GNN-TAT         Wilcoxon         21.00   ok
+
+3 of 8 rows report a value the named test cannot produce:
+  - KCE vs BASIC (GNN)
+  - KCE vs BASIC (ConvLSTM)
+  - PAFC vs BASIC (all)
+These are z or t statistics reported under a W label, or a different test.
+They must be recomputed from the paired metric files, or the rows removed.
+
+==============================================================================
+2. HOLM-BONFERRONI OVER THE PAIRWISE FAMILY
+==============================================================================
+family size: 8 pairwise tests (the manuscript declares 9; the table contains 8)
+
+comparison                        raw p    Holm p   survives  reported verdict
+----------------------------------------------------------------------------------------
+GNN-TAT vs ConvLSTM (RMSE)       0.0150    0.0900   no        GNN-TAT better
+GNN-TAT vs ConvLSTM (R2)         0.0890    0.3560   no        Not significant
+FNO vs FNO-ConvLSTM              0.0009    0.0072   yes       Hybrid significant
+KCE vs BASIC (GNN)               0.0360    0.1800   no        KCE better
+KCE vs BASIC (ConvLSTM)          0.3950    0.7900   no        Not significant
+PAFC vs BASIC (all)              0.2180    0.6540   no        Not significant
+Stacking vs Best Individual      0.0009    0.0072   yes       Failure confirmed
+Stratified vs GNN-TAT            0.9070    0.9070   no        No improvement
+
+2 of 8 survive Holm.
+
+Rows whose Result column asserts an effect that does not survive:
+  - GNN-TAT vs ConvLSTM (RMSE)     says "GNN-TAT better"
+  - KCE vs BASIC (GNN)             says "KCE better"
+The Result column must state the post-correction verdict.
+
+==============================================================================
+3. NEMENYI CRITICAL DIFFERENCE
+==============================================================================
+reported: CD = 2.83, attached to p = 0.052
+
+   k     N   q_0.05       CD   reading
+--------------------------------------------------------------
+   8    33    3.031    1.828   the k=8 Friedman row above it
+   3    33    2.343    0.577   the 'top 3' the caption implies
+   8    12    3.031    3.031   if N were the 12 configurations
+   3    12    2.343    0.957   k=3 over 12 configurations
+
+None reaches 2.83. State k and N explicitly and report the CD they give.
+A critical-difference procedure also yields a decision, not a single p:
+the p = 0.052 attached to it does not follow from it and should be dropped
+or replaced by per-comparison adjusted p-values.
+
+==============================================================================
+4. WHAT TO WRITE
+==============================================================================
+- recompute the three inadmissible statistics from the paired metric files
+  and report W itself, or drop those rows;
+- correct the declared family size from 9 to 8 in Section 3.8 and
+  in the Conclusions;
+- add a Holm-adjusted column and set Result from it, which flips
+  2 row(s);
+- give k and N for the Nemenyi CD and quote the value they produce.
