@@ -78,18 +78,32 @@ def one_seed(seed):
     coef = fit_affine(Xtr, ytr)
     ridge_oos = r2(apply_affine(Xte, coef), yte)
 
-    # the same split for the single-learner recalibration, so the comparison is fair
     c2 = fit_affine(Xtr[:, :1], ytr)
     c4 = fit_affine(Xtr[:, 1:], ytr)
-    best_recal = max(r2(apply_affine(Xte[:, :1], c2), yte),
-                     r2(apply_affine(Xte[:, 1:], c4), yte))
-    best_raw = max(r2(Xte[:, 0], yte), r2(Xte[:, 1], yte))
+
+    # WHICH base learner is "best" has to be decided on the training windows. An
+    # earlier version of this function took the maximum of the two test scores,
+    # which hands the comparator a selection advantage the combiner is denied and
+    # is the defect this paper exists to expose. Both are computed so the size of
+    # that advantage is visible rather than assumed small.
+    pick = 0 if r2(Xtr[:, 0], ytr) >= r2(Xtr[:, 1], ytr) else 1
+    pick_recal = 0 if (r2(apply_affine(Xtr[:, :1], c2), ytr)
+                       >= r2(apply_affine(Xtr[:, 1:], c4), ytr)) else 1
+
+    best_raw = r2(Xte[:, pick], yte)
+    best_recal = r2(apply_affine(Xte[:, pick_recal:pick_recal + 1],
+                                 c2 if pick_recal == 0 else c4), yte)
+    oracle_raw = max(r2(Xte[:, 0], yte), r2(Xte[:, 1], yte))
+    oracle_recal = max(r2(apply_affine(Xte[:, :1], c2), yte),
+                       r2(apply_affine(Xte[:, 1:], c4), yte))
 
     # in-sample, for the size of the gap
     ridge_in = r2(apply_affine(Xtr, coef), ytr)
 
     return dict(seed=seed, n_train=len(train_w), n_test=len(test_w),
                 ridge_oos=ridge_oos, best_recal=best_recal, best_raw=best_raw,
+                oracle_raw=oracle_raw, oracle_recal=oracle_recal,
+                picked=("ConvLSTM", "GNN-TAT")[pick],
                 ridge_in=ridge_in, coef=coef)
 
 
@@ -116,9 +130,28 @@ def main():
                                    f"{a[:, i].std(ddof=1):>9.4f}" if i == 2 else
                                    f"{a[:, i].std(ddof=1):>17.4f}" for i in range(4)))
 
+    print(f"\nbase learner picked on the training windows: "
+          + ", ".join(f"seed {r['seed']} {r['picked']}" for r in res))
+    orc = np.array([[r["oracle_raw"], r["oracle_recal"]] for r in res])
+    print(f"had it been picked on the test windows instead, the raw comparator would")
+    print(f"read {orc[:, 0].mean():.4f} rather than {a[:, 0].mean():.4f} and the")
+    print(f"recalibrated one {orc[:, 1].mean():.4f} rather than {a[:, 1].mean():.4f}.")
+    print(f"That difference, {orc[:, 0].mean() - a[:, 0].mean():+.4f} on the raw arm, is")
+    print("the value of selecting on the evaluation set, and it is not available to a")
+    print("forecaster. Quoting it would be the same defect this protocol measures.")
+
     incr = a[:, 2] - a[:, 1]
     print(f"\nincremental value of combining over recalibrating, out of sample:")
     print(f"  {incr.mean():+.4f} +/- {incr.std(ddof=1):.4f} (paired across seeds)")
+    dvr = a[:, 2] - a[:, 0]
+    print(f"fusion minus the raw base learner picked on training data:")
+    print(f"  {dvr.mean():+.4f} +/- {dvr.std(ddof=1):.4f} (paired across seeds)")
+    dcal = a[:, 1] - a[:, 0]
+    print(f"recalibration minus the same raw base learner:")
+    print(f"  {dcal.mean():+.4f} +/- {dcal.std(ddof=1):.4f} (paired across seeds)")
+    print("  On this split recalibrating costs rather than gains, which is the")
+    print("  opposite of what the window-blocked column shows and is why the")
+    print("  calibration recommendation is stated as split-dependent.")
     gap = a[:, 3] - a[:, 2]
     print(f"\nin-sample minus out-of-sample for the Ridge: {gap.mean():+.4f}")
     print("That gap is what any cross-validation on overlapping windows understates.")

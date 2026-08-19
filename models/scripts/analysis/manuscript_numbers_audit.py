@@ -220,6 +220,16 @@ def store() -> dict:
         if m:
             s["purged.incr.mean"] = float(m.group(1))
             s["purged.incr.sd"] = float(m.group(2))
+        m = re.search(r"recalibration minus the same raw base learner:\s*\n\s*"
+                      r"([-+]\d\.\d+) \+/- (\d\.\d+)", txt)
+        if m:
+            s["purged.d_recal.mean"] = float(m.group(1))
+            s["purged.d_recal.sd"] = float(m.group(2))
+        m = re.search(r"fusion minus the raw base learner picked on training data:\s*\n"
+                      r"\s*([-+]\d\.\d+) \+/- (\d\.\d+)", txt)
+        if m:
+            s["purged.d_fusion.mean"] = float(m.group(1))
+            s["purged.d_fusion.sd"] = float(m.group(2))
         m = re.search(r"in-sample minus out-of-sample for the Ridge: ([-+]\d\.\d+)", txt)
         if m:
             s["purged.insample_gap"] = float(m.group(1))
@@ -575,9 +585,16 @@ ANCHORS = [
     A("purged.ridge2", "purged.ridge.mean",
       r"best base learner out of sample: (\d+\.\d+) against"),
     A("purged.incr", "purged.incr.mean",
-      r"recalibrating,? (?:computed on the purged split and paired within seed, )?is \$?\+\$?([\d.]+)\\?,?\$?\\pm\$?\\?,?0\.0167", 5e-5),
-    A("purged.incr.abs", "purged.incr.mean",
-      r"combining over recalibrating is \$?\+\$?([\d.]+)", 5e-5),
+      r"paired within seed, is \$\+\$(\d\.\d+)\\,\$\\pm\$\\,0\.036", 5e-4),
+    A("purged.incr.tab", "purged.incr.mean",
+      r"combining\} & & \\textbf\{\$\+\$0\.017 \$\\pm\$ 0\.013\} & & "
+      r"\\textbf\{\$\+\$(\d\.\d+)", 5e-4),
+    A("purged.recal", "purged.recal.mean",
+      r"Recalibrated base learner, same purged split & 0\\% & (\d\.\d+)", 5e-4),
+    A("purged.recal.cost", "purged.d_recal.mean",
+      r"costs (\d\.\d+) out of sample rather than gaining", 5e-4, sign=-1),
+    A("purged.recal.cost2", "purged.d_recal.mean",
+      r"recalibration costs (\d\.\d+) and the ordering", 5e-4, sign=-1),
     A("purged.insample", "purged.ridge_insample.mean",
       r"In-sample the Ridge reaches ([\d.]+)"),
     A("purged.gap", "purged.insample_gap",
@@ -610,11 +627,11 @@ ANCHORS = [
     A("ms.gatbasic.infl", "ms.gnn.GNNTATGAT.BASIC.infl",
       r"overstates it by (\d+\.\d+),"),
     A("ms.median.peaksd", "ms.median_peak_sd",
-      r"median seed spread on \$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$? across all configurations is (\d+\.\d+)"),
+      r"median seed spread on \$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$? across configurations is (\d+\.\d+)"),
     A("rcb.feat.p", "rcb.feat.p", r"\$F_\{1,10\}=8\.63\$, \$p=(\d\.\d+)\$", 5e-4),
     A("rcb.variant.p", "rcb.variant.p", r"\$F_\{2,10\}=1\.49\$, \$p=(\d\.\d+)\$", 5e-4),
     A("rcb.block", "rcb.block_ss_pct",
-      r"block absorbs (\d+\.\d+)\\% of the total sum of squares", 5e-2),
+      r"block absorbs (\d+\.\d+)\\% of the total sum of squares\.", 5e-2),
     A("perm.feat.p", "perm.feat.p", r"permutation & 18 cells & - & ([\d.]+)", 5e-4),
 
     # ---- Late Fusion per horizon, three seeds -------------------------------
@@ -655,9 +672,9 @@ ANCHORS = [
 
     # ---- what the fold defect actually costs -------------------------------
     A("split.fold", "split.fold.mean",
-      r"cost of that defect at (\d\.\d+) in", 5e-4),
+      r"fold scheme accounts for (\d\.\d+) of the", 5e-4),
     A("split.total", "blocked.pub_minus_refit.mean",
-      r"sits (\d\.\d+) above the blocked refit", 5e-4),
+      r"sits (\d\.\d+) above this refit", 5e-4),
     A("split.shuffled", "blocked.ridge_shuffled.mean",
       r"shuffled over flattened scalars gives \$?(\d\.\d+) \\pm 0\.006\$?", 5e-4),
 
@@ -1144,6 +1161,46 @@ def main() -> int:
                + re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title).group(0))
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
+
+    # Two defects that survive a clean compile and are invisible in the source.
+    # A doubled backslash before a letter is a LaTeX command that will not run, or a
+    # line break that has been eaten; either way the source and the intent differ.
+    # An unresolved reference renders as [?] or ?? in the PDF while the log carries
+    # only a warning, so a document can be submitted with every citation missing.
+    # A doubled backslash before a percent sign is the worst of these, because it
+    # reads as a line break followed by a comment: it deletes the rest of the source
+    # line from the rendered document and compiles without an error.
+    COMMANDS = ("subsection|subsubsection|section|paragraph|citep|citet|ref|label|"
+                "textbf|emph|texttt|begin|end|caption|footnotesize|item|url")
+    for name, tex in texts.items():
+        pct = re.findall(r"\\\\(?=%)", tex)
+        cmd = re.findall(r"\\\\(?=(?:" + COMMANDS + r")\b)", tex)
+        if pct:
+            rep.fail(f"{name}: {len(pct)} doubled backslashes before a percent sign. "
+                     f"Each one comments out the rest of its source line and leaves "
+                     f"no error in the log.")
+        if cmd:
+            rep.fail(f"{name}: {len(cmd)} doubled backslashes before a command name, "
+                     f"which will not run")
+        if not pct and not cmd:
+            rep.ok(f"{name}: no doubled command or comment sequences")
+    for name, path in TEX_FILES.items():
+        log = path.with_suffix(".log")
+        if not log.exists():
+            rep.warn(f"{name}: no build log, so unresolved references are unchecked")
+            continue
+        txt = _read(log)
+        undef = set(re.findall(r"Citation `([^']*)' on page", txt)) | \
+            set(re.findall(r"Reference `([^']*)' on page", txt))
+        nobbl = "No file " + path.stem + ".bbl" in txt
+        if undef or nobbl:
+            rep.fail(f"{name}: the last build left "
+                     + (f"{len(undef)} unresolved: {sorted(undef)[:6]}"
+                        if undef else "no bibliography")
+                     + ". These render as [?] or ?? in the PDF and the log records "
+                       "them only as warnings.")
+        else:
+            rep.ok(f"{name}: every reference and citation resolved in the last build")
 
     suspect = S.get("_regime_suspect_names") or []
     if suspect:

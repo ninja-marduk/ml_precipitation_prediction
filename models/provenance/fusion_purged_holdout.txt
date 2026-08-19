@@ -4,14 +4,29 @@ embargo of 11 windows so no training lead reaches a test month
   seed   raw best  recalibrated    Ridge  Ridge in-sample
 ------------------------------------------------------------
     42     0.6945        0.6293   0.6112           0.6893
-   123     0.5757        0.5664   0.5732           0.6878
-   456     0.6472        0.5966   0.6102           0.6708
+   123     0.5757        0.5444   0.5732           0.6878
+   456     0.6472        0.5575   0.6102           0.6708
 ------------------------------------------------------------
-  mean     0.6392        0.5974   0.5982           0.6826
-  s.d.     0.0598        0.0315   0.0216           0.0103
+  mean     0.6392        0.5771   0.5982           0.6826
+  s.d.     0.0598        0.0457   0.0216           0.0103
+
+base learner picked on the training windows: seed 42 ConvLSTM, seed 123 GNN-TAT, seed 456 ConvLSTM
+had it been picked on the test windows instead, the raw comparator would
+read 0.6392 rather than 0.6392 and the
+recalibrated one 0.5974 rather than 0.5771.
+That difference, +0.0000 on the raw arm, is
+the value of selecting on the evaluation set, and it is not available to a
+forecaster. Quoting it would be the same defect this protocol measures.
 
 incremental value of combining over recalibrating, out of sample:
-  +0.0008 +/- 0.0167 (paired across seeds)
+  +0.0212 +/- 0.0361 (paired across seeds)
+fusion minus the raw base learner picked on training data:
+  -0.0409 +/- 0.0405 (paired across seeds)
+recalibration minus the same raw base learner:
+  -0.0621 +/- 0.0293 (paired across seeds)
+  On this split recalibrating costs rather than gains, which is the
+  opposite of what the window-blocked column shows and is why the
+  calibration recommendation is stated as split-dependent.
 
 in-sample minus out-of-sample for the Ridge: +0.0844
 That gap is what any cross-validation on overlapping windows understates.
