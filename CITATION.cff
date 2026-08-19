@@ -1,9 +1,9 @@
-cff-version: 1.2.0
+cff-version: 1.3.0
 message: "If you use this software, please cite it using the metadata below."
 type: software
-title: "ML Precipitation Prediction: Hybrid Deep Learning and the CeilBench v1.0 Evaluation Protocol"
-version: 1.2.0
-date-released: 2026-08-06
+title: "AnchorBench v1.0: an anchored, seed-resolved evaluation protocol for data-driven environmental prediction"
+version: 1.3.0
+date-released: 2026-08-18
 doi: 10.5281/zenodo.21576208
 authors:
   - family-names: "Perez Reyes"
@@ -37,8 +37,8 @@ abstract: >
   FNO-ConvLSTM hybrids), Graph Neural Networks with Temporal Attention (GNN-TAT, with
   GCN/GAT/GraphSAGE encoders), state-space (Mamba) variants, and a Late Fusion Ridge
   ensemble. Validated on the CHIRPS-SRTM dataset (61x65 grid, 518 monthly steps,
-  1981-2024) with multi-seed evaluation across seeds {42, 123, 456}
-  and lead times 1-12. Also implements CeilBench v1.0, an evaluation protocol that
+  1982-2025) with multi-seed evaluation across seeds {42, 123, 456}
+  and lead times 1-12. Also implements AnchorBench v1.0, an evaluation protocol that
   anchors every architecture to zero-cost baselines, separates architectural effect
   from initialisation variance, decomposes ensemble gain into calibration and
   combination terms, tests deseasonalised anomaly skill, and diagnoses the learned

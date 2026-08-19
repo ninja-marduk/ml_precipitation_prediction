@@ -40,7 +40,10 @@ import numpy as np
 warnings.filterwarnings("ignore")
 
 ROOT = Path(__file__).resolve().parents[3]
-NC = ROOT / "data" / "output" / (
+# The working tree holds two byte-identical copies of this file. Every other
+# analysis script reads the one under notebooks/, so this one does too, and the
+# deposit ships a single copy at that path.
+NC = ROOT / "notebooks" / "data" / "output" / (
     "complete_dataset_with_features_with_clusters_elevation_windows_imfs_"
     "with_onehot_elevation_clean.nc"
 )

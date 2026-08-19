@@ -770,8 +770,8 @@ def derived(texts, s):
                     s[f"dem.lf_{short}_pct"] = vals[k]
 
     # Table 'ensemble-failure': the stacking loss against its own baseline row
-    b = cell("paper:tab:ensemble-failure", "ConvLSTM (individual)", 1)
-    v = cell("paper:tab:ensemble-failure", "Stacking Ensemble", 1)
+    b = cell("supp:tab:ensemble-failure", "ConvLSTM (individual)", 1)
+    v = cell("supp:tab:ensemble-failure", "Stacking Ensemble", 1)
     if b and v:
         s["stack.loss_pct"] = 100 * (1 - v / b)
     return s
@@ -811,6 +811,18 @@ FORBIDDEN = [
          pat=r"is worth only \$?\+\$?0\.002 \$?R\^\{?2\}?\$?",
          why="pre-rewrite output of fusion_decomposition.py; the paired term is "
              "-0.025 +- 0.046 and the table already says so"),
+    dict(id="submission.doi_placeholder",
+         pat=r"zenodo\.X+|to be inserted on release",
+         why="GMD requires a persistent DOI at submission, not at acceptance, and "
+             "does not accept an embargo. Make the manual Zenodo deposit (the release "
+             "route cannot carry the inputs, see deposit_manifest.py --build), then "
+             "put the version DOI in \\dataavailabilityDOI"),
+    dict(id="submission.on_request",
+         pat=r"available (?:from|upon) (?:the )?(?:corresponding )?author.{0,20}request|"
+             r"upon reasonable request|available on request",
+         unless=r"Nothing is|not available on request|rather than deposited",
+         why="GMD's code and data policy prohibits this outright for anything needed "
+             "to reproduce a result"),
     dict(id="stale.marginal_threshold",
          pat=r"smaller than the inter-seed standard deviation of the fused model itself",
          why="compares a paired difference against a marginal spread, which is the "
@@ -1040,6 +1052,22 @@ def main() -> int:
     print("=" * 78)
     print("SOURCES  (every row of a released table came from the engine that made it)")
     print("=" * 78)
+    # GMD asks a methods-for-assessment paper to name and version its software tool
+    # in the title, supply the code for review, and carry a code availability
+    # paragraph. The first is checkable here; the others are checked by reading it.
+    paper = texts.get("paper", "")
+    m = re.search(r"\\title\{(.*?)\}\s*\n", paper, re.S)
+    title = m.group(1) if m else ""
+    if not re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title):
+        rep.fail("the title names no software tool with a version. GMD requires "
+                 "'name and version must be identified in the title' for a methods "
+                 "for assessment of models paper. Title is: " + title[:90])
+    else:
+        rep.ok("title carries a tool name and version: "
+               + re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title).group(0))
+    if not re.search(r"\\codedataavailability\{", paper):
+        rep.fail("no code and data availability section; GMD requires one")
+
     suspect = S.get("_regime_suspect_names") or []
     if suspect:
         rep.fail("anchoring_eight_regimes.csv: " + ", ".join(suspect)
@@ -1060,6 +1088,11 @@ def main() -> int:
         hits = []
         for fname, tex in texts.items():
             for m in re.finditer(f["pat"], tex, re.S):
+                # a prohibition can have an exemption for the sentence that denies
+                # the very thing it looks for, which otherwise reads as a violation
+                ctx = tex[max(0, m.start() - 120):m.end() + 40]
+                if f.get("unless") and re.search(f["unless"], ctx, re.S):
+                    continue
                 hits.append(f"{fname}:{line_of(tex, m.start())}")
         if hits:
             rep.fail(f"{f['id']}: still present at " + ", ".join(hits)
