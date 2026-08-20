@@ -23,8 +23,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 NB = ROOT / "models" / "base_models_gnn_tat_v4.ipynb"
 
-# measured on the corrected GAT/BASIC runs, A100-SXM4-80GB
-SEC_PER_EPOCH = 321.7
+# Measured per operator on the full grid, A100-SXM4-80GB, from the first p30 chunk
+# (seed 42, BASIC). The three differ by a factor of five: an epoch is dominated by
+# message passing over 500,000 edges, and GAT carries four attention heads through
+# it. An earlier projection charged GAT's rate to all three and overestimated the
+# job by a factor of two.
+SEC_PER_EPOCH = {"GAT": 334.0, "GCN": 121.8, "SAGE": 65.2}
 # best epoch observed per cell in the archived runs, used to project the stop
 BEST_EPOCH = {
     ("GAT", "BASIC"): [3, 4, 5], ("GAT", "PAFC"): [7, 25],
@@ -135,7 +139,7 @@ def project_cost(ns, cfg):
             if not be:
                 continue
             ep = min(cfg["epochs"], sum(b + cfg["patience"] + 1 for b in be) / len(be))
-            h = ep * SEC_PER_EPOCH / 3600
+            h = ep * SEC_PER_EPOCH[var] / 3600
             n = len(ns["PLAN_SEEDS"])
             rows.append((f"{var}/{feat}", ep, h, h * n))
             total += h * n
@@ -201,7 +205,8 @@ def report(plan_name=None, verbose=True):
             for label, ep, h, ht in rows:
                 print(f"  {label:<12}{ep:>8.0f}{h:>9.1f}{ht:>10.1f}")
             print(f"  {'':<12}{'':>8}{'TOTAL':>9}{total:>10.1f} A100-hours")
-            print("  (upper bound: the measured rate is GAT's; GCN and SAGE are cheaper)")
+            print("  (per-operator rates measured on the full grid; "
+                  "epochs from the stopping epochs seen so far)")
         elif cfg["light_mode"]:
             print()
             print("  light mode: 25 nodes instead of 3,965, so this checks the code")
