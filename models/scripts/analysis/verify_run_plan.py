@@ -142,6 +142,32 @@ def project_cost(ns, cfg):
     return rows, total
 
 
+STRUCTURAL = [
+    ("every GNN_TAT construction site takes its chunk size from CONFIG",
+     lambda cells: not re.search(
+         r"GNN_CHUNK_SIZE\s*=\s*\d+", "\n".join(cells))),
+    ("the graph correlation window is the training period",
+     lambda cells: "_corr_series = precip_series[:split_idx]" in cells[13]),
+    ("the leakage diagnostic is still reachable, so the fix stays measurable",
+     lambda cells: "ABLATION_LEAKED_GRAPH" in cells[13]),
+    ("the scheduler reads lr_patience rather than deriving it",
+     lambda cells: "config.get('lr_patience'" in cells[21]),
+    ("a plan override that names an unknown setting is rejected",
+     lambda cells: "which does not exist" in cells[8]),
+]
+
+
+def check_structural(cells, verbose=True):
+    bad = []
+    for desc, fn in STRUCTURAL:
+        ok = fn(cells)
+        if not ok:
+            bad.append(desc)
+        if verbose:
+            print(("  ok   " if ok else "  FAIL ") + desc)
+    return bad
+
+
 def report(plan_name=None, verbose=True):
     ns, cfg, _ = resolve(plan_name)
     name = ns["RUN_PLAN"]
@@ -213,6 +239,10 @@ def main():
         return 1 if bad else 0
 
     _, _, fails = report(a.plan)
+    _, _, cells = resolve(a.plan)
+    print()
+    print("  --- notebook structure, independent of the plan ---")
+    fails = fails + check_structural(cells)
     print()
     print(f"{len(fails)} invariant(s) violated")
     return 1 if fails else 0
