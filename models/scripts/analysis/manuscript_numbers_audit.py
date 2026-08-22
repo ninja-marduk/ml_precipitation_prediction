@@ -844,7 +844,8 @@ ANCHORS = [
 
     # ---- the two prediction arrays for one model ---------------------------
     A("gnn.pooled.released", "pooled33.gnn_released.r2",
-      r"standalone GNN-TAT achieves \$?R\^\{?2\}?\$?=(\d\.\d+)"),
+      r"standalone GNN-TAT figure of (\d\.\d+) that an earlier version",
+      5e-4, f=("supp",)),
     # the anchor comparison now quotes the three-seed blocked mean, which is the
     # estimate computed on the anchor's own targets; the released fit (0.672)
     # survives only in the figure caption that records the earlier comparison
