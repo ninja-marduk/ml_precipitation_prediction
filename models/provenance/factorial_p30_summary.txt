@@ -1,0 +1,73 @@
+==============================================================================
+CORRECTED FACTORIAL, mean R2 over the twelve horizons
+==============================================================================
+cell             seed 42   seed 123   seed 456     mean    s.d.   infl.
+-----------------------------------------------------------------------
+GAT/BASIC         0.3882     0.4952     0.4552   0.4462  0.0541  0.0470
+GAT/PAFC          0.5374     0.4846     0.5083   0.5101  0.0264  0.0375
+GCN/BASIC         0.4387     0.3652     0.4440   0.4160  0.0441  0.0422
+GCN/PAFC          0.4869     0.4251     0.5479   0.4866  0.0614  0.0436
+SAGE/BASIC        0.4480     0.4483     0.3083   0.4015  0.0807  0.0507
+SAGE/PAFC         0.4715     0.4366     0.6134   0.5072  0.0936  0.1140
+
+ranking by expectation over the seeds available:
+  1. GAT/PAFC     0.5101 +/- 0.0264  (n=3)
+  2. SAGE/PAFC    0.5072 +/- 0.0936  (n=3)
+  3. GCN/PAFC     0.4866 +/- 0.0614  (n=3)
+  4. GAT/BASIC    0.4462 +/- 0.0541  (n=3)
+  5. GCN/BASIC    0.4160 +/- 0.0441  (n=3)
+  6. SAGE/BASIC   0.4015 +/- 0.0807  (n=3)
+
+==============================================================================
+PAIRED COMPARISONS  (the dispersion of the difference, not of either arm)
+==============================================================================
+seeds common to every cell: [42, 123, 456]
+comparison                     paired      sd  marginal       t   verdict
+------------------------------------------------------------------------------
+GAT/PAFC vs SAGE/BASIC        +0.1086  0.0835    0.0850    2.25   unresolved
+SAGE/BASIC vs SAGE/PAFC       -0.1057  0.1736    0.1236   -1.05   unresolved
+GAT/PAFC vs GCN/BASIC         +0.0941  0.0279    0.0514    5.85   resolved
+GCN/BASIC vs SAGE/PAFC        -0.0912  0.0704    0.1035   -2.24   unresolved
+GCN/PAFC vs SAGE/BASIC        +0.0851  0.1374    0.1014    1.07   unresolved
+GCN/BASIC vs GCN/PAFC         -0.0707  0.0294    0.0756   -4.17   unresolved
+GAT/BASIC vs GAT/PAFC         -0.0639  0.0804    0.0602   -1.38   unresolved
+GAT/BASIC vs SAGE/PAFC        -0.0610  0.1101    0.1081   -0.96   unresolved
+GAT/BASIC vs SAGE/BASIC       +0.0447  0.1034    0.0972    0.75   unresolved
+GAT/BASIC vs GCN/PAFC         -0.0404  0.0958    0.0818   -0.73   unresolved
+GAT/BASIC vs GCN/BASIC        +0.0302  0.0918    0.0697    0.57   unresolved
+GAT/PAFC vs GCN/PAFC          +0.0235  0.0548    0.0669    0.74   unresolved
+GCN/PAFC vs SAGE/PAFC         -0.0205  0.0412    0.1120   -0.86   unresolved
+GCN/BASIC vs SAGE/BASIC       +0.0145  0.1113    0.0920    0.23   unresolved
+GAT/PAFC vs SAGE/PAFC         +0.0029  0.0940    0.0973    0.05   unresolved
+
+  |t| > 4.303 is required at alpha=0.05 with n=3. With 3 seeds that bar is very high, which is the point:
+  a crossed design with few seeds resolves few differences, and the
+  protocol asks that the rest be reported as unresolved rather than ranked.
+
+==============================================================================
+AGAINST THE PRE-CORRECTION FACTORIAL, per cell and per seed
+==============================================================================
+cell           seed   archived  corrected    change
+---------------------------------------------------
+GAT/BASIC        42     0.5963     0.3882   -0.2081
+GAT/BASIC       123     0.4624     0.4952   +0.0328
+GAT/BASIC       456     0.3852     0.4552   +0.0700
+GAT/PAFC         42     0.5531     0.5374   -0.0157
+GAT/PAFC        123     0.5566     0.4846   -0.0719
+GAT/PAFC        456     0.5225     0.5083   -0.0141
+GCN/BASIC        42     0.4926     0.4387   -0.0538
+GCN/BASIC       123     0.5340     0.3652   -0.1688
+GCN/BASIC       456     0.4794     0.4440   -0.0353
+GCN/PAFC         42     0.5912     0.4869   -0.1043
+GCN/PAFC        123     0.5525     0.4251   -0.1274
+GCN/PAFC        456     0.4693     0.5479   +0.0786
+SAGE/BASIC       42     0.3809     0.4480   +0.0671
+SAGE/BASIC      123     0.3989     0.4483   +0.0494
+SAGE/BASIC      456     0.4337     0.3083   -0.1254
+SAGE/PAFC        42     0.5027     0.4715   -0.0312
+SAGE/PAFC       123     0.5354     0.4366   -0.0988
+SAGE/PAFC       456     0.5639     0.6134   +0.0495
+
+==============================================================================
+COMPLETE: 6 cells on 3 seeds, one protocol.
+==============================================================================
