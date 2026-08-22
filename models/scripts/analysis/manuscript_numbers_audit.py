@@ -1412,6 +1412,32 @@ def main() -> int:
                      f"citation and \\dataavailabilityDOI must be set together")
         else:
             rep.ok("refs.bib carries no placeholder DOI")
+
+        # A fabricated reference passes every check in this file, because
+        # nothing here reads the bibliography's own claims. Two of them did:
+        # one DOI resolved to an unrelated paper and was cited four times, and
+        # the other did not resolve at all. The resolver check lives in
+        # verify_bibliography.py because it needs the network; this records
+        # whether it has been run against the current file and whether it
+        # passed, so a stale pass cannot be mistaken for a current one.
+        rec = PROV / "bibliography_check.txt"
+        if not rec.exists():
+            rep.fail("no bibliography_check.txt; run verify_bibliography.py, "
+                     "which resolves every DOI against its registrant record")
+        elif rec.stat().st_mtime < bib.stat().st_mtime:
+            rep.fail("bibliography_check.txt predates refs.bib; the DOI "
+                     "resolution has not been run since the file last changed")
+        else:
+            txt = _read(rec)
+            m = re.search(r"(\d+) mismatched, (\d+) unresolved", txt)
+            if not m:
+                rep.fail("bibliography_check.txt has no summary line")
+            elif int(m.group(1)):
+                rep.fail(f"{m.group(1)} bibliography entries have a DOI that "
+                         f"describes a different paper")
+            else:
+                rep.ok(f"bibliography resolved: {m.group(2)} unresolved "
+                       f"(the pending deposit DOI), 0 mismatched")
     else:
         rep.fail(f"no bibliography at {bib}")
 
