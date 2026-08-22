@@ -393,6 +393,18 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
+    # -- measured compute, from the instrumented training loop ---------------
+    p = PROV / "compute_cost.csv"
+    if p.exists():
+        for r in csv.DictReader(p.open(encoding="utf-8")):
+            k = f"cost.{r['variant']}"
+            for f in ("hours_total", "min_per_run_lo", "min_per_run_hi",
+                      "peak_gb_lo", "peak_gb_hi", "sec_per_epoch_mean"):
+                if r[f]:
+                    s[f"{k}.{f}"] = float(r[f])
+    else:
+        missing.append(str(p))
+
     # -- corrected factorial at the twelfth lead, for the supplement table ----
     p = PROV / "factorial_p30_lead12.csv"
     if p.exists():
@@ -713,6 +725,44 @@ ANCHORS = [
       r"to \$\\pm\$(\d\.\d+) for GraphSAGE with PAFC", 5e-4),
     A("p30.pafc.spread", "p30.pafc_spread",
       r"against a (\d\.\d+) gap between the best and worst cell", 5e-4),
+
+    # ---- measured compute ---------------------------------------------------
+    A("cost.total", "cost.TOTAL.hours_total",
+      r"factorial's (\d+\.\d+) GPU-hours", 5e-3),
+    A("cost.total2", "cost.TOTAL.hours_total",
+      r"The factorial cost (\d+\.\d+) GPU-hours in total", 5e-3),
+    A("cost.gat.h", "cost.GAT.hours_total",
+      r"GAT consumes (\d+\.\d+) of the factorial", 5e-3),
+    A("cost.sage.h", "cost.SAGE.hours_total",
+      r"GPU-hours against (\d+\.\d+) for GraphSAGE", 5e-3),
+    A("cost.gat.sec", "cost.GAT.sec_per_epoch_mean",
+      r"takes (\d+)\\,s per epoch", 0.5),
+    A("cost.gat.lo", "cost.GAT.min_per_run_lo",
+      r"(\d+) to \d+\\,min per run", 0.5),
+    A("cost.gat.hi", "cost.GAT.min_per_run_hi",
+      r"\d+ to (\d+)\\,min per run", 0.5),
+    A("cost.gat.gblo", "cost.GAT.peak_gb_lo",
+      r"holds (\d+\.\d+) to \d+\.\d+\\,GB of GPU memory", 5e-2),
+    A("cost.gat.gbhi", "cost.GAT.peak_gb_hi",
+      r"holds \d+\.\d+ to (\d+\.\d+)\\,GB of GPU memory", 5e-2),
+    A("cost.s18.gat.lo", "cost.GAT.min_per_run_lo",
+      r"\\textbf\{GNN-TAT \(GAT\)\}.*?\\textbf\{(\d+)-\d+ min\}", 0.5,
+      f=("supp",)),
+    A("cost.s18.gat.hi", "cost.GAT.min_per_run_hi",
+      r"\\textbf\{GNN-TAT \(GAT\)\}.*?\\textbf\{\d+-(\d+) min\}", 0.5,
+      f=("supp",)),
+    A("cost.s18.gcn.lo", "cost.GCN.min_per_run_lo",
+      r"\\textbf\{GNN-TAT \(GCN\)\}.*?\\textbf\{(\d+)-\d+ min\}", 0.5,
+      f=("supp",)),
+    A("cost.s18.gcn.hi", "cost.GCN.min_per_run_hi",
+      r"\\textbf\{GNN-TAT \(GCN\)\}.*?\\textbf\{\d+-(\d+) min\}", 0.5,
+      f=("supp",)),
+    A("cost.s18.sage.lo", "cost.SAGE.min_per_run_lo",
+      r"\\textbf\{GNN-TAT \(GraphSAGE\)\}.*?\\textbf\{(\d+)-\d+ min\}", 0.5,
+      f=("supp",)),
+    A("cost.s18.sage.hi", "cost.SAGE.min_per_run_hi",
+      r"\\textbf\{GNN-TAT \(GraphSAGE\)\}.*?\\textbf\{\d+-(\d+) min\}", 0.5,
+      f=("supp",)),
     A("p30perm.feat.supp", "p30perm.feat.p",
       r"Bundle main effect & permutation & 18 cells & - & ([\d.]+)", 5e-4,
       f=("supp",)),

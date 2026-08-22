@@ -1,0 +1,44 @@
+18 instrumented runs on NVIDIA A100-SXM4-40GB, NVIDIA A100-SXM4-80GB
+
+========================================================================
+PER OPERATOR  (mean over the six runs of each: 2 bundles x 3 seeds)
+========================================================================
+operator     params   epochs   s/epoch    hours   peak GB   total h
+------------------------------------------------------------------------
+GAT          97,932     34.2     332.6     3.16      29.2     18.94
+GCN          97,676     32.7     120.8     1.10      20.4      6.58
+SAGE        105,868     32.8      65.1     0.59      20.3      3.56
+------------------------------------------------------------------------
+total                                                         29.08
+
+========================================================================
+PER SEED
+========================================================================
+  seed 42        9.60 h
+  seed 123       9.46 h
+  seed 456      10.02 h
+
+========================================================================
+EARLY STOPPING
+========================================================================
+  patience was set to 30; the best epoch is 1-6 across
+  the eighteen runs and no run reached the epoch cap, so the patience
+  never bound. Runs ended between epoch 31 and 36.
+  25.92 of the 29.08 hours (89%) were spent after the best epoch,
+  which is the price of the patience and is what buys the guarantee
+  that the stopping point was not an artefact of a short window.
+
+========================================================================
+BUDGET
+========================================================================
+  29.08 GPU-hours on NVIDIA A100-SXM4-40GB and NVIDIA A100-SXM4-80GB
+    15 runs,  24.30 h on NVIDIA A100-SXM4-40GB
+     3 runs,   4.77 h on NVIDIA A100-SXM4-80GB
+  The sessions were allocated different cards. Every operator ran on
+  both, and the faster card is 5% faster at most, so the
+  totals are not distorted by which session got which allocation.
+  no rate given; rerun with --usd-per-gpu-hour to convert.
+  peak device memory 29.2 GB, so a 40 GB card is
+  the smallest that runs this configuration.
+
+wrote D:\github.com\ninja-marduk\ml_precipitation_prediction\models\provenance\compute_cost.csv
