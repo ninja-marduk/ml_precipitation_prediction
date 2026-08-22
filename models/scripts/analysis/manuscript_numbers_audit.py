@@ -379,6 +379,27 @@ def store() -> dict:
             float(r["r2_peak_sd"]) for r in rows)
         s["p30.max_inflation"] = max(float(r["inflation"]) for r in rows)
         s["p30.n_configs"] = float(len(rows))
+        # the bundle effect as the text states it: each bundle averaged over
+        # its three operators, and the two averages differenced
+        by_bundle = {b: [float(r["r2_mean"]) for r in rows if r["features"] == b]
+                     for b in ("BASIC", "PAFC")}
+        for b, v in by_bundle.items():
+            s[f"p30.{b}.mean_over_variants"] = statistics.mean(v)
+        s["p30.bundle_gap"] = (s["p30.PAFC.mean_over_variants"]
+                               - s["p30.BASIC.mean_over_variants"])
+        s["p30.pafc_spread"] = max(by_bundle["PAFC"]) - min(by_bundle["PAFC"])
+        s["p30.max_mean_sd"] = max(float(r["r2_mean_sd"]) for r in rows)
+        s["p30.min_mean_sd"] = min(float(r["r2_mean_sd"]) for r in rows)
+    else:
+        missing.append(str(p))
+
+    # -- corrected factorial at the twelfth lead, for the supplement table ----
+    p = PROV / "factorial_p30_lead12.csv"
+    if p.exists():
+        for r in csv.DictReader(p.open(encoding="utf-8")):
+            k = f"p30l12.{r['variant']}.{r['feat']}"
+            for f in ("R^2_mean", "R^2_std", "RMSE_mean", "RMSE_std"):
+                s[f"{k}.{f}"] = float(r[f])
     else:
         missing.append(str(p))
 
@@ -680,7 +701,36 @@ ANCHORS = [
       r"at \$p=(\d\.\d+)\$ against \$p=\d\.\d+\$ for the variant", 5e-4),
     A("p30perm.variant", "p30perm.variant.p",
       r"against \$p=(\d\.\d+)\$ for the variant", 5e-4),
-    A("perm.feat.p", "perm.feat.p", r"permutation & 18 cells & - & ([\d.]+)", 5e-4),
+    A("p30.bundle.gap", "p30.bundle_gap",
+      r"advantage of PAFC over BASIC is \$(\d\.\d+)\$ in \$R\^2\$", 5e-4),
+    A("p30.pafc.mean", "p30.PAFC.mean_over_variants",
+      r"\(\$(\d\.\d+)\$ against \$\d\.\d+\$ on the horizon mean\)", 5e-4),
+    A("p30.basic.mean", "p30.BASIC.mean_over_variants",
+      r"\(\$\d\.\d+\$ against \$(\d\.\d+)\$ on the horizon mean\)", 5e-4),
+    A("p30.spread.min", "p30.min_mean_sd",
+      r"Seed spreads run from \$\\pm\$(\d\.\d+) for GAT with PAFC", 5e-4),
+    A("p30.spread.max", "p30.max_mean_sd",
+      r"to \$\\pm\$(\d\.\d+) for GraphSAGE with PAFC", 5e-4),
+    A("p30.pafc.spread", "p30.pafc_spread",
+      r"against a (\d\.\d+) gap between the best and worst cell", 5e-4),
+    A("p30perm.feat.supp", "p30perm.feat.p",
+      r"Bundle main effect & permutation & 18 cells & - & ([\d.]+)", 5e-4,
+      f=("supp",)),
+    A("p30perm.variant.supp", "p30perm.variant.p",
+      r"Variant main effect & permutation & 18 cells & - & ([\d.]+)", 5e-4,
+      f=("supp",)),
+    A("p30rcb.feat.p.supp", "p30rcb.feat.p",
+      r"Bundle main effect & RCB ANOVA & 18 cells & \$F\$=[\d.]+ & ([\d.]+)",
+      5e-4, f=("supp",)),
+    A("p30rcb.variant.p.supp", "p30rcb.variant.p",
+      r"Variant main effect & RCB ANOVA & 18 cells & \$F\$=[\d.]+ & ([\d.]+)",
+      5e-4, f=("supp",)),
+    A("p30rcb.feat.F.supp", "p30rcb.feat.F",
+      r"Bundle main effect & RCB ANOVA & 18 cells & \$F\$=([\d.]+)", 5e-3,
+      f=("supp",)),
+    A("p30rcb.variant.F.supp", "p30rcb.variant.F",
+      r"Variant main effect & RCB ANOVA & 18 cells & \$F\$=([\d.]+)", 5e-3,
+      f=("supp",)),
 
     # ---- Late Fusion per horizon, three seeds -------------------------------
     A("lfh.min", "lfh.min", r"ranging from (\d+\.\d+) at H=12"),
@@ -863,6 +913,25 @@ ANCHORS = [
     A("conformal.ntest", "conformal.n_test",
       r"for calibration and (\d+) for evaluation", 0.5),
 ]
+
+# The supplement's lead-12 factorial table, one anchor per cell per metric. The
+# rows are generated rather than written out because there are twenty-four of
+# them and a hand-typed list is exactly the thing this tool exists to catch.
+_M = r"(?:\\mathbf\{)?"       # the best cell in each column is bolded
+_S17 = _M + r"%s \\pm %s\}?\$\s*& \$" + _M + r"%s \\pm %s\}?\$"
+_NUM = (r"\d\.\d+", r"\d\.\d+", r"\d+\.\d+", r"\d+\.\d+")
+_FIELDS = ("R^2_mean", "R^2_std", "RMSE_mean", "RMSE_std")
+
+for _b, _v, _lab in (("BASIC", "GAT", "GAT"), ("BASIC", "GCN", "GCN"),
+                     ("BASIC", "SAGE", "GraphSAGE"), ("PAFC", "GAT", "GAT"),
+                     ("PAFC", "GCN", "GCN"), ("PAFC", "SAGE", "GraphSAGE")):
+    for _i, _f in enumerate(_FIELDS):
+        # capture the i-th number, match the other three
+        _slots = [f"({n})" if j == _i else n for j, n in enumerate(_NUM)]
+        _pat = (r"^" + _b + r"\s*& " + _lab + r"\s*& \$"
+                + _S17 % tuple(_slots))
+        ANCHORS.append(A(f"s17.{_v}.{_b}.{_f}", f"p30l12.{_v}.{_b}.{_f}", _pat,
+                         5e-3 if "RMSE" in _f else 5e-4, f=("supp",)))
 
 
 def derived(texts, s):

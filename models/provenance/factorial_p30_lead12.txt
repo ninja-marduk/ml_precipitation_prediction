@@ -1,0 +1,30 @@
+lead H=12, recomputed from the prediction arrays (CSV disagreement in brackets)
+
+bundle variant       R2 mean      sd  RMSE mean      sd
+-------------------------------------------------------
+BASIC  GAT            0.4461  0.0782      98.44    6.83
+BASIC  GCN            0.4331  0.1006      99.49    8.75
+BASIC  GraphSAGE      0.3914  0.0916     103.16    7.71
+PAFC   GAT            0.4904  0.0564      94.47    5.30
+PAFC   GCN            0.4399  0.0742      98.99    6.70
+PAFC   GraphSAGE      0.4829  0.0831      95.05    7.86
+
+largest CSV-vs-array disagreement in R2: 0.0000
+wrote D:\github.com\ninja-marduk\ml_precipitation_prediction\.docs\papers\5\data\factorial_feat_variant_p30.csv
+wrote D:\github.com\ninja-marduk\ml_precipitation_prediction\models\provenance\factorial_p30_lead12.csv
+
+supplement table body:
+BASIC & GAT        & $0.446 \pm 0.078$               & $98.44 \pm 6.83$ \\
+BASIC & GCN        & $0.433 \pm 0.101$               & $99.49 \pm 8.75$ \\
+BASIC & GraphSAGE  & $0.391 \pm 0.092$               & $103.16 \pm 7.71$ \\
+PAFC  & GAT        & $\mathbf{0.490 \pm 0.056}$      & $\mathbf{94.47 \pm 5.30}$ \\
+PAFC  & GCN        & $0.440 \pm 0.074$               & $98.99 \pm 6.70$ \\
+PAFC  & GraphSAGE  & $0.483 \pm 0.083$               & $95.05 \pm 7.86$ \\
+
+per-cell seed range at this lead:
+  BASIC GAT        sd=0.078  range 0.356-0.495
+  BASIC GCN        sd=0.101  range 0.323-0.520
+  BASIC GraphSAGE  sd=0.092  range 0.291-0.471
+  PAFC  GAT        sd=0.056  range 0.444-0.553
+  PAFC  GCN        sd=0.074  range 0.390-0.525
+  PAFC  GraphSAGE  sd=0.083  range 0.428-0.578

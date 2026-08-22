@@ -17,7 +17,11 @@ import numpy as np
 import pandas as pd
 
 REPO = Path(__file__).resolve().parents[2]
-AGG_CSV = REPO / '.docs' / 'papers' / '5' / 'data' / 'factorial_feat_variant.csv'
+# The corrected-pipeline aggregate, written by
+# models/scripts/analysis/factorial_p30_lead12.py. The archived aggregate
+# (factorial_feat_variant.csv) is kept beside it and is what the superseded
+# version of this figure was drawn from; it is not the figure the paper shows.
+AGG_CSV = REPO / '.docs' / 'papers' / '5' / 'data' / 'factorial_feat_variant_p30.csv'
 FIG_PNG = REPO / '.docs' / 'papers' / '5' / 'figures' / 'factorial_feat_variant_r2.png'
 FIG_PDF = REPO / '.docs' / 'papers' / '5' / 'figures' / 'factorial_feat_variant_r2.pdf'
 
@@ -81,15 +85,17 @@ def run(args: argparse.Namespace) -> int:
     ax.set_ylabel(r'$R^2$ at H=12 (mean $\pm$ s.d. across 3 seeds)')
 
     # Y-axis limits with padding above the highest error bar
-    y_top = max(df['R^2_mean'] + df['R^2_std']) + 0.08
+    y_top = max(df['R^2_mean'] + df['R^2_std']) + 0.04
     y_bot = max(0.0, min(df['R^2_mean'] - df['R^2_std']) - 0.05)
     ax.set_ylim(y_bot, y_top)
     ax.grid(axis='y', alpha=0.25, linewidth=0.6)
     ax.set_axisbelow(True)
 
-    # Legend: feature bundles
-    ax.legend(title='Feature bundle', loc='upper right', frameon=True,
-              framealpha=0.95)
+    # Legend above the axes: inside the frame it sits on the rightmost bar's
+    # value label, and the seed spreads are wide enough that no corner is free.
+    ax.legend(title='Feature bundle', ncol=2, loc='lower center',
+              bbox_to_anchor=(0.5, 1.01), frameon=False,
+              columnspacing=1.6, handlelength=1.4)
 
 
     plt.tight_layout()
