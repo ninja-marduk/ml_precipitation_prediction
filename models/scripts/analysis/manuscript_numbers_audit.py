@@ -364,7 +364,25 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
-    # -- multi-seed factorial -------------------------------------------------
+    # -- the corrected factorial, which supersedes the archived one -----------
+    p = PROV / "benchmark_p30.csv"
+    if p.exists():
+        rows = list(csv.DictReader(p.open(encoding="utf-8")))
+        for r in rows:
+            k = f"p30.{r['variant']}.{r['features']}"
+            for f in ("r2_mean", "r2_mean_sd", "r2_peak", "r2_peak_sd",
+                      "rmse", "rmse_sd", "bias", "inflation"):
+                s[f"{k}.{f}"] = float(r[f])
+        s["p30.median_inflation"] = statistics.median(
+            float(r["inflation"]) for r in rows)
+        s["p30.median_peak_sd"] = statistics.median(
+            float(r["r2_peak_sd"]) for r in rows)
+        s["p30.max_inflation"] = max(float(r["inflation"]) for r in rows)
+        s["p30.n_configs"] = float(len(rows))
+    else:
+        missing.append(str(p))
+
+    # -- multi-seed factorial, archived: kept for the historical claims -------
     p = PROV / "benchmark_multiseed.csv"
     if p.exists():
         rows = list(csv.DictReader(p.open(encoding="utf-8")))
@@ -385,7 +403,30 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
-    # -- blocked factorial ----------------------------------------------------
+    # -- blocked factorial, corrected pipeline --------------------------------
+    p = PROV / "factorial_p30_blocked.txt"
+    if p.exists():
+        txt = _read(p)
+        for src, key in (("feature bundle", "feat"), ("variant", "variant"),
+                         ("feature x variant", "inter"), ("block (seed)", "block")):
+            m = re.search(r"^" + re.escape(src) + r"\s+(.*)$", txt, re.M)
+            if m:
+                v = _cols(m.group(1))
+                if len(v) >= 3:
+                    s[f"p30rcb.{key}.F"] = v[-2]
+                    s[f"p30rcb.{key}.p"] = v[-1]
+        for src, key in (("bundle", "feat"), ("variant", "variant")):
+            m = re.search(r"^\s+" + src + r"\s+observed spread [\d.]+\s+p = ([\d.]+)",
+                          txt, re.M)
+            if m:
+                s[f"p30perm.{key}.p"] = float(m.group(1))
+        m = re.search(r"block absorbs ([\d.]+)% of the total", txt)
+        if m:
+            s["p30rcb.block_ss_pct"] = float(m.group(1))
+    else:
+        missing.append(str(p))
+
+    # -- blocked factorial, archived: kept for the historical comparison ------
     p = PROV / "factorial_blocked_analysis.txt"
     if p.exists():
         txt = _read(p)
@@ -620,18 +661,25 @@ ANCHORS = [
     A("dec.incr.blocked", "blocked.d_incr.mean",
       r"Incremental value of combining\}? & & \\textbf\{\$\+\$([\d.]+)"),
     # ---- the seed-resolved factorial ---------------------------------------
-    A("ms.gat.pafc.peak", "ms.gnn.GNNTATGAT.PAFC.peak",
-      r"GAT with PAFC features \(\$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$?=(\d+\.\d+)\)"),
-    A("ms.median.infl", "ms.median_inflation",
-      r"median of (\d+\.\d+) across the eleven"),
-    A("ms.gatbasic.infl", "ms.gnn.GNNTATGAT.BASIC.infl",
-      r"overstates it by (\d+\.\d+),"),
-    A("ms.median.peaksd", "ms.median_peak_sd",
-      r"median seed spread on \$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$? across configurations is (\d+\.\d+)"),
-    A("rcb.feat.p", "rcb.feat.p", r"\$F_\{1,10\}=8\.63\$, \$p=(\d\.\d+)\$", 5e-4),
-    A("rcb.variant.p", "rcb.variant.p", r"\$F_\{2,10\}=1\.49\$, \$p=(\d\.\d+)\$", 5e-4),
-    A("rcb.block", "rcb.block_ss_pct",
+    A("p30.gat.pafc.peak", "p30.GAT.PAFC.r2_peak",
+      r"GAT with PAFC features \(\$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$?=(\d+\.\d+)\)", 5e-4),
+    A("p30.median.infl", "p30.median_inflation",
+      r"the median across the six configurations is (\d+\.\d+)", 5e-4),
+    A("p30.max.infl", "p30.max_inflation",
+      r"with the worst at (\d+\.\d+) for SAGE with PAFC", 5e-4),
+    A("p30.gatbasic.infl", "p30.GAT.BASIC.inflation",
+      r"Quoting its best seed overstates it by (\d+\.\d+),", 5e-4),
+    A("p30.median.peaksd", "p30.median_peak_sd",
+      r"median seed spread on \$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$? across configurations is (\d+\.\d+)", 5e-4),
+    A("p30rcb.feat.p", "p30rcb.feat.p", r"\$F_\{1,10\}=6\.40\$, \$p=(\d\.\d+)\$", 5e-4),
+    A("p30rcb.variant.p", "p30rcb.variant.p",
+      r"\$F_\{2,10\}=0\.29\$, \$p=(\d\.\d+)\$", 5e-4),
+    A("p30rcb.block", "p30rcb.block_ss_pct",
       r"block absorbs (\d+\.\d+)\\% of the total sum of squares\.", 5e-2),
+    A("p30perm.feat", "p30perm.feat.p",
+      r"at \$p=(\d\.\d+)\$ against \$p=\d\.\d+\$ for the variant", 5e-4),
+    A("p30perm.variant", "p30perm.variant.p",
+      r"against \$p=(\d\.\d+)\$ for the variant", 5e-4),
     A("perm.feat.p", "perm.feat.p", r"permutation & 18 cells & - & ([\d.]+)", 5e-4),
 
     # ---- Late Fusion per horizon, three seeds -------------------------------

@@ -1,0 +1,25 @@
+18 cells: 3 seeds x 2 bundles x 3 variants
+
+==========================================================================
+RANDOMISED COMPLETE BLOCK ANOVA  (block = seed)
+==========================================================================
+source                          SS   df        F        p
+--------------------------------------------------------------------------
+block (seed)                0.0041    2     0.46   0.6464
+feature bundle              0.0289    1     6.40   0.0299
+variant                     0.0026    2     0.29   0.7560
+feature x variant           0.0015    2     0.17   0.8485
+residual                    0.0451   10
+total                       0.0822   17
+
+the seed block absorbs 5.0% of the total sum of squares.
+
+==========================================================================
+PERMUTATION TEST, shuffling only within seed
+==========================================================================
+  bundle     observed spread 0.0801   p = 0.0079   (20,000 permutations)
+  variant    observed spread 0.0269   p = 0.8354   (20,000 permutations)
+
+The archived factorial returns bundle p=0.015 and variant p=0.271 under the
+same analysis. Both pipelines agree on which factor matters, which makes
+the bundle effect one of the few conclusions the correction leaves intact.
