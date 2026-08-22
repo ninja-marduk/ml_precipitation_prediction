@@ -307,6 +307,17 @@ def store() -> dict:
         if m:
             s["design.n_val_windows"] = float(m.group(1))
             s["design.horizons"] = float(m.group(2))
+        # The 33 windows resolve to fewer distinct calendar months, and the
+        # figure of the anchor shades exactly those. Deriving the count from the
+        # index span rather than restating it keeps the shading honest.
+        m = re.search(r"target months span idx (\d+)\.\.(\d+) \(split at (\d+)\)",
+                      txt)
+        if m:
+            s["design.scored_first"] = float(m.group(1))
+            s["design.scored_last"] = float(m.group(2))
+            s["design.n_scored_months"] = float(int(m.group(2)) -
+                                                int(m.group(1)) + 1)
+            s["design.split"] = float(m.group(3))
     else:
         missing.append(str(p))
 
@@ -730,6 +741,18 @@ ANCHORS = [
       r"to \$\\pm\$(\d\.\d+) for GraphSAGE with PAFC", 5e-4),
     A("p30.pafc.spread", "p30.pafc_spread",
       r"against a (\d\.\d+) gap between the best and worst cell", 5e-4),
+
+    # ---- the anchor, spelled out ------------------------------------------
+    # A reader asked where the per-cell monthly climatology comes from, so the
+    # manuscript now states the size of the estimator and draws it. These bind
+    # the stated size to the grid and the stated skill to the baseline record.
+    A("clim.fig.percell", "pooled33.clim.percell",
+      r"per-cell Nash-Sutcliffe efficiency of (\d\.\d+), which no architecture",
+      5e-4),
+    A("clim.fig.cells", "strat.n_cells",
+      r"one such curve for each of the ([\d{},]+) cells", 0.5, note="grid"),
+    A("clim.scored.months", "design.n_scored_months",
+      r"Shading marks the (\d+) months on which the models are scored", 0.5),
 
     # ---- measured compute ---------------------------------------------------
     A("cost.total", "cost.TOTAL.hours_total",
