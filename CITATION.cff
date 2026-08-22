@@ -1,4 +1,4 @@
-cff-version: 1.3.0
+cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
 type: software
 title: "AnchorBench v1.0: an anchored, seed-resolved evaluation protocol for data-driven environmental prediction"

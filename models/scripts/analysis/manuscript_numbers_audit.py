@@ -1379,6 +1379,21 @@ def main() -> int:
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
 
+    # The DOI now appears in two places that must be updated together: the macro in
+    # the manuscript and the data citation in the bibliography. Fixing one and not
+    # the other yields a paper whose availability section resolves and whose
+    # reference list does not, which is worse than fixing neither.
+    bib = TEX_FILES["paper"].parent / "refs.bib"
+    if bib.exists():
+        n = len(re.findall(r"zenodo\.X+", _read(bib)))
+        if n:
+            rep.fail(f"refs.bib still carries {n} placeholder Zenodo DOI; the data "
+                     f"citation and \\dataavailabilityDOI must be set together")
+        else:
+            rep.ok("refs.bib carries no placeholder DOI")
+    else:
+        rep.fail(f"no bibliography at {bib}")
+
     # The decomposition table has to add up: the mean of paired differences is the
     # difference of means, so each Delta must equal its row's level minus the
     # comparator's. This caught a row whose level and whose Delta came from two

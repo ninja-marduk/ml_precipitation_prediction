@@ -90,5 +90,12 @@ written because they are dated records.
 
 ## Licence
 
-MIT for the code. CHIRPS v2.0 and SRTM are redistributed under their own terms; the
-derived feature set here is provided for reproduction of the reported analyses.
+MIT for the code, CC-BY-4.0 for the derived data.
+
+The earlier wording restricted the derived feature set to "reproduction of the
+reported analyses", which is a use restriction and does not conform to the Open
+Source Definition that GMD requires of a deposit its papers depend on. It also
+attached to the one file every CPU analysis reads, so the reproducibility claim
+rested on a file nobody was licensed to reuse. CHIRPS v2.0 and SRTM both permit
+redistribution of derived products, so the restriction bought nothing and is
+removed.
