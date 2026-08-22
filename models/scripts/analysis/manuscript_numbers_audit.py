@@ -672,7 +672,7 @@ ANCHORS = [
     A("purged.insample", "purged.ridge_insample.mean",
       r"In-sample the Ridge reaches ([\d.]+)"),
     A("purged.gap", "purged.insample_gap",
-      r"understates by roughly (\d+\.\d+)", 5e-4),
+      r"which is (\d+\.\d+) above the purged estimate", 5e-4),
     A("purged.embargo", "purged.embargo",
       r"costs (\d+) windows per boundary", 0.5),
     A("purged.ntrain", "purged.n_train",
@@ -840,8 +840,13 @@ ANCHORS = [
     # ---- the two prediction arrays for one model ---------------------------
     A("gnn.pooled.released", "pooled33.gnn_released.r2",
       r"standalone GNN-TAT achieves \$?R\^\{?2\}?\$?=(\d\.\d+)"),
+    # the anchor comparison now quotes the three-seed blocked mean, which is the
+    # estimate computed on the anchor's own targets; the released fit (0.672)
+    # survives only in the figure caption that records the earlier comparison
+    A("lf.blocked.anchor", "blocked.ridge.mean",
+      r"Late Fusion, reaches pooled \$R\^2\$=(\d\.\d+)\$\\pm\$", 5e-4),
     A("lf.pooled33", "pooled33.lf.r2",
-      r"the best model, Late Fusion, reaches pooled \$?R\^\{?2\}?\$?=(\d\.\d+)", 5e-3),
+      r"the Late Fusion point is the released fit at (\d\.\d+)", 5e-3),
     A("lf.percell.anchor", "pooled33.lf.percell",
       r"versus (\d\.\d+) for Late Fusion, Table", 6e-3),
 
@@ -853,9 +858,9 @@ ANCHORS = [
     A("regime.corr", "regime.clim_pooled_percell_r",
       r"two metrics correlate at \$?r\$?=(\d\.\d+)", 5e-3),
     A("regime.min", "regime.min.percell_climatology",
-      r"per-cell climatology scores between (\d\.\d+) and \d\.\d+"),
+      r"[Pp]er-cell climatology scores between (\d\.\d+) and \d\.\d+"),
     A("regime.max", "regime.max.percell_climatology",
-      r"per-cell climatology scores between \d\.\d+ and (\d\.\d+)"),
+      r"[Pp]er-cell climatology scores between \d\.\d+ and (\d\.\d+)"),
 
     # ---- the stratified tables, from one array per model -------------------
     A("strat.lf.low", "strat.low.lf",
@@ -1046,6 +1051,18 @@ def derived(texts, s):
 # the number is internally consistent with the sentence that should be gone.
 
 FORBIDDEN = [
+    dict(id="headline.unlabelled_ensemble",
+         pat=r"(?:pooled \$R\^2\$=0\.67\b|0\.67 for the best ensemble)",
+         why="the ensemble has four defensible values at four aggregations "
+             "(0.672 released fit, 0.647 seed 42 blocked, 0.640 three-seed "
+             "blocked mean, 0.598 purged). 0.67 is a rounding of the "
+             "superseded one. Quote 0.640 against the anchor and label any "
+             "other value with its aggregation at first use"),
+    dict(id="withdrawn.archived_bundle_p",
+         pat=r"\$?p\$?\s*=\s*0\.015 under a blocked analysis",
+         why="the archived factorial's bundle p-value; the retrained factorial "
+             "gives 0.030 blocked and 0.008 by permutation, and the paper "
+             "reports the pipeline it released"),
     dict(id="withdrawn.kce_wilcoxon", pat=r"\$?p\$?\s*=\s*0\.036",
          why="the KCE-versus-BASIC Wilcoxon is withdrawn in Table S10 as inadmissible; "
              "cite the blocked factorial's bundle effect instead"),
