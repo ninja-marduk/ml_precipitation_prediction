@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import io
 import re
 import statistics
 import sys
@@ -405,6 +406,55 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
+    # -- gauges CHIRPS blended in the domain, from its own published lists ---
+    p = PROV / "chirps_station_overlap.csv"
+    if p.exists():
+        rows = list(csv.DictReader(p.open(encoding="utf-8")))
+        # The network does not decline in one step: it holds above 445 through
+        # 2010 and is already at 38 by 2015, so a single "training range" would
+        # span both regimes and mean nothing. The two are kept apart.
+        early = [int(r["in_domain"]) for r in rows
+                 if r["period"] == "training" and int(r["year"]) <= 2010]
+        late = [int(r["in_domain"]) for r in rows
+                if r["period"] == "training" and int(r["year"]) > 2010]
+        sc = [int(r["in_domain"]) for r in rows if r["period"] == "scored"]
+        if early:
+            s["gauge.train_min"] = float(min(early))
+            s["gauge.train_max"] = float(max(early))
+        if late:
+            s["gauge.train_2015"] = float(max(late))
+        if sc:
+            s["gauge.scored_min"], s["gauge.scored_max"] = float(min(sc)), float(max(sc))
+            thin = [v for v in sc if v <= 20]
+            thick = [v for v in sc if v > 20]
+            s["gauge.n_thin"] = float(len(thin))
+            s["gauge.n_thick"] = float(len(thick))
+            if thick:
+                s["gauge.thick_median"] = float(statistics.median(thick))
+    else:
+        missing.append(str(p))
+
+    # -- the circularity test that split enables -----------------------------
+    p = PROV / "skill_vs_gauge_density.txt"
+    if p.exists():
+        body = _read(p).split("\n", 1)[1]
+        rows = list(csv.DictReader(io.StringIO(body)))
+        thin = [r for r in rows if int(r["gauges"]) <= 20]
+        thick = [r for r in rows if int(r["gauges"]) > 20]
+        for name in ("ConvLSTM-Bidir", "GNN-TAT-GAT", "Late Fusion"):
+            k = f"ratio:{name}"
+            if not (thin and thick and k in rows[0]):
+                continue
+            a = statistics.mean(float(r[k]) for r in thin)
+            b = statistics.mean(float(r[k]) for r in thick)
+            sd = statistics.stdev([float(r[k]) for r in thick])
+            tag = name.split("-")[0].split()[0].lower()
+            s[f"gauge.{tag}.diff"] = a - b
+            s[f"gauge.{tag}.sd"] = sd
+            s[f"gauge.{tag}.diff_in_sd"] = (a - b) / sd if sd else float("nan")
+    else:
+        missing.append(str(p))
+
     # -- measured compute, from the instrumented training loop ---------------
     p = PROV / "compute_cost.csv"
     if p.exists():
@@ -741,6 +791,29 @@ ANCHORS = [
       r"to \$\\pm\$(\d\.\d+) for GraphSAGE with PAFC", 5e-4),
     A("p30.pafc.spread", "p30.pafc_spread",
       r"against a (\d\.\d+) gap between the best and worst cell", 5e-4),
+
+    # ---- gauges blended, and the circularity test --------------------------
+    A("gauge.train.min", "gauge.train_min",
+      r"(\d+) to \d+ gauges through 2010", 0.5),
+    A("gauge.train.max", "gauge.train_max",
+      r"\d+ to (\d+) gauges through 2010", 0.5),
+    A("gauge.scored.max", "gauge.scored_max",
+      r"between 0 and (\d+)\s*\n?over the 44 scored months", 0.5),
+    A("gauge.2015", "gauge.train_2015",
+      r"gauges through 2010, (\d+) by 2015", 0.5),
+    A("gauge.thick.median", "gauge.thick_median",
+      r"remaining thirty-nine at a median\s*\n?of (\d+)", 0.5),
+    A("gauge.conv.diff", "gauge.convlstm.diff",
+      r"thin\s*\n?and thick months is \$-\$(\d\.\d+) for the convolutional",
+      5e-4, sign=-1),
+    A("gauge.lf.diff", "gauge.late.diff",
+      r"\$\+\$(\d\.\d+) for the late\s*\n?fusion", 5e-4),
+    A("gauge.conv.sd", "gauge.convlstm.sd",
+      r"month-to-month spread of (\d\.\d+) and \d\.\d+", 5e-4),
+    A("gauge.lf.sd", "gauge.late.sd",
+      r"month-to-month spread of \d\.\d+ and (\d\.\d+)", 5e-4),
+    A("gauge.gnn.insd", "gauge.gnn.diff_in_sd",
+      r"graph model moves by (\d\.\d+) standard deviations", 5e-3),
 
     # ---- the anchor, spelled out ------------------------------------------
     # A reader asked where the per-cell monthly climatology comes from, so the
