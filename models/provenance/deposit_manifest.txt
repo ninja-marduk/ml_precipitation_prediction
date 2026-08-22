@@ -1,0 +1,54 @@
+==============================================================================
+FILE NAMES WRITTEN LITERALLY IN THE ANALYSIS SCRIPTS
+==============================================================================
+  V10_Late_Fusion/SEED*/v10_metrics.csv
+  V2_Enhanced_Models/SEED*/metrics_spatial_v2_refactored_h12.csv
+  V4_GNN_TAT_Models/SEED*/metrics_spatial_v4_gnn_tat_h12.csv
+  V4_GNN_TAT_Models/_archive_2026-04_leaked_graph/metrics_factorial_consolidated.csv
+  complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc
+  metrics_factorial_consolidated.csv
+  netcdf/chirps-v2.0.monthly.nc
+  predictions.npy
+  targets.npy
+  with_onehot_elevation_clean.nc
+  {what}.npy
+
+==============================================================================
+REQUIRED SET, RESOLVED
+==============================================================================
+
+prediction arrays and targets, three seeds, three models
+  84 files, 275.3 MB
+    models\output\V2_Enhanced_Models\SEED123\map_exports\H12\BASIC\ConvLSTM_Bidirectional\metadata.json
+    models\output\V2_Enhanced_Models\SEED123\map_exports\H12\BASIC\ConvLSTM_Bidirectional\predictions.npy
+    models\output\V2_Enhanced_Models\SEED123\map_exports\H12\BASIC\ConvLSTM_Bidirectional\targets.npy
+    models\output\V2_Enhanced_Models\SEED42\map_exports\H12\BASIC\ConvLSTM_Bidirectional\metadata.json
+    ... and 80 more
+
+per-seed metric files behind the multi-seed factorial
+  18 files, 56.7 KB
+    models\output\V2_Enhanced_Models\SEED123\metrics_per_horizon.csv
+    models\output\V2_Enhanced_Models\SEED123\metrics_spatial_v2_refactored_h12.csv
+    models\output\V2_Enhanced_Models\SEED42\metrics_per_horizon.csv
+    models\output\V2_Enhanced_Models\SEED456\metrics_per_horizon.csv
+    ... and 14 more
+
+engineered feature set, the input to the CPU analyses
+  1 files, 504.4 MB
+    notebooks\data\output\complete_dataset_with_features_with_clusters_elevation_windows_imfs_with_onehot_elevation_clean.nc
+
+provenance record
+  34 files, 85.6 KB
+    models\provenance\ablation_batch_size_2.md
+    models\provenance\ablation_leaked_graph.md
+    models\provenance\anchoring_case_study.txt
+    models\provenance\anchoring_eight_regimes.csv
+    ... and 30 more
+
+------------------------------------------------------------------------------
+TOTAL REQUIRED: 779.8 MB
+Zenodo accepts 50 GB per record, so size is not a reason to exclude any of it.
+
+Trained checkpoints, not required to recompute any reported number:
+  65 files, 75.9 MB. Deposit them anyway if the record has room;
+  they are what a reader needs to run the models rather than to check the numbers.
