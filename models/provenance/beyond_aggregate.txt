@@ -41,4 +41,4 @@ conditional coverage by elevation (pooled over horizons):
   Med 1500-2800   n=  941  coverage=1.000
   High >2800      n=  557  coverage=1.000
 
-figure written to .docs\papers\5\figures\beyond_aggregate.png at 700 DPI
+figure written to .docs\papers\5\figures\beyond_aggregate.png at 700 DPI, and to beyond_aggregate.pdf as vector

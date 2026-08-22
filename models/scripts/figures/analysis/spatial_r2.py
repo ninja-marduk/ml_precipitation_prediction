@@ -22,7 +22,7 @@ import matplotlib.colors as mcolors
 FIGURES_ROOT = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = FIGURES_ROOT.parents[2]
 sys.path.insert(0, str(FIGURES_ROOT))
-from _config import setup_paper_style, OUTPUT_DPI  # noqa: E402
+from _config import setup_paper_style, save_figure, OUTPUT_DPI  # noqa: E402
 
 # ── Paths ──────────────────────────────────────────────────────────────
 V2_PRED = PROJECT_ROOT / 'models' / 'output' / 'V2_Enhanced_Models' / \
@@ -125,7 +125,12 @@ def generate_spatial_r2_3panel() -> int:
 
     im = None
     for ax, r2, title, label in panels:
-        im = ax.pcolormesh(lon_grid, lat_grid, r2, cmap=cmap, norm=norm, shading='auto')
+        # rasterized: three panels of ~3,965 quads each become ~12,000 vector
+        # paths in a PDF, which bloats the file and renders slowly for no gain,
+        # since a continuous field carries no text to keep selectable. The
+        # coastline, ticks, labels and colourbar around it stay vector.
+        im = ax.pcolormesh(lon_grid, lat_grid, r2, cmap=cmap, norm=norm,
+                           shading='auto', rasterized=True)
         if gdf is not None:
             gdf.boundary.plot(ax=ax, color='k', linewidth=0.7, zorder=5)
         ax.set_title(title, fontsize=14, fontweight='bold', pad=6)
@@ -143,12 +148,8 @@ def generate_spatial_r2_3panel() -> int:
     cbar.set_label(r'$R^{2}$ (NSE)', fontsize=11)
     cbar.ax.tick_params(labelsize=10)
 
-    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(OUT_PATH, dpi=OUTPUT_DPI, bbox_inches='tight', facecolor='white')
-
-    # Mirror to delivery for ZIP bundle.
-    OUT_PATH_DELIVERY.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(OUT_PATH_DELIVERY, dpi=OUTPUT_DPI, bbox_inches='tight', facecolor='white')
+    save_figure(fig, OUT_PATH, dpi=OUTPUT_DPI, mirror=OUT_PATH_DELIVERY,
+                bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
     print(f'  wrote: {OUT_PATH.relative_to(PROJECT_ROOT)}  ({OUT_PATH.stat().st_size/1024:.1f} KB)')

@@ -23,11 +23,21 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import json
 
-from _config import COLORS, setup_style, add_panel_label, OUTPUT_DPI  # noqa: E402
+from _config import (COLORS, setup_style, add_panel_label, save_figure,
+                     OUTPUT_DPI)  # noqa: E402
 
 # Configuration
 OUTPUT_DIR = PROJECT_ROOT / "models" / "output" / "final_figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# Figures the manuscript includes are mirrored here as well, so that the
+# paper and the generator cannot drift. Previously they were copied by
+# hand and had already diverged in size and timestamp.
+PAPER_FIG_DIR = PROJECT_ROOT / ".docs" / "papers" / "5" / "figures"
+IN_MANUSCRIPT = {
+    "early_vs_late_fusion_bar.png",
+}
+
 
 # Apply Q1 style
 setup_style()
@@ -88,7 +98,7 @@ def figure_1_v1_v10_r2_evolution():
     ax.legend(loc='upper right', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'v1_v10_r2_evolution.png', dpi=OUTPUT_DPI, bbox_inches='tight')
+    save_figure(plt.gcf(), OUTPUT_DIR / 'v1_v10_r2_evolution.png', dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'v1_v10_r2_evolution.png'}")
 
@@ -159,7 +169,7 @@ def figure_2_early_vs_late_fusion():
     ax1.set_ylim(0, 0.78)
     ax1.legend(loc='upper left', framealpha=0.9)
 
-    plt.savefig(OUTPUT_DIR / 'early_vs_late_fusion_bar.png', dpi=OUTPUT_DPI,
+    save_figure(plt.gcf(), OUTPUT_DIR / 'early_vs_late_fusion_bar.png', mirror=(PAPER_FIG_DIR / 'early_vs_late_fusion_bar.png'), dpi=OUTPUT_DPI,
                 bbox_inches='tight', facecolor='white')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'early_vs_late_fusion_bar.png'}")
@@ -232,7 +242,7 @@ def figure_3_v10_fusion_weights():
     ax2.set_ylim(bottom=min(weight_vals) * 1.15)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'v10_fusion_weights.png', dpi=OUTPUT_DPI, bbox_inches='tight')
+    save_figure(plt.gcf(), OUTPUT_DIR / 'v10_fusion_weights.png', dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'v10_fusion_weights.png'}")
 
@@ -283,7 +293,7 @@ def figure_4_master_comparison():
                     ha='left', va='center', fontsize=7)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'master_comparison.png', dpi=OUTPUT_DPI, bbox_inches='tight')
+    save_figure(plt.gcf(), OUTPUT_DIR / 'master_comparison.png', dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'master_comparison.png'}")
 
@@ -341,7 +351,7 @@ def figure_5_v9_failure_analysis():
     ax2.legend(loc='upper right', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'v9_failure_analysis.png', dpi=OUTPUT_DPI, bbox_inches='tight')
+    save_figure(plt.gcf(), OUTPUT_DIR / 'v9_failure_analysis.png', dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'v9_failure_analysis.png'}")
 
@@ -372,7 +382,7 @@ def figure_6_v10_improvement():
     ax.legend(loc='upper left', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'v10_improvement_chart.png', dpi=OUTPUT_DPI, bbox_inches='tight')
+    save_figure(plt.gcf(), OUTPUT_DIR / 'v10_improvement_chart.png', dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'v10_improvement_chart.png'}")
 

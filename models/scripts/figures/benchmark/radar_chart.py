@@ -21,7 +21,7 @@ import numpy as np
 FIGURES_ROOT = Path(__file__).resolve().parent.parent
 REPO = FIGURES_ROOT.parents[2]
 sys.path.insert(0, str(FIGURES_ROOT))
-from _config import setup_paper_style  # noqa: E402
+from _config import setup_paper_style, save_figure  # noqa: E402
 
 FIG_OUT = REPO / '.docs' / 'papers' / '5' / 'figures' / 'radar_chart.png'
 FIG_OUT_DELIVERY = REPO / '.docs' / 'papers' / '5' / 'delivery' / 'figures' / 'radar_chart.png'
@@ -95,12 +95,8 @@ def main() -> int:
 
     ax.legend(loc='center left', bbox_to_anchor=(1.20, 0.5),
               framealpha=0.95)
-    FIG_OUT.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(FIG_OUT, dpi=900, bbox_inches='tight', facecolor='white')
-
-    # Mirror to delivery
-    FIG_OUT_DELIVERY.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(FIG_OUT_DELIVERY, dpi=900, bbox_inches='tight', facecolor='white')
+    save_figure(fig, FIG_OUT, dpi=900, mirror=FIG_OUT_DELIVERY,
+                bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
     print(f'Wrote: {FIG_OUT.relative_to(REPO)}')

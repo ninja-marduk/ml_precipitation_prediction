@@ -83,7 +83,13 @@ def run(args: argparse.Namespace) -> int:
     # (rule: no redundant numerical annotations inside images).
     plt.tight_layout()
     FIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(FIG_PATH, dpi=900, bbox_inches='tight', facecolor='white')
+    # Vector PDF beside the PNG. Three curves over twelve horizons with
+    # fill_between bands is a few hundred vector primitives, so there is no
+    # reason for the manuscript to include a raster of it.
+    with plt.rc_context({'pdf.fonttype': 42, 'ps.fonttype': 42}):
+        plt.savefig(FIG_PATH.with_suffix('.pdf'), bbox_inches='tight',
+                    facecolor='white')
+        plt.savefig(FIG_PATH, dpi=900, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
     # Sanity: figure exists and is ≥50 KB

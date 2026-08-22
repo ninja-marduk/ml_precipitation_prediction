@@ -21,11 +21,22 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.patches import FancyBboxPatch
 
-from _config import COLORS, setup_style, add_panel_label, OUTPUT_DPI  # noqa: E402
+from _config import (COLORS, setup_style, add_panel_label, save_figure,
+                     OUTPUT_DPI)  # noqa: E402
 
 # Configuration
 OUTPUT_DIR = PROJECT_ROOT / "models" / "output" / "final_figures"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# Figures the manuscript includes are mirrored here as well, so that the
+# paper and the generator cannot drift. Previously they were copied by
+# hand and had already diverged in size and timestamp.
+PAPER_FIG_DIR = PROJECT_ROOT / ".docs" / "papers" / "5" / "figures"
+IN_MANUSCRIPT = {
+    "failure_modes_analysis.png",
+    "parameter_efficiency_clean.png",
+}
+
 
 # Apply Q1 style
 setup_style()
@@ -85,7 +96,7 @@ def figure_stacking_comparison_heatmap():
         ax.set_title(metric, fontsize=9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'stacking_comparison_heatmap.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'stacking_comparison_heatmap.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'stacking_comparison_heatmap.png'}")
@@ -132,7 +143,7 @@ def figure_ensemble_evolution():
     ax.legend(loc='upper left', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'ensemble_evolution.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'ensemble_evolution.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'ensemble_evolution.png'}")
@@ -205,7 +216,7 @@ def figure_failure_modes_analysis():
     ax2.set_ylim(0, 82)
 
     plt.tight_layout(w_pad=3.0)
-    plt.savefig(OUTPUT_DIR / 'failure_modes_analysis.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'failure_modes_analysis.png', mirror=(PAPER_FIG_DIR / 'failure_modes_analysis.png'), 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'failure_modes_analysis.png'}")
@@ -265,7 +276,7 @@ def figure_v10_detailed_performance():
     ax2.legend(loc='upper left', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'v10_detailed_performance.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'v10_detailed_performance.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'v10_detailed_performance.png'}")
@@ -316,7 +327,7 @@ def figure_comprehensive_radar():
 
     ax.legend(loc='center left', bbox_to_anchor=(1.18, 0.5), framealpha=0.9)
 
-    plt.savefig(OUTPUT_DIR / 'comprehensive_radar.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'comprehensive_radar.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight', pad_inches=0.05)
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'comprehensive_radar.png'}")
@@ -406,7 +417,7 @@ def figure_parameter_efficiency_extended():
               framealpha=0.9, columnspacing=1.2, handletextpad=0.5)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'parameter_efficiency_clean.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'parameter_efficiency_clean.png', mirror=(PAPER_FIG_DIR / 'parameter_efficiency_clean.png'), 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'parameter_efficiency_clean.png'}")
@@ -467,7 +478,7 @@ def figure_model_ranking_clean():
     ax.legend(handles=family_handles, loc='lower right', framealpha=0.9)
 
     plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'model_ranking_clean.png',
+    save_figure(plt.gcf(), OUTPUT_DIR / 'model_ranking_clean.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {OUTPUT_DIR / 'model_ranking_clean.png'}")

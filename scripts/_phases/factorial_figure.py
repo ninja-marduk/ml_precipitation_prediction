@@ -100,8 +100,12 @@ def run(args: argparse.Namespace) -> int:
 
     plt.tight_layout()
     FIG_PNG.parent.mkdir(parents=True, exist_ok=True)
-    plt.savefig(FIG_PNG, dpi=900, bbox_inches='tight', facecolor='white')
-    plt.savefig(FIG_PDF, bbox_inches='tight', facecolor='white')
+    # Type 42 rather than matplotlib's default Type 3: this was the only figure
+    # already emitting a PDF, and it was the only one contributing Type 3 fonts
+    # to the compiled manuscript. Several journal preflight tools reject them.
+    with plt.rc_context({'pdf.fonttype': 42, 'ps.fonttype': 42}):
+        plt.savefig(FIG_PNG, dpi=900, bbox_inches='tight', facecolor='white')
+        plt.savefig(FIG_PDF, bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
     sz_png = FIG_PNG.stat().st_size

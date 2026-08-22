@@ -163,6 +163,38 @@ def setup_style():
 
 
 # ---------------------------------------------------------------------------
+# Saving
+# ---------------------------------------------------------------------------
+def save_figure(fig, path, dpi=None, mirror=None, **kw):
+    """Write a figure as vector PDF and as PNG, from one call.
+
+    GMD asks for vector graphics with embedded fonts, and every generator in
+    this repository wrote PNG only. Passing the PNG path here produces the PDF
+    beside it, so callers keep their existing path and the two never drift.
+
+    Type 42 fonts are set at save time rather than in the rcParams block
+    because it only matters for the vector formats: Type 3 is what matplotlib
+    emits by default, and several journal preflight tools reject it.
+
+    Continuous fields (contourf, pcolormesh, imshow) should be marked
+    ``rasterized=True`` by the caller before this is called. A vector PDF of a
+    filled-contour DEM is tens of megabytes and renders slowly; rasterising the
+    field alone keeps every axis, label, tick and annotation vector, which is
+    what the requirement is actually about.
+    """
+    from pathlib import Path
+    path = Path(path)
+    dpi = dpi or OUTPUT_DPI
+    with plt.rc_context({'pdf.fonttype': 42, 'ps.fonttype': 42}):
+        for target in [path.with_suffix('.pdf'), path] + (
+                [] if mirror is None else
+                [Path(mirror).with_suffix('.pdf'), Path(mirror)]):
+            target.parent.mkdir(parents=True, exist_ok=True)
+            fig.savefig(target, dpi=dpi, **kw)
+    return path.with_suffix('.pdf')
+
+
+# ---------------------------------------------------------------------------
 # Panel labels (a)/(b)/(c)
 # ---------------------------------------------------------------------------
 def add_panel_label(ax, label, x=-0.08, y=1.05, fontsize=None):

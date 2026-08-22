@@ -1380,6 +1380,26 @@ def main() -> int:
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
 
+    # GMD asks for vector graphics with embedded fonts. Every generator in this
+    # repository wrote PNG only until the figures were revectorised, so the
+    # regression to guard against is a new figure arriving as a raster, or a
+    # regenerated PDF losing its vector twin.
+    figdir = TEX_FILES["paper"].parent / "figures"
+    raster = []
+    for name, tex in texts.items():
+        for m in re.finditer(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", tex):
+            stem = m.group(1)
+            if stem.endswith(".png"):
+                raster.append(f"{name}:{stem}")
+            elif stem.endswith(".pdf") and not (figdir / stem).exists():
+                rep.fail(f"{name} includes {stem}, which is not in figures/")
+    if raster:
+        rep.fail(f"{len(raster)} figure(s) included as raster PNG: "
+                 f"{', '.join(raster[:4])}. Regenerate with the vector twin and "
+                 f"switch the include, or state why the figure cannot vectorise")
+    else:
+        rep.ok("every included figure is vector PDF")
+
     # The DOI now appears in two places that must be updated together: the macro in
     # the manuscript and the data citation in the bibliography. Fixing one and not
     # the other yields a paper whose availability section resolves and whose

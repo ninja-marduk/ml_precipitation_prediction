@@ -261,7 +261,7 @@ def draw(path: Path) -> None:
         ax.plot(mid, prof, color="#0072B2", lw=1.6)
         ax.axhline(0, color="k", lw=0.6, ls=":")
         ax.set_xlabel("separation (km)"); ax.set_ylabel(r"mean $\rho$")
-    ax.set_title("(b) decay with distance", fontsize=9, loc="left")
+    ax.set_title("(b, left) decay with distance", fontsize=9, loc="left")
 
     ax = fig.add_subplot(gs[1, 1])
     if dist is not None:
@@ -275,7 +275,7 @@ def draw(path: Path) -> None:
         ax.plot(mids, vals, "o-", color="#009E73", lw=1.6, ms=4)
         ax.set_xscale("log")
         ax.set_xlabel(r"$|\Delta$elevation$|$ (m)"); ax.set_ylabel(r"mean $\rho$")
-    ax.set_title("(b) at 50-100 km, by terrain contrast", fontsize=9, loc="left")
+    ax.set_title("(b, right) at 50-100 km, by terrain contrast", fontsize=9, loc="left")
 
     # ---------------- (c) conformal
     c = FIG["conf"]
@@ -288,7 +288,7 @@ def draw(path: Path) -> None:
         ax.set_ylim(0.85, 1.01)
         ax.set_xlabel("horizon (months)"); ax.set_ylabel("empirical coverage")
         ax.legend(fontsize=6.5, frameon=False)
-    ax.set_title("(c) coverage saturates near one", fontsize=9, loc="left")
+    ax.set_title("(c, left) coverage saturates near one", fontsize=9, loc="left")
 
     ax = fig.add_subplot(gs[2, 1])
     if c:
@@ -297,7 +297,7 @@ def draw(path: Path) -> None:
         ax.plot(h, c["w_cl"], "s--", color="#666666", lw=1.3, ms=3.5, label="climatology")
         ax.set_xlabel("horizon (months)"); ax.set_ylabel("truncated width (mm)")
         ax.legend(fontsize=6.5, frameon=False)
-    ax.set_title("(c) intervals no narrower than free", fontsize=9, loc="left")
+    ax.set_title("(c, right) intervals no narrower than free", fontsize=9, loc="left")
 
     for a in fig.get_axes():
         a.tick_params(labelsize=7)
@@ -305,9 +305,14 @@ def draw(path: Path) -> None:
             a.spines[s].set_visible(False)
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(path, dpi=FIG_DPI, bbox_inches="tight")
+    # Vector PDF beside the PNG: GMD asks for vector graphics with embedded
+    # fonts, and every panel here is lines and bars over tens of points.
+    with plt.rc_context({"pdf.fonttype": 42, "ps.fonttype": 42}):
+        fig.savefig(path.with_suffix(".pdf"), bbox_inches="tight")
+        fig.savefig(path, dpi=FIG_DPI, bbox_inches="tight")
     plt.close(fig)
-    print(f"\nfigure written to {path} at {FIG_DPI} DPI")
+    print(f"\nfigure written to {path} at {FIG_DPI} DPI, and to "
+          f"{path.with_suffix('.pdf').name} as vector")
 
 
 if __name__ == "__main__":

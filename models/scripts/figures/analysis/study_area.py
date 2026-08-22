@@ -19,7 +19,7 @@ from pathlib import Path
 FIGURES_ROOT = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = FIGURES_ROOT.parents[2]
 sys.path.insert(0, str(FIGURES_ROOT))
-from _config import setup_style, OUTPUT_DPI  # noqa: E402
+from _config import setup_style, save_figure, OUTPUT_DPI  # noqa: E402
 
 # ── Paths ──────────────────────────────────────────────────────────────
 DATA_NC = PROJECT_ROOT / "notebooks" / "data" / "output" / \
@@ -72,10 +72,21 @@ def generate_study_area_map():
     az, alt = np.radians(315), np.radians(45)
     hs = np.sin(alt) * np.sin(slope) + np.cos(alt) * np.cos(slope) * np.cos(az - aspect)
 
-    # Elevation filled contours
+    # Elevation filled contours.
+    #
+    # rasterized: 60 elevation levels plus 50 hillshade levels are 110 filled
+    # level sets, and as vector paths they make a PDF of tens of megabytes that
+    # opens slowly and carries no selectable content. The terrain is a
+    # continuous field, so it is the one thing here that gains nothing from
+    # being vector. The 500 m contour lines, their inline labels, the
+    # departmental boundary, the axes and the colourbar all stay vector, which
+    # is what a reader zooms into.
     levels = np.linspace(np.nanpercentile(elev, 1), np.nanpercentile(elev, 99), 60)
-    im = ax.contourf(lon_grid, lat_grid, elev, levels=levels, cmap="terrain", extend="both")
-    ax.contourf(lon_grid, lat_grid, hs, levels=50, cmap="gray", alpha=0.25, vmin=-1, vmax=1)
+    im = ax.contourf(lon_grid, lat_grid, elev, levels=levels, cmap="terrain",
+                     extend="both", zorder=-10)
+    ax.contourf(lon_grid, lat_grid, hs, levels=50, cmap="gray", alpha=0.25,
+                vmin=-1, vmax=1, zorder=-9)
+    ax.set_rasterization_zorder(0)
 
     # Contour lines every 500 m
     c_levels = np.arange(0, 5001, 500)
@@ -96,7 +107,8 @@ def generate_study_area_map():
     cbar = fig.colorbar(im, ax=ax, shrink=0.75, pad=0.02)
     cbar.set_label("Elevation (m)")
 
-    fig.savefig(OUT_PATH, dpi=OUTPUT_DPI, bbox_inches="tight", pad_inches=0.05)
+    save_figure(fig, OUT_PATH, dpi=OUTPUT_DPI, bbox_inches="tight",
+                pad_inches=0.05)
     plt.close(fig)
 
     # Verify
