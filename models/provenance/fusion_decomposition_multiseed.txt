@@ -11,6 +11,7 @@ GNN-TAT recalibrated           0.5515     0.6073     0.6128    0.5905  0.0339
 Ridge over both                0.6469     0.6351     0.6381    0.6400  0.0061
 Ridge, folds shuffled          0.6499     0.6403     0.6396    0.6433  0.0058
 Late Fusion as published       0.6716     0.6564     0.6364    0.6548  0.0176
+best recalibrated              0.6445     0.6127     0.6128    0.6233  0.0183
 
 --- decomposition, paired within seed ---
 term                                               mean    s.d.   per-seed

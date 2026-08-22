@@ -97,6 +97,7 @@ def store() -> dict:
             "gnn_recal": "GNN-TAT recalibrated", "ridge": "Ridge over both",
             "ridge_shuffled": "Ridge, folds shuffled",
             "published": "Late Fusion as published",
+            "best_recal": "best recalibrated",
         }
         for key, label in rows.items():
             m = re.search(re.escape(label) + r"\s+(.*)", txt)
@@ -671,6 +672,10 @@ ANCHORS = [
       r"recalibration costs (\d\.\d+) and the ordering", 5e-4, sign=-1),
     A("purged.insample", "purged.ridge_insample.mean",
       r"In-sample the Ridge reaches ([\d.]+)"),
+    A("decomp.bestrecal", "blocked.best_recal.mean",
+      r"calibration only & (\d\.\d+) \$\\pm\$ \d\.\d+", 5e-4),
+    A("decomp.bestrecal.sd", "blocked.best_recal.sd",
+      r"calibration only & \d\.\d+ \$\\pm\$ (\d\.\d+)", 5e-4),
     A("purged.gap", "purged.insample_gap",
       r"which is (\d+\.\d+) above the purged estimate", 5e-4),
     A("purged.embargo", "purged.embargo",
@@ -1035,6 +1040,34 @@ def derived(texts, s):
                 if k in vals:
                     s[f"dem.lf_{short}_pct"] = vals[k]
 
+    # The decomposition table must reconcile with itself: each Delta is the paired
+    # difference against the better raw learner, and the mean of differences is the
+    # difference of means, so every Delta has to equal its own row's level minus the
+    # comparator's. A row whose level came from one series and whose Delta came from
+    # another passes every anchor and still cannot be added up, which is the defect
+    # this recovers. The comparator is the better raw learner per seed; here that is
+    # the convolutional one in all three, which the store lets us verify.
+    dec = "paper:tab:fusion-decomposition"
+
+    def lead(label, row_name, col):
+        """The leading number of a 'mean +- sd' cell; _num wants a bare token."""
+        for r in tabs.get(dec, []):
+            if rowkey(r) == row_name.upper() and len(r) > col:
+                mm = re.match(r"\s*([+-]?\d+\.\d+)", r[col].replace("$", ""))
+                return float(mm.group(1)) if mm else None
+        return None
+
+    raw = lead(dec, "ConvLSTM-Bidir (raw)", 1)
+    if raw is not None:
+        for row in ("Simple average, combination only",
+                    "Best single + affine, calibration only",
+                    "Ridge over both, calibration + combination"):
+            lvl, dlt = lead(dec, row, 1), lead(dec, row, 2)
+            if lvl is not None and dlt is not None:
+                short = row.split(",")[0].strip()
+                s[f"decomp.reconcile.{short}"] = lvl - raw
+                s[f"decomp.stated.{short}"] = dlt
+
     # Table 'ensemble-failure': the stacking loss against its own baseline row
     b = cell("supp:tab:ensemble-failure", "ConvLSTM (individual)", 1)
     v = cell("supp:tab:ensemble-failure", "Stacking Ensemble", 1)
@@ -1345,6 +1378,22 @@ def main() -> int:
                + re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title).group(0))
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
+
+    # The decomposition table has to add up: the mean of paired differences is the
+    # difference of means, so each Delta must equal its row's level minus the
+    # comparator's. This caught a row whose level and whose Delta came from two
+    # different series, which no per-value anchor can see.
+    for k in [x for x in S if x.startswith("decomp.reconcile.")]:
+        row = k[len("decomp.reconcile."):]
+        stated = S.get(f"decomp.stated.{row}")
+        if stated is None:
+            continue
+        if abs(S[k] - stated) > 1.5e-3:
+            rep.fail(f"decomposition row '{row}' does not reconcile: the table's "
+                     f"own levels give {S[k]:+.4f} but the row states "
+                     f"{stated:+.4f}. One of the two is from a different series.")
+        else:
+            rep.ok(f"decomposition row '{row}' reconciles ({stated:+.4f})")
 
     # Two defects that survive a clean compile and are invisible in the source.
     # A doubled backslash before a letter is a LaTeX command that will not run, or a

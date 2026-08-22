@@ -162,6 +162,15 @@ def main():
         print(f"{label:<26}" + "".join(f"{x:>11.4f}" for x in v)
               + f"{v.mean():>10.4f}{v.std(ddof=1):>8.4f}")
 
+    # The calibration-only arm recalibrates BOTH learners and keeps the better
+    # one, so its level is this row and not the ConvLSTM row above. Printing it
+    # explicitly: an earlier version of the manuscript's decomposition table put
+    # the ConvLSTM level next to this row's paired difference, which made the
+    # column fail to reconcile with its own R2 column by 0.007.
+    v = np.array([max(r["conv_recal"], r["gnn_recal"]) for r in res])
+    print(f"{'best recalibrated':<26}" + "".join(f"{x:>11.4f}" for x in v)
+          + f"{v.mean():>10.4f}{v.std(ddof=1):>8.4f}")
+
     # ---- paired differences, computed within seed then aggregated
     print("\n--- decomposition, paired within seed ---")
     print(f"{'term':<46}{'mean':>9}{'s.d.':>8}   per-seed")
