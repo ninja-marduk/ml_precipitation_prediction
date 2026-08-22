@@ -1,0 +1,69 @@
+==========================================================================
+1. THE 33 WINDOWS ARE NOT 33 INDEPENDENT OBSERVATIONS
+==========================================================================
+  33 windows x 12 leads = 396 scored (window, lead) pairs
+  distinct target months: 44
+  each month is scored between 1 and 12 times
+  a window-level test writing N=33 therefore claims 9.0 times
+  the information the record holds, before any serial correlation.
+
+  non-overlapping 12-month windows in 44 months: 3
+  independent annual cycles in 44 months: 3.7
+  => the effective N for a window-level test is 3 to 4, not 33.
+
+  Nemenyi critical difference, k=8 models, recomputed:
+       N        CD   reading
+  ------------------------------------------------------------
+      33     1.828   as reported, treating windows as independent
+       4     5.250   annual cycles in the record
+       3     6.062   non-overlapping windows
+
+  The critical difference grows by a factor of 3.3 when the
+  dependence is respected. A Friedman/Nemenyi analysis at N=33 is
+  anticonservative for the omnibus test and conservative for the post-hoc,
+  so quoting both is quoting whichever direction suits the claim.
+  With N=3 the post-hoc separates nothing: CD=6.06 exceeds the whole
+  range of mean ranks that 8 models over 3 blocks can produce.
+
+==========================================================================
+2. MINIMUM DETECTABLE EFFECT OF THE THREE-SEED PAIRED DESIGN
+==========================================================================
+  n=3 paired seeds, t_crit=4.303 at 2 d.f.
+  a difference separates only if it exceeds t_crit x s_d / sqrt(n) = 2.484 x s_d
+  observed paired s_d across the 15 comparisons: 0.028 to 0.174 (median 0.092)
+  => minimum detectable effect: 0.069 to 0.431 in R2, median 0.228
+  the whole factorial spans 0.109 in R2, so the median MDE is 2.1 times
+  the entire range of the design. 'Not significant' here means the
+  design cannot resolve differences of the size anyone would claim,
+  not that the architectures are equivalent.
+
+==========================================================================
+3. THE FIFTEEN PAIRWISE COMPARISONS, CORRECTED AS ONE FAMILY
+==========================================================================
+  A           B              mean d     s_d       t       p    Holm    Bonf
+  ------------------------------------------------------------------------
+  GCN/BASIC   GAT/PAFC       -0.094   0.028   -5.85   0.028   0.419   0.419
+  GCN/BASIC   GCN/PAFC       -0.071   0.029   -4.17   0.053   0.743   0.796
+  SAGE/BASIC  GAT/PAFC       -0.109   0.084   -2.25   0.153   1.000   1.000
+  GCN/BASIC   SAGE/PAFC      -0.091   0.070   -2.24   0.154   1.000   1.000
+  GAT/BASIC   GAT/PAFC       -0.064   0.080   -1.38   0.303   1.000   1.000
+  SAGE/BASIC  GCN/PAFC       -0.085   0.137   -1.07   0.395   1.000   1.000
+  SAGE/BASIC  SAGE/PAFC      -0.106   0.174   -1.05   0.402   1.000   1.000
+  GAT/BASIC   SAGE/PAFC      -0.061   0.110   -0.96   0.439   1.000   1.000
+  GCN/PAFC    SAGE/PAFC      -0.021   0.041   -0.86   0.478   1.000   1.000
+  GAT/BASIC   SAGE/BASIC     +0.045   0.103    0.75   0.532   1.000   1.000
+  GAT/PAFC    GCN/PAFC       +0.023   0.055    0.74   0.535   1.000   1.000
+  GAT/BASIC   GCN/PAFC       -0.040   0.096   -0.73   0.541   1.000   1.000
+  GAT/BASIC   GCN/BASIC      +0.030   0.092    0.57   0.626   1.000   1.000
+  GCN/BASIC   SAGE/BASIC     +0.014   0.111    0.23   0.843   1.000   1.000
+  GAT/PAFC    SAGE/PAFC      +0.003   0.094    0.05   0.962   1.000   1.000
+
+  uncorrected, 1 of 15 separate at alpha=0.05.
+  Under Holm over the whole family, 0 do.
+  The expected number of false positives from 15 uncorrected tests at
+  alpha=0.05 is 0.75, so 1 hit is what the null predicts.
+  Bonferroni requires alpha=0.0033, i.e. |t| > 17.3 at 2 d.f.,
+  which three seeds cannot reach for any plausible effect.
+
+  The manuscript should report that no pairwise comparison among the
+  six configurations survives correction over the family it belongs to.
