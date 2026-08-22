@@ -1,0 +1,9 @@
+  OK   numbers      1069 reported quantities, identical multiset
+  OK   citations    129 identical, in order
+  OK   references   94 identical, in order
+  OK   labels       52 identical, in order
+  OK   graphics     7 identical, in order
+
+Every number, citation, cross-reference, label and figure path is
+identical and in the same order. The translation carries the same
+evidence as the manuscript of record.
