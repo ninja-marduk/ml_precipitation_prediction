@@ -1542,19 +1542,29 @@ def main() -> int:
     print("=" * 78)
     print("SOURCES  (every row of a released table came from the engine that made it)")
     print("=" * 78)
-    # GMD asks a methods-for-assessment paper to name and version its software tool
-    # in the title, supply the code for review, and carry a code availability
-    # paragraph. The first is checkable here; the others are checked by reading it.
+    # GMD asks its submissions to supply the code for review and to carry a code
+    # availability paragraph, and it asks a paper presenting a named software
+    # tool to give that name and its version in the title. Which of those binds
+    # depends on the manuscript type, so the type is declared here rather than
+    # assumed: this is submitted as a model evaluation paper, which evaluates
+    # architectures against observations and zero-cost references and presents no
+    # named tool. The requirement is kept in the code, not deleted, because if
+    # the type changes back the check has to come back with it.
+    MANUSCRIPT_TYPE = "model evaluation"
+    TITLE_NEEDS_TOOL_VERSION = {"methods for assessment", "model description"}
     paper = texts.get("paper", "")
     m = re.search(r"\\title\{(.*?)\}\s*\n", paper, re.S)
     title = m.group(1) if m else ""
-    if not re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title):
+    named = re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title)
+    if MANUSCRIPT_TYPE in TITLE_NEEDS_TOOL_VERSION and not named:
         rep.fail("the title names no software tool with a version. GMD requires "
-                 "'name and version must be identified in the title' for a methods "
-                 "for assessment of models paper. Title is: " + title[:90])
+                 "'name and version must be identified in the title' for a "
+                 f"{MANUSCRIPT_TYPE} paper. Title is: " + title[:90])
+    elif named:
+        rep.ok("title carries a tool name and version: " + named.group(0))
     else:
-        rep.ok("title carries a tool name and version: "
-               + re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title).group(0))
+        rep.ok(f"title names no tool, which a {MANUSCRIPT_TYPE} paper does not "
+               "require; the submission system entry must match this type")
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
 
