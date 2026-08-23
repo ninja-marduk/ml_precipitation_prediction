@@ -558,6 +558,20 @@ def store() -> dict:
                 if len(v) >= 4:
                     for i, c in enumerate(cols):
                         s[f"strat.{key}.{c}"] = v[i]
+        # The bias block repeats the same stratum labels, so it is parsed from
+        # its own heading rather than by label alone. The manuscript states a
+        # bias per band and, until this block existed, took the numbers from the
+        # pre-correction column of an array nothing bound.
+        blk = txt.partition("[elevation bias")[2].partition("[season]")[0]
+        for label, key in (("Low <1500 m", "low"), ("Medium 1500-2800 m", "mid"),
+                           ("High >2800 m", "high"), ("ALL", "all")):
+            m = re.search(r"^" + re.escape(label) + r"\s+(.*)$", blk, re.M)
+            if m:
+                v = _cols(m.group(1))
+                if len(v) >= 4:
+                    for i, c in enumerate(cols):
+                        s[f"bias.{key}.{c}"] = v[i]
+
         m = re.search(r"LateFusion\s+[\d.]+ -> [\d.]+\s+\+([\d.]+)%", txt)
         if m:
             s["strat.lf_degradation_pct"] = float(m.group(1))
@@ -798,7 +812,7 @@ ANCHORS = [
     A("gauge.train.max", "gauge.train_max",
       r"\d+ to (\d+) gauges through 2010", 0.5),
     A("gauge.scored.max", "gauge.scored_max",
-      r"between 0 and (\d+)\s*\n?over the 44 scored months", 0.5),
+      r"10,\s+38\s+by\s+2015,\s+and\s+between\s+0\s+and\s+(\d+)", 0.5),
     A("gauge.2015", "gauge.train_2015",
       r"gauges through 2010, (\d+) by 2015", 0.5),
     A("gauge.thick.median", "gauge.thick_median",
@@ -949,7 +963,7 @@ ANCHORS = [
     A("lf.pooled33", "pooled33.lf.r2",
       r"the Late Fusion point is the released fit at (\d\.\d+)", 5e-3),
     A("lf.percell.anchor", "pooled33.lf.percell",
-      r"versus (\d\.\d+) for Late Fusion, Table", 6e-3),
+      r"tcliffe\s+efficiency\s+\(0\.608\s+against\s+(\d+\.\d+)", 6e-3),
 
     # ---- eight regimes ------------------------------------------------------
     A("regime.boyaca.percell", "regime.boyaca.percell_climatology",
@@ -987,6 +1001,14 @@ ANCHORS = [
       r"textbf\{Overall\}\s+\&\s+3,965\s+\&\s+0\.479\s+\&\s+(\d+\.\d+)"),
     A("strat.overall.lf", "strat.all.lf",
       r"\&\s+3,965\s+\&\s+0\.479\s+\&\s+0\.163\s+\&\s+\\textbf\{(\d+\.\d+)"),
+    # The bias paragraph, bound in prose as well as in the table, because its
+    # earlier version quoted the pre-correction array and nothing caught it.
+    A("bias.prose.conv.low", "bias.low.conv",
+      r"deficit is near-constant with height \(\$-\$(\d+\.\d)", 5e-2, sign=-1),
+    A("bias.prose.gnn.low", "bias.low.gnn",
+      r"falls steeply, from \$-\$(\d+\.\d)\\,mm in the lowlands", 5e-2, sign=-1),
+    A("bias.prose.gnn.high", "bias.high.gnn",
+      r"in the lowlands to \$-\$(\d+\.\d)\\,mm above", 5e-2, sign=-1),
     A("strat.gnn_wins", "strat.gnn_wins_cells",
       r"higher per-cell \$?R\^\{?2\}?\$? in (\d+) of the 3,965 cells", 0.5),
     A("strat.gnn_wins_pct", "strat.gnn_wins_pct",
@@ -1008,7 +1030,7 @@ ANCHORS = [
     A("dem.range.max", "dem.lf_d10stats_pct",
       r"by \d+\.\d+-(\d+\.\d+)\\% on the fusion", 5e-2),
     A("dem.gnn.min", "dem.gnn_min_pct",
-      r"oss\s+all\s+zones\s+\(\$\-\$30\.7\\,mm\s+to\s+\$\-\$1(\d+\.\d+)", 0.5),
+      r"etrained\s+cells,\s+it\s+holds\s+27\.0\s+to\s+2(\d+\.\d+)", 0.5),
     A("dem.gnn.max", "dem.gnn_max_pct",
       r"\}\s+\\definecolor\{OKgreenfill\}\{RGB\}\{2(\d+)", 0.5),
     A("dem.conv.min", "dem.conv_min_pct",
@@ -1103,6 +1125,28 @@ TABLE_ANCHORS = [
      "Overall", 3, 5e-4),
     ("t.strat.lf.all", "strat.all.lf", "paper:tab:elevation-stratified",
      "Overall", 4, 5e-4),
+    # Bias columns, added after the sweep found the manuscript quoting the
+    # pre-correction array for all three models.
+    ("t.bias.conv.low", "bias.low.conv", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 5, 5e-2),
+    ("t.bias.gnn.low", "bias.low.gnn", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 6, 5e-2),
+    ("t.bias.lf.low", "bias.low.lf", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 7, 5e-2),
+    ("t.bias.conv.mid", "bias.mid.conv", "paper:tab:elevation-stratified",
+     "Medium (1500-2800m)", 5, 5e-2),
+    ("t.bias.gnn.mid", "bias.mid.gnn", "paper:tab:elevation-stratified",
+     "Medium (1500-2800m)", 6, 5e-2),
+    ("t.bias.lf.mid", "bias.mid.lf", "paper:tab:elevation-stratified",
+     "Medium (1500-2800m)", 7, 5e-2),
+    ("t.bias.conv.high", "bias.high.conv", "paper:tab:elevation-stratified",
+     "High (>2800m)", 5, 5e-2),
+    ("t.bias.gnn.high", "bias.high.gnn", "paper:tab:elevation-stratified",
+     "High (>2800m)", 6, 5e-2),
+    ("t.bias.lf.high", "bias.high.lf", "paper:tab:elevation-stratified",
+     "High (>2800m)", 7, 5e-2),
+    ("t.bias.gnn.all", "bias.all.gnn", "paper:tab:elevation-stratified",
+     "Overall", 6, 5e-2),
 ]
 
 _M = r"(?:\\mathbf\{)?"       # the best cell in each column is bolded
@@ -1388,7 +1432,14 @@ def check_summary_rows(label: str, rows, caption, report):
         if len(vals) > 1:
             cands["s.d."] = statistics.stdev(vals)
             cands["sum"] = sum(vals)
-        hit = [k for k, v in cands.items() if abs(v - got) <= max(5e-4, abs(got) * 2e-3)]
+        # A column printed to one decimal cannot be checked to four. The rows
+        # feeding the recomputation are rounded too, so the tolerance has to be
+        # at least half the last printed digit of the summary cell; without that
+        # a bias column reading "-0.0" fails against a weighted mean of 0.0055,
+        # which is the same number.
+        dec = len(summary[j].partition(".")[2].strip()) if "." in summary[j] else 0
+        tol = max(5e-4, abs(got) * 2e-3, 0.5 * 10 ** -dec if dec else 0.5)
+        hit = [k for k, v in cands.items() if abs(v - got) <= tol]
         wanted = "median" if "median" in summary[0].lower() else None
         if hit and (wanted is None or wanted in hit):
             continue

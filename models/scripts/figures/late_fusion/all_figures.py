@@ -286,13 +286,21 @@ def figure_comprehensive_radar():
     """Radar chart: multi-metric comparison V2, V4, V5, V10."""
     print("Generating: Comprehensive Radar...")
 
-    categories = ['R²', '1-NRMSE', '1-NMAE', 'Efficiency', 'Stability', '1-|Bias|']
+    # Two axes were dropped from this chart rather than redrawn. 'Stability' was
+    # four literals (0.8, 0.85, 0.3, 0.95) that no table supplies and no script
+    # computes, so it was a shape, not a measurement. 'Efficiency' scaled a
+    # parameter count, and the convolutional entry used 316K, which appears in no
+    # table; the architecture table gives 79K to 206K, and Late Fusion has no
+    # parameter count of its own, so the axis was comparing three real numbers
+    # with one placeholder. What remains is four quantities every row of the
+    # master comparison actually carries.
+    categories = ['R²', '1-NRMSE', '1-NMAE', '1-|Bias|']
 
     models_data = {
-        'Enh. ConvLSTM': [0.628/0.7, 1-81.05/120, 1-58.91/100, 1-316/500, 0.8, 1-10.5/30],
-        'GNN-TAT': [0.628/0.7, 1-82.29/120, 1-58.19/100, 1-98/500, 0.85, 1-28.8/30],
-        'Stacking Ens.': [0.212/0.7, 1-117.93/120, 1-92.41/100, 1-200/500, 0.3, 0.3],
-        'Late Fusion': [0.672/0.7, 1-76.23/120, 1-55.92/100, 1.0, 0.95, 1-0.004/30],
+        'Enh. ConvLSTM': [0.628/0.7, 1-81.05/120, 1-58.91/100, 1-10.5/30],
+        'GNN-TAT': [0.628/0.7, 1-82.29/120, 1-58.19/100, 1-28.8/30],
+        'Stacking Ens.': [0.212/0.7, 1-117.93/120, 1-92.41/100, 0.3],
+        'Late Fusion': [0.672/0.7, 1-76.23/120, 1-55.92/100, 1-0.004/30],
     }
 
     model_colors = {
@@ -350,15 +358,21 @@ def figure_parameter_efficiency_extended():
     fig, ax = plt.subplots(figsize=(10, 6))
 
     # Models: (params_K, R², label, color, marker)
+    # Parameter counts are the ones the architecture table of the supplement
+    # lists. Three of them were wrong here for as long as this figure existed:
+    # Bidirectional was plotted at 1200K against its 148K, Residual at 234K
+    # against 153K and the stacking ensemble at 1800K against ~200K, which put
+    # two of the five Pareto vertices in the wrong place and contradicted the
+    # 79K-to-206K range the manuscript quotes for this family.
     models = [
-        (78, 0.601, 'ConvLSTM', COLORS['v2'], 'o'),
-        (234, 0.589, 'Residual', COLORS['v2'], 'o'),
-        (1200, 0.598, 'Bidirectional', COLORS['v2'], 'o'),
+        (79, 0.601, 'ConvLSTM', COLORS['v2'], 'o'),
+        (153, 0.589, 'Residual', COLORS['v2'], 'o'),
+        (148, 0.598, 'Bidirectional', COLORS['v2'], 'o'),
         (106, 0.582, 'FNO+ConvLSTM', COLORS['v3'], '^'),
         (85, 0.206, 'FNO (pure)', COLORS['v3'], '^'),
         (98, 0.5545, 'GNN-TAT (GCN/GAT)', COLORS['v4'], 's'),  # merged GCN+GAT
         (106, 0.518, 'GNN-TAT (SAGE)', COLORS['v4'], 's'),
-        (1800, 0.212, 'Stacking Ens.', COLORS['v5'], 'X'),
+        (200, 0.212, 'Stacking Ens.', COLORS['v5'], 'X'),
         (148, 0.200, 'GNN-BiMamba', COLORS['v9'], 'X'),
         (0.5, 0.672, 'Late Fusion', COLORS['v10'], '*'),
     ]
@@ -369,17 +383,20 @@ def figure_parameter_efficiency_extended():
                    edgecolors='#333', linewidths=0.5, zorder=5)
 
     # Careful label positioning to avoid overlaps (fontsize=9)
+    # Offsets retuned after the parameter counts were corrected: the
+    # convolutional family collapsed from a 79-1200K spread onto 79-153K, so
+    # labels written to the right of each point now collide.
     label_specs = {
         'Late Fusion':       (14, 2, 'left'),
-        'ConvLSTM':          (10, 8, 'left'),
-        'FNO+ConvLSTM':      (10, -12, 'left'),
-        'Residual':          (10, 5, 'left'),
-        'Bidirectional':     (10, -10, 'left'),
-        'GNN-TAT (GCN/GAT)': (-10, 8, 'right'),
-        'GNN-TAT (SAGE)':    (-10, -10, 'right'),
-        'FNO (pure)':        (-10, -8, 'right'),
-        'Stacking Ens.':     (10, 6, 'left'),
-        'GNN-BiMamba':       (10, -10, 'left'),
+        'ConvLSTM':          (-8, 7, 'right'),
+        'FNO+ConvLSTM':      (-10, 7, 'right'),
+        'Residual':          (10, -12, 'left'),
+        'Bidirectional':     (10, 4, 'left'),
+        'GNN-TAT (GCN/GAT)': (-10, 1, 'right'),
+        'GNN-TAT (SAGE)':    (-10, -4, 'right'),
+        'FNO (pure)':        (-10, -3, 'right'),
+        'Stacking Ens.':     (10, 2, 'left'),
+        'GNN-BiMamba':       (-10, -12, 'right'),
     }
 
     # FIGURE EXCEPTION: scatter point labels need fontsize+1 to remain readable above markers
@@ -390,18 +407,38 @@ def figure_parameter_efficiency_extended():
                    fontsize=plt.rcParams['font.size'] + 1, ha=ha,
                    fontweight='medium', color='#333333')
 
-    # Pareto frontier
-    pareto_params = [0.5, 78, 98, 234, 1200]
-    pareto_r2 = [0.672, 0.601, 0.5545, 0.589, 0.598]
-    ax.plot(pareto_params, pareto_r2, '--', color=COLORS['success'],
-            linewidth=1.2, alpha=0.6, label='Pareto frontier')
+    # Pareto frontier, computed from the plotted points rather than listed. The
+    # earlier hard-coded list ran through configurations that are dominated,
+    # which is not what a frontier is. Late Fusion is excluded because its three
+    # combiner coefficients are not a parameter count on the same footing, which
+    # the caption already says; including it makes it the sole non-dominated
+    # point and the figure says nothing.
+    parametrised = sorted((p, r) for p, r, n, _, _ in models if n != 'Late Fusion')
+    frontier, best = [], -np.inf
+    for p, r in parametrised:
+        if r > best:
+            frontier.append((p, r))
+            best = r
+    if len(frontier) > 1:
+        ax.step([p for p, _ in frontier], [r for _, r in frontier], '--',
+                where='post', color=COLORS['success'], linewidth=1.2, alpha=0.6,
+                label='Pareto frontier')
+    else:
+        # One point means no configuration above the smallest buys any accuracy,
+        # which is the saturation the manuscript reads off this figure.
+        ax.axvline(frontier[0][0], color=COLORS['success'], linestyle='--',
+                   linewidth=1.2, alpha=0.6)
+        ax.annotate('nothing larger scores higher', xy=(frontier[0][0], 0.34),
+                    xytext=(-8, 0), textcoords='offset points', ha='right',
+                    fontsize=plt.rcParams['font.size'], color=COLORS['success'])
 
-    ax.axhline(y=0.628, color=COLORS['v2'], linestyle=':', alpha=0.4, linewidth=0.8)
+    ax.axhline(y=frontier[-1][1], color=COLORS['v2'], linestyle=':', alpha=0.4,
+               linewidth=0.8)
 
     ax.set_xscale('log')
-    ax.set_xlabel('Number of parameters (log scale)')
+    ax.set_xlabel('Parameters (thousands, log scale)')
     ax.set_ylabel('R² score')
-    ax.set_xlim(0.2, 3000)
+    ax.set_xlim(0.2, 400)
     ax.set_ylim(0.1, 0.75)
 
     # Legend on top in single row (matches Fig 12 layout)

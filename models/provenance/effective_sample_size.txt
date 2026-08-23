@@ -37,6 +37,15 @@
   design cannot resolve differences of the size anyone would claim,
   not that the architectures are equivalent.
 
+  Raising n is the only remedy, and the measured cost prices it
+  (29.08 GPU-hours for 6 configurations on 3 seeds,
+  so 9.69 h per added seed across the whole factorial):
+      seeds      MDE at the median s_d      GPU-hours
+          3                      0.228             29
+          5                      0.114             48
+         10                      0.066             97
+         16                      0.049            155
+
 ==========================================================================
 3. THE FIFTEEN PAIRWISE COMPARISONS, CORRECTED AS ONE FAMILY
 ==========================================================================

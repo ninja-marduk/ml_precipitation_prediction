@@ -117,6 +117,21 @@ def main():
     for nm, mk in bands:
         elev_rows[nm] = row(nm, cellmask=mk, n=int(mk.sum()))
 
+    print("\n[elevation bias, mm/month]")
+    print("  the manuscript states a bias pattern per band and the R^2 rows above")
+    print("  cannot supply it, so it is computed here from the same arrays")
+
+    def band_bias(pred, cellmask):
+        p = pred.reshape(pred.shape[0], -1)[:, cellmask.reshape(-1)]
+        t = ftgt.reshape(ftgt.shape[0], -1)[:, cellmask.reshape(-1)]
+        return float(np.nanmean(p - t))
+
+    print(f"{'stratum':<22}" + "".join(f"{k:>12}" for k in SHOW))
+    for nm, mk in bands:
+        print(f"{nm:<22}" + "".join(f"{band_bias(flat[k], mk):>12.1f}" for k in SHOW))
+    print(f"{'ALL':<22}" + "".join(
+        f"{band_bias(flat[k], np.isfinite(elev)):>12.1f}" for k in SHOW))
+
     print("\n[season]")
     seasons = [("DJF", np.isin(fmon, [12, 1, 2])), ("MAM", np.isin(fmon, [3, 4, 5])),
                ("JJA", np.isin(fmon, [6, 7, 8])), ("SON", np.isin(fmon, [9, 10, 11]))]

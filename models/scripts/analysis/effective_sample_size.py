@@ -150,6 +150,22 @@ def part2(c):
     print(f"  the entire range of the design. 'Not significant' here means the")
     print(f"  design cannot resolve differences of the size anyone would claim,")
     print(f"  not that the architectures are equivalent.")
+
+    # What buying a smaller detectable effect would cost. The only lever is n,
+    # and its price is measured: the eighteen instrumented runs of the factorial
+    # cost the hours below, so a seed is one sixth of that per configuration and
+    # the projection is arithmetic rather than an estimate.
+    hours_measured, cells_measured = 29.08, 6
+    per_seed = hours_measured / len(SEEDS)
+    print(f"\n  Raising n is the only remedy, and the measured cost prices it")
+    print(f"  ({hours_measured:.2f} GPU-hours for {cells_measured} configurations "
+          f"on {len(SEEDS)} seeds,")
+    print(f"  so {per_seed:.2f} h per added seed across the whole factorial):")
+    print(f"      seeds      MDE at the median s_d      GPU-hours")
+    for k in (3, 5, 10, 16):
+        t_k = stats.t.ppf(0.975, k - 1)
+        print(f"      {k:>5}      {t_k / np.sqrt(k) * med:>21.3f}      "
+              f"{per_seed * k:>9.0f}")
     return tcrit
 
 

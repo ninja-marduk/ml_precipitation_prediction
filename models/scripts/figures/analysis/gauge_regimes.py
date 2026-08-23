@@ -110,7 +110,10 @@ def main():
     bx.tick_params(labelsize=8)
     bx.text(0.03, 0.04, "pale: thin months   solid: thick months",
             transform=bx.transAxes, fontsize=8, va="bottom", color="0.25")
-    bx.text(0.97, 0.955, "above 1.0: climatology wins", transform=bx.transAxes,
+    # The ratio is RMSE(climatology)/RMSE(model), so a bar above the line means
+    # the climatology's error is the larger of the two and the model is ahead.
+    # The first version of this label read it the other way round.
+    bx.text(0.97, 0.955, "below 1.0: climatology wins", transform=bx.transAxes,
             fontsize=7.5, va="top", ha="right", color="0.4")
 
     for a_ in (ax, bx):

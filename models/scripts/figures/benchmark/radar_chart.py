@@ -26,15 +26,23 @@ from _config import setup_paper_style, save_figure  # noqa: E402
 FIG_OUT = REPO / '.docs' / 'papers' / '5' / 'figures' / 'radar_chart.png'
 FIG_OUT_DELIVERY = REPO / '.docs' / 'papers' / '5' / 'delivery' / 'figures' / 'radar_chart.png'
 
-# Categories: clockwise from top
-CATEGORIES = ['R$^2$', '1$-$NRMSE', '1$-$NMAE', 'Efficiency', 'Stability', '1$-|$Bias$|$']
+# Categories: clockwise from top.
+#
+# Two axes were removed rather than redrawn, because neither was a measurement.
+# 'Stability' held four literals (0.80, 0.85, 0.30, 0.95) that no table supplies
+# and no script computes. 'Efficiency' scaled a parameter count, and the
+# convolutional entry used 316K, a figure appearing in no table: the architecture
+# table gives 79K to 206K for that family, and Late Fusion has no parameter count
+# of its own, so its 1.00 was a placeholder sitting on the same axis as three real
+# numbers. What is left is four quantities every row of the master comparison
+# carries, which is what a reader can check.
+CATEGORIES = ['R$^2$', '1$-$NRMSE', '1$-$NMAE', '1$-|$Bias$|$']
 
-# Path-C values (R^2 updated 0.668 -> 0.672)
 MODELS_DATA = {
-    'Enh. ConvLSTM': [0.628 / 0.7, 1 - 81.05 / 120, 1 - 58.91 / 100, 1 - 316 / 500, 0.80, 1 - 10.50 / 30],
-    'GNN-TAT':       [0.628 / 0.7, 1 - 82.29 / 120, 1 - 58.19 / 100, 1 -  98 / 500, 0.85, 1 - 28.80 / 30],
-    'Stacking Ens.': [0.212 / 0.7, 1 - 117.93 / 120, 1 - 92.41 / 100, 1 - 200 / 500, 0.30, 0.30],
-    'Late Fusion':   [0.672 / 0.7, 1 - 76.23 / 120, 1 - 56.12 / 100, 1.00, 0.95, 1 - 0.002 / 30],
+    'Enh. ConvLSTM': [0.628 / 0.7, 1 - 81.05 / 120, 1 - 58.91 / 100, 1 - 10.50 / 30],
+    'GNN-TAT':       [0.628 / 0.7, 1 - 82.29 / 120, 1 - 58.19 / 100, 1 - 28.80 / 30],
+    'Stacking Ens.': [0.212 / 0.7, 1 - 117.93 / 120, 1 - 92.41 / 100, 0.30],
+    'Late Fusion':   [0.672 / 0.7, 1 - 76.23 / 120, 1 - 56.12 / 100, 1 - 0.002 / 30],
 }
 
 # Okabe-Ito-aligned palette (matches the rest of the paper)

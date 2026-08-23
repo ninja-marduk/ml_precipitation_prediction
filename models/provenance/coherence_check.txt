@@ -1,0 +1,28 @@
+ORPHAN FLOATS  (present but never referenced)
+  none
+
+DANGLING REFS  (\ref to a label defined nowhere in this file)
+  none
+
+ORDER  (float position against the order the text first cites it)
+  7 float(s) appear in a different order than they are cited:
+    document order: tab:r2-conventions, fig:climatology-anchor, tab:gnn-results, tab:fusion-ladder, tab:fusion-decomposition, tab:elevation-stratified, fig:spatial-r2-3panel, fig:gauge-regimes
+    citation order: tab:elevation-stratified, tab:r2-conventions, fig:spatial-r2-3panel, fig:climatology-anchor, tab:gnn-results, tab:fusion-ladder, tab:fusion-decomposition, fig:gauge-regimes
+  Not an error in itself; journals renumber. Worth a look only if a
+  reader would meet a float long before its first mention.
+
+PANELS  (text naming a panel the figure does not define)
+  no mismatch found
+
+SUPPLEMENT  (pointers against what the supplement actually holds)
+  supplement has 20 tables and 13 figures
+  every pointer is within range
+
+ROADMAP  (sections the introduction promises against those that exist)
+  no roadmap sentence found
+
+DANGLING PROSE  (deixis a cut may have left without a referent)
+  none
+
+========================================================================
+0 hard mismatch(es).
