@@ -1,0 +1,36 @@
+D:\github.com\ninja-marduk\ml_precipitation_prediction\models\scripts\analysis\figure_reuse.py:46: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+  px = list(g.getdata())
+46 images across 4 directories
+
+8 figure(s) appear in more than one document:
+
+  distance   0
+    figures/colombia_map.png
+    figures/colombia_map.png
+  distance   0
+    figures/dem_elevation.png
+    figures/dem_elevation.png
+  distance   0
+    figures/feature_heatmap.png
+    thesis/feature_heatmap.png
+  distance   0
+    figures/horizon_degradation.png
+    thesis/horizon_degradation.png
+  distance   0
+    figures/model_comparison_v4_gnn_tat.png
+    thesis/model_comparison_v4_gnn_tat.png
+  distance   0
+    figures/parameter_efficiency.png
+    thesis/parameter_efficiency.png
+  distance   0
+    figures/radar_chart.png
+    thesis/radar_chart.png
+  distance   0
+    figures/training_dynamics.png
+    thesis/training_dynamics.png
+
+Reuse of one's own figure is permitted when it is disclosed and the earlier
+document is cited in the caption, and it is a problem when it is not. An
+image screener cannot tell those apart, so each pair above needs a caption
+that names where the figure first appeared, or a regenerated figure that is
+genuinely different.

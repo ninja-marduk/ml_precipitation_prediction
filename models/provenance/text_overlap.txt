@@ -1,0 +1,34 @@
+target : paper_gmd.tex  (18,437 words)
+against: thesis.tex  (28,290 words)
+against: paper.tex  (7,287 words)
+
+COVERAGE  (share of the manuscript whose n-grams appear in a source)
+     n    covered   what overlap at this size means
+  --------------------------------------------------------------------------
+     6      0.6%   shared vocabulary and stock phrasing; not recycling
+     8      0.3%   the size similarity software matches on
+    10      0.1%   sentence-level reuse
+    15      0.0%   copied passages; nothing else survives here
+
+  Overlap collapses by n=15, so what remains at n=8 is shared wording
+  rather than copied passages.
+
+PASSAGES  (5 runs of 12+ words, 68 words, 0.4% of the manuscript)
+  These are what a reviewer would see quoted side by side.
+
+   19 words  ...rule at h for seed is where the bias term absorbs the systematic underestimation of the individual base models...
+   13 words  ...indistinguishable when their mean rank difference falls within the critical difference cd at...
+   12 words  ...applied symmetrically as grid-attends-to-graph queries from keys values from and graph-attends-to-grid streams...
+   12 words  ...from at h to at h with per-horizon inter-seed standard deviations below...
+   12 words  ...the toughest cells lie in the m orographic transition zone rather than...
+
+What to do with this. Reuse of methods text is permitted by every major
+publisher when it is disclosed and the prior work is cited at the point of
+use. So the question each passage above raises is not whether it may be
+reused, but whether the manuscript says where it came from. Check that the
+disclosure names the document these passages come from, and that the citation
+sits beside the passage and not only in a paragraph fifteen pages earlier.
+
+This matched strings against the documents given. It says nothing about
+sources not supplied, and a paraphrased passage scores zero here while
+remaining recycling in substance.

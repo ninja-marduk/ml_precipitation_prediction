@@ -1,0 +1,27 @@
+COLOUR  (colormaps named in the figure-generating scripts)
+  ok    gray            reviewer_annotations.py, study_area.py
+  ok    terrain         reviewer_annotations.py, study_area.py
+  ok    viridis         all_figures.py, reviewer_annotations.py, spatial_r2.py, spatial_r2_h12_avg.py
+  ok    viridis_r       all_figures.py
+
+FORMAT  (the figures the manuscript and supplement include)
+  vector  beyond_aggregate.pdf
+  vector  boyaca.pdf
+  vector  climatology_anchor.pdf
+  vector  factorial_feat_variant_r2.pdf
+  vector  failure_modes_analysis.pdf
+  vector  gauge_regimes.pdf
+  vector  horizon_degradation_multiseed.pdf
+  vector  parameter_efficiency_clean.pdf
+  vector  radar_chart.pdf
+  vector  spatial_r2_map_3panel.pdf
+
+FONTS  (Type 3 in a built PDF is rejected by several preflight tools)
+  no Type 3 fonts in any included figure
+
+======================================================================
+Colour, format and fonts all meet the stated requirements.
+What this does not check: whether an axis is truncated, whether a headline
+value is shown without its spread, or whether smoothing is disclosed. Those
+are reviewer-discretion matters with no screening behind them, which makes
+them more likely to be raised, not less.

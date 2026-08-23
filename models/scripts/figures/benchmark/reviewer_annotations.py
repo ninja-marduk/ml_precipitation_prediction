@@ -167,7 +167,7 @@ def figure_spatial_r2(lats, lons, elev, pred_v2, tgt_v2, pred_v4, tgt_v4, gdf):
     fig, axes = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
     lon_grid, lat_grid = np.meshgrid(lons, lats)
 
-    cmap = plt.cm.RdYlGn
+    cmap = plt.cm.viridis
     vmin, vmax = -0.2, 0.8
     norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
 

@@ -114,7 +114,23 @@ def generate_spatial_r2_3panel() -> int:
     # Compact 3-panel layout for paper width.
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), sharey=True)
     lon_grid, lat_grid = np.meshgrid(lons, lats)
-    cmap = plt.cm.RdYlGn
+    # RdYlGn was the wrong choice and Copernicus says so explicitly: it asks that
+    # colour schemes in maps and charts be readable with a colour vision
+    # deficiency, and a red-to-green ramp is the one that is not. A survey of
+    # geoscience journals found 21% of papers carrying a red-green figure, so
+    # this is a common defect rather than an exotic one.
+    #
+    # The replacement is sequential rather than diverging, which is a second
+    # decision worth recording. A diverging map pivots on a meaningful centre,
+    # and here the only candidate centre is zero, which sits a fifth of the way
+    # up a range running from -0.2 to 0.8: nearly every cell is on one side of
+    # it. A diverging ramp would then spend half its colour on values that
+    # barely occur and put its darkest tone in the middle of the data, so
+    # lightness would stop tracking magnitude.
+    #
+    # viridis is perceptually uniform, monotonic in lightness, readable under
+    # every common colour vision deficiency, and survives greyscale printing.
+    cmap = plt.cm.viridis
     norm = mcolors.Normalize(vmin=-0.2, vmax=0.8)
 
     panels = [

@@ -85,7 +85,7 @@ def main():
 
     models = [('ConvLSTM', *_load(V2)), ('GNN-TAT', *_load(V4)), ('Late Fusion (Ridge)', *_load(V10))]
     lon_g, lat_g = np.meshgrid(lons, lats)
-    cmap = plt.cm.RdYlGn; norm = mcolors.Normalize(vmin=-0.2, vmax=0.8)
+    cmap = plt.cm.viridis; norm = mcolors.Normalize(vmin=-0.2, vmax=0.8)
 
     fig, axes = plt.subplots(2, 3, figsize=(13, 8.2), sharex=True, sharey=True)
     row_defs = [

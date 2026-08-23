@@ -68,7 +68,7 @@ def figure_stacking_comparison_heatmap():
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
 
     metrics = ['R²', 'RMSE (mm)', 'MAE (mm)']
-    cmaps = [plt.cm.RdYlGn, plt.cm.RdYlGn_r, plt.cm.RdYlGn_r]
+    cmaps = [plt.cm.viridis, plt.cm.viridis_r, plt.cm.viridis_r]
     ranges = [(0, 0.8), (70, 130), (50, 100)]
 
     for idx, (metric, cmap, (vmin, vmax)) in enumerate(zip(metrics, cmaps, ranges)):
