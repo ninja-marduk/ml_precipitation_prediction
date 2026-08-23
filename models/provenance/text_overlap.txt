@@ -1,12 +1,11 @@
-target : paper_gmd.tex  (18,437 words)
+target : paper_gmd.tex  (18,965 words)
 against: thesis.tex  (28,290 words)
-against: paper.tex  (7,287 words)
 
 COVERAGE  (share of the manuscript whose n-grams appear in a source)
      n    covered   what overlap at this size means
   --------------------------------------------------------------------------
-     6      0.6%   shared vocabulary and stock phrasing; not recycling
-     8      0.3%   the size similarity software matches on
+     6      0.5%   shared vocabulary and stock phrasing; not recycling
+     8      0.2%   the size similarity software matches on
     10      0.1%   sentence-level reuse
     15      0.0%   copied passages; nothing else survives here
 

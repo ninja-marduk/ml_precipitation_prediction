@@ -1,27 +1,25 @@
-paper_gmd.tex: 16,256 words of prose, 615 sentences
+paper_gmd.tex: 16,674 words of prose, 627 sentences
 
 BURSTINESS
-  sentence length      mean 28.8, s.d. 14.8, median 27, range 4 to 78
-  coefficient of var.  0.51   within the usual range
-  within +-25% of mean 36%   within the usual range
+  sentence length      mean 29.0, s.d. 15.2, median 27, range 4 to 91
+  coefficient of var.  0.53   within the usual range
+  within +-25% of mean 38%   within the usual range
   Low variation is the classic machine signature, but a house style that
   favours one clause per sentence produces it too.
 
 TICS  (n-grams far above the rate a text this long should show)
-   3.20/1k  x52   the same
-   2.95/1k  x48   rather than
-   2.15/1k  x35   the graph
-   1.54/1k  x25   late fusion
-   1.23/1k  x20   three seeds
-   0.68/1k  x11   rather than the
-   0.62/1k  x10   the training period
-   0.43/1k  x7    an earlier version of
-   0.43/1k  x7    earlier version of this
+   3.36/1k  x56   the same
+   2.94/1k  x49   rather than
+   2.22/1k  x37   the graph
+   1.50/1k  x25   late fusion
+   1.38/1k  x23   three seeds
+   1.26/1k  x21   the convolutional
+   0.66/1k  x11   rather than the
+   0.42/1k  x7    the convolutional model and
   A domain term repeats legitimately; a connective or a frame does not.
   Judge each by whether it names something or joins something.
 
 OPENERS  (repeated sentence-opening frames)
-  x4    an earlier version
   x4    it is a
   x3    our companion study
   x3    it does not
@@ -33,22 +31,22 @@ OPENERS  (repeated sentence-opening frames)
 PUNCTUATION  (per 1,000 words)
   em-dash                0     0.00/1k
   en-dash                0     0.00/1k
-  semicolon            111     6.83/1k   ABOVE the usual range
-  colon                153     9.41/1k   ABOVE the usual range
-  parenthesis pair     195    12.00/1k
-  comma               1109    68.22/1k
+  semicolon            113     6.78/1k   ABOVE the usual range
+  colon                157     9.42/1k   ABOVE the usual range
+  parenthesis pair     200    11.99/1k
+  comma               1143    68.55/1k
   An em-dash count of zero in a long manuscript is itself a datum: it means
   either a house rule or a sweep. Say which, because a reviewer may wonder.
 
 PARAGRAPHS
-  156 paragraphs, mean 113 words, coefficient of variation 0.56
+  157 paragraphs, mean 115 words, coefficient of variation 0.57
   Machine drafting tends to produce paragraphs of even size; below about
   0.35 is worth a look.
 
 RICHNESS
-  types 2,546, hapax rate 0.46   within the usual range
-  type-token ratio over 400-word windows: mean 0.56, s.d. 0.045
-  discourse markers: 16 (0.98/1k)
+  types 2,560, hapax rate 0.46   within the usual range
+  type-token ratio over 400-word windows: mean 0.56, s.d. 0.048
+  discourse markers: 18 (1.08/1k)
 
 No score is produced and none should be. Every signal above has an innocent
 reading; the tool's job is to say where to look, and a human's is to look.
