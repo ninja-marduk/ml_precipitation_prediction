@@ -1,0 +1,62 @@
+paper_gmd.tex
+
+ words  kids  heading
+--------------------------------------------------------------------------------------
+   677     0  Theoretical background and related work
+     0     7  Materials and methods
+   185     0    The protocol
+   158     0        Component 1. Baseline anchoring
+   136     0        Component 2. Multi-seed factorial
+   192     0        Component 3. Calibration-versus-combination decompos
+   112     0        Component 4. Deseasonalised anomaly test
+   195     0        Component 5. Diagnostics of the learned spatial prio
+   277     0    Relation to our earlier work
+   258     0    Study area: the Colombian Andes
+   287     0    Data sources and preprocessing
+   374     0        Methodological note on threshold choice.
+   459     0        Hypothesis provenance.
+   429     0    Architecture families
+   108     0    Training protocol
+   239     0    Evaluation metrics and statistical framework
+   290     0        Effective sample size, and what it does to the tests
+   313     0        Multiple-testing correction.
+   117    14  Results
+   225     0    Base learners and the zero-cost references
+   595     0        Reference baselines.
+   721     0    Graph-based architecture performance
+   397     0    Ensemble strategy analysis
+   441     0    Late fusion: combination at the prediction level
+   473     0    What survives a purged split
+   251     0        Reproducibility across seeds.
+   353     0    Decomposing the fusion gain: calibration versus comb
+   519     0    Feature-architecture interaction
+   105     0        State space models.
+   139     0    Convergence between families is not evidence of a ce
+   370     0    Elevation-stratified performance analysis
+   186     0    Spatial coherence: variogram analysis
+   379     0    Sub-cell topographic feature engineering: a negative
+   296     0        Parameter efficiency and computational cost.
+    72     0    Beyond aggregate skill: anomaly, structure, and unce  <- THIN
+   286     0        Anomaly skill is not detectable.
+   176     0        Orographic structure is real but weak, and the long-
+   210     0        Distribution-free uncertainty is not attainable at t
+   313     0    A leakage audit of the graph construction
+   259     0    Does the result generalise? The anchoring step appli
+     1     6  Discussion
+  1026     0    What the anchoring step establishes, and what it doe
+   405     0    What a defect costs, measured rather than assumed
+   250     0    What the graph actually connects
+   463     0    Variant stability and architecture selection under d
+   235     0    What the architectures show, and how much of it surv
+   613     0    Relation to existing evaluation frameworks
+   512     0  Conclusions
+   238     0        Practical recommendations.
+   301     0        Limitations.
+   580     0        Future directions.
+   423     0        Interactive computing environment.
+
+======================================================================================
+section: 5  subsection: 27  paragraph: 20
+
+1 headings flagged. Flattening an ONLY CHILD or a THIN heading turns a
+line of vertical space back into prose, which is what a length cut wants.
