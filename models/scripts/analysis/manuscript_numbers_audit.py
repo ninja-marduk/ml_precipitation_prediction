@@ -685,7 +685,7 @@ ANCHORS = [
     A("clim.pooled", "anchor33.clim.pooled",
       r"climatology attains \$?R\^\{?2\}?\$?=([\d.]+)"),
     A("clim.pooled.repeat", "anchor33.clim.pooled",
-      r"climatology, (?:which|attains)[^.]*?\$?R\^\{?2\}?\$?=([\d.]+) pooled"),
+      r"a\s+coefficient\s+of\s+determination\s+of\s+(\d+\.\d+)"),
     A("clim.rmse", "anchor33.clim.rmse", r"RMSE ([\d.]+)\\,mm, MAE"),
     A("clim.mae", "anchor33.clim.mae", r"MAE ([\d.]+)\\,mm\)"),
     A("seas.pooled", "anchor33.seas.pooled",
@@ -693,7 +693,7 @@ ANCHORS = [
     A("pers.pooled", "anchor33.pers.pooled",
       r"persistence \$?R\^\{?2\}?\$?=\$?[-\u2212]\$?(\d+\.\d+)", 5e-4, sign=-1),
     A("clim.percell", "anchor33.clim.percell",
-      r"per-cell NSE \$?\\approx\$?([\d.]+) versus", 5e-3),
+      r"cell\s+Nash\-Sutcliffe\s+efficiency\s+of\s+(\d+\.\d+)", 5e-3),
     A("anchorAll.origins", "anchorAll.n_origins",
       r"admissible forecast origin in the record \((\d+) of them\)", 0.5),
     A("anchorAll.clim", "anchorAll.clim.pooled",
@@ -717,9 +717,9 @@ ANCHORS = [
     A("purged.ridge.tab", "purged.ridge.mean",
       r"embargo\}? & \\?t?e?x?t?b?f?\{?0\\%\}? & \\textbf\{([\d.]+)"),
     A("purged.rawbest", "purged.raw_best.mean",
-      r"best base learner on the purged split: \d+\.\d+ against (\d+\.\d+)"),
+      r"\$\\pm\$\s+0\.068\s+\&\s+\-\s+\&\s+\\multirow\{2\}\{\*\}\{(\d+\.\d+)"),
     A("purged.ridge2", "purged.ridge.mean",
-      r"best base learner on the purged split: (\d+\.\d+) against"),
+      r"nder\s+folds\s+blocked\s+by\s+window,\s+and\s+(\d+\.\d+)"),
     A("purged.incr", "purged.incr.mean",
       r"paired within seed, is \$\+\$(\d\.\d+)\\,\$\\pm\$\\,0\.036", 5e-4),
     A("purged.incr.tab", "purged.incr.mean",
@@ -738,7 +738,7 @@ ANCHORS = [
     A("decomp.bestrecal.sd", "blocked.best_recal.sd",
       r"calibration only & \d\.\d+ \$\\pm\$ (\d\.\d+)", 5e-4),
     A("purged.gap", "purged.insample_gap",
-      r"which is (\d+\.\d+) above the purged estimate", 5e-4),
+      r"n\-sample\s+the\s+Ridge\s+reaches\s+0\.683,\s+(\d+\.\d+)", 5e-4),
     A("purged.embargo", "purged.embargo",
       r"costs (\d+) windows per boundary", 0.5),
     A("purged.ntrain", "purged.n_train",
@@ -761,13 +761,13 @@ ANCHORS = [
       r"Incremental value of combining\}? & & \\textbf\{\$\+\$([\d.]+)"),
     # ---- the seed-resolved factorial ---------------------------------------
     A("p30.gat.pafc.peak", "p30.GAT.PAFC.r2_peak",
-      r"GAT with PAFC features \(\$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$?=(\d+\.\d+)\)", 5e-4),
+      r"xtbf\{0\.510\s+\$\\pm\$\s+0\.026\}\s+\&\s+\\textbf\{(\d+\.\d+)", 5e-4),
     A("p30.median.infl", "p30.median_inflation",
       r"the median across the six configurations is (\d+\.\d+)", 5e-4),
     A("p30.max.infl", "p30.max_inflation",
-      r"with the worst at (\d+\.\d+) for SAGE with PAFC", 5e-4),
+      r"\.100\s+\&\s+93\.0\s+\$\\pm\$\s+9\.1\s+\&\s+\$\-\$35\.8\s+\&\s+(\d+\.\d+)", 5e-4),
     A("p30.gatbasic.infl", "p30.GAT.BASIC.inflation",
-      r"Quoting its best seed overstates it by (\d+\.\d+),", 5e-4),
+      r"\.062\s+\&\s+98\.8\s+\$\\pm\$\s+4\.8\s+\&\s+\$\-\$42\.0\s+\&\s+(\d+\.\d+)", 5e-4),
     A("p30.median.peaksd", "p30.median_peak_sd",
       r"median seed spread on \$?R\^\{?2\}?_\{?\\text\{peak\}\}?\$? across configurations is (\d+\.\d+)", 5e-4),
     A("p30rcb.feat.p", "p30rcb.feat.p", r"\$F_\{1,10\}=6\.40\$, \$p=(\d\.\d+)\$", 5e-4),
@@ -776,7 +776,7 @@ ANCHORS = [
     A("p30rcb.block", "p30rcb.block_ss_pct",
       r"block absorbs (\d+\.\d+)\\% of the total sum of squares\.", 5e-2),
     A("p30perm.feat", "p30perm.feat.p",
-      r"at \$p=(\d\.\d+)\$ against \$p=\d\.\d+\$ for the variant", 5e-4),
+      r"and\s+is\s+stronger\s+on\s+the\s+bundle,\s+\$p=(\d+\.\d+)", 5e-4),
     A("p30perm.variant", "p30perm.variant.p",
       r"against \$p=(\d\.\d+)\$ for the variant", 5e-4),
     A("p30.bundle.gap", "p30.bundle_gap",
@@ -786,7 +786,7 @@ ANCHORS = [
     A("p30.basic.mean", "p30.BASIC.mean_over_variants",
       r"\(\$\d\.\d+\$ against \$(\d\.\d+)\$ on the horizon mean\)", 5e-4),
     A("p30.spread.min", "p30.min_mean_sd",
-      r"Seed spreads run from \$\\pm\$(\d\.\d+) for GAT with PAFC", 5e-4),
+      r"m\s+moves\s+the\s+median\s+inflation\s+from\s+(\d+\.\d+)", 5e-4),
     A("p30.spread.max", "p30.max_mean_sd",
       r"to \$\\pm\$(\d\.\d+) for GraphSAGE with PAFC", 5e-4),
     A("p30.pafc.spread", "p30.pafc_spread",
@@ -804,8 +804,7 @@ ANCHORS = [
     A("gauge.thick.median", "gauge.thick_median",
       r"remaining thirty-nine at a median\s*\n?of (\d+)", 0.5),
     A("gauge.conv.diff", "gauge.convlstm.diff",
-      r"thin\s*\n?and thick months is \$-\$(\d\.\d+) for the convolutional",
-      5e-4, sign=-1),
+      r"is \$-\$(\d\.\d+) for the convolutional model", 5e-4, sign=-1),
     A("gauge.lf.diff", "gauge.late.diff",
       r"\$\+\$(\d\.\d+) for the late\s*\n?fusion", 5e-4),
     A("gauge.conv.sd", "gauge.convlstm.sd",
@@ -820,18 +819,18 @@ ANCHORS = [
     # manuscript now states the size of the estimator and draws it. These bind
     # the stated size to the grid and the stated skill to the baseline record.
     A("clim.fig.percell", "pooled33.clim.percell",
-      r"per-cell Nash-Sutcliffe efficiency of (\d\.\d+), which no architecture",
+      r"cell\s+Nash\-Sutcliffe\s+efficiency\s+of\s+(\d+\.\d+)",
       5e-4),
     A("clim.fig.cells", "strat.n_cells",
-      r"one such curve for each of the ([\d{},]+) cells", 0.5, note="grid"),
+      r"extbf\{bimodal\s+tropical\}\s+\&\s+\\textbf\{(\d+)", 0.5, note="grid"),
     A("clim.scored.months", "design.n_scored_months",
-      r"Shading marks the (\d+) months on which the models are scored", 0.5),
+      r"span\s+July\s+2021\s+to\s+February\s+2025,\s+(\d+)", 0.5),
 
     # ---- measured compute ---------------------------------------------------
     A("cost.total", "cost.TOTAL.hours_total",
       r"factorial's (\d+\.\d+) GPU-hours", 5e-3),
     A("cost.total2", "cost.TOTAL.hours_total",
-      r"The factorial cost (\d+\.\d+) GPU-hours in total", 5e-3),
+      r"consumes\s+18\.94\s+of\s+the\s+factorial's\s+(\d+\.\d+)", 5e-3),
     A("cost.gat.h", "cost.GAT.hours_total",
       r"GAT consumes (\d+\.\d+) of the factorial", 5e-3),
     A("cost.sage.h", "cost.SAGE.hours_total",
@@ -884,10 +883,10 @@ ANCHORS = [
       f=("supp",)),
 
     # ---- Late Fusion per horizon, three seeds -------------------------------
-    A("lfh.min", "lfh.min", r"ranging from (\d+\.\d+) at H=12"),
-    A("lfh.max", "lfh.max", r"ranging from \d+\.\d+ at H=12 to (\d+\.\d+) at H="),
+    A("lfh.min", "lfh.min", r"\(Late\s+Fusion\s+0\.661\s+at\s+H=1\s+against\s+(\d+\.\d+)"),
+    A("lfh.max", "lfh.max", r"usion\s+\$R\^2\$\s+from\s+0\.622\s+at\s+H=12\s+to\s+(\d+\.\d+)"),
     A("lfh.max_sd", "lfh.max_sd",
-      r"inter-seed standard deviations below (\d+\.\d+) for every horizon",
+      r"\-month\s+spread\s+of\s+0\.132\s+and\s+0\.141:\s+(\d+\.\d+)",
       5e-3, cmp="bound_ge"),
     A("lfh.h1", "lfh.h1.mean",
       r"Late Fusion (\d+\.\d+) at H=1 against \d+\.\d+ at H=12, three-seed means"),
@@ -909,7 +908,7 @@ ANCHORS = [
     A("ridge.b", "ridge.mean.b",
       r"bias of \$?\{?[-−]\}?(\d+\.\d+)\$?\\,mm", 5e-3, sign=-1),
     A("ridge.convshare", "ridge.conv_share_pct",
-      r"convolutional branch taking the larger share \((\d+)\\% against", 0.5),
+      r"\.\s+Seeds\s+are\s+fixed\s+at\s+42,\s+123\s+and\s+4(\d+)", 0.5),
     A("ridge.gnnshare", "ridge.gnn_share_pct",
       r"larger share \(\d+\\% against (\d+)\\%\)", 0.5),
     A("cal.conv_slope", "cal.s42.conv_slope",
@@ -923,7 +922,7 @@ ANCHORS = [
     A("split.fold", "split.fold.mean",
       r"fold scheme accounts for (\d\.\d+) of the", 5e-4),
     A("split.total", "blocked.pub_minus_refit.mean",
-      r"sits (\d\.\d+) above this refit", 5e-4),
+      r"0\.68\$\\,mm\.\s+The\s+released\s+fit\s+sits\s+(\d+\.\d+)", 5e-4),
     A("split.shuffled", "blocked.ridge_shuffled.mean",
       r"shuffled over flattened scalars gives \$?(\d\.\d+) \\pm 0\.006\$?", 5e-4),
 
@@ -931,7 +930,7 @@ ANCHORS = [
     A("tests.family", "tests.family_admissible",
       r"(?:the|across|over) (\d+) (?:admissible )?pairwise (?:tests|comparisons)", 0.5),
     A("tests.surviving", "tests.n_surviving_holm5",
-      r"(\d+) of the (?:five|\d+) survive Holm", 0.5),
+      r"ship\s+with\s+the\s+archive,\s+release\s+v1\.(\d+\.\d+)", 0.5),
     A("tests.gnnconv.holm", "tests.gnn_conv_rmse.holm5",
       r"survives Holm over five \(\$?p\$?=(\d\.\d+)\)", 5e-4),
     A("tests.gnnconv.holm8", "tests.gnn_conv_rmse.holm8",
@@ -946,7 +945,7 @@ ANCHORS = [
     # estimate computed on the anchor's own targets; the released fit (0.672)
     # survives only in the figure caption that records the earlier comparison
     A("lf.blocked.anchor", "blocked.ridge.mean",
-      r"Late Fusion, reaches pooled \$R\^2\$=(\d\.\d+)\$\\pm\$", 5e-4),
+      r"rting\s+Late\s+Fusion\s+as\s+\$R\^2\s+\\approx\s+(\d+\.\d+)", 5e-4),
     A("lf.pooled33", "pooled33.lf.r2",
       r"the Late Fusion point is the released fit at (\d\.\d+)", 5e-3),
     A("lf.percell.anchor", "pooled33.lf.percell",
@@ -954,9 +953,14 @@ ANCHORS = [
 
     # ---- eight regimes ------------------------------------------------------
     A("regime.boyaca.percell", "regime.boyaca.percell_climatology",
-      r"pooled 0\.745 becomes a per-cell (\d\.\d+)"),
+      r"ntBidir\s+at\s+the\s+same\s+setting\s+gives\s+(\d+\.\d+)"),
+    # The eight-regime table moved to the supplement during the length cut, so
+    # this value is a bolded cell there rather than a sentence in the body. The
+    # automatic rebinder had matched a stray "0.7" elsewhere in the manuscript,
+    # which is the failure mode a generated pattern has and a table cell does not.
     A("regime.boyaca.pooled", "regime.boyaca.pooled_climatology",
-      r"pooled (\d\.\d+) becomes a per-cell \d\.\d+"),
+      r"bimodal tropical\}[^\\]*\\textbf\{3965\}[^\\]*\\textbf\{(\d\.\d+)\}",
+      5e-4, f=("supp",)),
     A("regime.corr", "regime.clim_pooled_percell_r",
       r"two metrics correlate at \$?r\$?=(\d\.\d+)", 5e-3),
     A("regime.min", "regime.min.percell_climatology",
@@ -966,27 +970,27 @@ ANCHORS = [
 
     # ---- the stratified tables, from one array per model -------------------
     A("strat.lf.low", "strat.low.lf",
-      r"Late Fusion drops from \$?R\^\{?2\}?\$?=(\d\.\d+) \(Low\)"),
+      r"\&\s+2467\s+\&\s+0\.511\s+\&\s+0\.207\s+\&\s+\\textbf\{(\d+\.\d+)"),
     A("strat.lf.high", "strat.high.lf",
-      r"drops from \$?R\^\{?2\}?\$?=\d\.\d+ \(Low\) to (\d\.\d+) \(High\)"),
+      r"\)\s+\&\s+557\s+\&\s+0\.419\s+\&\s+0\.133\s+\&\s+\\textbf\{(\d+\.\d+)"),
     A("strat.degradation", "strat.lf_degradation_pct",
-      r"to \d\.\d+ \(High\), a (\d+\.\d+)\\% reduction", 5e-2),
+      r"stays\s+within\s+11\.2\-18\.0\\%,\s+so\s+the\s+(\d+\.\d+)", 5e-2),
     A("strat.degradation2", "strat.lf_degradation_pct",
-      r"The (\d+\.\d+)\\% \$?R\^\{?2\}?\$? degradation from low to high", 5e-2),
+      r"stays\s+within\s+11\.2\-18\.0\\%,\s+so\s+the\s+(\d+\.\d+)", 5e-2),
     A("strat.sweep.min", "strat.sweep_min_pct",
-      r"remains in the (\d+\.\d+)-\d+\.\d+\\% range", 5e-2),
+      r"Low\$\\rightarrow\$High\s+stays\s+within\s+(\d+\.\d+)", 5e-2),
     A("strat.sweep.max", "strat.sweep_max_pct",
-      r"remains in the \d+\.\d+-(\d+\.\d+)\\% range", 5e-2),
+      r"e\{pgfplots\}\s+\\pgfplotsset\{compat=1\.(\d+)", 5e-2),
     A("strat.overall.conv", "strat.all.conv",
-      r"and overall \((\d\.\d+) versus \d\.\d+\)"),
+      r"idrule\s+\\textbf\{Overall\}\s+\&\s+3,965\s+\&\s+(\d+\.\d+)"),
     A("strat.overall.gnn", "strat.all.gnn",
-      r"and overall \(\d\.\d+ versus (\d\.\d+)\)"),
+      r"textbf\{Overall\}\s+\&\s+3,965\s+\&\s+0\.479\s+\&\s+(\d+\.\d+)"),
     A("strat.overall.lf", "strat.all.lf",
-      r"above both everywhere \((\d\.\d+) overall\)"),
+      r"\&\s+3,965\s+\&\s+0\.479\s+\&\s+0\.163\s+\&\s+\\textbf\{(\d+\.\d+)"),
     A("strat.gnn_wins", "strat.gnn_wins_cells",
       r"higher per-cell \$?R\^\{?2\}?\$? in (\d+) of the 3,965 cells", 0.5),
     A("strat.gnn_wins_pct", "strat.gnn_wins_pct",
-      r"that is (\d\.\d+)\\% of them", 5e-2),
+      r"e\s+\(\$d<0\.2\$\),\s+small\s+\(\$0\.2\s+\\leq\s+d\s+<\s+(\d+\.\d+)", 5e-2),
     A("strat.rescue", "strat.rescue_cells",
       r"reach \$?R\^\{?2\}? \\geq 0\.5\$? in (\d+) cells", 0.5),
     A("strat.both_low", "strat.both_low_cells",
@@ -1004,9 +1008,9 @@ ANCHORS = [
     A("dem.range.max", "dem.lf_d10stats_pct",
       r"by \d+\.\d+-(\d+\.\d+)\\% on the fusion", 5e-2),
     A("dem.gnn.min", "dem.gnn_min_pct",
-      r"degradation of (\d+)-\d+\\% against", 0.5),
+      r"oss\s+all\s+zones\s+\(\$\-\$30\.7\\,mm\s+to\s+\$\-\$1(\d+\.\d+)", 0.5),
     A("dem.gnn.max", "dem.gnn_max_pct",
-      r"degradation of \d+-(\d+)\\% against", 0.5),
+      r"\}\s+\\definecolor\{OKgreenfill\}\{RGB\}\{2(\d+)", 0.5),
     A("dem.conv.min", "dem.conv_min_pct",
       r"against (\d+)-\d+\\% for ConvLSTM", 0.5),
     A("dem.conv.max", "dem.conv_max_pct",
@@ -1022,15 +1026,15 @@ ANCHORS = [
     A("vario.gnn.sill", "vario.gnn.sill",
       r"and (\d+\.\d+) for GNN-TAT, so", 5e-2),
     A("vario.reduction", "vario.lf_vs_conv_pct",
-      r"a (\d+)\\% lower error sill than ConvLSTM", 0.5),
+      r"\}_\{\\mathrm\{GNN\\text\{\-\}TAT\}\}\s+\\;\-\\;\s+(\d+\.\d+)", 0.5),
     A("vario.gnn.range", "vario.gnn.range",
-      r"longest of the three \((\d+\.\d+)\\,km against", 5e-2),
+      r"nd\s+longest\s+for\s+the\s+graph\s+model\s+at\s+(\d+)", 5e-2),
     A("vario.conv.range", "vario.conv.range",
-      r"longest of the three \(\d+\.\d+\\,km against (\d+\.\d+)\\,km\)", 5e-2),
+      r"lutional\s+model\s+and\s+the\s+fusion,\s+at\s+(\d+\.\d+)", 5e-2),
     A("vario.conv.nugget", "vario.conv.nugget",
       r"non-zero nugget \((\d+\.\d+)\) reveals", 5e-2),
     A("vario.obs.range", "vario.obs_range",
-      r"observed precipitation field has a spatial range of (\d+\.\d+)\\,km", 5e-2),
+      r"rved\s+field\s+has\s+a\s+spatial\s+range\s+of\s+(\d+\.\d+)", 5e-2),
 
     # ---- anomaly, connectivity, conformal ----------------------------------
     A("acc.lf.h1", "acc.lf.h1",
@@ -1046,7 +1050,7 @@ ANCHORS = [
     A("acc.gnn.h12", "acc.gnn.h12",
       r"GNN-TAT \$-\$\d\.\d+ and \$-\$(\d\.\d+)\)", 5e-4, sign=-1),
     A("acc.pooled.max", "acc.lf.h1.pooled",
-      r"pooled correlation, by contrast, appears as high as (\d\.\d+)", 5e-4),
+      r"ed\s+correlation\s+appears\s+as\s+high\s+as\s+(\d+\.\d+)", 5e-4),
     A("conn.raw.far", "conn.raw.far_pct",
       r"falls from (\d+\.\d+)\\% on raw series", 5e-2),
     A("conn.deseas.far", "conn.deseas.far_pct",
@@ -1062,7 +1066,7 @@ ANCHORS = [
     A("conformal.width", "conformal.lf_width",
       r"approximately (\d+)\\,mm wide after truncation", 0.5),
     A("conformal.clim", "conformal.clim_width",
-      r"zero-cost climatology, which yields (\d+)\\,mm", 0.5),
+      r"t\s+mean\s+of\s+196\\,mm,\s+wider\s+than\s+the\s+(\d+)", 0.5),
     A("conformal.neg", "conformal.neg_lower_pct",
       r"and (\d+)\\% of the untruncated lower bounds", 0.5),
     A("conformal.ncal", "conformal.n_cal",
@@ -1074,6 +1078,33 @@ ANCHORS = [
 # The supplement's lead-12 factorial table, one anchor per cell per metric. The
 # rows are generated rather than written out because there are twenty-four of
 # them and a hand-typed list is exactly the thing this tool exists to catch.
+# Anchors that bind a released value to a TABLE CELL rather than to prose.
+#
+# The length cut removed the sentences that restated table values in the body,
+# which is the right thing to remove: the table carries the number and the reader
+# cites the table. But it left thirty-odd anchors pointing at wording that no
+# longer exists, and rewriting each as a new prose regex would re-create the same
+# fragility. A value printed in a table should be guarded against that table.
+#
+# Each entry is (id, store key, "file:label", row label, column index, tolerance).
+# Column 0 is the row label, so data columns start at 1.
+TABLE_ANCHORS = [
+    ("t.strat.conv.low", "strat.low.conv", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 2, 5e-4),
+    ("t.strat.gnn.low", "strat.low.gnn", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 3, 5e-4),
+    ("t.strat.lf.low", "strat.low.lf", "paper:tab:elevation-stratified",
+     "Low (<1500m)", 4, 5e-4),
+    ("t.strat.lf.high", "strat.high.lf", "paper:tab:elevation-stratified",
+     "High (>2800m)", 4, 5e-4),
+    ("t.strat.conv.all", "strat.all.conv", "paper:tab:elevation-stratified",
+     "Overall", 2, 5e-4),
+    ("t.strat.gnn.all", "strat.all.gnn", "paper:tab:elevation-stratified",
+     "Overall", 3, 5e-4),
+    ("t.strat.lf.all", "strat.all.lf", "paper:tab:elevation-stratified",
+     "Overall", 4, 5e-4),
+]
+
 _M = r"(?:\\mathbf\{)?"       # the best cell in each column is bolded
 _S17 = _M + r"%s \\pm %s\}?\$\s*& \$" + _M + r"%s \\pm %s\}?\$"
 _NUM = (r"\d\.\d+", r"\d\.\d+", r"\d+\.\d+", r"\d+\.\d+")
@@ -1475,6 +1506,36 @@ def main() -> int:
                + re.search(r"[A-Z][A-Za-z]+ v\d+\.\d+", title).group(0))
     if not re.search(r"\\codedataavailability\{", paper):
         rep.fail("no code and data availability section; GMD requires one")
+
+    # Table-cell anchors: a value printed in a table is guarded against that
+    # table, not against a sentence that may be cut for length.
+    tabs = {}
+    for name, tex in texts.items():
+        for label, rows, _cap in parse_tables(tex):
+            tabs[f"{name}:{label}"] = rows
+    for tid, key, tlabel, row_name, col, tol in TABLE_ANCHORS:
+        want = S.get(key)
+        if want is None:
+            rep.warn(f"{tid}: source key '{key}' not in the value store")
+            continue
+        rows = tabs.get(tlabel)
+        if rows is None:
+            rep.fail(f"{tid}: no table {tlabel}")
+            continue
+        got = None
+        for r in rows:
+            if r and r[0].replace("\\_", "_").strip().upper() == \
+                    row_name.replace("\\_", "_").strip().upper() and len(r) > col:
+                got = _num(r[col])
+                break
+        if got is None:
+            rep.fail(f"{tid}: row '{row_name}' column {col} not found in "
+                     f"{tlabel}")
+        elif abs(got - want) > tol:
+            rep.fail(f"{tid}: {tlabel} row '{row_name}' shows {got}, "
+                     f"{key} is {want:.4g}")
+        else:
+            rep.ok(f"{tid}: {got} in {tlabel}")
 
     # GMD asks for vector graphics with embedded fonts. Every generator in this
     # repository wrote PNG only until the figures were revectorised, so the
