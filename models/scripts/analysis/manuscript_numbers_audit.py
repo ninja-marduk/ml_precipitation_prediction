@@ -960,7 +960,7 @@ ANCHORS = [
     A("lf.blocked.anchor", "blocked.ridge.mean",
       r"rting\s+Late\s+Fusion\s+as\s+\$R\^2\s+\\approx\s+(\d+\.\d+)", 5e-4),
     A("lf.pooled33", "pooled33.lf.r2",
-      r"the Late Fusion point is the released fit at (\d\.\d+)", 5e-3),
+      r"panel\s+\(c\)\s+is\s+the\s+released\s+fit\s+at\s+(\d+\.\d+)", 5e-3),
     A("lf.percell.anchor", "pooled33.lf.percell",
       r"tcliffe\s+efficiency\s+\(0\.608\s+against\s+(\d+\.\d+)", 6e-3),
 

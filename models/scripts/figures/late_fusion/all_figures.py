@@ -374,7 +374,7 @@ def figure_parameter_efficiency_extended():
         (106, 0.518, 'GNN-TAT (SAGE)', COLORS['v4'], 's'),
         (200, 0.212, 'Stacking Ens.', COLORS['v5'], 'X'),
         (148, 0.200, 'GNN-BiMamba', COLORS['v9'], 'X'),
-        (0.5, 0.672, 'Late Fusion', COLORS['v10'], '*'),
+        (246, 0.672, 'Late Fusion', COLORS['v10'], '*'),
     ]
 
     for params, r2, name, color, marker in models:
@@ -386,17 +386,20 @@ def figure_parameter_efficiency_extended():
     # Offsets retuned after the parameter counts were corrected: the
     # convolutional family collapsed from a 79-1200K spread onto 79-153K, so
     # labels written to the right of each point now collide.
+    # Retuned once more after the axis went linear and Late Fusion moved from
+    # 0.5K to 246K: the left-hand cluster sits between 79K and 106K and every
+    # label written to the same side ran into its neighbour.
     label_specs = {
-        'Late Fusion':       (14, 2, 'left'),
-        'ConvLSTM':          (-8, 7, 'right'),
-        'FNO+ConvLSTM':      (-10, 7, 'right'),
-        'Residual':          (10, -12, 'left'),
-        'Bidirectional':     (10, 4, 'left'),
-        'GNN-TAT (GCN/GAT)': (-10, 1, 'right'),
-        'GNN-TAT (SAGE)':    (-10, -4, 'right'),
-        'FNO (pure)':        (-10, -3, 'right'),
-        'Stacking Ens.':     (10, 2, 'left'),
-        'GNN-BiMamba':       (-10, -12, 'right'),
+        'Late Fusion':       (-12, 0, 'right'),
+        'ConvLSTM':          (0, 11, 'center'),
+        'FNO+ConvLSTM':      (0, -14, 'center'),
+        'Residual':          (11, -9, 'left'),
+        'Bidirectional':     (0, 10, 'center'),
+        'GNN-TAT (GCN/GAT)': (-11, 0, 'right'),
+        'GNN-TAT (SAGE)':    (11, -3, 'left'),
+        'FNO (pure)':        (11, 0, 'left'),
+        'Stacking Ens.':     (0, 10, 'center'),
+        'GNN-BiMamba':       (0, -16, 'center'),
     }
 
     # FIGURE EXCEPTION: scatter point labels need fontsize+1 to remain readable above markers
@@ -413,32 +416,28 @@ def figure_parameter_efficiency_extended():
     # combiner coefficients are not a parameter count on the same footing, which
     # the caption already says; including it makes it the sole non-dominated
     # point and the figure says nothing.
-    parametrised = sorted((p, r) for p, r, n, _, _ in models if n != 'Late Fusion')
+    # Every point is charged what a prediction requires, Late Fusion included,
+    # so every point is a candidate.
     frontier, best = [], -np.inf
-    for p, r in parametrised:
+    for p, r in sorted((p, r) for p, r, _n, _c, _m in models):
         if r > best:
             frontier.append((p, r))
             best = r
-    if len(frontier) > 1:
-        ax.step([p for p, _ in frontier], [r for _, r in frontier], '--',
-                where='post', color=COLORS['success'], linewidth=1.2, alpha=0.6,
-                label='Pareto frontier')
-    else:
-        # One point means no configuration above the smallest buys any accuracy,
-        # which is the saturation the manuscript reads off this figure.
-        ax.axvline(frontier[0][0], color=COLORS['success'], linestyle='--',
-                   linewidth=1.2, alpha=0.6)
-        ax.annotate('nothing larger scores higher', xy=(frontier[0][0], 0.34),
-                    xytext=(-8, 0), textcoords='offset points', ha='right',
-                    fontsize=plt.rcParams['font.size'], color=COLORS['success'])
+    ax.step([p for p, _ in frontier], [r for _, r in frontier], '--',
+            where='post', color=COLORS['success'], linewidth=1.3, alpha=0.7,
+            label='Pareto frontier', zorder=1)
 
     ax.axhline(y=frontier[-1][1], color=COLORS['v2'], linestyle=':', alpha=0.4,
                linewidth=0.8)
 
-    ax.set_xscale('log')
-    ax.set_xlabel('Parameters (thousands, log scale)')
+    # Linear, not log. The log axis existed to accommodate a 0.5K point and
+    # a 1800K one, and both were wrong: Late Fusion costs its two branches
+    # and the stacking ensemble is ~200K. Charged correctly every model sits
+    # between 79K and 246K, a range a linear axis separates and a log axis
+    # crushes into the right-hand third.
+    ax.set_xlabel('Parameters required, thousands')
     ax.set_ylabel('R² score')
-    ax.set_xlim(0.2, 400)
+    ax.set_xlim(58, 288)
     ax.set_ylim(0.1, 0.75)
 
     # Legend on top in single row (matches Fig 12 layout)

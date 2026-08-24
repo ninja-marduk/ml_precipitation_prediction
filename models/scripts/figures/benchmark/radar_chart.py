@@ -28,21 +28,28 @@ FIG_OUT_DELIVERY = REPO / '.docs' / 'papers' / '5' / 'delivery' / 'figures' / 'r
 
 # Categories: clockwise from top.
 #
-# Two axes were removed rather than redrawn, because neither was a measurement.
-# 'Stability' held four literals (0.80, 0.85, 0.30, 0.95) that no table supplies
-# and no script computes. 'Efficiency' scaled a parameter count, and the
-# convolutional entry used 316K, a figure appearing in no table: the architecture
-# table gives 79K to 206K for that family, and Late Fusion has no parameter count
-# of its own, so its 1.00 was a placeholder sitting on the same axis as three real
-# numbers. What is left is four quantities every row of the master comparison
-# carries, which is what a reader can check.
-CATEGORIES = ['R$^2$', '1$-$NRMSE', '1$-$NMAE', '1$-|$Bias$|$']
+# Five axes, every one of them a measured quantity. Two notes on what is here
+# and what is not.
+#
+# 'Efficiency' is back after an interval, and with a different number. It used
+# to scale a parameter count in which the convolutional entry was 316K, a figure
+# appearing in no table, and Late Fusion was given 1.00 on the grounds that the
+# combiner adds only three coefficients. That is the wrong accounting: the
+# fusion cannot predict without both branches trained, so it costs their sum,
+# 246K, and is the least parameter-efficient design on the chart rather than
+# the most. The scale is 1 - params/300K, so a longer spoke is a cheaper model.
+#
+# 'Stability' is not here. It would need an inter-seed dispersion for every
+# model shown, and the stacking ensemble was run once, so one of the four values
+# would have to be invented. The seed dispersions that do exist are in the
+# multi-seed table.
+CATEGORIES = ['R$^2$', '1$-$NRMSE', '1$-$NMAE', '1$-|$Bias$|$', 'Efficiency']
 
 MODELS_DATA = {
-    'Enh. ConvLSTM': [0.628 / 0.7, 1 - 81.05 / 120, 1 - 58.91 / 100, 1 - 10.50 / 30],
-    'GNN-TAT':       [0.628 / 0.7, 1 - 82.29 / 120, 1 - 58.19 / 100, 1 - 28.80 / 30],
-    'Stacking Ens.': [0.212 / 0.7, 1 - 117.93 / 120, 1 - 92.41 / 100, 0.30],
-    'Late Fusion':   [0.672 / 0.7, 1 - 76.23 / 120, 1 - 56.12 / 100, 1 - 0.002 / 30],
+    'Enh. ConvLSTM': [0.628 / 0.7, 1 - 81.05 / 120, 1 - 58.91 / 100, 1 - 10.50 / 30, 1 - 148 / 300],
+    'GNN-TAT':       [0.628 / 0.7, 1 - 82.29 / 120, 1 - 58.19 / 100, 1 - 28.80 / 30, 1 - 98 / 300],
+    'Stacking Ens.': [0.212 / 0.7, 1 - 117.93 / 120, 1 - 92.41 / 100, 0.30,          1 - 200 / 300],
+    'Late Fusion':   [0.672 / 0.7, 1 - 76.23 / 120, 1 - 56.12 / 100, 1 - 0.002 / 30, 1 - 246 / 300],
 }
 
 # Okabe-Ito-aligned palette (matches the rest of the paper)
