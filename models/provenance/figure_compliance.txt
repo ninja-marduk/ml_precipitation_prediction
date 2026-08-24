@@ -1,4 +1,6 @@
 COLOUR  (colormaps named in the figure-generating scripts)
+  ok    RdBu            spatial_r2.py
+  ok    cividis         spatial_r2.py
   ok    gray            reviewer_annotations.py, study_area.py
   ok    terrain         reviewer_annotations.py, study_area.py
   ok    viridis         all_figures.py, reviewer_annotations.py, spatial_r2.py, spatial_r2_h12_avg.py

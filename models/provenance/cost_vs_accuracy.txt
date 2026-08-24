@@ -1,0 +1,31 @@
+What capacity and compute buy, graph family, three seeds each
+==============================================================================
+operator     params  s/epoch   GPU-h  peak GB  R2 mean  spread
+------------------------------------------------------------------------------
+GAT          97,932      333   18.94     29.2    0.478   0.054
+GCN          97,676      121    6.58     20.4    0.451   0.061
+SAGE        105,868       65    3.56     20.3    0.454   0.094
+------------------------------------------------------------------------------
+total                          29.08
+
+PAIRED DIFFERENCES  (the same three seeds in every cell)
+==============================================================================
+A vs B              d(R2)  paired sd   cost x   verdict
+------------------------------------------------------------------------------
+GAT vs GCN         +0.027      0.068     2.9x   unresolved
+GAT vs SAGE        +0.024      0.091     5.3x   unresolved
+GCN vs SAGE        -0.003      0.077     1.8x   unresolved
+
+  The threshold is the same one the factorial uses: with three paired
+  seeds a difference separates only if it exceeds 2.484 x s_d. Every
+  pair here is below it, so no accuracy difference in this family is
+  resolvable, whatever it cost to obtain.
+
+  Read the cost column against that. Attention costs 5.3 times what
+  neighbourhood averaging costs and holds 1.4 times the memory, for a
+  difference of +0.024 in mean R2 that the design cannot detect.
+
+  Parameter count does not explain the cost. The three operators sit
+  within 8K parameters of one another and their training times differ
+  by a factor of five, because the cost of a graph model scales with
+  edges traversed per timestep rather than with weights.

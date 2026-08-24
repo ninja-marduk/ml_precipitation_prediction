@@ -1,4 +1,4 @@
-"""Paper 5 Spatial R^2 3-panel map (ConvLSTM / GNN-TAT / Late Fusion) at H=12.
+"""Spatial skill over Boyaca, six panels, at H=12.
 
 Adapts the poster figure (`generate_poster_figures.py::poster_spatial_r2_3panel`)
 to the paper typography (14/11/10 hierarchy) and embedded width (0.95 textwidth).
@@ -17,6 +17,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
 
 # Bootstrap _config from figures/
 FIGURES_ROOT = Path(__file__).resolve().parent.parent
@@ -111,64 +112,140 @@ def generate_spatial_r2_3panel() -> int:
     r2_agg_v10 = _agg_r2(p10, t10)
     print(f'  aggregate R^2: ConvLSTM={r2_agg_v2:.3f}  GNN-TAT={r2_agg_v4:.3f}  Late Fusion={r2_agg_v10:.3f}')
 
-    # Compact 3-panel layout for paper width.
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), sharey=True)
+    # Elevation, so the reader can see the terrain the paper argues about.
+    try:
+        import xarray as xr
+        ds = xr.open_dataset(DATA_NC)
+        elev = ds['elevation'].values.astype(float)
+        elev = elev[0] if elev.ndim == 3 else elev
+        ds.close()
+    except Exception as e:                                        # noqa: BLE001
+        print(f'  WARN: elevation load failed ({e}); panel (d) skipped')
+        elev = np.full_like(r2_v2, np.nan)
+
+    # Two-row layout. Row 1 is per-cell skill for the three models; row 2 is the
+    # terrain and the two spatial claims the manuscript otherwise states only as
+    # counts.
+    fig, axes = plt.subplots(2, 3, figsize=(13.5, 8.6), sharex=True, sharey=True)
     lon_grid, lat_grid = np.meshgrid(lons, lats)
     # RdYlGn was the wrong choice and Copernicus says so explicitly: it asks that
     # colour schemes in maps and charts be readable with a colour vision
-    # deficiency, and a red-to-green ramp is the one that is not. A survey of
-    # geoscience journals found 21% of papers carrying a red-green figure, so
-    # this is a common defect rather than an exotic one.
+    # deficiency, and a red-to-green ramp is the one that is not.
     #
-    # The replacement is sequential rather than diverging, which is a second
+    # The skill panels are sequential rather than diverging, which is a second
     # decision worth recording. A diverging map pivots on a meaningful centre,
-    # and here the only candidate centre is zero, which sits a fifth of the way
-    # up a range running from -0.2 to 0.8: nearly every cell is on one side of
-    # it. A diverging ramp would then spend half its colour on values that
-    # barely occur and put its darkest tone in the middle of the data, so
-    # lightness would stop tracking magnitude.
-    #
-    # viridis is perceptually uniform, monotonic in lightness, readable under
-    # every common colour vision deficiency, and survives greyscale printing.
+    # and for skill the only candidate centre is zero, which sits a fifth of the
+    # way up a range running from -0.2 to 0.8: nearly every cell is on one side
+    # of it, so a diverging ramp would spend half its colour on values that
+    # barely occur. Panel (e) is a signed difference, where zero is meaningful,
+    # and it is the one panel that takes a diverging map.
     cmap = plt.cm.viridis
     norm = mcolors.Normalize(vmin=-0.2, vmax=0.8)
 
-    panels = [
-        (axes[0], r2_v2,  rf'ConvLSTM ($R^{{2}}$ = {r2_agg_v2:.3f})',           'a'),
-        (axes[1], r2_v4,  rf'GNN-TAT ($R^{{2}}$ = {r2_agg_v4:.3f})',            'b'),
-        (axes[2], r2_v10, rf'Late Fusion (Ridge) ($R^{{2}}$ = {r2_agg_v10:.3f})', 'c'),
-    ]
-
-    im = None
-    for ax, r2, title, label in panels:
-        # rasterized: three panels of ~3,965 quads each become ~12,000 vector
-        # paths in a PDF, which bloats the file and renders slowly for no gain,
-        # since a continuous field carries no text to keep selectable. The
-        # coastline, ticks, labels and colourbar around it stay vector.
-        im = ax.pcolormesh(lon_grid, lat_grid, r2, cmap=cmap, norm=norm,
-                           shading='auto', rasterized=True)
+    def frame(ax, label, title):
         if gdf is not None:
             gdf.boundary.plot(ax=ax, color='k', linewidth=0.7, zorder=5)
-        ax.set_title(title, fontsize=14, fontweight='bold', pad=6)
-        ax.set_xlabel('Longitude', fontsize=11)
+        ax.set_title(title, fontsize=12, fontweight='bold', pad=5)
         ax.set_aspect('equal')
-        ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{abs(x):.1f}°W'))
-        ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.1f}°N'))
+        ax.xaxis.set_major_formatter(
+            plt.FuncFormatter(lambda x, _: f'{abs(x):.1f}\u00b0W'))
+        ax.yaxis.set_major_formatter(
+            plt.FuncFormatter(lambda x, _: f'{x:.1f}\u00b0N'))
         ax.tick_params(labelsize=10)
         ax.text(0.03, 0.97, f'({label})', transform=ax.transAxes, fontsize=11,
                 fontweight='bold', va='top', ha='left',
-                bbox=dict(facecolor='white', edgecolor='gray', boxstyle='round,pad=0.25'))
+                bbox=dict(facecolor='white', edgecolor='gray',
+                          boxstyle='round,pad=0.25'))
 
-    axes[0].set_ylabel('Latitude', fontsize=11)
-    cbar = fig.colorbar(im, ax=axes, shrink=0.85, pad=0.02, aspect=28)
-    cbar.set_label(r'$R^{2}$ (NSE)', fontsize=11)
-    cbar.ax.tick_params(labelsize=10)
+    # ---- row 1: per-cell skill -------------------------------------------
+    skill = [
+        (axes[0, 0], r2_v2,  rf'ConvLSTM ($R^{{2}}$ = {r2_agg_v2:.3f})',  'a'),
+        (axes[0, 1], r2_v4,  rf'GNN-TAT ($R^{{2}}$ = {r2_agg_v4:.3f})',   'b'),
+        (axes[0, 2], r2_v10, rf'Late Fusion ($R^{{2}}$ = {r2_agg_v10:.3f})', 'c'),
+    ]
+    im = None
+    for ax, r2, title, label in skill:
+        # rasterized: each panel of ~3,965 quads becomes thousands of vector
+        # paths in a PDF for no gain, since a continuous field carries no text
+        # to keep selectable. Everything around it stays vector.
+        im = ax.pcolormesh(lon_grid, lat_grid, r2, cmap=cmap, norm=norm,
+                           shading='auto', rasterized=True)
+        frame(ax, label, title)
+    cb1 = fig.colorbar(im, ax=axes[0, :], shrink=0.88, pad=0.015, aspect=24)
+    cb1.set_label(r'$R^{2}$ (NSE)', fontsize=11)
+    cb1.ax.tick_params(labelsize=10)
+
+    # ---- (d) the terrain --------------------------------------------------
+    ax = axes[1, 0]
+    imd = ax.pcolormesh(lon_grid, lat_grid, elev, cmap=plt.cm.cividis,
+                        shading='auto', rasterized=True)
+    if np.isfinite(elev).any():
+        # the two ecological cuts the evaluation strata use
+        ax.contour(lon_grid, lat_grid, elev, levels=[1500, 2800],
+                   colors='white', linewidths=0.8, zorder=4)
+    frame(ax, 'd', 'Elevation and the two band cuts')
+    cbd = fig.colorbar(imd, ax=ax, shrink=0.82, pad=0.02, aspect=16)
+    cbd.set_label('m a.s.l.', fontsize=10)
+    cbd.ax.tick_params(labelsize=9)
+
+    # ---- (e) what the fusion adds ----------------------------------------
+    best_base = np.fmax(r2_v2, r2_v4)
+    gain = r2_v10 - best_base
+    ax = axes[1, 1]
+    lim = float(np.nanpercentile(np.abs(gain), 98))
+    ime = ax.pcolormesh(lon_grid, lat_grid, gain, cmap=plt.cm.RdBu,
+                        norm=mcolors.Normalize(vmin=-lim, vmax=lim),
+                        shading='auto', rasterized=True)
+    frame(ax, 'e', 'Fusion minus the better base learner')
+    cbe = fig.colorbar(ime, ax=ax, shrink=0.82, pad=0.02, aspect=16)
+    cbe.set_label(r'$\Delta R^{2}$', fontsize=10)
+    cbe.ax.tick_params(labelsize=9)
+
+    # ---- (f) where the evidence runs out ---------------------------------
+    # Three states, in the manuscript's own terms: cells the fusion lifts over
+    # 0.5 from a base learner below 0.2, cells where both base learners are
+    # below 0.2, and the twenty cells where the graph model is the better of
+    # the two.
+    both_low = (r2_v2 < 0.2) & (r2_v4 < 0.2)
+    rescued = (~both_low) & ((r2_v2 < 0.2) | (r2_v4 < 0.2)) & (r2_v10 >= 0.5)
+    gnn_wins = r2_v4 > r2_v2
+    state = np.full(r2_v2.shape, np.nan)
+    state[np.isfinite(r2_v2)] = 0.0
+    state[rescued] = 1.0
+    state[both_low] = 2.0
+    state[gnn_wins] = 3.0
+    ax = axes[1, 2]
+    cats = mcolors.ListedColormap(['#DDDDDD', '#4477AA', '#CC6677', '#DDCC77'])
+    ax.pcolormesh(lon_grid, lat_grid, state, cmap=cats,
+                  norm=mcolors.BoundaryNorm([-0.5, 0.5, 1.5, 2.5, 3.5], 4),
+                  shading='auto', rasterized=True)
+    frame(ax, 'f', 'Where the two branches differ')
+    handles = [
+        mpatches.Patch(color='#4477AA',
+                       label=f'fusion lifts over 0.5 ({int(rescued.sum()):,})'),
+        mpatches.Patch(color='#CC6677',
+                       label=f'both base learners below 0.2 '
+                             f'({int(both_low.sum()):,})'),
+        mpatches.Patch(color='#DDCC77',
+                       label=f'graph model the better one '
+                             f'({int(gnn_wins.sum()):,})'),
+    ]
+    ax.legend(handles=handles, loc='lower left', fontsize=8.5, frameon=True,
+              framealpha=0.92, borderpad=0.35, handlelength=1.2)
+
+    for ax in axes[1, :]:
+        ax.set_xlabel('Longitude', fontsize=11)
+    for ax in axes[:, 0]:
+        ax.set_ylabel('Latitude', fontsize=11)
 
     save_figure(fig, OUT_PATH, dpi=OUTPUT_DPI, mirror=OUT_PATH_DELIVERY,
                 bbox_inches='tight', facecolor='white')
     plt.close(fig)
 
-    print(f'  wrote: {OUT_PATH.relative_to(PROJECT_ROOT)}  ({OUT_PATH.stat().st_size/1024:.1f} KB)')
+    print(f'  panel (f): rescued={int(rescued.sum())}, '
+          f'both_low={int(both_low.sum())}, gnn_wins={int(gnn_wins.sum())}')
+    print(f'  wrote: {OUT_PATH.relative_to(PROJECT_ROOT)}  '
+          f'({OUT_PATH.stat().st_size/1024:.1f} KB)')
     print(f'  wrote: {OUT_PATH_DELIVERY.relative_to(PROJECT_ROOT)}')
     return 0
 
