@@ -21,6 +21,9 @@ SUPPLEMENT  (pointers against what the supplement actually holds)
 ROADMAP  (sections the introduction promises against those that exist)
   no roadmap sentence found
 
+LOST BACKSLASH  (a command that became text and still compiles)
+  every command still carries its backslash
+
 DANGLING PROSE  (deixis a cut may have left without a referent)
   none
 

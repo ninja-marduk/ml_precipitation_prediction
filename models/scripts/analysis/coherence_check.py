@@ -181,6 +181,27 @@ def main():
     print()
 
     # ---- dangling prose ---------------------------------------------------
+    print("LOST BACKSLASH  (a command that became text and still compiles)")
+    # A shell heredoc reads the \r of \ref as a carriage return and the \t of
+    # \texttt as a tab, so an edit passed through one can strip the backslash
+    # from a command. LaTeX raises nothing: what is left is ordinary text and a
+    # group, the document compiles, no reference is undefined, and the page
+    # prints "Sect. efsec:graph-structure" where a section number belongs.
+    STUBS = ("ref", "cite", "citep", "citet", "label", "texttt", "textbf",
+             "emph", "textit", "caption", "citealp")
+    lost = []
+    for name, tex in (("paper", paper), ("supp", supp)):
+        for m in re.finditer(r"(?<![A-Za-z\\])(" + "|".join(STUBS) +
+                             r")\{[^}]{1,60}\}", tex):
+            # a real command is preceded by a backslash; this one is not
+            lost.append((name, line_of(tex, m.start()), m.group(0)[:44]))
+    for name, ln, frag in lost:
+        issues += 1
+        print(f"  FAIL  {name} line {ln}: {frag!r} has no backslash")
+    if not lost:
+        print("  every command still carries its backslash")
+    print()
+
     print("DANGLING PROSE  (deixis a cut may have left without a referent)")
     pats = [r"as (?:shown|discussed|described) (?:below|above)",
             r"the (?:previous|preceding|following|next) (?:section|subsection)",

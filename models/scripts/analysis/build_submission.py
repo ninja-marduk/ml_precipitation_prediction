@@ -164,7 +164,14 @@ def main():
     print("=" * 72)
     print("MOVED TO _archive/  (kept, not part of this submission)")
     print("=" * 72)
-    keep = set(SOURCES) | set(EXTRA) | set(CLASS_FILES) | KEEP_BBL
+    # The Spanish reading translation is not a submission artefact and never
+    # will be, GMD publishing in English, but it is not a record either: it is
+    # regenerated from the manuscript whenever the manuscript changes, and
+    # assemble_translation.py writes it here. Moving it to _archive/ on every
+    # build left the verifier looking for a file that was no longer where it
+    # had put it.
+    keep = (set(SOURCES) | set(EXTRA) | set(CLASS_FILES) | KEEP_BBL
+            | {"paper_es.tex", "paper_es.pdf"})
     keep_dirs = {"figures", "submission", "_archive", "data"}
     moved = n_mv = 0
     if not args.dry_run:
