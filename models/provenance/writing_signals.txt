@@ -1,20 +1,19 @@
-paper_gmd.tex: 16,891 words of prose, 628 sentences
+paper_gmd.tex: 16,958 words of prose, 631 sentences
 
 BURSTINESS
-  sentence length      mean 29.3, s.d. 15.5, median 28, range 4 to 100
+  sentence length      mean 29.3, s.d. 15.6, median 27, range 4 to 100
   coefficient of var.  0.53   within the usual range
-  within +-25% of mean 38%   within the usual range
+  within +-25% of mean 37%   within the usual range
   Low variation is the classic machine signature, but a house style that
   favours one clause per sentence produces it too.
 
 TICS  (n-grams far above the rate a text this long should show)
-   3.37/1k  x57   the same
-   3.02/1k  x51   rather than
-   2.13/1k  x36   the graph
-   1.48/1k  x25   late fusion
+   3.36/1k  x57   the same
+   3.07/1k  x52   rather than
+   2.24/1k  x38   the graph
+   1.47/1k  x25   late fusion
    1.36/1k  x23   the convolutional
    1.36/1k  x23   three seeds
-   0.65/1k  x11   rather than the
    0.41/1k  x7    the convolutional model and
   A domain term repeats legitimately; a connective or a frame does not.
   Judge each by whether it names something or joins something.
@@ -31,10 +30,10 @@ OPENERS  (repeated sentence-opening frames)
 PUNCTUATION  (per 1,000 words)
   em-dash                0     0.00/1k
   en-dash                0     0.00/1k
-  semicolon            111     6.57/1k   ABOVE the usual range
-  colon                163     9.65/1k   ABOVE the usual range
-  parenthesis pair     210    12.43/1k
-  comma               1158    68.56/1k
+  semicolon            112     6.60/1k   ABOVE the usual range
+  colon                165     9.73/1k   ABOVE the usual range
+  parenthesis pair     209    12.32/1k
+  comma               1160    68.40/1k
   An em-dash count of zero in a long manuscript is itself a datum: it means
   either a house rule or a sweep. Say which, because a reviewer may wonder.
 
@@ -44,9 +43,9 @@ PARAGRAPHS
   0.35 is worth a look.
 
 RICHNESS
-  types 2,571, hapax rate 0.46   within the usual range
-  type-token ratio over 400-word windows: mean 0.56, s.d. 0.048
-  discourse markers: 17 (1.01/1k)
+  types 2,575, hapax rate 0.46   within the usual range
+  type-token ratio over 400-word windows: mean 0.56, s.d. 0.047
+  discourse markers: 16 (0.94/1k)
 
 No score is produced and none should be. Every signal above has an innocent
 reading; the tool's job is to say where to look, and a human's is to look.
