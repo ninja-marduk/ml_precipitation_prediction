@@ -1,4 +1,4 @@
-target : paper_gmd.tex  (18,965 words)
+target : paper_gmd.tex  (19,686 words)
 against: thesis.tex  (28,290 words)
 
 COVERAGE  (share of the manuscript whose n-grams appear in a source)
@@ -12,12 +12,12 @@ COVERAGE  (share of the manuscript whose n-grams appear in a source)
   Overlap collapses by n=15, so what remains at n=8 is shared wording
   rather than copied passages.
 
-PASSAGES  (5 runs of 12+ words, 68 words, 0.4% of the manuscript)
+PASSAGES  (5 runs of 12+ words, 69 words, 0.4% of the manuscript)
   These are what a reviewer would see quoted side by side.
 
    19 words  ...rule at h for seed is where the bias term absorbs the systematic underestimation of the individual base models...
+   13 words  ...applied symmetrically as grid-attends-to-graph queries from keys values from and graph-attends-to-grid streams the...
    13 words  ...indistinguishable when their mean rank difference falls within the critical difference cd at...
-   12 words  ...applied symmetrically as grid-attends-to-graph queries from keys values from and graph-attends-to-grid streams...
    12 words  ...from at h to at h with per-horizon inter-seed standard deviations below...
    12 words  ...the toughest cells lie in the m orographic transition zone rather than...
 
