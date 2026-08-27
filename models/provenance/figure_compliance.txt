@@ -1,6 +1,8 @@
 COLOUR  (colormaps named in the figure-generating scripts)
   ok    RdBu            spatial_r2.py
-  ok    cividis         spatial_r2.py
+  ok    ScalarMappable  study_area_map.py
+  ok    YlGnBu          study_area_map.py
+  ok    cividis         spatial_r2.py, study_area_map.py
   ok    gray            reviewer_annotations.py, study_area.py
   ok    terrain         reviewer_annotations.py, study_area.py
   ok    viridis         all_figures.py, reviewer_annotations.py, spatial_r2.py, spatial_r2_h12_avg.py
@@ -8,7 +10,6 @@ COLOUR  (colormaps named in the figure-generating scripts)
 
 FORMAT  (the figures the manuscript and supplement include)
   vector  beyond_aggregate.pdf
-  vector  boyaca.pdf
   vector  climatology_anchor.pdf
   vector  factorial_feat_variant_r2.pdf
   vector  failure_modes_analysis.pdf
@@ -17,6 +18,7 @@ FORMAT  (the figures the manuscript and supplement include)
   vector  parameter_efficiency_clean.pdf
   vector  radar_chart.pdf
   vector  spatial_r2_map_3panel.pdf
+  vector  study_area.pdf
 
 FONTS  (Type 3 in a built PDF is rejected by several preflight tools)
   no Type 3 fonts in any included figure

@@ -1,5 +1,12 @@
 """Spatial skill over Boyaca, six panels, at H=12.
 
+Rule this figure follows, and every figure in the package should:
+legends, keys, counts and annotations go outside the plotting area,
+below or beside the axes, or into the caption. Inside the axes
+belongs to the data. A key laid over a map hides the cells it is
+describing, which on a panel about where things are is the subject
+itself.
+
 Adapts the poster figure (`generate_poster_figures.py::poster_spatial_r2_3panel`)
 to the paper typography (14/11/10 hierarchy) and embedded width (0.95 textwidth).
 
@@ -230,8 +237,13 @@ def generate_spatial_r2_3panel() -> int:
                        label=f'graph model the better one '
                              f'({int(gnn_wins.sum()):,})'),
     ]
-    ax.legend(handles=handles, loc='lower left', fontsize=8.5, frameon=True,
-              framealpha=0.92, borderpad=0.35, handlelength=1.2)
+    # Outside the axes, under the panel. A key laid on a map hides the
+    # cells it is describing, and on this panel those cells are the
+    # subject. Nothing but data goes inside a plotting area.
+    ax.legend(handles=handles, loc='upper center',
+              bbox_to_anchor=(0.5, -0.16), ncol=1, fontsize=9,
+              frameon=False, borderpad=0.3, handlelength=1.3,
+              labelspacing=0.35)
 
     for ax in axes[1, :]:
         ax.set_xlabel('Longitude', fontsize=11)
