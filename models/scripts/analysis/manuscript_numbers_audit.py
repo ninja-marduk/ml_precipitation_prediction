@@ -707,7 +707,7 @@ ANCHORS = [
     A("pers.pooled", "anchor33.pers.pooled",
       r"persistence \$?R\^\{?2\}?\$?=\$?[-\u2212]\$?(\d+\.\d+)", 5e-4, sign=-1),
     A("clim.percell", "anchor33.clim.percell",
-      r"cell\s+Nash\-Sutcliffe\s+efficiency\s+of\s+(\d+\.\d+)", 5e-3),
+      r"per\-cell\s+Nash\-Sutcliffe\s+efficiency\s+\((\d+\.\d+)", 5e-3),
     A("anchorAll.origins", "anchorAll.n_origins",
       r"admissible forecast origin in the record \((\d+) of them\)", 0.5),
     A("anchorAll.clim", "anchorAll.clim.pooled",
@@ -833,7 +833,7 @@ ANCHORS = [
     # manuscript now states the size of the estimator and draws it. These bind
     # the stated size to the grid and the stated skill to the baseline record.
     A("clim.fig.percell", "pooled33.clim.percell",
-      r"cell\s+Nash\-Sutcliffe\s+efficiency\s+of\s+(\d+\.\d+)",
+      r"per\-cell\s+Nash\-Sutcliffe\s+efficiency\s+\((\d+\.\d+)",
       5e-4),
     A("clim.fig.cells", "strat.n_cells",
       r"extbf\{bimodal\s+tropical\}\s+\&\s+\\textbf\{(\d+)", 0.5, note="grid"),

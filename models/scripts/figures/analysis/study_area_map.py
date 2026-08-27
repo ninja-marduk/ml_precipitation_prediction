@@ -97,10 +97,10 @@ def main() -> int:
         ax.yaxis.set_major_formatter(
             plt.FuncFormatter(lambda y, _: f"{y:.1f}°N"))
         ax.tick_params(labelsize=10)
-        ax.text(0.03, 0.97, f"({label})", transform=ax.transAxes, fontsize=11,
-                fontweight="bold", va="top", ha="left", zorder=7,
-                bbox=dict(facecolor="white", edgecolor="gray",
-                          boxstyle="round,pad=0.25"))
+        # R1: on the title line, not over the map. A boxed label in the
+        # corner of a map hides the cells under it.
+        ax.text(0.0, 1.02, f"({label})", transform=ax.transAxes, fontsize=11,
+                fontweight="bold", va="bottom", ha="left")
 
     # ---- (a) hillshaded terrain ----------------------------------------
     ax = axes[0]
@@ -158,10 +158,8 @@ def main() -> int:
     ax.set_axisbelow(True)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.text(0.03, 0.97, "(c)", transform=ax.transAxes, fontsize=11,
-            fontweight="bold", va="top", ha="left",
-            bbox=dict(facecolor="white", edgecolor="gray",
-                      boxstyle="round,pad=0.25"))
+    ax.text(0.0, 1.02, "(c)", transform=ax.transAxes, fontsize=11,
+            fontweight="bold", va="bottom", ha="left")
     # legend under the axes: the rule is that nothing but data goes inside one
     ax.legend(handles=[Line2D([], [], marker="o", linestyle="", color=c,
                               markersize=5,

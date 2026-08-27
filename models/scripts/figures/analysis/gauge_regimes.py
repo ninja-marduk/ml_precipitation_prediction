@@ -87,10 +87,11 @@ def main():
         if c == 0:
             ax.plot(i, 0, marker="x", color=THIN_COL, markersize=6,
                     markeredgewidth=1.4, clip_on=False, zorder=5)
+    # R1: under the axes, not over the bars.
     ax.legend(handles=[Patch(color=THICK_COL, label=f"more than {THIN} gauges"),
                        Patch(color=THIN_COL, label=f"{THIN} or fewer")],
-              loc="upper left", frameon=True, framealpha=0.92,
-              borderpad=0.4, handlelength=1.3)
+              loc="upper center", bbox_to_anchor=(0.5, -0.22), ncol=2,
+              frameon=False, handlelength=1.3, columnspacing=1.6)
 
     # ---- (b) what the split tests --------------------------------------
     width = 0.34
@@ -108,13 +109,13 @@ def main():
     bx.set_xticklabels([n.replace("-Bidir", "").replace("-TAT-GAT", "")
                         for n, _ in SERIES])
     bx.set_ylabel("RMSE(climatology) / RMSE(model)")
-    bx.set_ylim(0, 1.45)
+    bx.set_ylim(0, 1.15)
     bx.axhline(1.0, color="0.35", linewidth=0.9)
     bx.set_title("(b) The anchor does not gain where gauges thin", loc="left")
     bx.legend(handles=[Patch(facecolor="0.55", alpha=0.45, label="thin months"),
                        Patch(facecolor="0.55", label="thick months")],
-              loc="upper center", ncol=2, frameon=True, framealpha=0.92,
-              borderpad=0.4, handlelength=1.3, columnspacing=1.1)
+              loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=2,
+              frameon=False, handlelength=1.3, columnspacing=1.6)
 
     for a_ in (ax, bx):
         a_.grid(axis="y", alpha=0.25, linewidth=0.5)

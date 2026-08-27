@@ -39,6 +39,84 @@ POSTER_RC: native sizes 14-20 pt for A0 / A1 prints viewed from ~1 m.
            PAPER_RC target.
 
 
+COMPOSITION RULES
+-----------------
+Typography above is necessary and was never sufficient. These seven are what
+actually separated the figures that worked from the ones that did not, and each
+is here because it was broken first.
+
+R1  NOTHING BUT DATA INSIDE THE AXES.
+    Legends, keys, counts, medians and annotations go outside the plotting
+    area: below it, beside it, or in the caption. A key laid over a map hides
+    the cells it describes, and on a panel whose subject is where things are,
+    the hidden part is the subject.
+        ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.16),
+                  frameon=False)
+    A panel label belongs in the title, as its first word, left-aligned. Set as
+    a separate text object above the axes it has to be placed against a title
+    whose width it does not know, and on any panel narrow enough (one that
+    gives up width to a colourbar, say) the two collide.
+        ax.set_title(f'({label})  {title}', loc='left')
+
+R2  STATISTICS BELONG IN THE CAPTION.
+    Counts, medians, spreads and the reading of a reference line are prose.
+    Printed inside the axes they compete with the data for the same space and
+    go stale independently of it.
+
+R3  ONE TYPE SCALE PER FIGURE, AND IT COMES FROM THE PROFILE.
+    setup_paper_style() and then nothing. A figure that set six sizes by hand
+    between 7.5 and 9.5 pt had components disagreeing with each other and with
+    the rest of the document. Deviations are declared, see EXCEPTIONS POLICY.
+
+R4  SEQUENTIAL BY DEFAULT; DIVERGING ONLY WHERE ZERO MEANS SOMETHING.
+    A diverging ramp pivots on a meaningful centre. Use one for signed
+    differences and anomalies. Do not use one for a skill score whose zero sits
+    a fifth of the way up the range: half the colour would go to values that
+    barely occur and the darkest tone would land mid-data. Never a red-green
+    pair, never a rainbow: see BANNED_COLORMAPS in figure_compliance.py.
+    Safe: viridis, cividis, magma, plasma, batlow (sequential); RdBu, coolwarm,
+    berlin (diverging).
+
+R5  EVERY PLOTTED VALUE TRACES TO A RELEASED FILE.
+    No literal typed into a plotting script. Read the provenance output or the
+    arrays, and print the values to stdout so a reader can check them against
+    the text. Two axes of one chart here were invented numbers that survived
+    for months because nothing recomputed them.
+
+R6  VECTOR AND RASTER FROM ONE CALL.
+    save_figure() writes the PDF and the PNG together, so the document and the
+    preview cannot drift. Rasterize dense meshes (rasterized=True) and leave
+    text, ticks, coastlines and colourbars vector.
+
+R7  FIGURE LABELS ARE PLAIN TEXT, NOT LaTeX.
+    A thousands separator written 1{,}500 for the manuscript prints its braces
+    on the image. Matplotlib mathtext ($R^2$) is fine; document markup is not.
+
+R8  A CAPTION IDENTIFIES; THE PARAGRAPH INTERPRETS.
+    A caption carries four things: what is plotted, the panel key, the scale
+    and any convention needed to read it, and where the numbers came from. It
+    does not carry the argument the figure supports, the qualifications of the
+    result, or the comparison with another table. Those belong to the paragraph
+    that cites the figure, where the reader can follow them in running type.
+    The caption is the exception only for a number printed on the image itself,
+    which must be qualified where it is printed or it will be misread.
+        Recommended  120 words.
+        Ceiling      180 words, and only for a multi-panel figure, where the
+                     excess is the panel key and nothing else.
+        Supplement   200 words, because supplementary items are consulted out
+                     of order and have to stand alone.
+    Over the recommendation, the test is what the extra words are doing. Panel
+    key and reading convention, keep. Argument, move it up into the prose; if
+    the prose does not already say it, that is the finding, and the paragraph
+    is where it was missing.
+        python capmeasure.py 120 paper.tex
+
+For flow diagrams drawn in TikZ rather than plotted: join two boxes into one
+with an orthogonal merge, a stub under each source, one bridge between them and
+one arrow into the top edge of the target. Diagonals into a corner meet the box
+at an angle and inherit their slope from the box widths, so no two of them
+match.
+
 EXCEPTIONS POLICY
 -----------------
 Any figure whose generator deviates from these profiles must declare the

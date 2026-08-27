@@ -152,17 +152,18 @@ def generate_spatial_r2_3panel() -> int:
     def frame(ax, label, title):
         if gdf is not None:
             gdf.boundary.plot(ax=ax, color='k', linewidth=0.7, zorder=5)
-        ax.set_title(title, fontsize=12, fontweight='bold', pad=5)
+        # The label is the first word of the title, left-aligned: a
+        # separate text object positioned against a centred title collides
+        # with it on any panel narrow enough, which is what the two
+        # colourbar panels of the second row are.
+        ax.set_title(f'({label})  {title}', fontsize=12, fontweight='bold',
+                     pad=5, loc='left')
         ax.set_aspect('equal')
         ax.xaxis.set_major_formatter(
             plt.FuncFormatter(lambda x, _: f'{abs(x):.1f}\u00b0W'))
         ax.yaxis.set_major_formatter(
             plt.FuncFormatter(lambda x, _: f'{x:.1f}\u00b0N'))
         ax.tick_params(labelsize=10)
-        ax.text(0.03, 0.97, f'({label})', transform=ax.transAxes, fontsize=11,
-                fontweight='bold', va='top', ha='left',
-                bbox=dict(facecolor='white', edgecolor='gray',
-                          boxstyle='round,pad=0.25'))
 
     # ---- row 1: per-cell skill -------------------------------------------
     skill = [
