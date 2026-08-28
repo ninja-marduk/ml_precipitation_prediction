@@ -40,6 +40,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt          # noqa: E402
 import matplotlib.colors as mcolors      # noqa: E402
 from matplotlib.lines import Line2D      # noqa: E402
+from matplotlib.patches import Rectangle, ConnectionPatch  # noqa: E402
+from mpl_toolkits.axes_grid1 import make_axes_locatable  # noqa: E402
 
 FIGURES_ROOT = Path(__file__).resolve().parent.parent
 ROOT = FIGURES_ROOT.parents[2]
@@ -50,6 +52,9 @@ NC = ROOT / "notebooks" / "data" / "output" / \
     "complete_dataset_with_features_with_clusters_elevation_windows_imfs_" \
     "with_onehot_elevation_clean.nc"
 SHP = ROOT / "data" / "input" / "MGN_Departamento.shp"
+# Natural Earth 1:110m, six countries, extracted into the repository so the
+# figure does not read geometry out of a dependency's test fixtures.
+COUNTRIES = ROOT / "data" / "input" / "shapes" / "locator_countries_110m.geojson"
 OUT = ROOT / ".docs" / "papers" / "5" / "figures" / "study_area.png"
 OUT_DELIVERY = ROOT / ".docs" / "papers" / "5" / "delivery" / "figures" / \
     "study_area.png"
@@ -83,13 +88,20 @@ def main() -> int:
 
     lon_g, lat_g = np.meshgrid(lons, lats)
     setup_paper_style()
-    fig, axes = plt.subplots(1, 3, figsize=(14.0, 4.5),
-                             gridspec_kw={"width_ratios": [1, 1, 1.05]})
+    # Drawn at 11.3 in for a 6.99 in text width: a reduction to 0.62, which
+    # is the one the type in _config.py is calibrated against. Four panels in
+    # a single row would need 16 in and print at 0.43, with 5 pt titles.
+    fig = plt.figure(figsize=(11.3, 8.0))
+    gs = fig.add_gridspec(2, 3, width_ratios=[0.72, 1, 1],
+                          height_ratios=[1.0, 0.95], hspace=0.32, wspace=0.55)
+    axes = [fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1]),
+            fig.add_subplot(gs[0, 2]), fig.add_subplot(gs[1, 0:2])]
 
     def frame(ax, label, title):
         if gdf is not None:
             gdf.boundary.plot(ax=ax, color="k", linewidth=0.8, zorder=6)
-        ax.set_title(title, fontsize=12, fontweight="bold", pad=6)
+        ax.set_title(f"({label})  {title}", fontsize=12, fontweight="bold",
+                     pad=6, loc="left")
         ax.set_aspect("equal")
         ax.set_xlabel("Longitude", fontsize=11)
         ax.xaxis.set_major_formatter(
@@ -97,13 +109,44 @@ def main() -> int:
         ax.yaxis.set_major_formatter(
             plt.FuncFormatter(lambda y, _: f"{y:.1f}°N"))
         ax.tick_params(labelsize=10)
-        # R1: on the title line, not over the map. A boxed label in the
-        # corner of a map hides the cells under it.
-        ax.text(0.0, 1.02, f"({label})", transform=ax.transAxes, fontsize=11,
-                fontweight="bold", va="bottom", ha="left")
 
-    # ---- (a) hillshaded terrain ----------------------------------------
+    # ---- (a) where in Colombia this is ----------------------------------
     ax = axes[0]
+    dom = (float(lons.min()), float(lons.max()),
+           float(lats.min()), float(lats.max()))
+    try:
+        import geopandas as gpd
+        countries = gpd.read_file(COUNTRIES)
+    except Exception as e:                                     # noqa: BLE001
+        print(f"  WARN: locator geometry failed ({e}); locator omitted")
+        countries = None
+    if countries is not None:
+        neighbours = countries[countries["name"] != "Colombia"]
+        colombia = countries[countries["name"] == "Colombia"]
+        neighbours.plot(ax=ax, facecolor="0.93", edgecolor="0.75",
+                        linewidth=0.5, zorder=1)
+        colombia.plot(ax=ax, facecolor="0.80", edgecolor="0.35",
+                      linewidth=0.8, zorder=2)
+        if gdf is not None:
+            gdf.plot(ax=ax, facecolor="#BB5566", edgecolor="none",
+                     alpha=0.85, zorder=3)
+        ax.add_patch(Rectangle((dom[0], dom[2]), dom[1] - dom[0],
+                               dom[3] - dom[2], facecolor="none",
+                               edgecolor="k", linewidth=1.1, zorder=4))
+        ax.set_xlim(-80.5, -65.5)
+        ax.set_ylim(-5.0, 13.5)
+    ax.set_aspect("equal")
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for side in ("top", "right", "bottom", "left"):
+        ax.spines[side].set_color("0.7")
+        ax.spines[side].set_linewidth(0.6)
+    ax.set_title("(a)  Location in Colombia", fontsize=12,
+                 fontweight="bold", pad=6, loc="left")
+    locator_ax, locator_dom = ax, dom
+
+    # ---- (b) hillshaded terrain ----------------------------------------
+    ax = axes[1]
     ls = mcolors.LightSource(azdeg=315, altdeg=45)
     # vert_exag is in the units of the data over the units of the axes, and the
     # axes here are degrees, so the exaggeration is large by construction: one
@@ -116,28 +159,30 @@ def main() -> int:
     cs = ax.contour(lon_g, lat_g, elev, levels=[LOW, HIGH],
                     colors=["#FFFFFF", "#FFFFFF"], linewidths=[0.8, 1.3],
                     zorder=5)
-    frame(ax, "a", "Terrain, shaded")
+    frame(ax, "b", "Terrain, shaded")
     ax.set_ylabel("Latitude", fontsize=11)
     sm = plt.cm.ScalarMappable(cmap=plt.cm.cividis,
                                norm=mcolors.Normalize(vmin=float(np.nanmin(elev)),
                                                       vmax=float(np.nanmax(elev))))
-    cb = fig.colorbar(sm, ax=ax, shrink=0.82, pad=0.02, aspect=18)
+    cax = make_axes_locatable(ax).append_axes("right", size="4.5%", pad=0.10)
+    cb = fig.colorbar(sm, cax=cax)
     cb.set_label("m a.s.l.", fontsize=10)
     cb.ax.tick_params(labelsize=9)
 
-    # ---- (b) mean annual precipitation ----------------------------------
-    ax = axes[1]
+    # ---- (c) mean annual precipitation ----------------------------------
+    ax = axes[2]
     im = ax.pcolormesh(lon_g, lat_g, annual, cmap=plt.cm.YlGnBu,
                        shading="auto", rasterized=True)
     ax.contour(lon_g, lat_g, elev, levels=[HIGH], colors=["0.25"],
                linewidths=0.8, zorder=5)
-    frame(ax, "b", "Mean annual precipitation")
-    cb = fig.colorbar(im, ax=ax, shrink=0.82, pad=0.02, aspect=18)
+    frame(ax, "c", "Mean annual precipitation")
+    cax = make_axes_locatable(ax).append_axes("right", size="4.5%", pad=0.10)
+    cb = fig.colorbar(im, cax=cax)
     cb.set_label(r"mm yr$^{-1}$", fontsize=10)
     cb.ax.tick_params(labelsize=9)
 
-    # ---- (c) the relation, band by band ---------------------------------
-    ax = axes[2]
+    # ---- (d) the relation, band by band ---------------------------------
+    ax = axes[3]
     ok = np.isfinite(elev) & np.isfinite(annual)
     e, a = elev[ok], annual[ok]
     masks = (e < LOW, (e >= LOW) & (e < HIGH), e >= HIGH)
@@ -151,24 +196,32 @@ def main() -> int:
         ax.axvline(cut, color="0.35", linewidth=0.8, linestyle=":")
     ax.set_xlabel("Elevation (m a.s.l.)", fontsize=11)
     ax.set_ylabel(r"Mean annual precipitation (mm yr$^{-1}$)", fontsize=11)
-    ax.set_title("The gradient, cell by cell", fontsize=12, fontweight="bold",
-                 pad=6)
+    ax.set_title("(d)  The gradient, cell by cell", fontsize=12,
+                 fontweight="bold", pad=6, loc="left")
     ax.tick_params(labelsize=10)
     ax.grid(alpha=0.25, linewidth=0.5)
     ax.set_axisbelow(True)
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.text(0.0, 1.02, "(c)", transform=ax.transAxes, fontsize=11,
-            fontweight="bold", va="bottom", ha="left")
     # legend under the axes: the rule is that nothing but data goes inside one
     ax.legend(handles=[Line2D([], [], marker="o", linestyle="", color=c,
                               markersize=5,
                               label=f"{n}  ($r$={r:+.3f}, $n$={k:,})")
                        for n, c, r, k in rs],
-              loc="upper center", bbox_to_anchor=(0.5, -0.20), ncol=1,
-              fontsize=9, frameon=False, handletextpad=0.5, labelspacing=0.3)
+              loc="center left", bbox_to_anchor=(1.03, 0.5), ncol=1,
+              fontsize=9, frameon=False, handletextpad=0.5, labelspacing=0.5)
 
-    plt.tight_layout()
+    # Leaders from the domain box to the frame it opens into, so the two read
+    # as one map at two scales. Drawn after tight_layout, when both axes have
+    # the positions the leaders have to connect.
+    if countries is not None:
+        for corner, frac in ((locator_dom[3], 1.0), (locator_dom[2], 0.0)):
+            fig.add_artist(ConnectionPatch(
+                xyA=(locator_dom[1], corner), coordsA=locator_ax.transData,
+                xyB=(0.0, frac), coordsB=axes[1].transAxes,
+                color="0.45", linewidth=0.7, linestyle=(0, (4, 2)),
+                zorder=0))
+
     save_figure(fig, OUT, dpi=OUTPUT_DPI, mirror=OUT_DELIVERY,
                 bbox_inches="tight", facecolor="white")
     plt.close(fig)

@@ -100,11 +100,19 @@ R8  A CAPTION IDENTIFIES; THE PARAGRAPH INTERPRETS.
     that cites the figure, where the reader can follow them in running type.
     The caption is the exception only for a number printed on the image itself,
     which must be qualified where it is printed or it will be misread.
-        Recommended  120 words.
-        Ceiling      180 words, and only for a multi-panel figure, where the
-                     excess is the panel key and nothing else.
-        Supplement   200 words, because supplementary items are consulted out
-                     of order and have to stand alone.
+        Tables and single-panel figures  120 words.
+        Multi-panel figures              180, where the excess is the panel
+                                         key and nothing else.
+        Supplement                       200, since supplementary items are
+                                         consulted out of order and have to
+                                         stand alone; tables there still aim
+                                         at 150.
+    A table caption is the tightest of the three, because a table already
+    carries its own structure: the columns say what the quantities are and the
+    rows say what they are of. What the caption adds is the unit, the
+    population, and the one warning that stops a printed number being misread.
+    Prefer moving a qualification into a column or a footnote marker over
+    writing a sentence about it.
     Over the recommendation, the test is what the extra words are doing. Panel
     key and reading convention, keep. Argument, move it up into the prose; if
     the prose does not already say it, that is the finding, and the paragraph
