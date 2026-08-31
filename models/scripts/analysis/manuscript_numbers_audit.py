@@ -667,6 +667,24 @@ def store() -> dict:
     else:
         missing.append(str(p))
 
+    p = PROV / "graph_budget_sensitivity.txt"
+    if p.exists():
+        txt = _read(p)
+        for budget, key in ((250_000, "b250"), (1_000_000, "b1m")):
+            blocks = txt.split(f"########## budget {budget:,}")
+            if len(blocks) < 2:
+                continue
+            block = blocks[1].split("##########")[0]
+            m = re.search(r"median edge length ([\d.]+) km", block)
+            if m:
+                s[f"budget.{key}.medlen"] = float(m.group(1))
+            m = re.search(r"\(vs (\d+) m over all retained edges\)", block)
+            if m:
+                s[f"budget.{key}.contrast"] = float(m.group(1))
+            m = re.search(r"correlation\s+[\d.]+%\s+([\d.]+)%", block)
+            if m:
+                s[f"budget.{key}.corrdom"] = float(m.group(1))
+
     if missing:
         print("MISSING PROVENANCE (regenerate before trusting this run):")
         for m in missing:
@@ -695,6 +713,19 @@ PM = r"(?:\$?\\pm\$?|\+/-)"
 SEP = r"[\s~]*"
 
 ANCHORS = [
+    # ---- edge-budget sensitivity of the retained graph ---------------------
+    A("budget.medlen250", "budget.b250.medlen",
+      r"median edge length at ([\d.]+)\\,km for 250", 5e-2),
+    A("budget.medlen1m", "budget.b1m.medlen",
+      r"km for 250\{,\}000 edges and ([\d.]+)\\,km for 1", 5e-2),
+    A("budget.contrast250", "budget.b250.contrast",
+      r"median elevation contrast at (\d+) and \d+\\,m against", 0.5),
+    A("budget.contrast1m", "budget.b1m.contrast",
+      r"median elevation contrast at \d+ and (\d+)\\,m against", 0.5),
+    A("budget.corrdom250", "budget.b250.corrdom",
+      r"dominating the selection of ([\d.]+)\\% and", 5e-2),
+    A("budget.corrdom1m", "budget.b1m.corrdom",
+      r"selection of [\d.]+\\% and ([\d.]+)\\% of edges", 5e-2),
     # ---- the anchoring step, on the 33 released windows --------------------
     A("clim.pooled", "anchor33.clim.pooled",
       r"climatology attains \$?R\^\{?2\}?\$?=([\d.]+)"),

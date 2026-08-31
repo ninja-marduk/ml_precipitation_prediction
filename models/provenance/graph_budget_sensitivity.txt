@@ -1,0 +1,127 @@
+Edge-budget sensitivity of the retained graph, three budgets, one
+construction. Produced by graph_structure_diagnostic.py with MAX_EDGES
+overridden; every other constant as released.
+
+########## budget 250,000
+grid 61x65 = 3,965 nodes, elevation 60 to 4654 m
+thresholded graph: 15,673,588 edges (99.72% complete)
+after the 250,000 budget: 250,000 edges, 63 per node on average
+
+--- what the retained weights are made of ---
+term             share of total weight    edges where it dominates
+distance kNN                     11.1%                       12.6%
+elevation                        41.5%                        0.2%
+correlation                      47.4%                       87.2%
+
+of the 31,720 k-NN edges, 31,720 survive the budget (100.0%)
+they are 12.69% of the retained graph
+
+--- geographic span (km) ---
+                        p05      p25   median      p75      p95      max
+retained edges          5.6     17.5     32.3     51.2     83.3    189.0
+all pairs              47.1    114.4    178.7    246.0    327.8    478.8
+retained edges shorter than  10 km:  12.4%   (all pairs: 0.2%)
+retained edges shorter than  25 km:  40.1%   (all pairs: 1.6%)
+retained edges shorter than  50 km:  72.6%   (all pairs: 5.6%)
+
+--- elevation contrast connected (m) ---
+                        p05      p25   median      p75      p95      max
+retained edges            2        9       21       40      221     2309
+all pairs                40      357     1056     2051     3067     4594
+
+edges longer than 50 km: 68,498 (27.4%)
+  their median elevation contrast: 16 m (vs 21 m over all retained edges)
+
+--- degree distribution (the 126 per node average conceals this) ---
+min 8  p05 9  median 21  p95 319  max 455
+isolated nodes (degree 0): 0 of 3,965 (0.0%)
+the busiest 10% of nodes hold 51.0% of all edges
+
+--- read this against the architectural claim ---
+share of retained edges that are also k-NN neighbours: 12.69%
+share of retained weight contributed by elevation:     41.5%
+share of retained weight contributed by correlation:   47.4%
+median edge length 32.3 km against a median pair distance of 178.7 km
+
+########## budget 500,000
+grid 61x65 = 3,965 nodes, elevation 60 to 4654 m
+thresholded graph: 15,673,588 edges (99.72% complete)
+after the 500,000 budget: 500,000 edges, 126 per node on average
+
+--- what the retained weights are made of ---
+term             share of total weight    edges where it dominates
+distance kNN                      6.0%                        6.3%
+elevation                        44.6%                       12.0%
+correlation                      49.4%                       81.7%
+
+of the 31,720 k-NN edges, 31,720 survive the budget (100.0%)
+they are 6.34% of the retained graph
+
+--- geographic span (km) ---
+                        p05      p25   median      p75      p95      max
+retained edges          7.8     27.6     47.5     80.1    140.2    318.8
+all pairs              47.1    114.4    178.7    246.0    327.8    478.8
+retained edges shorter than  10 km:   6.2%   (all pairs: 0.2%)
+retained edges shorter than  25 km:  25.0%   (all pairs: 1.6%)
+retained edges shorter than  50 km:  51.9%   (all pairs: 5.6%)
+
+--- elevation contrast connected (m) ---
+                        p05      p25   median      p75      p95      max
+retained edges            3       14       31       62      168     2309
+all pairs                40      357     1056     2051     3067     4594
+
+edges longer than 50 km: 240,532 (48.1%)
+  their median elevation contrast: 29 m (vs 31 m over all retained edges)
+
+--- degree distribution (the 126 per node average conceals this) ---
+min 8  p05 16  median 49  p95 550  max 602
+isolated nodes (degree 0): 0 of 3,965 (0.0%)
+the busiest 10% of nodes hold 43.2% of all edges
+
+--- read this against the architectural claim ---
+share of retained edges that are also k-NN neighbours: 6.34%
+share of retained weight contributed by elevation:     44.6%
+share of retained weight contributed by correlation:   49.4%
+median edge length 47.5 km against a median pair distance of 178.7 km
+
+########## budget 1,000,000
+grid 61x65 = 3,965 nodes, elevation 60 to 4654 m
+thresholded graph: 15,673,588 edges (99.72% complete)
+after the 1,000,000 budget: 1,000,000 edges, 252 per node on average
+
+--- what the retained weights are made of ---
+term             share of total weight    edges where it dominates
+distance kNN                      3.2%                        3.1%
+elevation                        46.4%                       28.3%
+correlation                      50.4%                       68.6%
+
+of the 31,720 k-NN edges, 31,720 survive the budget (100.0%)
+they are 3.17% of the retained graph
+
+--- geographic span (km) ---
+                        p05      p25   median      p75      p95      max
+retained edges         12.4     35.5     66.7    113.9    247.8    427.9
+all pairs              47.1    114.4    178.7    246.0    327.8    478.8
+retained edges shorter than  10 km:   3.1%   (all pairs: 0.2%)
+retained edges shorter than  25 km:  15.9%   (all pairs: 1.6%)
+retained edges shorter than  50 km:  37.3%   (all pairs: 5.6%)
+
+--- elevation contrast connected (m) ---
+                        p05      p25   median      p75      p95      max
+retained edges            4       22       52      122      266     2309
+all pairs                40      357     1056     2051     3067     4594
+
+edges longer than 50 km: 626,574 (62.7%)
+  their median elevation contrast: 49 m (vs 52 m over all retained edges)
+
+--- degree distribution (the 126 per node average conceals this) ---
+min 14  p05 50  median 137  p95 722  max 836
+isolated nodes (degree 0): 0 of 3,965 (0.0%)
+the busiest 10% of nodes hold 29.0% of all edges
+
+--- read this against the architectural claim ---
+share of retained edges that are also k-NN neighbours: 3.17%
+share of retained weight contributed by elevation:     46.4%
+share of retained weight contributed by correlation:   50.4%
+median edge length 66.7 km against a median pair distance of 178.7 km
+
