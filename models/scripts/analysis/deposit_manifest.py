@@ -116,7 +116,7 @@ def build(dst: Path, manifest, version: str):
     parts = []
 
     # 1. the code, as git sees it, so the deposit and the repository agree
-    code_zip = dst / f"anchorbench-{version}-code.zip"
+    code_zip = dst / f"anchorgate-{version}-code.zip"
     print(f"  code      -> {code_zip.name}", flush=True)
     subprocess.run(["git", "archive", "--format=zip", "-o", str(code_zip), "HEAD"],
                    cwd=str(ROOT), check=True)
@@ -131,7 +131,7 @@ def build(dst: Path, manifest, version: str):
                    if "prediction arrays" in label or "metric files" in label or
                       "provenance" in label
                    for q in files})
-    pred_zip = dst / f"anchorbench-{version}-predictions-and-metrics.zip"
+    pred_zip = dst / f"anchorgate-{version}-predictions-and-metrics.zip"
     print(f"  arrays    -> {pred_zip.name} ({len(pred)} files)", flush=True)
     zip_files(pred_zip, pred, ROOT)
     parts.append(pred_zip)
@@ -146,7 +146,7 @@ def build(dst: Path, manifest, version: str):
     # 4. checkpoints, which are not needed to check a number but are needed to run
     ckpt = sorted(ROOT.glob("models/output/**/*.pt"))
     if ckpt:
-        ck_zip = dst / f"anchorbench-{version}-checkpoints.zip"
+        ck_zip = dst / f"anchorgate-{version}-checkpoints.zip"
         print(f"  weights   -> {ck_zip.name} ({len(ckpt)} files)", flush=True)
         zip_files(ck_zip, ckpt, ROOT)
         parts.append(ck_zip)

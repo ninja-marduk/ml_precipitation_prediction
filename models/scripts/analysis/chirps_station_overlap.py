@@ -38,7 +38,7 @@ ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "models" / "provenance" / "chirps_station_overlap.csv"
 BASE = ("https://data.chc.ucsb.edu/products/CHIRPS-2.0/diagnostics/"
         "list_of_stations_used/monthly/")
-UA = {"User-Agent": "Mozilla/5.0 (AnchorBench station-overlap audit)"}
+UA = {"User-Agent": "Mozilla/5.0 (AnchorGate station-overlap audit)"}
 
 # The model domain, from the NetCDF the study is built on.
 LAT = (4.375, 7.375)

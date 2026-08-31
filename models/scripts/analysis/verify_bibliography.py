@@ -43,7 +43,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_BIB = ROOT / ".docs" / "papers" / "5" / "refs.bib"
 API = "https://api.crossref.org/works/"
-UA = "AnchorBench-bib-check/1.0 (mailto:manuelricardo.perez@uptc.edu.co)"
+UA = "AnchorGate-bib-check/1.0 (mailto:manuelricardo.perez@uptc.edu.co)"
 # Below this Jaccard overlap of title words we call it a different paper.
 MISMATCH_BELOW = 0.34
 DRIFT_BELOW = 0.75
