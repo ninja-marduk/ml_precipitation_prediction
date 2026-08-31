@@ -962,7 +962,7 @@ ANCHORS = [
     A("lf.pooled33", "pooled33.lf.r2",
       r"panel\s+\(c\)\s+is\s+the\s+released\s+fit\s+at\s+(\d+\.\d+)", 5e-3),
     A("lf.percell.anchor", "pooled33.lf.percell",
-      r"tcliffe\s+efficiency\s+\(0\.608\s+against\s+(\d+\.\d+)", 6e-3),
+      r"tcliffe\s+efficiency\s+\(0\.608.{0,60}?against\s+(\d+\.\d+)", 6e-3),
 
     # ---- eight regimes ------------------------------------------------------
     A("regime.boyaca.percell", "regime.boyaca.percell_climatology",
@@ -1077,9 +1077,9 @@ ANCHORS = [
     A("conn.deseas.far", "conn.deseas.far_pct",
       r"to (\d+\.\d+)\\% once the seasonal cycle is removed", 5e-2),
     A("conn.deseas.beta", "conn.deseas.beta_elev",
-      r"elevation coefficient of \$-\$(\d\.\d+) deseasonalized", 5e-5, sign=-1),
+      r"elevation coefficient of \$-\$(\d\.\d+) deseasonalised", 5e-5, sign=-1),
     A("conn.raw.beta", "conn.raw.beta_elev",
-      r"deseasonalized against \$-\$(\d\.\d+) raw", 5e-5, sign=-1),
+      r"deseasonalised against \$-\$(\d\.\d+) raw", 5e-5, sign=-1),
     A("conn.raw.r2", "conn.raw.r2",
       r"regression \$?R\^\{?2\}?\$? rising from (\d\.\d+) to \d\.\d+", 5e-4),
     A("conn.deseas.r2", "conn.deseas.r2",
