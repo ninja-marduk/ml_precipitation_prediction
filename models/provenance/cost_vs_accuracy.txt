@@ -29,5 +29,3 @@ GCN vs SAGE        -0.003      0.077     1.8x   unresolved
   within 8K parameters of one another and their training times differ
   by a factor of five, because the cost of a graph model scales with
   edges traversed per timestep rather than with weights.
-
-wrote D:\github.com\ninja-marduk\ml_precipitation_prediction\models\provenance\cost_vs_accuracy.txt

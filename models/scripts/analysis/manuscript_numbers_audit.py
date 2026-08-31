@@ -742,7 +742,7 @@ ANCHORS = [
     A("purged.recal", "purged.recal.mean",
       r"Recalibrated base learner, same purged split & 0\\% & (\d\.\d+)", 5e-4),
     A("purged.recal.cost", "purged.d_recal.mean",
-      r"costs (\d\.\d+) out of sample rather than gaining", 5e-4, sign=-1),
+      r"costs (\d\.\d+) out of sample instead of gaining", 5e-4, sign=-1),
     A("purged.recal.cost2", "purged.d_recal.mean",
       r"recalibration costs (\d\.\d+) and the ordering", 5e-4, sign=-1),
     A("purged.insample", "purged.ridge_insample.mean",

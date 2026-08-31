@@ -392,7 +392,8 @@ def figure_parameter_efficiency_extended():
     label_specs = {
         'Late Fusion':       (-12, 0, 'right'),
         'ConvLSTM':          (0, 11, 'center'),
-        'FNO+ConvLSTM':      (0, -14, 'center'),
+        'FNO+ConvLSTM':      (13, -13, 'left'),   # below-centre collided with
+                                          # the GNN-TAT label row
         'Residual':          (11, -9, 'left'),
         'Bidirectional':     (0, 10, 'center'),
         'GNN-TAT (GCN/GAT)': (-11, 0, 'right'),
