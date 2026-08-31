@@ -24,6 +24,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.patches as mpatches
 
 # Bootstrap _config from figures/
@@ -192,7 +193,8 @@ def generate_spatial_r2_3panel() -> int:
         ax.contour(lon_grid, lat_grid, elev, levels=[1500, 2800],
                    colors='white', linewidths=0.8, zorder=4)
     frame(ax, 'd', 'Elevation and the two band cuts')
-    cbd = fig.colorbar(imd, ax=ax, shrink=0.82, pad=0.02, aspect=16)
+    cbd = fig.colorbar(imd, cax=make_axes_locatable(ax).append_axes(
+        'right', size='4.5%', pad=0.10))
     cbd.set_label('m a.s.l.', fontsize=10)
     cbd.ax.tick_params(labelsize=9)
 
@@ -205,7 +207,8 @@ def generate_spatial_r2_3panel() -> int:
                         norm=mcolors.Normalize(vmin=-lim, vmax=lim),
                         shading='auto', rasterized=True)
     frame(ax, 'e', 'Fusion minus the better base learner')
-    cbe = fig.colorbar(ime, ax=ax, shrink=0.82, pad=0.02, aspect=16)
+    cbe = fig.colorbar(ime, cax=make_axes_locatable(ax).append_axes(
+        'right', size='4.5%', pad=0.10))
     cbe.set_label(r'$\Delta R^{2}$', fontsize=10)
     cbe.ax.tick_params(labelsize=9)
 
@@ -228,6 +231,10 @@ def generate_spatial_r2_3panel() -> int:
                   norm=mcolors.BoundaryNorm([-0.5, 0.5, 1.5, 2.5, 3.5], 4),
                   shading='auto', rasterized=True)
     frame(ax, 'f', 'Where the two branches differ')
+    # the same 4.5% the other two maps give to their colourbars, so the three
+    # maps in the row share one width
+    make_axes_locatable(ax).append_axes('right', size='4.5%',
+                                        pad=0.10).axis('off')
     handles = [
         mpatches.Patch(color='#4477AA',
                        label=f'fusion lifts over 0.5 ({int(rescued.sum()):,})'),
@@ -242,7 +249,7 @@ def generate_spatial_r2_3panel() -> int:
     # cells it is describing, and on this panel those cells are the
     # subject. Nothing but data goes inside a plotting area.
     ax.legend(handles=handles, loc='upper center',
-              bbox_to_anchor=(0.5, -0.16), ncol=1, fontsize=9,
+              bbox_to_anchor=(0.5, -0.24), ncol=1, fontsize=9,
               frameon=False, borderpad=0.3, handlelength=1.3,
               labelspacing=0.35)
 

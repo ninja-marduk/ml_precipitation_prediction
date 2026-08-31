@@ -121,20 +121,38 @@ def main() -> int:
         print(f"  WARN: locator geometry failed ({e}); locator omitted")
         countries = None
     if countries is not None:
+        # sea first: everything not covered by a polygon is ocean
+        ax.set_facecolor("#D6E8F2")
         neighbours = countries[countries["name"] != "Colombia"]
         colombia = countries[countries["name"] == "Colombia"]
         neighbours.plot(ax=ax, facecolor="0.93", edgecolor="0.75",
                         linewidth=0.5, zorder=1)
-        colombia.plot(ax=ax, facecolor="0.80", edgecolor="0.35",
+        colombia.plot(ax=ax, facecolor="0.82", edgecolor="0.35",
                       linewidth=0.8, zorder=2)
+        # the study window's own SRTM raster inside the box: the terrain the
+        # top row zooms into, from the released feature set. The rest of the
+        # country stays flat because the deposit carries no national DEM.
+        ax.imshow(np.nan_to_num(elev, nan=float(np.nanmin(elev))),
+                  extent=[dom[0], dom[1], dom[2], dom[3]], origin="lower",
+                  cmap=plt.cm.cividis, interpolation="bilinear", zorder=3)
         if gdf is not None:
-            gdf.plot(ax=ax, facecolor="#BB5566", edgecolor="none",
-                     alpha=0.85, zorder=3)
+            gdf.boundary.plot(ax=ax, color="#BB5566", linewidth=1.0, zorder=4)
         ax.add_patch(Rectangle((dom[0], dom[2]), dom[1] - dom[0],
                                dom[3] - dom[2], facecolor="none",
-                               edgecolor="k", linewidth=1.1, zorder=4))
+                               edgecolor="k", linewidth=1.1, zorder=5))
         ax.set_xlim(-80.5, -65.5)
         ax.set_ylim(-5.0, 13.5)
+        # the two seas, named where they are
+        ax.text(-78.9, 3.2, "Pacific\nOcean", fontsize=8, style="italic",
+                color="#4A7C99", ha="center", va="center", zorder=2)
+        ax.text(-75.8, 12.6, "Caribbean Sea", fontsize=8, style="italic",
+                color="#4A7C99", ha="center", va="center", zorder=2)
+        # north arrow, top-left, outside the land
+        ax.annotate("N", xy=(-79.6, 12.4), xytext=(-79.6, 10.4),
+                    arrowprops=dict(arrowstyle="-|>", color="0.25",
+                                    linewidth=1.2),
+                    fontsize=11, fontweight="bold", color="0.25",
+                    ha="center", va="bottom", zorder=6)
     ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
