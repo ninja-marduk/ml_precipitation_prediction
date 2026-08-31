@@ -4,7 +4,7 @@
 
 **A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21576208.svg)](https://doi.org/10.5281/zenodo.21576208)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21576207.svg)](https://doi.org/10.5281/zenodo.21576207)
 
 ---
 
@@ -363,8 +363,8 @@ If you use this code, dataset, or methodology in your research, please cite:
   year         = {2026},
   version      = {v1.0.1},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.21576208},
-  url          = {https://doi.org/10.5281/zenodo.21576208}
+  doi          = {10.5281/zenodo.21576207},
+  url          = {https://doi.org/10.5281/zenodo.21576207}
 }
 ```
 
@@ -491,4 +491,4 @@ This research is supported by:
 ---
 
 *Last Updated: 2026-05-07*
-*Project Status: V10 Late Fusion (R2=0.655 +/- 0.018 multi-seed; 0.672 seed-42) is the best model. Systematic Review published (Hydrology Research, doi:10.1016/j.hydrch.2026.100008), Hybrid Architecture Benchmark published (Hydrology 2026, 13(3), 98, doi:10.3390/hydrology13030098), Hybrid Architectures and Fusion under submission (Earth Science Informatics). Software archived at doi:10.5281/zenodo.21576208.*
+*Project Status: V10 Late Fusion (R2=0.655 +/- 0.018 multi-seed; 0.672 seed-42) is the best model. Systematic Review published (Hydrology Research, doi:10.1016/j.hydrch.2026.100008), Hybrid Architecture Benchmark published (Hydrology 2026, 13(3), 98, doi:10.3390/hydrology13030098), Hybrid Architectures and Fusion under submission (Earth Science Informatics). Software archived at doi:10.5281/zenodo.21576207.*

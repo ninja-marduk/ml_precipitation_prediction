@@ -4,7 +4,7 @@ type: software
 title: "AnchorGate v1.0: an anchored, seed-resolved evaluation protocol for data-driven environmental prediction"
 version: 1.3.0
 date-released: 2026-08-18
-doi: 10.5281/zenodo.21576208
+doi: 10.5281/zenodo.21576207
 authors:
   - family-names: "Perez Reyes"
     given-names: "Manuel Ricardo"
@@ -24,10 +24,10 @@ authors:
     orcid: "https://orcid.org/0000-0003-4271-5015"
     affiliation: "Universitat Politecnica de Catalunya (UPC) and Barcelona Supercomputing Center (BSC)"
 repository-code: "https://github.com/ninja-marduk/ml_precipitation_prediction"
-url: "https://doi.org/10.5281/zenodo.21576208"
+url: "https://doi.org/10.5281/zenodo.21576207"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.21576208
+    value: 10.5281/zenodo.21576207
     description: "Concept DOI (always resolves to the latest release)"
 abstract: >
   A hybrid deep learning framework for monthly precipitation prediction in mountainous
