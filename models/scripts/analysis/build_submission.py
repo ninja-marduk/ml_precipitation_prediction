@@ -175,7 +175,9 @@ def main():
                # living working documents of the current submission,
                # not build products: the letter travels with the
                # package by hand, and the board is the decision log
-               "cover_letter.md", "review_board.md"})
+               "cover_letter.md", "review_board.md", "submission_fields.md",
+               "short_summary.txt", "abstract_plain.txt",
+               "authors.csv", "editor_query_ai.md"})
     keep_dirs = {"figures", "submission", "_archive", "data"}
     moved = n_mv = 0
     if not args.dry_run:
