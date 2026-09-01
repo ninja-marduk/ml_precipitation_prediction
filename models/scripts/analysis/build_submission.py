@@ -171,7 +171,11 @@ def main():
     # build left the verifier looking for a file that was no longer where it
     # had put it.
     keep = (set(SOURCES) | set(EXTRA) | set(CLASS_FILES) | KEEP_BBL
-            | {"paper_es.tex", "paper_es.pdf"})
+            | {"paper_es.tex", "paper_es.pdf",
+               # living working documents of the current submission,
+               # not build products: the letter travels with the
+               # package by hand, and the board is the decision log
+               "cover_letter.md", "review_board.md"})
     keep_dirs = {"figures", "submission", "_archive", "data"}
     moved = n_mv = 0
     if not args.dry_run:
