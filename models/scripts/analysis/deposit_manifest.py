@@ -157,7 +157,14 @@ def build(dst: Path, manifest, version: str):
         print(f"  readme    -> README.md", flush=True)
 
     man = dst / "MANIFEST.sha256"
-    with open(man, "w", encoding="utf-8") as fp:
+    # newline="
+": on Windows the default translates 
+ to 
+ and a
+    # Linux reader running `sha256sum -c` then sees filenames with a
+    # trailing CR and reports every file missing. v1.3.0 shipped that way.
+    with open(man, "w", encoding="utf-8", newline="
+") as fp:
         for p in parts:
             fp.write(f"{sha256(p)}  {p.name}\n")
     total = sum(p.stat().st_size for p in parts)
