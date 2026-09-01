@@ -240,7 +240,7 @@ def main() -> int:
                 color="0.45", linewidth=0.7, linestyle=(0, (4, 2)),
                 zorder=0))
 
-    save_figure(fig, OUT, dpi=OUTPUT_DPI, mirror=OUT_DELIVERY,
+    save_figure(fig, OUT, dpi=OUTPUT_DPI, mirror=OUT_DELIVERY, pdf_dpi=300,
                 bbox_inches="tight", facecolor="white")
     plt.close(fig)
 

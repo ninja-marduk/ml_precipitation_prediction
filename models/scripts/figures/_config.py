@@ -251,7 +251,7 @@ def setup_style():
 # ---------------------------------------------------------------------------
 # Saving
 # ---------------------------------------------------------------------------
-def save_figure(fig, path, dpi=None, mirror=None, **kw):
+def save_figure(fig, path, dpi=None, mirror=None, pdf_dpi=None, **kw):
     """Write a figure as vector PDF and as PNG, from one call.
 
     GMD asks for vector graphics with embedded fonts, and every generator in
@@ -276,7 +276,11 @@ def save_figure(fig, path, dpi=None, mirror=None, **kw):
                 [] if mirror is None else
                 [Path(mirror).with_suffix('.pdf'), Path(mirror)]):
             target.parent.mkdir(parents=True, exist_ok=True)
-            fig.savefig(target, dpi=dpi, **kw)
+            # pdf_dpi caps the resolution of rasterised artists inside the
+            # vector file: the journal caps figure PDFs at 2 MB and asks for
+            # 300 dpi, while the PNG keeps the project's own 700.
+            d = pdf_dpi if (pdf_dpi and target.suffix == '.pdf') else dpi
+            fig.savefig(target, dpi=d, **kw)
     return path.with_suffix('.pdf')
 
 
