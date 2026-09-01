@@ -1,15 +1,11 @@
 91 entries, 71 with a DOI, 20 without
 
-  UNRESOLVED  PerezReyes2026anchorgate   10.5281/zenodo.XXXXXXXX
   DRIFT       CHC2015                    10.15780/G2RP4Q
               file: Climate Hazards Center {InfraRed} Precipitation with Station data ({CHIRPS}) version 2.0, monthl
               doi : Climate Hazards Center InfraRed Precipitation with Station (CHIRPSv2.0)
 
 ======================================================================
-0 mismatched, 1 unresolved, 1 drifted
+0 mismatched, 0 unresolved, 1 drifted
 
 20 entries carry no DOI and were not checked:
   Cohen1988, Cuatrecasas1958, Demsar2006, Fedus2022, Gu2024, Hamilton2017, Holm1979, Jarvis2008, Kipf2017, Li2021, Luteyn1999, Nemenyi1963, Nguyen2023, Pineau2021, Shazeer2017, Shi2015, Stadtmuller1987, Vaswani2017, Velickovic2018, Wang2017
-
-A mismatched DOI points a reader at a different paper than the one
-the sentence cites. Fix these before the bibliography ships.
