@@ -1,0 +1,26 @@
+Categorical verification of the Late Fusion forecast, released 33-window set.
+Events are per-cell, per-calendar-month terciles estimated on 1981-2015 only.
+index recovery: first target idx 474, mean match MSE = 4.923e-12
+grid 61x65, 33 windows x 12 leads = 1,570,140 forecast cells
+observed base rate  dry 0.308   wet 0.416
+
+########## Late Fusion, 3 seeds (mean +/- s.d.)
+event       POD      FAR      CSI     bias
+dry    0.209±0.012 0.625±0.008 0.155±0.006 0.557±0.042
+wet    0.518±0.004 0.549±0.004 0.318±0.001 1.148±0.020
+
+########## Untrained per-cell monthly climatology
+event       POD      FAR      CSI     bias
+dry       0.000    0.534    0.000    0.001
+wet       0.030    0.490    0.029    0.058
+
+--- reading ---
+POD is the fraction of observed tercile events the forecast caught; FAR the
+fraction of forecast events that did not occur; CSI the hits over hits plus
+misses plus false alarms; bias the forecast event count over the observed one.
+A bias far below 1 means the forecast almost never issues the event.
+The climatological mean is a single value per cell and month, so whether it
+falls inside a tercile is fixed in advance and does not respond to the year
+being forecast. Its scores are therefore a property of the climatology's
+position in the distribution, not forecast skill, which is the point of
+scoring it here: the reference that wins on R^2 cannot signal an anomaly.
