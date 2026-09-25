@@ -1,0 +1,35 @@
+Cells inside Boyaca: 757 of 3965
+
+All 33 validation windows: climatology R2 = 0.730
+  MSESS vs climatology by lead (H=1..12), mean over seeds:
+    Enhanced ConvLSTM          -0.60 -0.66 -0.55 -0.70 -0.63 -0.84 -0.69 -0.59 -0.54 -0.61 -0.63 -0.63   (max s.d. 0.45)
+    GNN-TAT                    -0.80 -0.99 -1.03 -1.21 -1.16 -1.10 -1.00 -1.03 -1.18 -1.12 -1.02 -0.95   (max s.d. 0.34)
+  Anomaly correlation by lead (H=1..12), mean over seeds:
+    Enhanced ConvLSTM          +0.07 +0.04 +0.04 +0.02 +0.03 +0.00 +0.02 +0.02 +0.05 +0.01 +0.02 +0.00   (max s.d. 0.07)
+    GNN-TAT                    +0.08 +0.04 +0.02 -0.01 -0.00 -0.01 -0.02 +0.01 -0.01 -0.01 +0.00 +0.01   (max s.d. 0.04)
+  Median over cells of the temporal anomaly correlation (all leads pooled):
+    Enhanced ConvLSTM          -0.083 +/- 0.027
+    GNN-TAT                    -0.123 +/- 0.018
+
+Purged block, windows 21-32: climatology R2 = 0.763
+  MSESS vs climatology by lead (H=1..12), mean over seeds:
+    Enhanced ConvLSTM          -0.44 -0.40 -0.40 -0.48 -0.36 -0.64 -0.67 -0.49 -0.54 -0.51 -0.71 -0.79   (max s.d. 0.47)
+    GNN-TAT                    -0.83 -0.77 -1.00 -1.12 -0.95 -0.86 -0.97 -1.01 -1.33 -1.27 -1.23 -1.04   (max s.d. 0.38)
+    Ridge fusion (purged fit)  -1.11 -1.05 -0.89 -0.59 -0.55 -0.70 -0.73 -0.67 -0.56 -0.52 -0.60 -0.59   (max s.d. 0.25)
+  Anomaly correlation by lead (H=1..12), mean over seeds:
+    Enhanced ConvLSTM          +0.20 +0.20 +0.16 +0.14 +0.19 +0.08 +0.09 +0.16 +0.15 +0.17 +0.08 -0.01   (max s.d. 0.16)
+    GNN-TAT                    +0.13 +0.17 +0.06 +0.02 +0.11 +0.09 +0.08 +0.07 +0.04 +0.01 +0.05 +0.08   (max s.d. 0.07)
+    Ridge fusion (purged fit)  +0.06 +0.07 +0.08 +0.08 +0.17 +0.09 +0.13 +0.17 +0.13 +0.15 +0.01 -0.01   (max s.d. 0.15)
+  Median over cells of the temporal anomaly correlation (all leads pooled):
+    Enhanced ConvLSTM          +0.076 +/- 0.090
+    GNN-TAT                    -0.013 +/- 0.025
+    Ridge fusion (purged fit)  +0.060 +/- 0.063
+
+Inside Boyaca only (757 cells):
+  All 33 windows: climatology R2 = 0.741
+    Enhanced ConvLSTM          R2 0.554 +/- 0.086   MSESS -0.720 +/- 0.330
+    GNN-TAT                    R2 0.430 +/- 0.058   MSESS -1.197 +/- 0.222
+  Purged block: climatology R2 = 0.802
+    Enhanced ConvLSTM          R2 0.629 +/- 0.081   MSESS -0.872 +/- 0.409
+    GNN-TAT                    R2 0.507 +/- 0.056   MSESS -1.489 +/- 0.285
+    Ridge fusion (purged fit)  R2 0.667 +/- 0.021   MSESS -0.680 +/- 0.105

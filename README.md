@@ -34,7 +34,7 @@ The central finding concerns evaluation rather than architecture. Consecutive fo
 |-------|--------|------|
 | Enhanced ConvLSTM (Bidirectional) | Peak R² = 0.653 | Single run, pre-correction pipeline |
 | GNN-TAT (GAT encoder) | Peak R² = 0.628 at H=5 (best horizon of best of 3 seeds); seed-resolved mean 0.446-0.510 over H=1-12 | 98K parameters, 34 % fewer than the best ConvLSTM (148K). Its lower mean RMSE (p = 0.015 uncorrected) is not significant after Holm correction |
-| FNO / FNO-ConvLSTM | R² = 0.206 / 0.582 | The ConvLSTM decoder recovers most of the loss; spectral truncation smooths sharp orographic gradients |
+| FNO / FNO-ConvLSTM | R² = 0.206 / 0.582 at the 12-month lead | The ConvLSTM decoder recovers most of the loss; spectral truncation smooths sharp orographic gradients |
 | Stacking (early fusion) | R² = 0.212 | Collapses towards each cell's mean |
 | Stratified ensemble | R² = 0.597 | No gain over the dominant base model (pre-correction run) |
 | GNN-BiMamba | R² = 0.18 (validation windows) | Collapses towards each cell's mean |
@@ -61,14 +61,14 @@ Sub-hypotheses: feature hybridization (KCE, PAFC over BASIC) is not supported; a
 
 ### Sub-cell DEM features (negative result)
 
-Three intra-cell DEM bundles (BASIC_D10: elevation deciles, 22 features; BASIC_PCA6: 18; BASIC_D10_STATS: 27) were tested. Every bundle degrades every model relative to BASIC (R², H=12):
+Three intra-cell DEM bundles (BASIC_D10: elevation deciles, 22 features; BASIC_PCA6: 18; BASIC_D10_STATS: 27) were tested. Every bundle degrades every model relative to BASIC (mean per-cell R² in the Low elevation zone, below 1,500 m, pooled over the twelve leads; single runs on the pre-correction pipeline):
 
 | Feature bundle | Enhanced ConvLSTM | GNN-TAT | Late Fusion |
 |----------------|-------------------|---------|-------------|
 | BASIC (baseline) | 0.511 | 0.473 | 0.549 |
-| BASIC_D10 | 0.321 (-36.4 %) | 0.400 (-15.4 %) | 0.498 (-9.3 %) |
-| BASIC_PCA6 | 0.278 (-45.0 %) | 0.287 (-39.3 %) | 0.449 (-18.2 %) |
-| BASIC_D10_STATS | 0.180 (-64.4 %) | 0.293 (-38.1 %) | 0.357 (-35.0 %) |
+| BASIC_D10 | 0.321 (-37.2 %) | 0.400 (-15.4 %) | 0.498 (-9.2 %) |
+| BASIC_PCA6 | 0.278 (-45.5 %) | 0.287 (-39.2 %) | 0.449 (-18.1 %) |
+| BASIC_D10_STATS | 0.180 (-64.7 %) | 0.293 (-38.1 %) | 0.357 (-35.0 %) |
 
 These are single-run figures from before the graph-construction correction; the direction of the result is reliable, the exact percentages are not at the precision of the seed-resolved numbers above.
 
