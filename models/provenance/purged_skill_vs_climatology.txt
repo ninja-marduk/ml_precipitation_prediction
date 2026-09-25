@@ -1,0 +1,13 @@
+Purged holdout windows 21-32 (first target months 2023-04 to 2024-03); fusion fitted on windows 0-9.
+
+Climatology on the purged windows: R2 = 0.763
+
+arm                               R2     MSESS vs clim     ACC (anomaly)
+Enhanced ConvLSTM    0.635 +/- 0.067  -0.543 +/- 0.281   0.137 +/- 0.053
+GNN-TAT              0.518 +/- 0.055  -1.038 +/- 0.234   0.073 +/- 0.011
+Ridge fusion         0.598 +/- 0.022  -0.698 +/- 0.091   0.099 +/- 0.032
+
+Per-window squared-error difference (model minus climatology), seed mean:
+  Enhanced ConvLSTM  worse than climatology in 12 of 12 windows; Wilcoxon p = 0.0005 (windows overlap, so this p is optimistic)
+  GNN-TAT            worse than climatology in 12 of 12 windows; Wilcoxon p = 0.0005 (windows overlap, so this p is optimistic)
+  Ridge fusion       worse than climatology in 12 of 12 windows; Wilcoxon p = 0.0005 (windows overlap, so this p is optimistic)

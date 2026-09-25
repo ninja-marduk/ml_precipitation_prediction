@@ -1,34 +1,36 @@
 
-All 33 sliding windows: N=33, k=5, chi2=104.17, df=4, p=1.27e-21, CD=1.06
-  Enhanced ConvLSTM  mean rank 1.97   mean RMSE   79.42 mm
-  GNN-TAT            mean rank 2.39   mean RMSE   82.29 mm
+All 33 sliding windows: N=33, k=5, chi2=125.99, df=4, p=2.81e-26, CD=1.06
+  Enhanced ConvLSTM  mean rank 2.03   mean RMSE   86.48 mm
+  GNN-TAT            mean rank 2.97   mean RMSE   96.82 mm
   Stacking           mean rank 4.27   mean RMSE  117.33 mm
   GNN-BiMamba        mean rank 4.73   mean RMSE  119.32 mm
-  Late Fusion        mean rank 1.64   mean RMSE   75.81 mm
-  Enhanced ConvLSTM  vs GNN-TAT            |dR|=0.42  within CD
-  Enhanced ConvLSTM  vs Stacking           |dR|=2.30  > CD
-  Enhanced ConvLSTM  vs GNN-BiMamba        |dR|=2.76  > CD
-  Enhanced ConvLSTM  vs Late Fusion        |dR|=0.33  within CD
-  GNN-TAT            vs Stacking           |dR|=1.88  > CD
-  GNN-TAT            vs GNN-BiMamba        |dR|=2.33  > CD
-  GNN-TAT            vs Late Fusion        |dR|=0.76  within CD
+  Climatology        mean rank 1.00   mean RMSE   68.04 mm
+  Enhanced ConvLSTM  vs GNN-TAT            |dR|=0.94  within CD
+  Enhanced ConvLSTM  vs Stacking           |dR|=2.24  > CD
+  Enhanced ConvLSTM  vs GNN-BiMamba        |dR|=2.70  > CD
+  Enhanced ConvLSTM  vs Climatology        |dR|=1.03  within CD
+  GNN-TAT            vs Stacking           |dR|=1.30  > CD
+  GNN-TAT            vs GNN-BiMamba        |dR|=1.76  > CD
+  GNN-TAT            vs Climatology        |dR|=1.97  > CD
   Stacking           vs GNN-BiMamba        |dR|=0.45  within CD
-  Stacking           vs Late Fusion        |dR|=2.64  > CD
-  GNN-BiMamba        vs Late Fusion        |dR|=3.09  > CD
+  Stacking           vs Climatology        |dR|=3.27  > CD
+  GNN-BiMamba        vs Climatology        |dR|=3.73  > CD
 
-Three non-overlapping windows: N=3, k=5, chi2=10.93, df=4, p=2.73e-02, CD=3.52
-  Enhanced ConvLSTM  mean rank 2.33   mean RMSE   79.46 mm
-  GNN-TAT            mean rank 2.67   mean RMSE   80.94 mm
+Three non-overlapping windows: N=3, k=5, chi2=11.47, df=4, p=2.18e-02, CD=3.52
+  Enhanced ConvLSTM  mean rank 2.00   mean RMSE   86.56 mm
+  GNN-TAT            mean rank 3.00   mean RMSE   96.72 mm
   Stacking           mean rank 4.33   mean RMSE  115.61 mm
   GNN-BiMamba        mean rank 4.67   mean RMSE  117.98 mm
-  Late Fusion        mean rank 1.00   mean RMSE   73.38 mm
-  Enhanced ConvLSTM  vs GNN-TAT            |dR|=0.33  within CD
-  Enhanced ConvLSTM  vs Stacking           |dR|=2.00  within CD
-  Enhanced ConvLSTM  vs GNN-BiMamba        |dR|=2.33  within CD
-  Enhanced ConvLSTM  vs Late Fusion        |dR|=1.33  within CD
-  GNN-TAT            vs Stacking           |dR|=1.67  within CD
-  GNN-TAT            vs GNN-BiMamba        |dR|=2.00  within CD
-  GNN-TAT            vs Late Fusion        |dR|=1.67  within CD
+  Climatology        mean rank 1.00   mean RMSE   68.02 mm
+  Enhanced ConvLSTM  vs GNN-TAT            |dR|=1.00  within CD
+  Enhanced ConvLSTM  vs Stacking           |dR|=2.33  within CD
+  Enhanced ConvLSTM  vs GNN-BiMamba        |dR|=2.67  within CD
+  Enhanced ConvLSTM  vs Climatology        |dR|=1.00  within CD
+  GNN-TAT            vs Stacking           |dR|=1.33  within CD
+  GNN-TAT            vs GNN-BiMamba        |dR|=1.67  within CD
+  GNN-TAT            vs Climatology        |dR|=2.00  within CD
   Stacking           vs GNN-BiMamba        |dR|=0.33  within CD
-  Stacking           vs Late Fusion        |dR|=3.33  within CD
-  GNN-BiMamba        vs Late Fusion        |dR|=3.67  > CD
+  Stacking           vs Climatology        |dR|=3.33  within CD
+  GNN-BiMamba        vs Climatology        |dR|=3.67  > CD
+
+Climatology has the lowest RMSE in 33 of 33 windows.

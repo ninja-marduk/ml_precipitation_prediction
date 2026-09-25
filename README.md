@@ -1,494 +1,245 @@
 # ML Precipitation Prediction
 
-## Computational Model for Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas
-
-**A Hybrid Deep Learning Approach Using Graph Neural Networks with Temporal Attention**
+## Computational Model for the Spatiotemporal Prediction of Monthly Precipitation in Mountainous Areas Using Machine Learning Techniques
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21576207.svg)](https://doi.org/10.5281/zenodo.21576207)
 
----
-
-## Project Overview
-
-This repository contains the implementation of a doctoral thesis project developing hybrid deep learning models for monthly precipitation prediction in the mountainous terrain of Boyaca, Colombia. The research follows a Data-Driven (DD) scientific methodology with rigorous statistical validation.
-
-### Research Publications
-
-This work is organized into three complementary studies, each addressing a different aspect of the research:
-
-| Study | Focus | Journal | Status |
-|-------|-------|---------|--------|
-| **Systematic Review** (Paper 1) | Survey of hybrid DL models for precipitation prediction | Hydrology Research (Elsevier) | **Published 2026** ([doi:10.1016/j.hydrch.2026.100008](https://doi.org/10.1016/j.hydrch.2026.100008)) |
-| **Hybrid Architecture Benchmark** (Paper 4) | ConvLSTM vs FNO vs GNN-TAT comparison | Hydrology (MDPI), 13(3), 98 | **Published 2026-03-18** ([doi:10.3390/hydrology13030098](https://doi.org/10.3390/hydrology13030098)) |
-| **Hybrid Architectures and Fusion** (Paper 5) | Late Fusion via Ridge + predictability-ceiling benchmark | Earth Science Informatics (Springer) | Under submission (2026) |
-
-Throughout this documentation, papers are referenced by their descriptive name or by number (e.g., "Paper 4") following this convention.
-
-### Model Performance Summary (H=12, Full Grid Results)
-
-| Metric | V2 ConvLSTM | V4 GNN-TAT | V5 Stacking | V9 BiMamba | **V10 Late Fusion** |
-|--------|-------------|------------|-------------|------------|---------------------|
-| **R²** | 0.628 | 0.597 | 0.212 | 0.200 | **0.672** ✅ |
-| **RMSE (mm)** | 81.05 | 84.40 | 117.93 | 111.18 | **76.23** ✅ |
-| **MAE (mm)** | 58.91 | 59.74 | 92.41 | 87.33 | **55.92** ✅ |
-| **Bias (mm)** | -10.50 | -28.79 | -- | 8.23 | **-0.004** |
-| **Status** | Baseline | Efficient | ❌ Failed | ❌ Failed | **Best** ✅ |
-
-**V10 Late Fusion Success:** V10 combines V2 (ConvLSTM-Bidirectional) and V4 (GNN-TAT-GAT) predictions through Ridge regression, achieving +6.2% improvement over the best baseline. Canonical seed-42 learned weights: w_C=0.509, w_G=0.652, bias=-6.37mm (regenerated 2026-04-23). Multi-seed mean across {42, 123, 456}: R²=0.655 ± 0.018. Both models contribute complementary information.
-
-**Key Insight:** Late fusion (V10) succeeds where early fusion (V5) failed. When combining heterogeneous architectures, fuse predictions rather than intermediate features.
-
-**Recommendation for Thesis:** Use **V10 Late Fusion Ridge Ensemble** as final best model (R²=0.655 ± 0.018 across three seeds; 0.672 for the seed-42 single split).
-
-### Value Proposition
-
-GNN-TAT achieves **comparable predictive performance** to ConvLSTM baselines while offering:
-1. **95% parameter reduction** (98K vs 500K-2.1M parameters)
-2. **Interpretable spatial relationships** through explicit graph structure
-3. **Significantly lower mean RMSE** across all configurations (p=0.015)
-
-### Key Research Findings
-
-**1. Hybridization Rescue Effect (H5 - Validated):**
-Pure spectral methods (FNO) fail for precipitation (R²=0.206), but hybridization rescues performance through component integration:
-- Pure FNO: R²=0.206
-- FNO-ConvLSTM Hybrid: R²=0.582
-- **Improvement: 182%**
-
-**2. When Stacking Fails (H6 - Rejected):**
-Complex fusion architectures don't guarantee better results. V5 Stacking attempted to combine ConvLSTM and GNN-TAT but performed catastrophically worse:
-- V2 ConvLSTM (individual): R²=0.628, RMSE=81mm
-- V4 GNN-TAT (individual): R²=0.516, RMSE=92mm
-- **V5 Stacking (ensemble): R²=0.212, RMSE=118mm** ❌
-
-**Root Cause:** GridGraphFusion mixed branch features BEFORE predictions, destroying branch identity and preventing effective meta-learning.
-
-**Lesson:** Simpler models (V2 ConvLSTM) often outperform sophisticated ensembles when the fusion mechanism isn't well-designed. Fusion timing and architecture matter more than complexity.
-
-**3. When Ensemble Stratification Works vs Fails (V6 - Complete):**
-V6 Multi-Dimensional Ensemble Matrix tested 8 ensemble strategies across 4 stratification dimensions to rescue the ensemble approach. Results (on validation set):
-
-**Stratification Dimensions Tested:**
-- **Elevation:** High (>3000m), Medium (2000-3000m), Low (<2000m)
-- **Precipitation Magnitude:** Light, Moderate, Heavy
-- **Season:** DJF (Winter), MAM (Spring), JJA (Summer), SON (Autumn)
-- **Forecast Horizon:** Short (H1-4), Medium (H5-8), Long (H9-12)
-
-**Results Across ALL Dimensions:**
-| Dimension | V2 R² Range | V4 R² Range | Winner |
-|-----------|-------------|-------------|--------|
-| Elevation (3 zones) | 0.136-0.240 | 0.568-0.610 | V4 all zones |
-| Season (4 seasons) | -3.67-0.250 | 0.264-0.611 | V4 all seasons |
-| Horizon (3 groups) | 0.103-0.218 | 0.583-0.608 | V4 all groups |
-
-**Ensemble Strategies Performance:**
-- Simple Average (50/50): R²=0.478 (-20% vs V4) ❌
-- All Stratified Ensembles: R²=0.597 (equals V4, no improvement)
-
-**Critical Finding:** Ensemble stratification CANNOT improve performance when one model dominates universally. V4 outperforms V2 across ALL tested dimensions, so optimal weights are 100% V4, 0% V2.
-
-**Theoretical Lesson:** Successful ensembles require **complementary strengths** - different models excelling in different conditions. V2 vs V4 lack complementarity, making ensemble futile.
+Code, analysis scripts and outputs of a doctoral thesis (Doctoral Program in Engineering, Pedagogical and Technological University of Colombia, UPTC) on monthly precipitation prediction over the mountainous terrain of Boyaca, Colombia. The repository also holds the reference implementation of **AnchorGate v1.0**, an anchored, seed-resolved evaluation protocol for data-driven environmental prediction.
 
 ---
 
-## Research Hypotheses
+## Publications
 
-| ID | Hypothesis | Status | Evidence |
-|----|------------|--------|----------|
-| H1 | Hybrid GNN-Temporal models achieve comparable or better accuracy than ConvLSTM | **PARTIALLY VALIDATED** | V4 R²=0.516 vs V2 R²=0.628; GNN captures spatial structure but ConvLSTM superior overall |
-| H2 | Topographic features improve prediction accuracy | **VALIDATED** | KCE features improve V4 GNN performance (p<0.05) |
-| H3 | Non-Euclidean spatial relations capture orographic dynamics | **VALIDATED** | 3,965 nodes, 500,000 edges successfully trained in V4 |
-| H4 | Multi-scale temporal attention improves long horizons | **VALIDATED** | R² degradation 9.6% (H1→H12), below 20% threshold |
-| H5 | Hybridization rescues architectural limitations | **VALIDATED** | Pure FNO R²=0.206 → Hybrid R²=0.582 (182% improvement) |
-| H6 | Stacking improves upon best individual models | **❌ REJECTED** | V5 Stacking R²=0.212 vs V2 R²=0.628 (66% worse); GridGraphFusion destroyed information |
-| H7 | Ensemble stratification can leverage complementary strengths | **❌ REJECTED** | V6 tested 8 strategies × 4 dimensions; V4 dominates all strata, no complementarity exists |
+| Article | Focus | Journal | Status |
+|---------|-------|---------|--------|
+| **Article 1** | Systematic review of hybrid deep learning models for monthly precipitation prediction | Hydrology Research (Elsevier) | Published 2026 ([doi:10.1016/j.hydrch.2026.100008](https://doi.org/10.1016/j.hydrch.2026.100008)) |
+| **Article 2** | Architectural benchmark (ConvLSTM family, FNO-ConvLSTM, GNN-TAT) | Hydrology (MDPI), 13(3), 98 | Published 2026 ([doi:10.3390/hydrology13030098](https://doi.org/10.3390/hydrology13030098)) |
+| **Article 3** | Evaluation protocol (AnchorGate v1.0) and re-analysis of the benchmark and ensembles | Geoscientific Model Development (Copernicus) | Submitted 8 September 2026, under review (egusphere-2026-5272) |
 
 ---
 
-## Model Versions
+## Main Findings
 
-| Version | Architecture | Purpose | Status | Best R² | Recommendation |
-|---------|--------------|---------|--------|---------|----------------|
-| V1 | ConvLSTM, ConvGRU, ConvRNN | Baselines | Complete | 0.642 | Superseded by V2 |
-| V2 | Enhanced + Attention + Bidirectional | Improved baselines | Complete | 0.628 | Baseline |
-| V3 | Fourier Neural Operators (FNO) | Physics-informed | Complete | 0.312 | ❌ Underperformed |
-| V4 | GNN-TAT | Hybrid spatial-temporal | Complete | 0.628 | Efficient (95% less params) |
-| V5 | GNN-ConvLSTM Stacking | Early fusion ensemble | Complete | 0.212 | ❌ Failed - early fusion |
-| V6 | Stratified Ensemble Matrix | Ensemble strategies | Complete | 0.597 | No improvement |
-| V7 | AMES (Multi-Expert System) | MoE + Physics-guided | In Development | TBD | Research |
-| V8 | GNN-Mamba | State Space Models | In Development | TBD | Research |
-| V9 | GNN-BiMamba | Bidirectional Mamba | Complete | 0.200 | ❌ Failed - SSM |
-| **V10** | **Late Fusion Ridge Ensemble** | **Prediction-level fusion** | **Complete** | **0.672** | **✅ BEST MODEL** |
+The central finding concerns evaluation rather than architecture. Consecutive forecast windows share eleven of their twelve target months, so shuffled fold schemes let evaluation months leak into what a model is fitted on. The thesis builds a ladder of fold schemes that removes this overlap step by step, ending in a contiguous holdout purged by an eleven-window embargo.
 
-**Note on V6:** V6 tested 8 ensemble strategies across 4 stratification dimensions (elevation, magnitude, season, horizon). *Results on validation set show V4 (R²=0.597) superior to V2 (R²=0.175). All ensemble strategies either equal or worsen V4's performance because V4 dominates across all tested dimensions. **Finding:** Ensemble stratification cannot improve when one model is universally superior. See [V6 Multi-Dimensional Ensemble README](docs/models/V6_Multi_Dimensional_Ensemble/README.md) for complete analysis.
+- **No architecture or ensemble beats a per-cell monthly climatology** once target-month overlap is removed. The climatology has no fitted parameters and reaches R² = 0.730 over the validation windows (0.732 averaged per window) and R² = 0.763 on the purged holdout block. It has the lowest RMSE in 33 of 33 validation windows.
+- **On the purged holdout** (three seeds): best base learner R² = 0.639 ± 0.060; Late Fusion (Ridge over Enhanced ConvLSTM and GNN-TAT) R² = 0.598 ± 0.022. Late Fusion's paired advantage over its own best base learner is -0.041 ± 0.041, so the fusion gain does not survive purging.
+- **Main hypothesis not supported.** The approved main hypothesis, that hybrid graph-temporal models improve on established baselines, is not supported once evaluation leakage is removed.
+- **Seed variance matters.** Seed choice alone moves R² by a median of 0.045 (up to 0.114), more than most architecture differences. After Holm correction, none of the five pairwise architecture comparisons is significant.
+- **Released-fold figures (leaky, for reference only).** On the released, shuffled folds (about 100 % target overlap) Late Fusion reaches pooled R² = 0.672 for seed 42 and 0.655 as the mean over three seeds. Under blocked folds (99.5 % overlap) it reaches 0.640 ± 0.006. These numbers are not evidence of skill over climatology.
 
-### V9-V10: Completed Advanced Architectures
+### Architecture notes
 
-**V9: GNN-BiMamba (FAILED)**
-- Bidirectional Mamba State Space Models for temporal processing
-- **Result:** R²=0.200, RMSE=111.18mm
-- **Status:** Failed - SSM paradigm does not transfer to precipitation prediction
-- Flat R² profile across horizons indicates degenerate solution
-- Mamba's selective state space mechanism unsuited for chaotic, threshold-driven precipitation dynamics
+| Model | Result | Note |
+|-------|--------|------|
+| Enhanced ConvLSTM (Bidirectional) | Peak R² = 0.653 | Single run, pre-correction pipeline |
+| GNN-TAT (GAT encoder) | Peak R² = 0.628 at H=5 (best horizon of best of 3 seeds); seed-resolved mean 0.446-0.510 over H=1-12 | 98K parameters, 34 % fewer than the best ConvLSTM (148K). Its lower mean RMSE (p = 0.015 uncorrected) is not significant after Holm correction |
+| FNO / FNO-ConvLSTM | R² = 0.206 / 0.582 | The ConvLSTM decoder recovers most of the loss; spectral truncation smooths sharp orographic gradients |
+| Stacking (early fusion) | R² = 0.212 | Collapses towards each cell's mean |
+| Stratified ensemble | R² = 0.597 | No gain over the dominant base model (pre-correction run) |
+| GNN-BiMamba | R² = 0.18 (validation windows) | Collapses towards each cell's mean |
 
-**V10: Late Fusion Ridge Ensemble (SUCCESS - BEST MODEL)**
-- Combines V2 ConvLSTM-Bidirectional and V4 GNN-TAT-GAT predictions through Ridge regression
-- **Result:** R²=0.672 (seed-42), RMSE=76.23mm, MAE=55.92mm
-- **Multi-seed:** R²=0.655 ± 0.018 across seeds {42, 123, 456}
-- **Improvement:** +6.2% over best baseline (V2)
-- Canonical seed-42 weights: w_C=0.509, w_G=0.652, bias=-6.37mm
-- Near-zero residual bias (-0.004mm) demonstrates effective bias correction
-- **Key finding:** Late fusion preserves component strengths that early fusion (V5) destroyed
-
-### V7-V8: In Development
-
-**V7: AMES (Adaptive Multi-Expert Ensemble System)**
-- Mixture of Experts with physics-guided routing
-- Expert specialization by elevation zones
-- Target: Must exceed V10's R²=0.672 to justify complexity
-
-**V8: GNN-Mamba**
-- Unidirectional Mamba State Space Models
-- Based on V9 failure, expectations are tempered
-- Resources may be better allocated to extending V10 framework
+Sub-hypotheses: feature hybridization (KCE, PAFC over BASIC) is not supported; advanced ConvLSTM variants are partially supported (small, non-significant gains); physics-data hybrids (pure FNO) are rejected for precipitation.
 
 ---
 
-## Project Structure
+## Data
+
+- **CHIRPS 2.0** monthly precipitation (0.05°) and **SRTM** elevation (90 m).
+- **Period:** 518 months, January 1982 to February 2025.
+- **Domain:** a 61 x 65 rectangle (3,965 cells at 0.05°, 4.375-7.375 N, 74.925-71.725 W) that encloses Boyaca; 757 cells lie inside the department. All metrics are computed over the full rectangle.
+- **Lead times:** 1 to 12 months.
+- **Graph (GNN-TAT):** 3,965 nodes with a 500,000-edge budget.
+
+### Feature sets
+
+| Set | Features | Description |
+|-----|----------|-------------|
+| BASIC | 12 | Temporal encodings + precipitation statistics + base topography |
+| KCE | 15 | BASIC + K-means elevation clusters (k = 3) |
+| PAFC | 18 | KCE + precipitation lags (t-1, t-2, t-12) |
+
+### Sub-cell DEM features (negative result)
+
+Three intra-cell DEM bundles (BASIC_D10: elevation deciles, 22 features; BASIC_PCA6: 18; BASIC_D10_STATS: 27) were tested. Every bundle degrades every model relative to BASIC (R², H=12):
+
+| Feature bundle | Enhanced ConvLSTM | GNN-TAT | Late Fusion |
+|----------------|-------------------|---------|-------------|
+| BASIC (baseline) | 0.511 | 0.473 | 0.549 |
+| BASIC_D10 | 0.321 (-36.4 %) | 0.400 (-15.4 %) | 0.498 (-9.3 %) |
+| BASIC_PCA6 | 0.278 (-45.0 %) | 0.287 (-39.3 %) | 0.449 (-18.2 %) |
+| BASIC_D10_STATS | 0.180 (-64.4 %) | 0.293 (-38.1 %) | 0.357 (-35.0 %) |
+
+These are single-run figures from before the graph-construction correction; the direction of the result is reliable, the exact percentages are not at the precision of the seed-resolved numbers above.
+
+---
+
+## Repository Structure
 
 ```
 ml_precipitation_prediction/
-├── data/                         # Input data (CHIRPS, SRTM DEM)
+├── data/                  # Input data and processed NetCDF
 ├── models/
-│   ├── base_models_*.ipynb       # Model notebooks (V1-V10)
-│   └── output/                   # Training outputs
-├── notebooks/                    # Exploratory analysis
-├── preprocessing/                # Feature engineering scripts
-│   ├── dem_intra_cell_features.py  # Intra-cell DEM feature extraction
-│   └── ds1_ds2_analysis.py         # Bidirectional analysis
-├── scripts/                      # Benchmark and evaluation
-│   └── benchmark/                # ACC, FSS, elevation metrics
-├── workflows/                    # End-to-end pipeline (see below)
-│   ├── 01-09_*.py                # Pipeline stages
-│   ├── colab/                    # Colab notebooks (GPU training)
-│   └── config.yaml               # Central configuration
-└── utils/                        # Utility functions
+│   ├── base_models_*.ipynb    # Model notebooks
+│   ├── intracell_dem/         # Sub-cell DEM experiments
+│   ├── scripts/analysis/      # Evaluation protocol and re-analysis scripts
+│   └── output/                # Training outputs and prediction arrays
+├── preprocessing/         # Feature engineering
+├── scripts/benchmark/     # Benchmark metrics and figures
+├── workflows/             # End-to-end pipeline (stages 1-9)
+└── utils/
 ```
 
-### Reproducible Pipeline
+| Model | Notebook | Output directory |
+|-------|----------|------------------|
+| Enhanced ConvLSTM | `models/base_models_conv_sthymountain_v2.ipynb` | `models/output/V2_Enhanced_Models/` |
+| FNO / FNO-ConvLSTM | `models/base_models_conv_sthymountain_v3_fno.ipynb` | |
+| GNN-TAT | `models/base_models_gnn_tat_v4.ipynb` | `models/output/V4_GNN_TAT_Models/` |
+| Stacking | `models/base_models_gnn_convlstm_stacking_v5.ipynb` | |
+| GNN-BiMamba | `models/base_models_gnn_bimamba_v9.ipynb` | |
+| Late Fusion | `models/base_models_late_fusion_v10.ipynb` | `models/output/V10_Late_Fusion/` |
 
-The [`workflows/`](workflows/) directory contains an end-to-end pipeline (9 stages) for reproducing all results. See the **[Workflows README](workflows/README.md)** for full documentation.
+---
+
+## Installation and Usage
 
 ```bash
-# Reproduce hybrid architecture benchmark results (stages 7-9, no GPU)
-python workflows/run_pipeline.py --from 7
-
-# Intra-cell DEM feature engineering (no GPU)
-python preprocessing/dem_intra_cell_features.py --dem data/input/dem/dem_boyaca_90m.tif --integrate --figures
-
-# DEM-enhanced model training: see models/intracell_dem/ notebooks
-```
-
-| Study | Notebooks | Feature Sets | Output Directory |
-|-------|-----------|--------------|------------------|
-| **Hybrid Architecture Benchmark** | `models/base_models_*_v2/v4/v10.ipynb` | BASIC, KCE, PAFC | `models/output/V2_Enhanced_Models/` |
-| **Sub-grid Feature Engineering** | `models/intracell_dem/*_intracell_dem.ipynb` | BASIC_D10, BASIC_PCA6, BASIC_D10_STATS | `models/output/intracell_dem/` |
-
-### Intra-Cell DEM Results (Negative Result - March 2026)
-
-All intra-cell DEM feature bundles **degrade** performance compared to the BASIC baseline:
-
-| Bundle | V2 ConvLSTM R² | V4 GNN-TAT R² | V10 Fusion R² | vs BASIC V10 |
-|--------|----------------|----------------|---------------|--------------|
-| **BASIC (12)** | 0.629 | 0.597 | **0.666** | baseline |
-| BASIC_D10 (22) | 0.453 | 0.542 | 0.628 | -5.6% |
-| BASIC_PCA6 (18) | 0.417 | 0.453 | 0.596 | -10.5% |
-| BASIC_D10_STATS (27) | 0.351 | 0.467 | 0.532 | -20.1% |
-
-More features = worse R² (monotonic degradation). GNN-TAT is 2x more resilient than ConvLSTM to feature noise. Categorical KCE clusters (Paper 4) remain the best topographic encoding. See [analysis report](docs/analysis/intracell_dem/analysis_report.md) for details.
-
----
-
-## Data Sources
-
-- **CHIRPS 2.0**: Climate Hazards InfraRed Precipitation with Stations (0.05° resolution)
-- **SRTM DEM**: Shuttle Radar Topography Mission elevation data (90m)
-- **ERA5**: ECMWF Reanalysis v5 (planned for future work / Mixture of Experts)
-
-### Study Area
-- **Region**: Boyaca, Colombian Andes
-- **Grid**: 61 x 65 cells (0.05° resolution)
-- **Temporal**: 518 monthly steps
-- **Horizons**: H = 1, 3, 6, 12 months
-
----
-
-## Feature Sets
-
-### Baseline Feature Sets (Hybrid Architecture Benchmark)
-
-| Set | Features | Description |
-|-----|----------|-------------|
-| BASIC | 12 | Temporal encodings + precipitation stats + base topography |
-| KCE | 15 | BASIC + K-means elevation clusters |
-| PAFC | 18 | KCE + precipitation autocorrelation lags (t-1, t-2, t-12) |
-
-### Intra-Cell DEM Feature Sets (Sub-grid Feature Engineering)
-
-| Set | Features | Description |
-|-----|----------|-------------|
-| BASIC_D10 | 22 | BASIC + 10 elevation deciles (p10-p100) per CHIRPS cell |
-| BASIC_PCA6 | 18 | BASIC + 6 PCA components of intra-cell DEM pixel distributions |
-| BASIC_D10_STATS | 27 | BASIC_D10 + mean, std, skewness, kurtosis, range |
-
-Each CHIRPS cell (~5.5 km) contains ~3,477 DEM pixels at 90m. Deciles capture intra-cell topographic heterogeneity that a single elevation value misses.
-
----
-
-## Installation
-
-### Dataset Download
-
-Download the Boyacá precipitation dataset:
-- **Google Drive**: [Boyacá Dataset (CHIRPS + SRTM)](https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view?usp=drive_link)
-- **Extract to**: `data/` directory in the repository
-
-### Local Environment
-
-```bash
-# Clone repository
 git clone https://github.com/ninja-marduk/ml_precipitation_prediction.git
 cd ml_precipitation_prediction
 
-# Create environment
-conda create -n precipitation python=3.10
+conda create -n precipitation python=3.12
 conda activate precipitation
-
-# Install dependencies
-pip install -r requirements.txt
-
-# For V4 GNN-TAT (PyTorch Geometric)
-pip install torch-geometric
+pip install -r requirements.txt   # requirements-lock.txt pins every dependency
 ```
 
----
+Reference environment: Python 3.12, PyTorch 2.6.0 (CUDA 12.4), PyTorch Geometric 2.7.0. Training was run on an NVIDIA A100 GPU; every analysis script runs on CPU.
 
-## Usage
+```bash
+# Full pipeline (stages 1-9)
+python workflows/run_pipeline.py
 
-### Execution Modes
+# Post-training stages only (fusion, benchmarks, figures; no GPU)
+python workflows/run_pipeline.py --from 7
+```
 
-#### Light Mode (CPU/Small GPU)
-- **Environment**: Google Colab Free Tier (CPU with High RAM)
-- **RAM**: 12+ GB
-- **Dataset**: 5×5 grid subset for rapid prototyping
-- **Use Case**: Testing, development, debugging
-- **Notebooks**: All V1-V5 notebooks support light mode
+See the [Workflows README](workflows/README.md) for all options.
 
-#### Full Mode (Production Training)
-- **Environment**: Google Colab Pro/Pro+ with GPU
-- **GPU Required**: A100 (40GB) or H100 (80GB) recommended
-- **RAM**: 40+ GB
-- **Dataset**: Full 61×65 grid (3,965 nodes, 500,000 edges for GNN)
-- **Use Case**: Final model training, benchmark experiments
-- **Training Time**: 2-8 hours depending on model complexity
+### Dataset
 
-### Running Notebooks
-
-#### Local Execution
-1. **V4 GNN-TAT** (recommended):
-   ```bash
-   jupyter notebook models/base_models_gnn_tat_v4.ipynb
-   ```
-
-2. **V5 GNN-ConvLSTM Stacking** (latest):
-   ```bash
-   jupyter notebook models/base_models_gnn_convlstm_stacking_v5.ipynb
-   ```
-
-#### Google Colab Execution
-1. Open notebook from GitHub in Colab
-2. **For Light Mode**:
-   - Runtime → Change runtime type → CPU
-   - Edit → Notebook settings → Hardware accelerator: None
-   - Runtime settings → High RAM
-3. **For Full Mode**:
-   - Runtime → Change runtime type → GPU
-   - Select: A100 GPU or H100 GPU (Colab Pro+)
-   - Runtime settings → High RAM
-
-All notebooks include automatic GPU detection and PyTorch Geometric installation.
-
----
-
-## Evaluation Metrics
-
-- **RMSE**: Root Mean Square Error (mm)
-- **MAE**: Mean Absolute Error (mm)
-- **R²**: Coefficient of Determination
-- **Bias**: Mean prediction bias (mm, %)
-- **ACC**: Anomaly Correlation Coefficient
-- **FSS**: Fractions Skill Score at 1/5/10mm thresholds
-- **Statistical Tests**: Friedman + Nemenyi post-hoc
-
+The analysis-ready dataset (CHIRPS + SRTM with the BASIC, KCE and PAFC feature bundles) is published on Kaggle: [CHIRPS-DEM Boyaca monthly precipitation (ML-ready)](https://www.kaggle.com/datasets/engricardoperez/chirps-dem-boyaca-monthly-precipitation-ml). Extract it to `data/`.
 
 ---
 
 ## License
 
-This project is licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**.
-
-You are free to:
-- **Share**: Copy and redistribute the material in any medium or format
-- **Adapt**: Remix, transform, and build upon the material for any purpose, including commercial use
-
-Under the following terms:
-- **Attribution**: You must give appropriate credit, provide a link to the license, and indicate if changes were made
-
-See [LICENSE](LICENSE) file for complete terms.
+MIT License. See [LICENSE](LICENSE).
 
 ---
 
 ## Citation
 
-If you use this code, dataset, or methodology in your research, please cite:
+Citation metadata is in [CITATION.cff](CITATION.cff).
 
-### Software Citation (BibTeX)
+### Software
 
 ```bibtex
-@software{Perez2026MLPrecipitation,
-  author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
-                  and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
-  title        = {{ML Precipitation Prediction: Hybrid Deep Learning
-                   for Spatiotemporal Forecasting in Mountainous Areas}},
-  year         = {2026},
-  version      = {v1.0.1},
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.21576207},
-  url          = {https://doi.org/10.5281/zenodo.21576207}
+@software{PerezReyes2026AnchorGate,
+  author    = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
+               and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
+  title     = {{AnchorGate v1.0: an anchored, seed-resolved evaluation protocol
+                for data-driven environmental prediction}},
+  year      = {2026},
+  version   = {v1.3.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.22216993},
+  url       = {https://doi.org/10.5281/zenodo.22216993},
+  note      = {Concept DOI (all versions): 10.5281/zenodo.21576207}
 }
 ```
 
-### Dataset Citation (BibTeX)
+### Dataset
 
 ```bibtex
-@dataset{Perez2026BoyacaDataset,
-  author       = {Perez Reyes, Manuel Ricardo},
-  title        = {{Boyacá Precipitation Dataset (CHIRPS + SRTM)}},
-  year         = {2026},
-  publisher    = {Google Drive},
-  url          = {https://drive.google.com/file/d/13INBvB654a3iDhQFLWC1WiQo3vZ9l5HN/view},
-  note         = {61×65 grid, 518 monthly steps, Colombian Andes}
+@dataset{PerezReyes2026BoyacaDataset,
+  author    = {P\'erez Reyes, Manuel Ricardo},
+  title     = {{CHIRPS-DEM Boyac\'a Monthly Precipitation (ML-ready)}},
+  year      = {2026},
+  publisher = {Kaggle},
+  url       = {https://www.kaggle.com/datasets/engricardoperez/chirps-dem-boyaca-monthly-precipitation-ml},
+  note      = {61x65 grid, 518 monthly steps, January 1982 to February 2025}
 }
 ```
 
-### Systematic Review - Paper 1 (BibTeX)
+### Articles
 
 ```bibtex
 @article{PerezReyes2026Review,
-  author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
-                  and Garc\'ia Cabrejo, \'Oscar Javier},
-  title        = {{Hybrid Deep Learning Models for Monthly Precipitation
-                   Prediction: A Systematic Review}},
-  journal      = {Hydrology Research},
-  year         = {2026},
-  publisher    = {Elsevier},
-  doi          = {10.1016/j.hydrch.2026.100008}
+  author    = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
+               and Garc\'ia Cabrejo, \'Oscar Javier},
+  title     = {{Hybrid Deep Learning Models for Monthly Precipitation
+                Prediction: A Systematic Review}},
+  journal   = {Hydrology Research},
+  year      = {2026},
+  publisher = {Elsevier},
+  doi       = {10.1016/j.hydrch.2026.100008}
 }
-```
 
-### Hybrid Architecture Benchmark - Paper 4 (BibTeX)
-
-```bibtex
 @article{PerezReyes2026Hybrid,
-  author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
-                  and Garc\'ia Cabrejo, \'Oscar Javier},
-  title        = {{A Data-Driven Deep Learning Framework for Monthly Precipitation
-                   Prediction in Complex Mountainous Terrain: Systematic Evaluation
-                   of Hybrid Architectures}},
-  journal      = {Hydrology},
-  volume       = {13},
-  number       = {3},
-  pages        = {98},
-  year         = {2026},
-  publisher    = {MDPI},
-  doi          = {10.3390/hydrology13030098},
-  url          = {https://www.mdpi.com/2306-5338/13/3/98}
+  author    = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
+               and Garc\'ia Cabrejo, \'Oscar Javier},
+  title     = {{A Data-Driven Deep Learning Framework for Monthly Precipitation
+                Prediction in Complex Mountainous Terrain: Systematic Evaluation
+                of Hybrid Architectures}},
+  journal   = {Hydrology},
+  volume    = {13},
+  number    = {3},
+  pages     = {98},
+  year      = {2026},
+  publisher = {MDPI},
+  doi       = {10.3390/hydrology13030098}
 }
-```
 
-### Hybrid Architectures and Fusion - Paper 5 (BibTeX)
-
-```bibtex
 @article{PerezReyes2026Fusion,
-  author       = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
-                  and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
-  title        = {{Hybrid Deep Learning for Monthly Precipitation over the
-                   Colombian Andes: A Predictability-Ceiling Benchmark}},
-  journal      = {Earth Science Informatics},
-  year         = {2026},
-  publisher    = {Springer},
-  note         = {Under submission}
+  author    = {P\'erez Reyes, Manuel Ricardo and Su\'arez Bar\'on, Marco Javier
+               and Garc\'ia Cabrejo, \'Oscar Javier and Castillo-Reyes, Octavio},
+  title     = {{Spatiotemporal Prediction of Monthly Precipitation in Mountainous
+                Terrain: A Benchmark of Hybrid Deep Learning Architectures}},
+  journal   = {Geoscientific Model Development},
+  year      = {2026},
+  note      = {Submitted 8 September 2026, under review; manuscript egusphere-2026-5272}
 }
 ```
 
-### Doctoral Thesis Citation (BibTeX)
+### Doctoral thesis
 
 ```bibtex
 @phdthesis{PerezThesis2026,
-  author       = {Perez Reyes, Manuel Ricardo},
-  title        = {{Computational Model for Spatiotemporal Prediction of
-                   Monthly Precipitation in Mountainous Areas: A Hybrid
-                   Deep Learning Approach Using Graph Neural Networks
-                   with Temporal Attention}},
-  school       = {Pedagogical and Technological University of Colombia (UPTC)},
-  year         = {2026},
-  note         = {Doctoral Program in Engineering}
+  author    = {P\'erez Reyes, Manuel Ricardo},
+  title     = {{Computational Model for the Spatiotemporal Prediction of Monthly
+                Precipitation in Mountainous Areas Using Machine Learning Techniques}},
+  school    = {Pedagogical and Technological University of Colombia (UPTC)},
+  year      = {2026},
+  note      = {Doctoral Program in Engineering}
 }
 ```
 
-### Academic Use
-
-For academic publications using this work:
-1. Cite the software repository (required)
-2. Cite the relevant paper(s) for the methodology you use:
-   - **Systematic review of hybrid models** → cite the Systematic Review (Paper 1)
-   - **ConvLSTM, GNN-TAT, FNO architectures** → cite the Hybrid Architecture Benchmark (Paper 4)
-   - **Late Fusion, Stacking failure, ensemble strategies, SSM results, sub-cell DEM** → cite the Hybrid Architectures and Fusion paper (Paper 5)
-3. Cite the dataset if you use Boyaca data (required)
-4. Cite the doctoral thesis once published (recommended)
-
-### Commercial Use
-
-Commercial use is permitted under CC BY 4.0 with proper attribution:
-1. Include citation in product documentation
-2. Acknowledge original author and institution
-3. Provide link to this repository
-4. For collaboration inquiries, contact author directly
-
 ---
 
-## Funding Acknowledgment
+## Funding
 
-This research is supported by:
-- **Institution**: Pedagogical and Technological University of Colombia (UPTC)
-- **Program**: Doctoral Program in Engineering
+Development partially supported by Becas de Excelencia Doctoral del Bicentenario (MinCiencias Colombia, BPIN 2021000100031, Plan Bienal FCTeI, Sistema General de Regalias), Universidad Pedagogica y Tecnologica de Colombia, grant 2021-SGR-00478 (Generalitat de Catalunya, AGAUR), and in-kind compute on the Barcelona Supercomputing Center MareNostrum 5 supercomputer.
 
 ---
 
 ## Contact
 
-**Author**: Manuel Ricardo Perez Reyes
-**ORCID**: [0009-0003-2963-1631](https://orcid.org/0009-0003-2963-1631)
-**Email**: manuelricardo.perez@uptc.edu.co
-**Institution**: Pedagogical and Technological University of Colombia (UPTC)
-**Program**: Doctoral Program in Engineering
+**Author:** Manuel Ricardo Perez Reyes
+**ORCID:** [0009-0003-2963-1631](https://orcid.org/0009-0003-2963-1631)
+**Email:** manuelricardo.perez@uptc.edu.co
+**Institution:** Pedagogical and Technological University of Colombia (UPTC), Doctoral Program in Engineering
 
-**For Collaboration Inquiries**:
-- Research collaboration: manuelricardo.perez@uptc.edu.co
-- Technical questions: GitHub Issues
-- Citations and academic use: Contact via ORCID profile
+Technical questions: GitHub Issues.
 
 ---
 
-*Last Updated: 2026-05-07*
-*Project Status: V10 Late Fusion (R2=0.655 +/- 0.018 multi-seed; 0.672 seed-42) is the best model. Systematic Review published (Hydrology Research, doi:10.1016/j.hydrch.2026.100008), Hybrid Architecture Benchmark published (Hydrology 2026, 13(3), 98, doi:10.3390/hydrology13030098), Hybrid Architectures and Fusion under submission (Earth Science Informatics). Software archived at doi:10.5281/zenodo.21576207.*
+*Last updated: 2026-09-25*
