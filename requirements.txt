@@ -115,10 +115,17 @@ flake8>=3.9.0
 # For Google Colab (notebooks handle dependencies at runtime):
 #   The notebooks install torch-geometric and mamba-ssm dependencies automatically.
 #
-# Conda alternative:
-#   conda create -n precipitation python=3.10
-#   conda activate precipitation
-#   conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia
-#   conda install pyg -c pyg
-#   pip install mamba-ssm
-#   pip install -r requirements.txt
+# Conda alternative (canonical environment used for reported results):
+#   conda env create -f environment.yml         # Python 3.12 + scientific stack
+#   conda activate precipitation_prediction
+#   pip install -r requirements-lock.txt        # exact pinned versions
+#   pip install torch-geometric                 # see environment.yml notes for PyG extras
+#
+# Reference environment (verified to reproduce all reported metrics):
+#   Python 3.12.5 | torch 2.6.0+cu124 | torch_geometric 2.7.0 | CUDA 12.4
+#   See requirements-lock.txt for the full transitive dependency pin set.
+#
+# Historical training environment (Google Colab Pro+ era):
+#   Python 3.10 | PyTorch 2.0 | PyTorch Geometric 2.3 | NVIDIA A100/H100
+#   This older environment is no longer maintained but produced the original
+#   checkpoints; see thesis Appendix C for the full disclosure.
