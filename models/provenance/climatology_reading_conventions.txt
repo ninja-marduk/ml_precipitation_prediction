@@ -1,0 +1,11 @@
+Validation windows start at month index 474; climatology fit on t < 414.
+
+Climatology
+  pooled R2            0.730
+  per-window mean R2   0.732 +/- 0.044
+  per lead R2          0.724 0.733 0.739 0.739 0.738 0.741 0.733 0.723 0.717 0.724 0.728 0.715
+
+Late Fusion (released)
+  pooled R2            0.668
+  per-window mean R2   0.665 +/- 0.055
+  per lead R2          0.677 0.677 0.695 0.684 0.687 0.676 0.654 0.642 0.650 0.656 0.667 0.637
