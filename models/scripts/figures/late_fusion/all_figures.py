@@ -65,7 +65,8 @@ def figure_stacking_comparison_heatmap():
     }
     df = pd.DataFrame(data, index=models)
 
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.5))
+    # Embedded at 0.95\textwidth (5.8 in): a 7.3 in canvas renders 10 pt source at ~8 pt
+    fig, axes = plt.subplots(1, 3, figsize=(7.3, 3.0))
 
     metrics = ['R²', 'RMSE (mm)', 'MAE (mm)']
     cmaps = [plt.cm.viridis, plt.cm.viridis_r, plt.cm.viridis_r]
@@ -73,7 +74,6 @@ def figure_stacking_comparison_heatmap():
 
     for idx, (metric, cmap, (vmin, vmax)) in enumerate(zip(metrics, cmaps, ranges)):
         ax = axes[idx]
-        add_panel_label(ax, chr(ord('a') + idx))
 
         values = df[metric].values.reshape(-1, 1)
         im = ax.imshow(values, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax)
@@ -88,12 +88,13 @@ def figure_stacking_comparison_heatmap():
                 text_color = 'white' if intensity > 0.65 else 'black'
                 text = f'{val:.1f}'
             ax.text(0, i, text, ha='center', va='center',
-                    fontsize=9, fontweight='bold', color=text_color)
+                    fontsize=10, fontweight='bold', color=text_color)
 
         ax.set_yticks(range(len(models)))
-        ax.set_yticklabels(models if idx == 0 else [], fontsize=8)
+        ax.set_yticklabels(models if idx == 0 else [], fontsize=10)
         ax.set_xticks([])
-        ax.set_title(metric, fontsize=9)
+        ax.grid(False)
+        ax.set_title(f"({chr(ord('a') + idx)}) {metric}", loc='left', fontsize=11)
 
     plt.tight_layout()
     save_figure(plt.gcf(), OUTPUT_DIR / 'stacking_comparison_heatmap.png', 
@@ -109,11 +110,12 @@ def figure_ensemble_evolution():
     """
     print("Generating: Ensemble Evolution...")
 
-    fig, ax = plt.subplots(figsize=(12, 5))
+    # Embedded at 0.95\textwidth: 7.3 in canvas, horizontal two-line labels
+    fig, ax = plt.subplots(figsize=(7.3, 3.4))
 
-    strategies = ['Enh. ConvLSTM', 'GNN-TAT', 'Simple Avg',
-                  'Stacking Ens.\n(Early Fusion)', 'Stratified\nEns.',
-                  'Weighted Avg', 'Late Fusion']
+    strategies = ['Enh.\nConvLSTM', 'GNN-TAT', 'Simple\naverage',
+                  'Stacking\n(early fusion)', 'Stratified\nEns.',
+                  'Weighted\naverage', 'Late\nFusion']
     r2_values = [0.629, 0.628, 0.633, 0.212, 0.597, 0.636, 0.672]
 
     bar_colors = [COLORS['v2'], COLORS['v4'], COLORS['baseline'],
@@ -127,8 +129,8 @@ def figure_ensemble_evolution():
     for bar, val in zip(bars, r2_values):
         ax.annotate(f'{val:.3f}',
                    xy=(bar.get_x() + bar.get_width() / 2, bar.get_height()),
-                   xytext=(0, 4), textcoords="offset points",
-                   ha='center', va='bottom', fontsize=7, fontweight='bold')
+                   xytext=(0, -4), textcoords="offset points",   # inside the bar, clear of the reference lines
+                   ha='center', va='top', fontsize=9, fontweight='bold', color='white')
 
     # Reference lines
     ax.axhline(y=0.629, color=COLORS['v2'], linestyle='--', alpha=0.6,
@@ -137,10 +139,10 @@ def figure_ensemble_evolution():
                linewidth=1, label='Late Fusion best (0.672)')
 
     ax.set_xticks(x)
-    ax.set_xticklabels(strategies, rotation=25, ha='right', fontsize=7)
+    ax.set_xticklabels(strategies, fontsize=10)
     ax.set_ylabel('R² score')
     ax.set_ylim(0, 0.8)
-    ax.legend(loc='upper left', framealpha=0.9)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.24), ncol=2, frameon=False)
 
     plt.tight_layout()
     save_figure(plt.gcf(), OUTPUT_DIR / 'ensemble_evolution.png', 
@@ -402,7 +404,7 @@ def figure_parameter_efficiency_extended():
         'GNN-TAT (SAGE)':    (11, -3, 'left'),
         'FNO (pure)':        (11, 0, 'left'),
         'Stacking Ens.':     (0, 10, 'center'),
-        'GNN-BiMamba':       (0, -16, 'center'),
+        'GNN-BiMamba':       (0, -10, 'center'),   # hung below the marker (va=top)
     }
 
     # FIGURE EXCEPTION: scatter point labels need fontsize+1 to remain readable above markers
@@ -410,6 +412,7 @@ def figure_parameter_efficiency_extended():
         x_off, y_off, ha = label_specs[name]
         ax.annotate(name, (params, r2), xytext=(x_off, y_off),
                    textcoords='offset points',
+                   va='top' if (y_off < 0 and ha == 'center') else 'baseline',
                    fontsize=plt.rcParams['font.size'] + 1, ha=ha,
                    fontweight='medium', color='#333333')
 

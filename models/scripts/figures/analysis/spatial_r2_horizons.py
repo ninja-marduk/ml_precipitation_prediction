@@ -82,7 +82,8 @@ def main():
     models = [('ConvLSTM', *_load(V2)), ('GNN-TAT', *_load(V4)), ('Late Fusion', *_load(V10))]
     H = models[0][1].shape[1]
     lon_g, lat_g = np.meshgrid(lons, lats)
-    cmap = getattr(plt.cm, os.environ.get('ATLAS_CMAP', 'RdYlGn'))
+    # Sequential, colour-blind-safe default (R4 of _config.py: no red-green pairs)
+    cmap = getattr(plt.cm, os.environ.get('ATLAS_CMAP', 'cividis'))
     norm = mcolors.Normalize(vmin=-0.2, vmax=0.8)
 
     nmod = len(models)
@@ -107,13 +108,11 @@ def main():
 
     cbar = fig.colorbar(im, ax=axes, shrink=0.75, pad=0.008, aspect=28)
     cbar.set_label(r'$R^{2}$ (NSE)', fontsize=12); cbar.ax.tick_params(labelsize=10)
-    if os.environ.get('ATLAS_LANG', 'en') == 'es':
-        _sup = ('$R^{2}$ por celda (NSE) a lo largo de los horizontes de pronóstico '
-                '($H=1$ a $12$). El número bajo cada mapa es el $R^{2}$ agregado del horizonte.')
-    else:
-        _sup = ('Per-cell $R^{2}$ (NSE) across forecast horizons ($H=1$ to $12$). '
-                'Number under each map = horizon-aggregate $R^{2}$.')
-    fig.suptitle(_sup, fontsize=13, y=0.995)
+    # No suptitle: the LaTeX caption carries the title and the reading of the
+    # number under each map in both thesis editions (it was English-only here).
+    if os.environ.get('ATLAS_TITLE') == '1':
+        fig.suptitle('Per-cell $R^{2}$ (NSE) across forecast horizons ($H=1$ to $12$). '
+                     'Number under each map = horizon-aggregate $R^{2}$.', fontsize=13, y=0.995)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out_path, dpi=OUTPUT_DPI, bbox_inches='tight', facecolor='white')

@@ -261,12 +261,15 @@ def figure_4_master_comparison():
     df = pd.DataFrame(data)
     colors = [COLORS.get(s, COLORS['baseline']) for s in df['Status']]
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+    # Embedded at 0.95\textwidth (5.8 in): a 7.3 in canvas renders 10 pt source at ~8 pt.
+    # The FNO yellow gets a dark edge (1.3:1 contrast on white otherwise).
+    edges = ['#6B5A00' if s_ == 'v3' else c for s_, c in zip(df['Status'], colors)]
+    fig, axes = plt.subplots(1, 2, figsize=(7.3, 3.4), sharey=True)
 
     # (a) R² comparison
     ax1 = axes[0]
-    add_panel_label(ax1, 'a')
-    bars1 = ax1.barh(df['Version'], df['R2'], color=colors)
+    ax1.set_title('(a)', loc='left', fontsize=11, fontweight='bold')
+    bars1 = ax1.barh(df['Version'], df['R2'], color=colors, edgecolor=edges, linewidth=0.8)
     ax1.axvline(x=0.628, color=COLORS['v2'], linestyle='--', alpha=0.6, linewidth=1)
     ax1.axvline(x=0.672, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
     ax1.set_xlabel('R² score')
@@ -276,12 +279,14 @@ def figure_4_master_comparison():
         ax1.annotate(f'{val:.3f}',
                     xy=(val, bar.get_y() + bar.get_height() / 2),
                     xytext=(3, 0), textcoords="offset points",
-                    ha='left', va='center', fontsize=7)
+                    ha='left', va='center', fontsize=9,
+                    bbox=dict(facecolor='white', edgecolor='none', pad=0.6, alpha=0.9))
 
     # (b) RMSE comparison
     ax2 = axes[1]
-    add_panel_label(ax2, 'b')
-    bars2 = ax2.barh(df['Version'], df['RMSE'], color=colors)
+    ax2.set_title('(b)', loc='left', fontsize=11, fontweight='bold')
+    bars2 = ax2.barh(df['Version'], df['RMSE'], color=colors, edgecolor=edges, linewidth=0.8)
+    ax2.set_xlim(0, 135)
     ax2.axvline(x=81.05, color=COLORS['v2'], linestyle='--', alpha=0.6, linewidth=1)
     ax2.axvline(x=76.23, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
     ax2.set_xlabel('RMSE (mm)')
@@ -290,7 +295,8 @@ def figure_4_master_comparison():
         ax2.annotate(f'{val:.1f}',
                     xy=(val, bar.get_y() + bar.get_height() / 2),
                     xytext=(3, 0), textcoords="offset points",
-                    ha='left', va='center', fontsize=7)
+                    ha='left', va='center', fontsize=9,
+                    bbox=dict(facecolor='white', edgecolor='none', pad=0.6, alpha=0.9))
 
     plt.tight_layout()
     save_figure(plt.gcf(), OUTPUT_DIR / 'master_comparison.png', dpi=OUTPUT_DPI, bbox_inches='tight')
