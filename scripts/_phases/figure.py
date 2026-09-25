@@ -77,7 +77,9 @@ def run(args: argparse.Namespace) -> int:
     ax.set_xlim(0.5, 12.5)
     ax.xaxis.set_major_locator(MultipleLocator(1))
     ax.grid(alpha=0.25, linewidth=0.6)
-    ax.legend(loc='lower left', frameon=True, framealpha=0.95)
+    # below the axes: lower left is inside the GNN-TAT seed band
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.14), ncol=3,
+              frameon=False)
 
     # Band semantics + canonical horizons live in the LaTeX caption
     # (rule: no redundant numerical annotations inside images).

@@ -136,7 +136,7 @@ def plot_elevation_map(ds, labels_2d, counts, out_path):
     ax.set_ylim(lat_edges.min(), lat_edges.max())
     ax.set_xlabel("Longitude (°E)")
     ax.set_ylabel("Latitude (°N)")
-    ax.set_title("Elevation bands (k = 3) over the Boyaca study area")
+    ax.set_title("Elevation bands (k = 3) over the Boyac\u00e1 study area")
     ax.set_aspect("equal", adjustable="box")
     ax.grid(True, alpha=0.25, linewidth=0.4)
 
@@ -145,8 +145,10 @@ def plot_elevation_map(ds, labels_2d, counts, out_path):
                        label=f"C{i+1} - {ELEV_LABELS[i]}  (n = {counts[i]:,}, {100*counts[i]/sum(counts):.0f} %)")
         for i in range(len(ELEV_COLORS))
     ]
-    ax.legend(handles=patches, loc="lower left", frameon=True,
-              fontsize=9, title="Elevation cluster", title_fontsize=10)
+    # below the axes: every in-axes corner of this map carries plotted cells
+    ax.legend(handles=patches, loc="upper center", bbox_to_anchor=(0.5, -0.12),
+              ncol=3, frameon=False, fontsize=8.5,
+              title="Elevation cluster", title_fontsize=9.5)
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=OUTPUT_DPI)
@@ -176,8 +178,10 @@ def plot_climatology_profiles(centers, counts, out_path):
     ax.set_title("Monthly precipitation regimes (K-means, k = 4) "
                  "from per-cell annual climatology")
     ax.grid(True, alpha=0.3)
-    ax.legend(loc="upper right", frameon=True, title="Climatology regime",
-              title_fontsize=10, fontsize=9)
+    # below the axes: upper right is where regime C3 peaks in October
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.16), ncol=2,
+              frameon=False, title="Climatology regime",
+              title_fontsize=9.5, fontsize=8.5)
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=OUTPUT_DPI)
@@ -197,9 +201,15 @@ def main():
     plot_climatology_profiles(clim_centers, clim_counts,
                               FIG_DIR / "monthly_cluster_profiles.png")
 
-    # Sanity-check counts vs thesis captions
-    expect_elev = (2467, 941, 557)
-    expect_clim = (975, 1225, 1392, 373)
+    # Sanity-check counts vs thesis captions.
+    # The elevation expectation used to be (2467, 941, 557), which is the
+    # fixed-threshold partition at 1,500/2,800 m, not the K-means one this
+    # script fits; the two are never interchangeable and the thesis says so
+    # explicitly. The climatology expectation was the same four counts in the
+    # order the fit happened to return them, before they were sorted by
+    # ascending annual total. Both reported MISMATCH against correct output.
+    expect_elev = (2048, 921, 996)
+    expect_clim = (1391, 978, 1225, 371)
     ok_e = tuple(elev_counts) == expect_elev
     ok_c = tuple(clim_counts) == expect_clim
     print("\n=== Sanity check vs thesis.tex captions ===")

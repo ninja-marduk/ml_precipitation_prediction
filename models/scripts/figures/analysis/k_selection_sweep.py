@@ -123,7 +123,7 @@ def main():
 
     fig.suptitle(
         "K-means cluster-number selection for elevation (k=3) and "
-        "monthly precipitation climatology (k=4) over the Boyaca study area",
+        "monthly precipitation climatology (k=4) over the Boyacá study area",
         fontsize=12, y=1.00,
     )
     fig.tight_layout()

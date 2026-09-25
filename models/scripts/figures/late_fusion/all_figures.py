@@ -131,8 +131,8 @@ def figure_ensemble_evolution():
                    ha='center', va='bottom', fontsize=7, fontweight='bold')
 
     # Reference lines
-    ax.axhline(y=0.628, color=COLORS['v2'], linestyle='--', alpha=0.6,
-               linewidth=1, label='Best single model (0.628)')
+    ax.axhline(y=0.629, color=COLORS['v2'], linestyle='--', alpha=0.6,
+               linewidth=1, label='Best single model (0.629)')
     ax.axhline(y=0.672, color=COLORS['v10'], linestyle='--', alpha=0.6,
                linewidth=1, label='Late Fusion best (0.672)')
 
@@ -181,7 +181,7 @@ def figure_failure_modes_analysis():
     bars = ax1.bar(failures, r2_vals, color=failure_colors, width=0.55,
                    edgecolor=edge_colors, linewidth=1.2)
     ax1.axhline(y=0.628, color=COLORS['v2'], linestyle='--', linewidth=1.5,
-                label='ConvLSTM base (0.628)')
+                label='Single-model reference (0.628)')
     ax1.axhline(y=0.672, color=COLORS['v10'], linestyle='--', linewidth=1.5,
                 label='Late Fusion best (0.672)')
 
@@ -297,7 +297,7 @@ def figure_comprehensive_radar():
     categories = ['R²', '1-NRMSE', '1-NMAE', '1-|Bias|']
 
     models_data = {
-        'Enh. ConvLSTM': [0.628/0.7, 1-81.05/120, 1-58.91/100, 1-10.5/30],
+        'Enh. ConvLSTM': [0.629/0.7, 1-81.05/120, 1-58.91/100, 1-10.5/30],
         'GNN-TAT': [0.628/0.7, 1-82.29/120, 1-58.19/100, 1-28.8/30],
         'Stacking Ens.': [0.212/0.7, 1-117.93/120, 1-92.41/100, 0.3],
         'Late Fusion': [0.672/0.7, 1-76.23/120, 1-55.92/100, 1-0.004/30],
@@ -310,9 +310,10 @@ def figure_comprehensive_radar():
         'Late Fusion': COLORS['v10'],
     }
 
-    fig, ax = plt.subplots(figsize=(10.0, 7.0), subplot_kw=dict(polar=True))
-    # Shrink polar axes so labels (esp. 'Efficiency') sit clearly outside the data area
-    ax.set_position([0.20, 0.10, 0.55, 0.80])
+    fig, ax = plt.subplots(figsize=(7.4, 7.4), subplot_kw=dict(polar=True))
+    # square canvas with the legend underneath: the four axis labels need room
+    # outside the circle, but not a whole empty column beside it
+    ax.set_position([0.11, 0.16, 0.78, 0.78])
 
     num_vars = len(categories)
     angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
@@ -333,7 +334,8 @@ def figure_comprehensive_radar():
     ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
     ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], size=8)
 
-    ax.legend(loc='center left', bbox_to_anchor=(1.18, 0.5), framealpha=0.9)
+    ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=4,
+              frameon=False, columnspacing=1.6, handlelength=1.6)
 
     save_figure(plt.gcf(), OUTPUT_DIR / 'comprehensive_radar.png', 
                 dpi=OUTPUT_DPI, bbox_inches='tight', pad_inches=0.05)

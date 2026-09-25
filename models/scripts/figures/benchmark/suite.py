@@ -87,8 +87,8 @@ def figure_1_v1_v10_r2_evolution():
                     xytext=(0, 3), textcoords="offset points",
                     ha='center', va='bottom', fontsize=7)
 
-    ax.axhline(y=0.628, color=COLORS['v2'], linestyle='--', alpha=0.7,
-               linewidth=1, label='ConvLSTM baseline (0.628)')
+    ax.axhline(y=0.629, color=COLORS['v2'], linestyle='--', alpha=0.7,
+               linewidth=1, label='Best convolutional (0.629)')
     ax.axhline(y=0.672, color=COLORS['v10'], linestyle='--', alpha=0.7,
                linewidth=1, label='Late Fusion best (0.672)')
 
@@ -255,7 +255,7 @@ def figure_4_master_comparison():
         'Version': ['Baseline', 'Enh. ConvLSTM', 'FNO-Hybrid', 'GNN-TAT',
                      'Stacking Ens.', 'Stratified Ens.', 'GNN-BiMamba', 'Late Fusion'],
         'R2': [0.58, 0.629, 0.582, 0.628, 0.212, 0.597, 0.200, 0.672],
-        'RMSE': [85.0, 81.05, 110.0, 82.29, 117.93, 84.1, 111.18, 76.67],
+        'RMSE': [85.0, 81.05, 110.0, 82.29, 117.93, 84.1, 111.18, 76.23],
         'Status': ['baseline', 'v2', 'v3', 'v4', 'v5', 'baseline', 'v9', 'v10']
     }
     df = pd.DataFrame(data)
@@ -283,7 +283,7 @@ def figure_4_master_comparison():
     add_panel_label(ax2, 'b')
     bars2 = ax2.barh(df['Version'], df['RMSE'], color=colors)
     ax2.axvline(x=81.05, color=COLORS['v2'], linestyle='--', alpha=0.6, linewidth=1)
-    ax2.axvline(x=76.67, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
+    ax2.axvline(x=76.23, color=COLORS['v10'], linestyle='--', alpha=0.6, linewidth=1)
     ax2.set_xlabel('RMSE (mm)')
 
     for bar, val in zip(bars2, df['RMSE']):
