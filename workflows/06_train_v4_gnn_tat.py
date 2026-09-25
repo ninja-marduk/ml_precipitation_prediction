@@ -940,7 +940,12 @@ def run_training(torch, config: V4Config, base_path: Path):
     elevation = ds['elevation'].values
     if elevation.ndim == 3:
         elevation = elevation[0]
+    # The correlation term may only see training months; the validation months
+    # must not shape the fixed spatial prior (same cutoff as compute_split_indices).
     precip_series = ds['total_precipitation'].values
+    graph_cutoff = int(precip_series.shape[0] * config.train_val_split)
+    precip_series = precip_series[:graph_cutoff]
+    logger.info(f'Graph correlation uses the first {graph_cutoff} months (training period)')
 
     graph_builder = SpatialGraphBuilder(
         lat_coords, lon_coords, elevation, config.gnn_config)
